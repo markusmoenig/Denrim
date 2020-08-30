@@ -15,6 +15,32 @@
 		2B01C86E24FB814C00E86449 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C85724FB814900E86449 /* ContentView.swift */; };
 		2B01C86F24FB814C00E86449 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B01C85824FB814C00E86449 /* Assets.xcassets */; };
 		2B01C87024FB814C00E86449 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B01C85824FB814C00E86449 /* Assets.xcassets */; };
+		2B01C88524FB824A00E86449 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87924FB824900E86449 /* MathLibrary.swift */; };
+		2B01C88624FB824A00E86449 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87924FB824900E86449 /* MathLibrary.swift */; };
+		2B01C88724FB824A00E86449 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87A24FB824900E86449 /* Metal.metal */; };
+		2B01C88824FB824A00E86449 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87A24FB824900E86449 /* Metal.metal */; };
+		2B01C88924FB824A00E86449 /* Texture2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87B24FB824900E86449 /* Texture2D.swift */; };
+		2B01C88A24FB824A00E86449 /* Texture2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87B24FB824900E86449 /* Texture2D.swift */; };
+		2B01C88B24FB824A00E86449 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87C24FB824900E86449 /* Utils.swift */; };
+		2B01C88C24FB824A00E86449 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87C24FB824900E86449 /* Utils.swift */; };
+		2B01C88D24FB824A00E86449 /* ScriptEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87D24FB824900E86449 /* ScriptEditor.swift */; };
+		2B01C88E24FB824A00E86449 /* ScriptEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87D24FB824900E86449 /* ScriptEditor.swift */; };
+		2B01C88F24FB824A00E86449 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87E24FB824900E86449 /* Game.swift */; };
+		2B01C89024FB824A00E86449 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87E24FB824900E86449 /* Game.swift */; };
+		2B01C89124FB824A00E86449 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87F24FB824900E86449 /* Asset.swift */; };
+		2B01C89224FB824A00E86449 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87F24FB824900E86449 /* Asset.swift */; };
+		2B01C89324FB824A00E86449 /* JSBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88024FB824900E86449 /* JSBridge.swift */; };
+		2B01C89424FB824A00E86449 /* JSBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88024FB824900E86449 /* JSBridge.swift */; };
+		2B01C89524FB824A00E86449 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 2B01C88124FB824A00E86449 /* Resources */; };
+		2B01C89624FB824A00E86449 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 2B01C88124FB824A00E86449 /* Resources */; };
+		2B01C89724FB824A00E86449 /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88324FB824A00E86449 /* Classes.swift */; };
+		2B01C89824FB824A00E86449 /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88324FB824A00E86449 /* Classes.swift */; };
+		2B01C89924FB824A00E86449 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88424FB824A00E86449 /* System.swift */; };
+		2B01C89A24FB824A00E86449 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88424FB824A00E86449 /* System.swift */; };
+		2B01C89C24FB844C00E86449 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89B24FB844C00E86449 /* MetalView.swift */; };
+		2B01C89D24FB844C00E86449 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89B24FB844C00E86449 /* MetalView.swift */; };
+		2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
+		2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +53,20 @@
 		2B01C86524FB814C00E86449 /* Denrim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Denrim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B01C86724FB814C00E86449 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B01C86824FB814C00E86449 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		2B01C87924FB824900E86449 /* MathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
+		2B01C87A24FB824900E86449 /* Metal.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Metal.metal; sourceTree = "<group>"; };
+		2B01C87B24FB824900E86449 /* Texture2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Texture2D.swift; sourceTree = "<group>"; };
+		2B01C87C24FB824900E86449 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		2B01C87D24FB824900E86449 /* ScriptEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptEditor.swift; sourceTree = "<group>"; };
+		2B01C87E24FB824900E86449 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		2B01C87F24FB824900E86449 /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
+		2B01C88024FB824900E86449 /* JSBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSBridge.swift; sourceTree = "<group>"; };
+		2B01C88124FB824A00E86449 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
+		2B01C88224FB824A00E86449 /* Metal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Metal.h; sourceTree = "<group>"; };
+		2B01C88324FB824A00E86449 /* Classes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
+		2B01C88424FB824A00E86449 /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
+		2B01C89B24FB844C00E86449 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
+		2B01C89E24FB8C7500E86449 /* MetalStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalStates.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +103,20 @@
 				2B01C85524FB814900E86449 /* DenrimApp.swift */,
 				2B01C85624FB814900E86449 /* DenrimDocument.swift */,
 				2B01C85724FB814900E86449 /* ContentView.swift */,
+				2B01C87F24FB824900E86449 /* Asset.swift */,
+				2B01C88324FB824A00E86449 /* Classes.swift */,
+				2B01C87E24FB824900E86449 /* Game.swift */,
+				2B01C88024FB824900E86449 /* JSBridge.swift */,
+				2B01C87924FB824900E86449 /* MathLibrary.swift */,
+				2B01C89B24FB844C00E86449 /* MetalView.swift */,
+				2B01C89E24FB8C7500E86449 /* MetalStates.swift */,
+				2B01C87A24FB824900E86449 /* Metal.metal */,
+				2B01C88224FB824A00E86449 /* Metal.h */,
+				2B01C87D24FB824900E86449 /* ScriptEditor.swift */,
+				2B01C88424FB824A00E86449 /* System.swift */,
+				2B01C87B24FB824900E86449 /* Texture2D.swift */,
+				2B01C87C24FB824900E86449 /* Utils.swift */,
+				2B01C88124FB824A00E86449 /* Resources */,
 				2B01C85824FB814C00E86449 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -161,8 +215,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2B01C85C24FB814C00E86449 /* Denrim (iOS) */,
 				2B01C86424FB814C00E86449 /* Denrim (macOS) */,
+				2B01C85C24FB814C00E86449 /* Denrim (iOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -172,6 +226,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B01C89524FB824A00E86449 /* Resources in Resources */,
 				2B01C86F24FB814C00E86449 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -180,6 +235,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B01C89624FB824A00E86449 /* Resources in Resources */,
 				2B01C87024FB814C00E86449 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,8 +248,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B01C86924FB814C00E86449 /* DenrimApp.swift in Sources */,
+				2B01C88F24FB824A00E86449 /* Game.swift in Sources */,
+				2B01C89924FB824A00E86449 /* System.swift in Sources */,
+				2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */,
+				2B01C89724FB824A00E86449 /* Classes.swift in Sources */,
+				2B01C89124FB824A00E86449 /* Asset.swift in Sources */,
+				2B01C88D24FB824A00E86449 /* ScriptEditor.swift in Sources */,
+				2B01C88924FB824A00E86449 /* Texture2D.swift in Sources */,
+				2B01C88724FB824A00E86449 /* Metal.metal in Sources */,
+				2B01C89C24FB844C00E86449 /* MetalView.swift in Sources */,
+				2B01C88B24FB824A00E86449 /* Utils.swift in Sources */,
 				2B01C86B24FB814C00E86449 /* DenrimDocument.swift in Sources */,
 				2B01C86D24FB814C00E86449 /* ContentView.swift in Sources */,
+				2B01C89324FB824A00E86449 /* JSBridge.swift in Sources */,
+				2B01C88524FB824A00E86449 /* MathLibrary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,8 +270,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B01C86A24FB814C00E86449 /* DenrimApp.swift in Sources */,
+				2B01C89024FB824A00E86449 /* Game.swift in Sources */,
+				2B01C89A24FB824A00E86449 /* System.swift in Sources */,
+				2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */,
+				2B01C89824FB824A00E86449 /* Classes.swift in Sources */,
+				2B01C89224FB824A00E86449 /* Asset.swift in Sources */,
+				2B01C88E24FB824A00E86449 /* ScriptEditor.swift in Sources */,
+				2B01C88A24FB824A00E86449 /* Texture2D.swift in Sources */,
+				2B01C88824FB824A00E86449 /* Metal.metal in Sources */,
+				2B01C89D24FB844C00E86449 /* MetalView.swift in Sources */,
+				2B01C88C24FB824A00E86449 /* Utils.swift in Sources */,
 				2B01C86C24FB814C00E86449 /* DenrimDocument.swift in Sources */,
 				2B01C86E24FB814C00E86449 /* ContentView.swift in Sources */,
+				2B01C89424FB824A00E86449 /* JSBridge.swift in Sources */,
+				2B01C88624FB824A00E86449 /* MathLibrary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +418,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.Denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -360,6 +441,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.Denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -386,6 +468,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.Denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -410,6 +493,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.Denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

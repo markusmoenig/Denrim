@@ -16,6 +16,8 @@ extension UTType {
 
 struct DenrimDocument: FileDocument {
     var text: String
+    
+    @ObservedObject var game = Game()
 
     init(text: String = "Hello, world!") {
         self.text = text
