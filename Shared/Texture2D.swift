@@ -200,9 +200,7 @@ class Texture2D         : NSObject, Texture2D_JSExports
         data.borderColor = borderColor
         
         if rotation == 0 {
-            data.rotation = rotation.degreesToRadians
-
-            let rect = MMRect(x - data.borderSize / 2, y - data.borderSize, data.size.x + data.borderSize, data.size.y + data.borderSize, scale: game.scaleFactor)
+            let rect = MMRect(x, y, data.size.x, data.size.y, scale: game.scaleFactor)
             let vertexData = game.createVertexData(texture: self, rect: rect)
             
             let renderPassDescriptor = MTLRenderPassDescriptor()
@@ -216,6 +214,29 @@ class Texture2D         : NSObject, Texture2D_JSExports
             
             renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBox))
+            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+            renderEncoder.endEncoding()
+        } else {
+            
+            data.pos.x = x
+            data.pos.y = y
+            data.rotation = rotation.degreesToRadians
+            data.size2 = float2(self.width / game.scaleFactor, self.height / game.scaleFactor)
+
+            let rect = MMRect(0, 0, self.width / game.scaleFactor, self.height / game.scaleFactor, scale: game.scaleFactor)
+            let vertexData = game.createVertexData(texture: self, rect: rect)
+            
+            let renderPassDescriptor = MTLRenderPassDescriptor()
+            renderPassDescriptor.colorAttachments[0].texture = texture
+            renderPassDescriptor.colorAttachments[0].loadAction = .load
+            
+            let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+                    
+            renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+            renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+            
+            renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
+            renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBoxExt))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
             renderEncoder.endEncoding()
         }

@@ -46,7 +46,7 @@ class MetalStates {
         states[States.CopyTexture.rawValue] = createQuadState(name: "m4mCopyTextureDrawable")
         states[States.DrawTexture.rawValue] = createQuadState(name: "m4mTextureDrawable")
         states[States.DrawBox.rawValue] = createQuadState(name: "m4mBoxDrawable")
-        states[States.DrawBoxExt.rawValue] = createQuadState(name: "m4mBoxDrawable")
+        states[States.DrawBoxExt.rawValue] = createQuadState(name: "m4mBoxDrawableExt")
     }
     
     /// Creates a quod state from an optional library and the function name

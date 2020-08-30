@@ -47,6 +47,12 @@ float m4mBorderMask(float dist, float width)
     return clamp(dist + width, 0.0, 1.0) - clamp(dist, 0.0, 1.0);
 }
 
+float2 m4mRotateCCW(float2 pos, float angle)
+{
+    float ca = cos(angle), sa = sin(angle);
+    return pos * float2x2(ca, sa, -sa, ca);
+}
+
 float2 m4mRotateCW(float2 pos, float angle)
 {
     float ca = cos(angle), sa = sin(angle);
@@ -72,8 +78,8 @@ fragment float4 m4mDiscDrawable(RasterizerData in [[stage_in]],
 fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
                                constant BoxUniform *data [[ buffer(0) ]] )
 {
-    float2 uv = in.textureCoordinate * ( data->size + float2( data->borderSize ) * 2.0 );
-    uv -= float2( data->size / 2.0 + data->borderSize );
+    float2 uv = in.textureCoordinate * ( data->size );
+    uv -= float2( data->size / 2.0 );
     
     float2 d = abs( uv ) - data->size / 2 + data->round;
     float dist = length(max(d,float2(0))) + min(max(d.x,d.y),0.0) - data->round;
@@ -88,12 +94,14 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
 fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
                                constant BoxUniform *data [[ buffer(0) ]] )
 {
-    float2 uv = in.textureCoordinate * ( data->size + float2( data->borderSize ) * 2.0 );
-    uv -= float2( data->size / 2.0 + data->borderSize );
+    float2 uv = in.textureCoordinate * data->size2;
+    uv.y = data->size2.y - uv.y;
+    uv -= float2(data->size / 2.0);
+    uv -= float2(data->pos.x, data->pos.y);
 
-    uv = m4mRotateCW(uv, data->rotation);
+    uv = m4mRotateCCW(uv, data->rotation);
     
-    float2 d = abs( uv ) - data->size / 2 + data->round;
+    float2 d = abs( uv ) - data->size / 2.0 + data->round;
     float dist = length(max(d,float2(0))) + min(max(d.x,d.y),0.0) - data->round;
     
     float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );

@@ -12,7 +12,6 @@ class Game
     draw()
     {
         let main = Texture2D.main();
-        
         main.clear(Color.create(0,0,0,1));
         
         main.drawDisk({
@@ -30,6 +29,7 @@ class Game
             height: 100,
             border: 10,
             round: 20,
+            rotation: 1,
             borderColor: Color.create(1,1,1,0.2)
         });
         
