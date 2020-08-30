@@ -20,7 +20,9 @@ typedef struct
 {
     vector_float4   fillColor;
     vector_float4   borderColor;
-    float           radius, borderSize;
+    float           radius;
+    float           borderSize;
+    float           onion;
 } DiscUniform;
 
 typedef struct
@@ -37,10 +39,12 @@ typedef struct
     vector_float2   pos;
     vector_float2   size;
     vector_float2   size2;
-    float           round, borderSize;
+    float           round;
+    float           borderSize;
     vector_float4   fillColor;
     vector_float4   borderColor;
     float           rotation;
+    float           onion;
 
 } BoxUniform;
 

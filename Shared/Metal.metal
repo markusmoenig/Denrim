@@ -66,7 +66,9 @@ fragment float4 m4mDiscDrawable(RasterizerData in [[stage_in]],
     float2 uv = in.textureCoordinate * float2( data->radius * 2 + data->borderSize, data->radius * 2 + data->borderSize);
     uv -= float2( data->radius + data->borderSize / 2 );
     
-    float dist = length( uv ) - data->radius;
+    float dist = length( uv ) - data->radius + data->onion;
+    if (data->onion > 0.0)
+        dist = abs(dist) - data->onion;
     
     float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
     col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
@@ -81,8 +83,11 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
     float2 uv = in.textureCoordinate * ( data->size );
     uv -= float2( data->size / 2.0 );
     
-    float2 d = abs( uv ) - data->size / 2 + data->round;
+    float2 d = abs( uv ) - data->size / 2 + data->onion + data->round;
     float dist = length(max(d,float2(0))) + min(max(d.x,d.y),0.0) - data->round;
+    
+    if (data->onion > 0.0)
+        dist = abs(dist) - data->onion;
     
     float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
     col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
@@ -101,8 +106,11 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
 
     uv = m4mRotateCCW(uv, data->rotation);
     
-    float2 d = abs( uv ) - data->size / 2.0 + data->round;
+    float2 d = abs( uv ) - data->size / 2.0 + data->onion + data->round;
     float dist = length(max(d,float2(0))) + min(max(d.x,d.y),0.0) - data->round;
+    
+    if (data->onion > 0.0)
+        dist = abs(dist) - data->onion;
     
     float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
     col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );

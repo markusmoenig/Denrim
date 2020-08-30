@@ -147,6 +147,7 @@ class Texture2D         : NSObject, Texture2D_JSExports
         var y : Float = object["y"] == nil || object["y"] as? Float == nil ? 0 : object["y"] as! Float
         let radius : Float = object["radius"] == nil || object["radius"] as? Float == nil ? 0 : object["radius"] as! Float
         let border : Float = object["border"] == nil || object["border"] as? Float == nil ? 0 : object["border"] as! Float
+        let onion : Float = object["onion"] == nil || object["onion"] as? Float == nil ? 0 : object["onion"] as! Float
         let fillColor : SIMD4<Float> = object["color"] == nil || object["color"] as? Color == nil ? SIMD4<Float>(1,1,1,1) : (object["color"] as! Color).toSIMD()
         let borderColor : SIMD4<Float> = object["borderColor"] == nil || object["borderColor"] as? Color == nil ? SIMD4<Float>(0,0,0,0) : (object["borderColor"] as! Color).toSIMD()
         
@@ -158,6 +159,7 @@ class Texture2D         : NSObject, Texture2D_JSExports
         data.radius = radius / game.scaleFactor
         data.fillColor = fillColor
         data.borderColor = borderColor
+        data.onion = onion / game.scaleFactor
 
         let rect = MMRect(x - data.borderSize / 2, y - data.borderSize / 2, data.radius * 2 + data.borderSize * 2, data.radius * 2 + data.borderSize * 2, scale: game.scaleFactor )
         let vertexData = game.createVertexData(texture: self, rect: rect)
@@ -186,6 +188,7 @@ class Texture2D         : NSObject, Texture2D_JSExports
         let round : Float = object["round"] == nil || object["round"] as? Float == nil ? 0 : object["round"] as! Float
         let border : Float = object["border"] == nil || object["border"] as? Float == nil ? 0 : object["border"] as! Float
         let rotation : Float = object["rotation"] == nil || object["rotation"] as? Float == nil ? 0 : object["rotation"] as! Float
+        let onion : Float = object["onion"] == nil || object["onion"] as? Float == nil ? 0 : object["onion"] as! Float
         let fillColor : SIMD4<Float> = object["color"] == nil || object["color"] as? Color == nil ? SIMD4<Float>(1,1,1,1) : (object["color"] as! Color).toSIMD()
         let borderColor : SIMD4<Float> = object["borderColor"] == nil || object["borderColor"] as? Color == nil ? SIMD4<Float>(0,0,0,0) : (object["borderColor"] as! Color).toSIMD()
         
@@ -193,6 +196,7 @@ class Texture2D         : NSObject, Texture2D_JSExports
         y /= game.scaleFactor
 
         var data = BoxUniform()
+        data.onion = onion / game.scaleFactor
         data.size = float2(width / game.scaleFactor, height / game.scaleFactor)
         data.round = round / game.scaleFactor
         data.borderSize = border / game.scaleFactor
