@@ -101,15 +101,8 @@ class Game              : ObservableObject
             return
         }
         
-        gameCmdQueue = view.device!.makeCommandQueue()
-        gameCmdBuffer = gameCmdQueue!.makeCommandBuffer()
-        
-        jsBridge.run()
-
-        gameCmdBuffer?.commit()
-        
         gameCmdBuffer?.addCompletedHandler { cb in
-            //print("Rendering Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
+            //print("GPU Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
         }
         
         commandBuffer = nil
@@ -124,8 +117,26 @@ class Game              : ObservableObject
         drawTexture(renderEncoder: re!)
         
         re?.endEncoding()
+        
         commandBuffer?.present(drawable)
         commandBuffer?.commit()
+        
+        DispatchQueue.main.async {
+            self.gameCmdQueue = self.view.device!.makeCommandQueue()
+            self.gameCmdBuffer = self.gameCmdQueue!.makeCommandBuffer()
+            
+            //#if DEBUG
+            let startTime = Double(Date().timeIntervalSince1970)
+            //#endif
+
+            self.jsBridge.run()
+
+            //#if DEBUG
+            print("JS Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)
+            //#endif
+            
+            self.gameCmdBuffer?.commit()
+        }
     }
     
     func drawDisc(renderEncoder: MTLRenderCommandEncoder, x: Float, y: Float, radius: Float, borderSize: Float, fillColor: SIMD4<Float>, borderColor: SIMD4<Float> = SIMD4<Float>(0,0,0,0))
