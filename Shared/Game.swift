@@ -33,8 +33,7 @@ class Game              : ObservableObject
     
     var textureLoader   : MTKTextureLoader!
     
-    @Published var changeCounter = 1
-    @Published var current = ""
+    @Published var currentName = ""
 
     init()
     {
@@ -64,11 +63,6 @@ class Game              : ObservableObject
 
         metalStates = MetalStates(self)
         textureLoader = MTKTextureLoader(device: device)
-    }
-    
-    func changed()
-    {
-        changeCounter += 1
     }
     
     func build()

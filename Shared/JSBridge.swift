@@ -34,6 +34,7 @@ class JSBridge
         
         context = JSContext()!        
         context?.globalObject.setValue(JSValue(object: game.texture, in: context!), forProperty: "__mainTexture")
+        registerInContext(context!)
 
         context?.exceptionHandler = { context, value in
             let lineNumber = value?.objectForKeyedSubscript("line")
@@ -43,8 +44,6 @@ class JSBridge
                 }
             }
         }
-                
-        registerInContext(context!)
 
         for asset in assetFolder.assets {
             if asset.type == .JavaScript {
@@ -66,6 +65,7 @@ class JSBridge
     {
         context.setObject(System.self, forKeyedSubscript: "System" as (NSCopying & NSObjectProtocol))
         context.setObject(Color.self, forKeyedSubscript: "Color" as (NSCopying & NSObjectProtocol))
+        context.setObject(Rect2D.self, forKeyedSubscript: "Rect2D" as (NSCopying & NSObjectProtocol))
         context.setObject(Texture2D.self, forKeyedSubscript: "Texture2D" as (NSCopying & NSObjectProtocol))
     }
 }

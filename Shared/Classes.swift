@@ -43,3 +43,34 @@ class Color             : NSObject, Color_JSExports
         return Color(r,g,b,a)
     }
 }
+
+@objc protocol Rect2D_JSExports: JSExport {
+    var x           : Float { get set }
+    var y           : Float { get set }
+    var width       : Float { get set }
+    var height      : Float { get set }
+
+    static func create(_ x: Float,_ y: Float,_ width: Float,_ height:Float) -> Rect2D
+}
+
+class Rect2D            : NSObject, Rect2D_JSExports
+{
+    var x               : Float = 0
+    var y               : Float = 0
+    var width           : Float = 0
+    var height          : Float = 0
+
+    init(_ x: Float = 0,_ y: Float = 0,_ width: Float = 0,_ height:Float = 0)
+    {
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        super.init()
+    }
+    
+    class func create(_ x: Float,_ y: Float,_ width: Float,_ height:Float) -> Rect2D
+    {
+        return Rect2D(x,y,width,height)
+    }
+}

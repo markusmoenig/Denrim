@@ -225,7 +225,7 @@ class Texture2D         : NSObject, Texture2D_JSExports
             data.pos.x = x
             data.pos.y = y
             data.rotation = rotation.degreesToRadians
-            data.size2 = float2(self.width / game.scaleFactor, self.height / game.scaleFactor)
+            data.screenSize = float2(self.width / game.scaleFactor, self.height / game.scaleFactor)
 
             let rect = MMRect(0, 0, self.width / game.scaleFactor, self.height / game.scaleFactor, scale: game.scaleFactor)
             let vertexData = game.createVertexData(texture: self, rect: rect)
@@ -255,6 +255,7 @@ class Texture2D         : NSObject, Texture2D_JSExports
             var width : Float = object["width"] == nil || object["width"] as? Float == nil ? Float(sourceTexture.width) : object["width"] as! Float
             var height : Float = object["height"] == nil || object["height"] as? Float == nil ? Float(sourceTexture.height) : object["height"] as! Float
             let alpha : Float = object["alpha"] == nil || object["alpha"] as? Float == nil ? 1.0 : object["alpha"] as! Float
+            let subRect : Rect2D? = object["subRect"] == nil || object["subRect"] as? Rect2D == nil ? nil : object["subRect"] as? Rect2D
 
             x /= game.scaleFactor
             y /= game.scaleFactor
@@ -264,6 +265,18 @@ class Texture2D         : NSObject, Texture2D_JSExports
             
             var data = TextureUniform()
             data.globalAlpha = alpha
+            
+            if let subRect = subRect {
+                data.pos.x = subRect.x / sourceTexture.width
+                data.pos.y = subRect.y / sourceTexture.height
+                data.size.x = subRect.width / sourceTexture.width// / game.scaleFactor
+                data.size.y = subRect.height / sourceTexture.height// / game.scaleFactor                
+            } else {
+                data.pos.x = 0
+                data.pos.y = 0
+                data.size.x = 1
+                data.size.y = 1
+            }
                     
             let rect = MMRect( x, y, width, height, scale: game.scaleFactor )
             let vertexData = game.createVertexData(texture: self, rect: rect)

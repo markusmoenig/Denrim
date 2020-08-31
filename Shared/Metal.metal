@@ -99,8 +99,8 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
 fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
                                constant BoxUniform *data [[ buffer(0) ]] )
 {
-    float2 uv = in.textureCoordinate * data->size2;
-    uv.y = data->size2.y - uv.y;
+    float2 uv = in.textureCoordinate * data->screenSize;
+    uv.y = data->screenSize.y - uv.y;
     uv -= float2(data->size / 2.0);
     uv -= float2(data->pos.x, data->pos.y);
 
@@ -143,6 +143,12 @@ fragment float4 m4mTextureDrawable(RasterizerData in [[stage_in]],
     
     float2 uv = in.textureCoordinate;
     uv.y = 1 - uv.y;
+    
+    uv.x *= data->size.x;
+    uv.y *= data->size.y;
+
+    uv.x += data->pos.x;
+    uv.y += data->pos.y;
     
     float4 sample = float4(inTexture.sample(textureSampler, uv));
     sample.w *= data->globalAlpha;

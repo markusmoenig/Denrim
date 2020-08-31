@@ -33,7 +33,7 @@ class ScriptEditor
             sessions += 1
         }
         
-        if asset.type == .JavaScript {
+        if asset.type == .JavaScript || asset.type == .Image {
             webView.evaluateJavaScript(
                 """
                 var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)

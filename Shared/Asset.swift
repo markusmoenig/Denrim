@@ -31,8 +31,7 @@ class AssetFolder   : Codable
         
         if let gameTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
             assets.append(Asset(type: .JavaScript, name: "Game.js", value: gameTemplate))
-            game.changed()
-            game.current = "Game.js"
+            game.currentName = "Game.js"
             current = assets[0]
         }
     }
@@ -53,8 +52,7 @@ class AssetFolder   : Codable
     {
         let asset = Asset(type: .JavaScript, name: name + ".js", value: "ho")
         assets.append(asset)
-        game.changed()
-        game.current = name + ".js"
+        game.currentName = name + ".js"
         current = asset
         game.scriptEditor?.createSession(asset)
     }
@@ -69,8 +67,7 @@ class AssetFolder   : Codable
                 
             let asset = Asset(type: .Shader, name: name + ".sh", value: shaderTemplate)
             assets.append(asset)
-            game.changed()
-            game.current = name + ".sh"
+            game.currentName = name + ".sh"
             current = asset
             game.scriptEditor?.createSession(asset)
         }
@@ -80,11 +77,10 @@ class AssetFolder   : Codable
     {
         if let imageData: Data = try? Data(contentsOf: url) {
             let asset = Asset(type: .Image, name: name, data: [imageData])
-            
-            current = asset
             assets.append(asset)
-            game.current = name
-            game.changed()
+            game.currentName = name
+            current = asset
+            game.scriptEditor?.createSession(asset)
         }
     }
     
@@ -92,8 +88,7 @@ class AssetFolder   : Codable
     {
         for asset in assets {
             if asset.id == id {
-                game.changed()
-                game.current = asset.name
+                game.currentName = asset.name
                 current = asset
                 if asset.type == .JavaScript || asset.type == .Shader {
                     game.scriptEditor?.setAssetSession(asset)
@@ -118,7 +113,6 @@ class AssetFolder   : Codable
         for asset in assets {
             if asset.name == name {
                 asset.value = value
-                game.changed()
             }
         }
     }

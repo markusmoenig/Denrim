@@ -10,10 +10,10 @@ import SwiftUI
 struct ContentView: View {
     @Binding var document: DenrimDocument
 
-    @State private var current: String = ""
-
     @State private var showAssetNamePopover: Bool = false
     @State private var assetName: String = ""
+    
+    @State private var updateView: Bool = false
 
     var body: some View {
         NavigationView() {
@@ -60,45 +60,41 @@ struct ContentView: View {
                         Button("Build") {
                             document.game.build()
                         }.keyboardShortcut("b")
-                        Menu(document.game.current) {
+                        Menu(document.game.currentName) {
                             Section(header: Text("Current Project")) {
                                 
                             }
                             Menu("Scripts")
                             {
-                                if document.game.changeCounter >= 0 {
-                                    ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                                        
-                                        if asset.type == .JavaScript {
-                                            Button(asset.name, action: {
-                                                self.document.game.assetFolder.select(asset.id)
-                                            })
-                                        }
+                                ForEach(document.game.assetFolder.assets, id: \.id) { asset in
+                                    
+                                    if asset.type == .JavaScript {
+                                        Button(asset.name, action: {
+                                            self.document.game.assetFolder.select(asset.id)
+                                            updateView.toggle()
+                                        })
                                     }
                                 }
                             }
                             Menu("Shader")
                             {
-                                if document.game.changeCounter >= 0 {
-                                    ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                                        if asset.type == .Shader {
-                                            Button(asset.name, action: {
-                                                self.document.game.assetFolder.select(asset.id)
-                                            })
-                                        }
+                                ForEach(document.game.assetFolder.assets, id: \.id) { asset in
+                                    if asset.type == .Shader {
+                                        Button(asset.name, action: {
+                                            document.game.assetFolder.select(asset.id)
+                                            updateView.toggle()
+                                        })
                                     }
                                 }
                             }
                             Menu("Images")
                             {
-                                if document.game.changeCounter >= 0 {
-                                    ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                                        
-                                        if asset.type == .Image {
-                                            Button(asset.name, action: {
-                                                self.document.game.assetFolder.select(asset.id)
-                                            })
-                                        }
+                                ForEach(document.game.assetFolder.assets, id: \.id) { asset in
+                                    if asset.type == .Image {
+                                        Button(asset.name, action: {
+                                            document.game.assetFolder.select(asset.id)
+                                            updateView.toggle()
+                                        })
                                     }
                                 }
                             }
@@ -121,48 +117,32 @@ struct ContentView: View {
                             })
                             Button("Shader", action: {
                                 document.game.assetFolder.addShader("New Shader")
+                                if let asset = document.game.assetFolder.current {
+                                    assetName = String(asset.name.split(separator: ".")[0])
+                                    showAssetNamePopover = true
+                                }
                             })
                             Button("Image", action: {
                                 #if os(OSX)
                                 
                                 let openPanel = NSOpenPanel()
                                 openPanel.canChooseFiles = true
-                                openPanel.allowsMultipleSelection = false
+                                openPanel.allowsMultipleSelection = true
                                 openPanel.canChooseDirectories = false
                                 openPanel.canCreateDirectories = false
-                                openPanel.title = "Select Image"
+                                openPanel.title = "Select Image(s)"
                                 //openPanel.directoryURL =  containerUrl
                                 openPanel.showsHiddenFiles = false
                                 //openPanel.allowedFileTypes = [appExtension]
                                 
-                                func load(url: URL) -> String
-                                {
-                                    var string : String = ""
-                                    
-                                    do {
-                                        string = try String(contentsOf: url, encoding: .utf8)
-                                    }
-                                    catch {
-                                        print(error.localizedDescription)
-                                    }
-                                    
-                                    return string
-                                }
-                                
                                 openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
                                     if response == NSApplication.ModalResponse.OK {
-                                        
                                         document.game.assetFolder.addImage(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.url!)
-                                        /*
-                                        let string = load(url: openPanel.url!)
-                                        app.loadFrom(string)
                                         
-                                        self.name = openPanel.url!.deletingPathExtension().lastPathComponent
-                                        
-                                        app.mmView.window!.title = self.name
-                                        app.mmView.window!.representedURL = self.url()
-                                        
-                                        app.mmView.undoManager!.removeAllActions()*/
+                                        if let asset = document.game.assetFolder.current {
+                                            assetName = String(asset.name.split(separator: ".")[0])
+                                            showAssetNamePopover = true
+                                        }
                                     }
                                     openPanel.close()
                                 }
@@ -191,7 +171,7 @@ struct ContentView: View {
                             } else {
                                 asset.name = assetName
                             }
-                            document.game.current = asset.name
+                            document.game.currentName = asset.name
                         }
                     })
                     .frame(minWidth: 200)

@@ -2,7 +2,16 @@ class Game
 {
     constructor()
     {
-        this.mat = Texture2D.createFromImage({image: "materials"})
+        this.mat = Texture2D.createFromImage({image: "spritesheet"})
+        this.counter = 0
+        
+        function inc()
+        {
+            this.counter += 1
+            if (this.counter > 18) this.counter = 0
+        }
+        
+        System.setInterval(inc.bind(this), 66)
     }
     
     resize()
@@ -36,8 +45,9 @@ class Game
         main.drawTexture({
             x: 0,
             y: 0,
-            width: 200,
-            height: 200,
+            width: 680,
+            height: 472,
+            subRect: Rect2D.create(680 * this.counter,0,680,472),
             texture: this.mat
         })
     }

@@ -18,6 +18,15 @@ typedef struct
 
 typedef struct
 {
+    vector_float2   screenSize;
+    vector_float2   pos;
+    vector_float2   size;
+    float           globalAlpha;
+
+} TextureUniform;
+
+typedef struct
+{
     vector_float4   fillColor;
     vector_float4   borderColor;
     float           radius;
@@ -30,15 +39,6 @@ typedef struct
     vector_float2   screenSize;
     vector_float2   pos;
     vector_float2   size;
-    float           globalAlpha;
-
-} TextureUniform;
-
-typedef struct
-{
-    vector_float2   pos;
-    vector_float2   size;
-    vector_float2   size2;
     float           round;
     float           borderSize;
     vector_float4   fillColor;
