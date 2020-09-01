@@ -67,14 +67,16 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         if texture != nil {
             texture!.setPurgeableState(.empty)
             texture = nil
-            print("dealloc", width, height)
         }
     }
     
     func allocateTexture(width: Int, height: Int)
     {
-        texture = nil
-    
+        if texture != nil {
+            texture!.setPurgeableState(.empty)
+            texture = nil
+        }
+            
         let textureDescriptor = MTLTextureDescriptor()
         textureDescriptor.textureType = MTLTextureType.type2D
         textureDescriptor.pixelFormat = MTLPixelFormat.bgra8Unorm

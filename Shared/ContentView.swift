@@ -183,8 +183,8 @@ struct ContentView: View {
                         })
                         {
                             Label("Run", systemImage: "play")
-                        }.keyboardShortcut("r")
-                        .disabled(document.game.isRunning)
+                        }
+                        .keyboardShortcut("r")
                         Button(action: {
                             document.game.stop()
                             updateView.toggle()
