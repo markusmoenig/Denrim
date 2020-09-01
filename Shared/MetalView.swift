@@ -8,9 +8,52 @@
 import SwiftUI
 import MetalKit
 
+public class DMTKView       : MTKView
+{
+    var game                : Game!
+    var trackingArea        : NSTrackingArea?
+    
+    override public var acceptsFirstResponder: Bool { return true }
+    
+    func createMouseEvent(type: String,_ event: NSEvent)
+    {
+        var location = event.locationInWindow
+        location.y = CGFloat(frame.height) - location.y
+        location = convert(location, from: nil)
+        
+        game.jsBridge.execute(
+        """
+        game.touch({
+            type: \(type),
+            x: \(location.x),
+            y: \(location.y)
+        })
+        """)
+    }
+        
+    override public func mouseDown(with event: NSEvent) {
+        if game.isRunning {
+            createMouseEvent(type: "TouchType.DOWN", event)
+        }
+    }
+    
+    override public func mouseDragged(with event: NSEvent) {
+        if game.isRunning {
+            createMouseEvent(type: "TouchType.MOVE", event)
+        }
+    }
+    
+    override public func mouseUp(with event: NSEvent) {
+        if game.isRunning {
+            createMouseEvent(type: "TouchType.UP", event)
+        }
+    }
+}
+
 #if os(OSX)
 struct MetalView: NSViewRepresentable {
-    var game             : Game!
+    var game                : Game!
+    var trackingArea        : NSTrackingArea?
 
     init(_ game: Game)
     {
@@ -22,7 +65,8 @@ struct MetalView: NSViewRepresentable {
     }
     
     func makeNSView(context: NSViewRepresentableContext<MetalView>) -> MTKView {
-        let mtkView = MTKView()
+        let mtkView = DMTKView()
+        mtkView.game = game
         mtkView.delegate = context.coordinator
         mtkView.preferredFramesPerSecond = 60
         mtkView.enableSetNeedsDisplay = true
@@ -33,10 +77,8 @@ struct MetalView: NSViewRepresentable {
         mtkView.clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 0)
         mtkView.drawableSize = mtkView.frame.size
         mtkView.enableSetNeedsDisplay = true
-        mtkView.isPaused = false
-        
-        //MetalView.game = Game(mtkView)
-        
+        mtkView.isPaused = true
+                
         game.setupView(mtkView)
         
         return mtkView
@@ -93,7 +135,7 @@ struct MetalView: UIViewRepresentable {
         mtkView.clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 0)
         mtkView.drawableSize = mtkView.frame.size
         mtkView.enableSetNeedsDisplay = true
-        mtkView.isPaused = false
+        mtkView.isPaused = true
         
         //MetalView.game = Game(mtkView)
         

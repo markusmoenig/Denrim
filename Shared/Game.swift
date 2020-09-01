@@ -9,7 +9,7 @@ import MetalKit
 
 class Game              : ObservableObject
 {
-    var view            : MTKView!
+    var view            : DMTKView!
     var device          : MTLDevice!
     var commandQueue    : MTLCommandQueue!
     var commandBuffer   : MTLCommandBuffer!
@@ -32,6 +32,7 @@ class Game              : ObservableObject
     var scriptEditor    : ScriptEditor? = nil
     
     var textureLoader   : MTKTextureLoader!
+    var isRunning       : Bool = false
     
     @Published var currentName = ""
 
@@ -50,7 +51,7 @@ class Game              : ObservableObject
         assetFolder.setup(self)
     }
     
-    func setupView(_ view: MTKView)
+    func setupView(_ view: DMTKView)
     {
         self.view = view
         if let metalDevice = MTLCreateSystemDefaultDevice() {
@@ -65,9 +66,20 @@ class Game              : ObservableObject
         textureLoader = MTKTextureLoader(device: device)
     }
     
-    func build()
+    func start()
     {
         jsBridge.compile(assetFolder)
+
+        isRunning = true
+        view.isPaused = false
+    }
+    
+    func stop()
+    {
+        jsBridge.stop()
+
+        isRunning = false
+        view.isPaused = true
     }
 
     func checkTexture()
@@ -82,8 +94,7 @@ class Game              : ObservableObject
             screenHeight = Float(view.frame.height)
         } else
         if texture!.texture.width != Int(view.frame.width) || texture!.texture.height != Int(view.frame.height) {
-            texture = nil            
-            texture = Texture2D(self)
+            texture?.allocateTexture(width: Int(view.frame.width), height: Int(view.frame.height))
             
             viewportSize.x = UInt32(view.frame.width)
             viewportSize.y = UInt32(view.frame.height)
@@ -105,37 +116,47 @@ class Game              : ObservableObject
             //print("GPU Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
         }
         
-        commandBuffer = nil
         commandBuffer = commandQueue.makeCommandBuffer()
-        let rpd = view.currentRenderPassDescriptor
-        rpd?.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 1)
-        rpd?.colorAttachments[0].loadAction = .clear
-        rpd?.colorAttachments[0].storeAction = .store
-        let re = commandBuffer?.makeRenderCommandEncoder(descriptor: rpd!)
+        
+        let renderPassDescriptor = view.currentRenderPassDescriptor
+        renderPassDescriptor?.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 1)
+        renderPassDescriptor?.colorAttachments[0].loadAction = .clear
+        renderPassDescriptor?.colorAttachments[0].storeAction = .store
+        let renderEncoder = commandBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor!)
         
         //drawDisc(renderEncoder: re!, x: 50, y: 0, radius: 100, borderSize: 0, fillColor: SIMD4<Float>(1,1,1,1))
-        drawTexture(renderEncoder: re!)
+        drawTexture(renderEncoder: renderEncoder!)
         
-        re?.endEncoding()
+        renderEncoder?.endEncoding()
         
         commandBuffer?.present(drawable)
         commandBuffer?.commit()
-        
-        DispatchQueue.main.async {
-            self.gameCmdQueue = self.view.device!.makeCommandQueue()
-            self.gameCmdBuffer = self.gameCmdQueue!.makeCommandBuffer()
-            
-            //#if DEBUG
-            let startTime = Double(Date().timeIntervalSince1970)
-            //#endif
+        commandBuffer = nil
 
-            self.jsBridge.run()
+        if isRunning {
+            DispatchQueue.main.async {
+                
+                if self.gameCmdQueue == nil {
+                    self.gameCmdQueue = self.view.device!.makeCommandQueue()
+                }
+                
+                self.gameCmdBuffer = self.gameCmdQueue!.makeCommandBuffer()
 
-            //#if DEBUG
-            print("JS Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)
-            //#endif
-            
-            self.gameCmdBuffer?.commit()
+                //#if DEBUG
+                //let startTime = Double(Date().timeIntervalSince1970)
+                //#endif
+
+                self.jsBridge.step()
+
+                //#if DEBUG
+                //print("JS Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)
+                //#endif
+                
+                self.gameCmdBuffer?.commit()
+                
+                //self.gameCmdQueue = nil
+                self.gameCmdBuffer = nil
+            }
         }
     }
     

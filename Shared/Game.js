@@ -27,11 +27,6 @@ class Game
             });
     }
     
-    touch(event)
-    {
-        System.log(event.type)
-    }
-                              
     resize()
     {
     }

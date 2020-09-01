@@ -25,54 +25,30 @@ import JavaScriptCore
     //static func createWith(firstName: String, lastName: String) -> Person
 }
 
-class Texture2D         : NSObject, Texture2D_JSExports
+class Texture2D                 : NSObject, Texture2D_JSExports
 {
-    var texture         : MTLTexture!
+    var texture                 : MTLTexture!
     
-    var width           : Float = 0
-    var height          : Float = 0
+    var width                   : Float = 0
+    var height                  : Float = 0
     
-    var game            : Game!
+    var game                    : Game!
 
     ///
     init(_ game: Game)
     {
         self.game = game
         
-        let textureDescriptor = MTLTextureDescriptor()
-        textureDescriptor.textureType = MTLTextureType.type2D
-        textureDescriptor.pixelFormat = MTLPixelFormat.bgra8Unorm
-        textureDescriptor.width = Int(game.view.frame.width)
-        textureDescriptor.height = Int(game.view.frame.height)
-        
-        width = Float(textureDescriptor.width)
-        height = Float(textureDescriptor.height)
-        
-        textureDescriptor.usage = MTLTextureUsage.unknown
-        
-        texture = game.device.makeTexture(descriptor: textureDescriptor)
-        
         super.init()
+        allocateTexture(width: Int(game.view.frame.width), height: Int(game.view.frame.height))
     }
     
     init(_ game: Game, width: Int, height: Int)
     {
         self.game = game
         
-        let textureDescriptor = MTLTextureDescriptor()
-        textureDescriptor.textureType = MTLTextureType.type2D
-        textureDescriptor.pixelFormat = MTLPixelFormat.bgra8Unorm
-        textureDescriptor.width = width
-        textureDescriptor.height = height
-        
-        self.width = Float(width)
-        self.height = Float(height)
-        
-        textureDescriptor.usage = MTLTextureUsage.unknown
-        
-        texture = game.device.makeTexture(descriptor: textureDescriptor)
-        
         super.init()
+        allocateTexture(width: width, height: height)
     }
     
     init(_ game: Game, texture: MTLTexture)
@@ -90,8 +66,27 @@ class Texture2D         : NSObject, Texture2D_JSExports
     {
         if texture != nil {
             texture!.setPurgeableState(.empty)
+            texture = nil
             print("dealloc", width, height)
         }
+    }
+    
+    func allocateTexture(width: Int, height: Int)
+    {
+        texture = nil
+    
+        let textureDescriptor = MTLTextureDescriptor()
+        textureDescriptor.textureType = MTLTextureType.type2D
+        textureDescriptor.pixelFormat = MTLPixelFormat.bgra8Unorm
+        textureDescriptor.width = width
+        textureDescriptor.height = height
+        
+        self.width = Float(width)
+        self.height = Float(height)
+        
+        textureDescriptor.usage = MTLTextureUsage.unknown
+        
+        texture = game.device.makeTexture(descriptor: textureDescriptor)
     }
     
     class func main() -> Texture2D

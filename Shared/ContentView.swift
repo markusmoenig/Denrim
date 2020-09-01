@@ -53,105 +53,100 @@ struct ContentView: View {
                         }
                     }
                 }.frame(height: g.size.height)
-            }.frame(minWidth: 200)
+            }.frame(minWidth: 300)
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    HStack {
-                        Button("Build") {
-                            document.game.build()
-                        }.keyboardShortcut("b")
-                        Menu(document.game.currentName) {
-                            Section(header: Text("Current Project")) {
+                ToolbarItemGroup(placement: .primaryAction) {
+                    Menu(document.game.currentName) {
+                        Section(header: Text("Current Project")) {
+                            
+                        }
+                        Menu("Scripts")
+                        {
+                            ForEach(document.game.assetFolder.assets, id: \.id) { asset in
                                 
+                                if asset.type == .JavaScript {
+                                    Button(asset.name, action: {
+                                        self.document.game.assetFolder.select(asset.id)
+                                        updateView.toggle()
+                                    })
+                                }
                             }
-                            Menu("Scripts")
-                            {
-                                ForEach(document.game.assetFolder.assets, id: \.id) { asset in
+                        }
+                        Menu("Shader")
+                        {
+                            ForEach(document.game.assetFolder.assets, id: \.id) { asset in
+                                if asset.type == .Shader {
+                                    Button(asset.name, action: {
+                                        document.game.assetFolder.select(asset.id)
+                                        updateView.toggle()
+                                    })
+                                }
+                            }
+                        }
+                        Menu("Images")
+                        {
+                            ForEach(document.game.assetFolder.assets, id: \.id) { asset in
+                                if asset.type == .Image {
+                                    Button(asset.name, action: {
+                                        document.game.assetFolder.select(asset.id)
+                                        updateView.toggle()
+                                    })
+                                }
+                            }
+                        }
+                        Divider()
+                        Button("Rename Asset", action: {
+                            if let asset = document.game.assetFolder.current {
+                                assetName = String(asset.name.split(separator: ".")[0])
+                                showAssetNamePopover = true
+                            }
+                        })
+                    }.frame(minWidth: 150)
+                    // Menu for showing add actions
+                    Menu {
+                        Button("Script", action: {
+                            document.game.assetFolder.addScript("New Script")
+                            if let asset = document.game.assetFolder.current {
+                                assetName = String(asset.name.split(separator: ".")[0])
+                                showAssetNamePopover = true
+                            }
+                        })
+                        Button("Shader", action: {
+                            document.game.assetFolder.addShader("New Shader")
+                            if let asset = document.game.assetFolder.current {
+                                assetName = String(asset.name.split(separator: ".")[0])
+                                showAssetNamePopover = true
+                            }
+                        })
+                        Button("Image", action: {
+                            #if os(OSX)
+                            
+                            let openPanel = NSOpenPanel()
+                            openPanel.canChooseFiles = true
+                            openPanel.allowsMultipleSelection = true
+                            openPanel.canChooseDirectories = false
+                            openPanel.canCreateDirectories = false
+                            openPanel.title = "Select Image(s)"
+                            //openPanel.directoryURL =  containerUrl
+                            openPanel.showsHiddenFiles = false
+                            //openPanel.allowedFileTypes = [appExtension]
+                            
+                            openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
+                                if response == NSApplication.ModalResponse.OK {
+                                    document.game.assetFolder.addImage(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.url!)
                                     
-                                    if asset.type == .JavaScript {
-                                        Button(asset.name, action: {
-                                            self.document.game.assetFolder.select(asset.id)
-                                            updateView.toggle()
-                                        })
+                                    if let asset = document.game.assetFolder.current {
+                                        assetName = String(asset.name.split(separator: ".")[0])
+                                        showAssetNamePopover = true
                                     }
                                 }
+                                openPanel.close()
                             }
-                            Menu("Shader")
-                            {
-                                ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                                    if asset.type == .Shader {
-                                        Button(asset.name, action: {
-                                            document.game.assetFolder.select(asset.id)
-                                            updateView.toggle()
-                                        })
-                                    }
-                                }
-                            }
-                            Menu("Images")
-                            {
-                                ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                                    if asset.type == .Image {
-                                        Button(asset.name, action: {
-                                            document.game.assetFolder.select(asset.id)
-                                            updateView.toggle()
-                                        })
-                                    }
-                                }
-                            }
-                            Divider()
-                            Button("Rename Asset", action: {
-                                if let asset = document.game.assetFolder.current {
-                                    assetName = String(asset.name.split(separator: ".")[0])
-                                    showAssetNamePopover = true
-                                }
-                            })
-                        }.frame(minWidth: 100)
-                        // Menu for showing add actions
-                        Menu {
-                            Button("Script", action: {
-                                document.game.assetFolder.addScript("New Script")
-                                if let asset = document.game.assetFolder.current {
-                                    assetName = String(asset.name.split(separator: ".")[0])
-                                    showAssetNamePopover = true
-                                }
-                            })
-                            Button("Shader", action: {
-                                document.game.assetFolder.addShader("New Shader")
-                                if let asset = document.game.assetFolder.current {
-                                    assetName = String(asset.name.split(separator: ".")[0])
-                                    showAssetNamePopover = true
-                                }
-                            })
-                            Button("Image", action: {
-                                #if os(OSX)
-                                
-                                let openPanel = NSOpenPanel()
-                                openPanel.canChooseFiles = true
-                                openPanel.allowsMultipleSelection = true
-                                openPanel.canChooseDirectories = false
-                                openPanel.canCreateDirectories = false
-                                openPanel.title = "Select Image(s)"
-                                //openPanel.directoryURL =  containerUrl
-                                openPanel.showsHiddenFiles = false
-                                //openPanel.allowedFileTypes = [appExtension]
-                                
-                                openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
-                                    if response == NSApplication.ModalResponse.OK {
-                                        document.game.assetFolder.addImage(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.url!)
-                                        
-                                        if let asset = document.game.assetFolder.current {
-                                            assetName = String(asset.name.split(separator: ".")[0])
-                                            showAssetNamePopover = true
-                                        }
-                                    }
-                                    openPanel.close()
-                                }
-                                #endif
-                            })
-                        }
-                        label: {
-                            Label("Add", systemImage: "plus")
-                        }
+                            #endif
+                        })
+                    }
+                    label: {
+                        Label("Add", systemImage: "plus")
                     }
                 }
             }
@@ -177,9 +172,26 @@ struct ContentView: View {
                     .frame(minWidth: 200)
                 }.padding()
             }
-            MetalView(document.game).frame(minWidth: 200)
+            MetalView(document.game)
+                .frame(minWidth: 500)
                 .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
+                    ToolbarItemGroup(placement: .primaryAction) {
+                        Button(action: {
+                            document.game.start()
+                            
+                            updateView.toggle()
+                        })
+                        {
+                            Label("Run", systemImage: "play")
+                        }.keyboardShortcut("r")
+                        .disabled(document.game.isRunning)
+                        Button(action: {
+                            document.game.stop()
+                            updateView.toggle()
+                        }) {
+                            Label("Stop", systemImage: "stop")
+                        }.keyboardShortcut("t")
+                        .disabled(!document.game.isRunning)
                         Menu("Documentation") {
                             Button("Game Object") {
                             }
