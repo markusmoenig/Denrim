@@ -23,7 +23,12 @@ class ShaderCompiler
     func compile(_ object: [AnyHashable:Any],_ promise: JSPromise)
     {
         var code = getHeaderCode()
+        code += asset.value
         
+        let params = "RasterizerData in [[stage_in]]"
+        
+        code = code.replacingOccurrences(of: "AutoParameters", with: params)
+                
         let compiledCB : MTLNewLibraryCompletionHandler = { (library, error) in
             if let error = error, library == nil {
                 promise.fail(error: error.localizedDescription)
@@ -34,7 +39,7 @@ class ShaderCompiler
                 
                 shader.pipelineStateDesc = MTLRenderPipelineDescriptor()
                 shader.pipelineStateDesc.vertexFunction = library.makeFunction(name: "procVertex")
-                shader.pipelineStateDesc.fragmentFunction = library.makeFunction(name: "test")
+                shader.pipelineStateDesc.fragmentFunction = library.makeFunction(name: "shaderMain")
                 shader.pipelineStateDesc.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
                 
                 shader.pipelineStateDesc.colorAttachments[0].isBlendingEnabled = true
@@ -106,14 +111,6 @@ class ShaderCompiler
             out.viewportSize = viewportSize;
 
             return out;
-        }
-
-        fragment float4 test(RasterizerData in [[stage_in]])
-        {
-            float2 uv = float2(in.textureCoordinate.x, in.textureCoordinate.y);
-            float2 size = in.viewportSize;
-
-            return float4(0,0,1,1);
         }
         
         """

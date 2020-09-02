@@ -8,15 +8,14 @@ class Game
         .then(image => this.image = image)
         .catch(e => System.log(e))
         
-        /*
+        
         System.compileShader({
-            name: "shadername",
+            name: "New Shader.sh",
         })
         .then( shader => {
-            System.log("test is " + shader.isValid)
             this.shader = shader
         })
-        .catch(e=>console.log(e))*/
+        .catch(e => System.log(e))
         
         this.counter = 0;
         this.rotation = 0;

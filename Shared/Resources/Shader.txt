@@ -1,5 +1,8 @@
 
-fragment float4 main()
+fragment float4 shaderMain(AutoParameters)
 {
-
+    float2 uv = in.textureCoordinate;
+    float2 size = in.viewportSize;
+            
+    return float4(1,0,0,1);
 }

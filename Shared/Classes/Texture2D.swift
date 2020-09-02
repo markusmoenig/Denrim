@@ -128,11 +128,13 @@ class Texture2D                 : NSObject, Texture2D_JSExports
                         texture = Texture2D(game, texture: mtlTexture)
                         promise.success(value: texture)
                     } else {
-                        promise.fail(error: "Cannot decode image")
+                        promise.fail(error: "Image cannot be decoded")
                     }
                 } else {
-                    promise.fail(error: "Cannot find image")
+                    promise.fail(error: "Image not found")
                 }
+            } else {
+                promise.fail(error: "Image name not specified")
             }
             
             if texture == nil {

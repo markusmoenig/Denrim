@@ -37,22 +37,24 @@ class System            : NSObject, System_JSExports
         let game = getGameObject()
         let promise = JSPromise()
 
-        let compiler = ShaderCompiler(Asset(type: .Shader, name: "test"), game)
-        
         DispatchQueue.main.async(execute: {
-            promise.timer = Timer.scheduledTimer(withTimeInterval: 0.001, repeats: false) {timer in
-                timer.invalidate()                
-                compiler.compile(object, promise)
+            if let shaderName = object["name"] as? String {
+                
+                if let asset = game.assetFolder.getAsset(shaderName, .Shader) {
+                    
+                    let compiler = ShaderCompiler(asset, game)
+                    
+                        promise.timer = Timer.scheduledTimer(withTimeInterval: 0.001, repeats: false) {timer in
+                            timer.invalidate()
+                            compiler.compile(object, promise)
+                        }
+                } else {
+                   promise.fail(error: "Shader not found")
+               }
+            } else {
+                promise.fail(error: "Shader name not specified")
             }
         })
-
-        /*
-        if let shaderName = object["shader"] as? String {
-         
-            if let asset = game.assetFolder.getAsset(shaderName, .Shader) {
-                
-            }
-        }*/
         
         return promise
     }
