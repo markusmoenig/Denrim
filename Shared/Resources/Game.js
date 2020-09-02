@@ -2,16 +2,21 @@ class Game
 {
     constructor()
     {
-        this.mat = Texture2D.createFromImage({image: "spritesheet"});
+        Texture2D.createFromImage({
+            name: "spritesheet"
+        })
+        .then(image => this.image = image)
+        .catch(e => System.log(e))
         
+        /*
         System.compileShader({
-            shader: "shadername",
+            name: "shadername",
         })
         .then( shader => {
             System.log("test is " + shader.isValid)
             this.shader = shader
         })
-        .catch(e=>console.log(e))
+        .catch(e=>console.log(e))*/
         
         this.counter = 0;
         this.rotation = 0;
@@ -70,7 +75,7 @@ class Game
             height: 472,
             alpha: 0.5,
             subRect: Rect2D.create(680 * this.counter,0,680,472),
-            texture: this.mat
+            texture: this.image
         })
                 
         if (this.shader != null) {

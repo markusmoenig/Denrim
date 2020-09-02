@@ -35,7 +35,7 @@ class JSBridge
         //context = JSContext()!
         guard let jsContext = JSContext.plus else {exit(-1)}
         context = jsContext
-        context?.globalObject.setValue(JSValue(object: game.texture, in: context!), forProperty: "__mainTexture")
+        context?.globalObject.setValue(JSValue(object: game.texture, in: context!), forProperty: "_mT")
 
         context?.exceptionHandler = { context, value in
             let lineNumber = value?.objectForKeyedSubscript("line")

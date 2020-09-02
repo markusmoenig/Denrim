@@ -14,7 +14,7 @@ import JavaScriptCore
     var height: Float { get }
 
     static func main() -> Texture2D
-    static func createFromImage(_ object: [AnyHashable:Any]) -> Texture2D
+    static func createFromImage(_ object: [AnyHashable:Any]) -> JSPromise
 
     func clear(_ color: Any)
     
@@ -103,35 +103,44 @@ class Texture2D                 : NSObject, Texture2D_JSExports
     class func main() -> Texture2D
     {
         let context = JSContext.current()
-        let main = context?.objectForKeyedSubscript("__mainTexture")?.toObject() as! Texture2D
+        let main = context?.objectForKeyedSubscript("_mT")?.toObject() as! Texture2D
         
         return main
     }
     
-    class func createFromImage(_ object: [AnyHashable:Any]) -> Texture2D
+    class func createFromImage(_ object: [AnyHashable:Any]) -> JSPromise
     {
         let context = JSContext.current()
-        
-        let main = context?.objectForKeyedSubscript("__mainTexture")?.toObject() as! Texture2D
-        var texture : Texture2D? = nil
-        let game = main.game!
-        
-        if let imageName = object["image"] as? String {
-         
-            if let asset = game.assetFolder.getAsset(imageName, .Image) {
-                let options: [MTKTextureLoader.Option : Any] = [.generateMipmaps : true, .SRGB : false]
+        let promise = JSPromise()
 
-                if let mtlTexture = try? game.textureLoader.newTexture(data: asset.data[0], options: options) {
-                    texture = Texture2D(game, texture: mtlTexture)
+        DispatchQueue.main.async {
+
+            let main = context?.objectForKeyedSubscript("_mT")?.toObject() as! Texture2D
+            var texture : Texture2D? = nil
+            let game = main.game!
+            
+            if let imageName = object["name"] as? String {
+             
+                if let asset = game.assetFolder.getAsset(imageName, .Image) {
+                    let options: [MTKTextureLoader.Option : Any] = [.generateMipmaps : true, .SRGB : false]
+
+                    if let mtlTexture = try? game.textureLoader.newTexture(data: asset.data[0], options: options) {
+                        texture = Texture2D(game, texture: mtlTexture)
+                        promise.success(value: texture)
+                    } else {
+                        promise.fail(error: "Cannot decode image")
+                    }
+                } else {
+                    promise.fail(error: "Cannot find image")
                 }
+            }
+            
+            if texture == nil {
+                texture = Texture2D(main.game, width: 10, height: 10)
             }
         }
         
-        if texture == nil {
-            texture = Texture2D(main.game, width: 10, height: 10)
-        }
-        
-        return texture!
+        return promise
     }
     
     func clear(_ color: Any)

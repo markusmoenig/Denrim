@@ -108,8 +108,8 @@ class System            : NSObject, System_JSExports
     /// Returns the game object for this context
     static func getGameObject() -> Game {
         let context = JSContext.current()
-        let main = context?.objectForKeyedSubscript("__mainTexture")?.toObject() as! Texture2D
-        //let main = (context!["__mainTexture"] as? JSValue)!.toObject() as! Texture2D
+        let main = context?.objectForKeyedSubscript("_mT")?.toObject() as! Texture2D
+        //let main = (context!["_mT"] as? JSValue)!.toObject() as! Texture2D
         return main.game!
     }
 }
