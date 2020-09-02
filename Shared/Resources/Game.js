@@ -9,6 +9,7 @@ class Game
         })
         .then( shader => {
             System.log("test is " + shader.isValid)
+            this.shader = shader
         })
         .catch(e=>console.log(e))
         
@@ -62,7 +63,7 @@ class Game
                 
         main.drawBoxes(this.objects);
         
-        main.drawTextures([{
+        main.drawTexture({
             x: 0,
             y: 0,
             width: 680,
@@ -70,6 +71,12 @@ class Game
             alpha: 0.5,
             subRect: Rect2D.create(680 * this.counter,0,680,472),
             texture: this.mat
-        }])
+        })
+                
+        if (this.shader != null) {
+            main.drawShader({
+                shader: this.shader,
+            })
+        }
     }
 }

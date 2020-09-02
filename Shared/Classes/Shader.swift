@@ -18,6 +18,12 @@ class Shader                : NSObject, Shader_JSExports
     var pipelineStateDesc   : MTLRenderPipelineDescriptor!
     var pipelineState       : MTLRenderPipelineState!
     
+    deinit {
+        print("release shader")
+        pipelineStateDesc = nil
+        pipelineState = nil
+    }
+    
     override init()
     {
         super.init()
