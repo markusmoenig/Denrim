@@ -5,22 +5,21 @@
 //  Created by Markus Moenig on 1/9/20.
 //
 
-import Foundation
+import MetalKit
 import JavaScriptCore
 
 @objc protocol Shader_JSExports: JSExport {
-
-    static func compile()
+    var isValid: Bool { get }
 }
 
-class Shader            : NSObject, Shader_JSExports
+class Shader                : NSObject, Shader_JSExports
 {
-    init(_ game: Game)
+    var isValid             : Bool = false
+    var pipelineStateDesc   : MTLRenderPipelineDescriptor!
+    var pipelineState       : MTLRenderPipelineState!
+    
+    override init()
     {
         super.init()
-    }
-    
-    class func compile()
-    {
     }
 }

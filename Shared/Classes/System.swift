@@ -12,7 +12,9 @@ import JavaScriptCore
 @objc protocol System_JSExports: JSExport {
     var width: Float { get }
     var height: Float { get }
-    
+            
+    static func compileShader(_ object: [AnyHashable:Any]) -> JSPromise?
+
     static func setTimeout(_ callback : JSValue,_ ms : Double) -> String
     static func clearTimeout(_ identifier: String)
     static func setInterval(_ callback : JSValue,_ ms : Double) -> String
@@ -29,11 +31,34 @@ class System            : NSObject, System_JSExports
 {
     var width           : Float = 0
     var height          : Float = 0
-
-    ///
-    override init()
+        
+    class func compileShader(_ object: [AnyHashable:Any]) -> JSPromise?
     {
-        super.init()
+        let game = getGameObject()
+        let promise = JSPromise()
+
+        let compiler = ShaderCompiler(Asset(type: .Shader, name: "test"), game)
+        
+        DispatchQueue.main.async(execute: {
+            promise.timer = Timer.scheduledTimer(withTimeInterval: 0.001, repeats: false) {timer in
+                timer.invalidate()                
+                compiler.compile(object, promise)
+            }
+        })
+
+        /*
+        if let shaderName = object["shader"] as? String {
+         
+            if let asset = game.assetFolder.getAsset(shaderName, .Shader) {
+                
+            }
+        }*/
+        
+        return promise
+    }
+    
+    deinit {
+        print("system deinit")
     }
 
     class func log(_ string: String) {
@@ -78,5 +103,13 @@ class System            : NSObject, System_JSExports
         let callback = (timer.userInfo as! JSValue)
 
         callback.call(withArguments: nil)
+    }
+    
+    /// Returns the game object for this context
+    static func getGameObject() -> Game {
+        let context = JSContext.current()
+        let main = context?.objectForKeyedSubscript("__mainTexture")?.toObject() as! Texture2D
+        //let main = (context!["__mainTexture"] as? JSValue)!.toObject() as! Texture2D
+        return main.game!
     }
 }

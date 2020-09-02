@@ -4,6 +4,14 @@ class Game
     {
         this.mat = Texture2D.createFromImage({image: "spritesheet"});
         
+        System.compileShader({
+            shader: "shadername",
+        })
+        .then( shader => {
+            System.log("test is " + shader.isValid)
+        })
+        .catch(e=>console.log(e))
+        
         this.counter = 0;
         this.rotation = 0;
         

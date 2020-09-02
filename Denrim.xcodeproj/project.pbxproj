@@ -43,6 +43,8 @@
 		2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
 		2B32992124FE3D02007C3386 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992024FE3D02007C3386 /* Shader.swift */; };
 		2B32992224FE3D02007C3386 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992024FE3D02007C3386 /* Shader.swift */; };
+		2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
+		2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +72,7 @@
 		2B01C89B24FB844C00E86449 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		2B01C89E24FB8C7500E86449 /* MetalStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalStates.swift; sourceTree = "<group>"; };
 		2B32992024FE3D02007C3386 /* Shader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shader.swift; sourceTree = "<group>"; };
+		2B32992324FF21EC007C3386 /* ShaderCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderCompiler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +119,7 @@
 				2B01C88224FB824A00E86449 /* Metal.h */,
 				2B01C87D24FB824900E86449 /* ScriptEditor.swift */,
 				2B01C87C24FB824900E86449 /* Utils.swift */,
+				2B32992324FF21EC007C3386 /* ShaderCompiler.swift */,
 				2B32991F24FE3CC2007C3386 /* Classes */,
 				2B01C88124FB824A00E86449 /* Resources */,
 				2B01C85824FB814C00E86449 /* Assets.xcassets */,
@@ -268,6 +272,7 @@
 				2B32992224FE3D02007C3386 /* Shader.swift in Sources */,
 				2B01C88D24FB824A00E86449 /* ScriptEditor.swift in Sources */,
 				2B01C88924FB824A00E86449 /* Texture2D.swift in Sources */,
+				2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
 				2B01C88724FB824A00E86449 /* Metal.metal in Sources */,
 				2B01C89C24FB844C00E86449 /* MetalView.swift in Sources */,
 				2B01C88B24FB824A00E86449 /* Utils.swift in Sources */,
@@ -291,6 +296,7 @@
 				2B32992124FE3D02007C3386 /* Shader.swift in Sources */,
 				2B01C88E24FB824A00E86449 /* ScriptEditor.swift in Sources */,
 				2B01C88A24FB824A00E86449 /* Texture2D.swift in Sources */,
+				2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
 				2B01C88824FB824A00E86449 /* Metal.metal in Sources */,
 				2B01C89D24FB844C00E86449 /* MetalView.swift in Sources */,
 				2B01C88C24FB824A00E86449 /* Utils.swift in Sources */,
