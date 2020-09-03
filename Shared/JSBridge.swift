@@ -9,6 +9,14 @@ import Foundation
 import JavaScriptCore
 import MetalKit
 
+struct JSError
+{
+    var asset           : Asset? = nil
+    var line            : Int32? = nil
+    var column          : Int32? = nil
+    var error           : String? = nil
+}
+
 class JSBridge
 {
     var context         : JSContext? = nil
@@ -36,13 +44,12 @@ class JSBridge
         guard let jsContext = JSContext.plus else {exit(-1)}
         context = jsContext
         context?.globalObject.setValue(JSValue(object: game.texture, in: context!), forProperty: "_mT")
-
+        
         context?.exceptionHandler = { context, value in
-            let lineNumber = value?.objectForKeyedSubscript("line")
-            if let error = value?.toString() {
-                if let scriptEditor = self.game.scriptEditor {
-                    scriptEditor.setAnnotation(lineNumber: lineNumber!.toInt32(), text: error)
-                }
+            if self.game.jsError.error == nil {
+                self.game.jsError.line = value?.objectForKeyedSubscript("line")?.toInt32()
+                self.game.jsError.column = value?.objectForKeyedSubscript("column")?.toInt32()
+                self.game.jsError.error = value?.toString()
             }
         }
         

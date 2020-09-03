@@ -83,14 +83,14 @@ class ScriptEditor
         })
     }
     
-    func setAnnotation(lineNumber: Int32, text: String )
+    func setAnnotation(_ error: JSError )
     {
         webView.evaluateJavaScript(
             """
             editor.getSession().setAnnotations([{
-            row: \(lineNumber-1),
-            column: 0,
-            text: "\(text)",
+            row: \(error.line!),
+            column: \(error.column!),
+            text: "\(error.error!)",
             type: "error" // also warning and information
             }])
             """, completionHandler: { (value, error ) in

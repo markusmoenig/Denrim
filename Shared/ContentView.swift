@@ -87,6 +87,7 @@ struct ContentView: View {
                                 if asset.type == .Shader {
                                     Button(asset.name, action: {
                                         document.game.assetFolder.select(asset.id)
+                                        document.game.createPreview(asset)
                                         updateView.toggle()
                                     })
                                 }
@@ -111,20 +112,31 @@ struct ContentView: View {
                             }
                         })
                     }.frame(minWidth: 150)
-                    // Menu for showing add actions
+                }
+                ToolbarItemGroup(placement: .primaryAction) {
                     Menu {
-                        Button("Script", action: {
-                            document.game.assetFolder.addScript("New Script")
-                            if let asset = document.game.assetFolder.current {
-                                assetName = String(asset.name.split(separator: ".")[0])
-                                //showAssetNamePopover = true
-                            }
-                        })
+                        Menu("Script") {
+                            Button("Object Script", action: {
+                                document.game.assetFolder.addScript("New Script")
+                                if let asset = document.game.assetFolder.current {
+                                    assetName = String(asset.name.split(separator: ".")[0])
+                                    //showAssetNamePopover = true
+                                }
+                            })
+                            Button("Empty Script", action: {
+                                document.game.assetFolder.addScript("New Script")
+                                if let asset = document.game.assetFolder.current {
+                                    assetName = String(asset.name.split(separator: ".")[0])
+                                    //showAssetNamePopover = true
+                                }
+                            })
+                        }
                         Button("Shader", action: {
                             document.game.assetFolder.addShader("New Shader")
                             if let asset = document.game.assetFolder.current {
                                 assetName = String(asset.name.split(separator: ".")[0])
                                 //showAssetNamePopover = true
+                                document.game.createPreview(asset)
                             }
                         })
                         Button("Image", action: {
@@ -186,13 +198,12 @@ struct ContentView: View {
                     .zIndex(helpViewIndex)
                 MetalView(document.game)
                     .zIndex(metalViewIndex)
-
                     .frame(minWidth: 500)
                     .toolbar {
-                        ToolbarItemGroup(placement: .primaryAction) {
+                        ToolbarItemGroup(placement: .navigation) {
                             Button(action: {
-                                showMetal()
                                 document.game.start()
+                                showMetal()
                                 updateView.toggle()
                             })
                             {
@@ -206,7 +217,17 @@ struct ContentView: View {
                                 Label("Stop", systemImage: "stop")
                             }.keyboardShortcut("t")
                             .disabled(!document.game.isRunning)
-                            Button("Help", action: {
+                            Button(action: {
+                                if let asset = document.game.assetFolder.current {
+                                    document.game.createPreview(asset)
+                                }
+                            }) {
+                                Label("Update", systemImage: "arrow.counterclockwise")
+                            }.keyboardShortcut("u")
+                            .disabled(document.game.isRunning && document.game.assetFolder.current?.type == .Shader )
+                        }
+                        ToolbarItemGroup(placement: .automatic) {
+                            Button(helpViewIndex == 0 ? "Help" : "Hide", action: {
                                 if helpViewIndex == 0 {
                                     helpViewIndex = 1
                                     metalViewIndex = 0

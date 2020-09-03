@@ -34,6 +34,8 @@ class Game              : ObservableObject
     var textureLoader   : MTKTextureLoader!
     var isRunning       : Bool = false
     
+    var jsError         = JSError()
+    
     @Published var currentName = ""
 
     init()
@@ -68,9 +70,11 @@ class Game              : ObservableObject
     
     func start()
     {
+        jsError.error = nil
         jsBridge.compile(assetFolder)
 
         isRunning = true
+        view.enableSetNeedsDisplay = false
         view.isPaused = false
     }
     
@@ -81,7 +85,7 @@ class Game              : ObservableObject
         isRunning = false
         view.isPaused = true
     }
-
+    
     func checkTexture()
     {
         if texture == nil {
@@ -106,6 +110,11 @@ class Game              : ObservableObject
     
     func draw()
     {
+        if jsError.error != nil {
+            stop()
+            return
+        }
+        
         checkTexture()
         
         guard let drawable = view.currentDrawable else {
@@ -160,24 +169,33 @@ class Game              : ObservableObject
         }
     }
     
-    func drawDisc(renderEncoder: MTLRenderCommandEncoder, x: Float, y: Float, radius: Float, borderSize: Float, fillColor: SIMD4<Float>, borderColor: SIMD4<Float> = SIMD4<Float>(0,0,0,0))
+    func createPreview(_ asset: Asset)
     {
-        let settings: [Float] = [
-            fillColor.x, fillColor.y, fillColor.z, fillColor.w,
-            borderColor.x, borderColor.y, borderColor.z, borderColor.w,
-            radius / scaleFactor, borderSize / scaleFactor,
-            0, 0
-        ];
+        if isRunning == false {
+            let compiler = ShaderCompiler(asset, self)
+
+            compiler.compile({ (shader) in
+                print("finished")
                 
-        let rect = MMRect( x - borderSize / 2, y - borderSize / 2, radius / scaleFactor * 2 + borderSize, radius / scaleFactor * 2 + borderSize, scale: scaleFactor )
-        let vertexData = createVertexData(texture: texture!, rect: rect)
-        
-        renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
-        renderEncoder.setVertexBytes(&viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
-        
-        renderEncoder.setFragmentBytes(settings, length: settings.count * MemoryLayout<Float>.stride, index: 0)
-        renderEncoder.setRenderPipelineState(metalStates.getState(state: .DrawDisc))
-        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+                if self.gameCmdQueue == nil {
+                    self.gameCmdQueue = self.view.device!.makeCommandQueue()
+                }
+                
+                self.gameCmdBuffer = self.gameCmdQueue!.makeCommandBuffer()
+                
+                let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: self.scaleFactor )
+                self.texture?.drawShader(shader, rect)
+                
+                self.gameCmdBuffer?.commit()
+                
+                self.gameCmdQueue = nil
+                self.gameCmdBuffer = nil
+                
+                self.view.enableSetNeedsDisplay = true
+                let nsrect : NSRect = NSRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+                self.view.setNeedsDisplay(nsrect)
+            })
+        }
     }
     
     func drawTexture(renderEncoder: MTLRenderCommandEncoder)
@@ -228,5 +246,4 @@ class Game              : ObservableObject
         
         return quadVertices
     }
-    
 }

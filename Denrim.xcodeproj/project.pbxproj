@@ -201,6 +201,8 @@
 			dependencies = (
 			);
 			name = "Denrim (macOS)";
+			packageProductDependencies = (
+			);
 			productName = "Denrim (macOS)";
 			productReference = 2B01C86524FB814C00E86449 /* Denrim.app */;
 			productType = "com.apple.product-type.application";
@@ -231,6 +233,8 @@
 				Base,
 			);
 			mainGroup = 2B01C84F24FB814900E86449;
+			packageReferences = (
+			);
 			productRefGroup = 2B01C85E24FB814C00E86449 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

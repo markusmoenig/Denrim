@@ -48,9 +48,9 @@ class AssetFolder   : Codable
         try container.encode(assets, forKey: .assets)
     }
     
-    func addScript(_ name: String)
+    func addScript(_ name: String, value: String = "")
     {
-        let asset = Asset(type: .JavaScript, name: name + ".js", value: "ho")
+        let asset = Asset(type: .JavaScript, name: name + ".js", value: value)
         assets.append(asset)
         game.currentName = name + ".js"
         current = asset
@@ -128,6 +128,8 @@ class Asset         : Codable, Equatable
     
     var id          = UUID()
     
+    var group       = ""
+    
     var name        = ""
     var value       = ""
     
@@ -138,6 +140,7 @@ class Asset         : Codable, Equatable
     private enum CodingKeys: String, CodingKey {
         case type
         case id
+        case group
         case name
         case value
         case uuid
@@ -157,6 +160,7 @@ class Asset         : Codable, Equatable
         let container = try decoder.container(keyedBy: CodingKeys.self)
         type = try container.decode(AssetType.self, forKey: .type)
         id = try container.decode(UUID.self, forKey: .id)
+        group = try container.decode(String.self, forKey: .group)
         name = try container.decode(String.self, forKey: .name)
         value = try container.decode(String.self, forKey: .value)
         data = try container.decode([Data].self, forKey: .data)
@@ -167,6 +171,7 @@ class Asset         : Codable, Equatable
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .type)
         try container.encode(id, forKey: .id)
+        try container.encode(group, forKey: .group)
         try container.encode(name, forKey: .name)
         try container.encode(value, forKey: .value)
         try container.encode(data, forKey: .data)

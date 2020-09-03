@@ -19,7 +19,6 @@ class ShaderCompiler
         self.game = game
     }
     
-    
     func compile(_ object: [AnyHashable:Any],_ promise: JSPromise)
     {
         var code = getHeaderCode()
@@ -68,6 +67,49 @@ class ShaderCompiler
         }
         
         game.device.makeLibrary( source: code, options: nil, completionHandler: compiledCB)
+    }
+    
+    func compile(_ cb: @escaping (Shader) -> ())
+    {
+        var code = getHeaderCode()
+        code += asset.value
+        
+        let params = "RasterizerData in [[stage_in]]"
+        
+        code = code.replacingOccurrences(of: "AutoParameters", with: params)
+                
+        let compiledCB : MTLNewLibraryCompletionHandler = { (library, error) in
+            if let _ = error, library == nil {
+            } else
+            if let library = library {
+                
+                let shader = Shader()
+                
+                shader.pipelineStateDesc = MTLRenderPipelineDescriptor()
+                shader.pipelineStateDesc.vertexFunction = library.makeFunction(name: "procVertex")
+                shader.pipelineStateDesc.fragmentFunction = library.makeFunction(name: "shaderMain")
+                shader.pipelineStateDesc.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
+                
+                shader.pipelineStateDesc.colorAttachments[0].isBlendingEnabled = true
+                shader.pipelineStateDesc.colorAttachments[0].rgbBlendOperation = .add
+                shader.pipelineStateDesc.colorAttachments[0].alphaBlendOperation = .add
+                shader.pipelineStateDesc.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+                shader.pipelineStateDesc.colorAttachments[0].sourceAlphaBlendFactor = .sourceAlpha
+                shader.pipelineStateDesc.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
+                shader.pipelineStateDesc.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
+                
+                do {
+                    shader.pipelineState = try self.game.device.makeRenderPipelineState(descriptor: shader.pipelineStateDesc)
+                    shader.isValid = true
+                    
+                    cb(shader)
+                } catch {
+                    shader.isValid = false
+                }
+            }
+        }
+        
+        game.device.makeLibrary(source: code, options: nil, completionHandler: compiledCB)
     }
     
     func getHeaderCode() -> String

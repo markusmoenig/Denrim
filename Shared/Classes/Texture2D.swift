@@ -337,6 +337,24 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         }
     }
     
+    func drawShader(_ shader: Shader, _ rect: MMRect)
+    {
+        let vertexData = game.createVertexData(texture: self, rect: rect)
+        
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = texture
+        renderPassDescriptor.colorAttachments[0].loadAction = .load
+        
+        let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+
+        renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+        renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+
+        renderEncoder.setRenderPipelineState(shader.pipelineState)
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+        renderEncoder.endEncoding()
+    }
+    
     func drawShader(_ object: [AnyHashable:Any])
     {
         if let shader = object["shader"] as? Shader, shader.isValid {
@@ -350,21 +368,8 @@ class Texture2D                 : NSObject, Texture2D_JSExports
             } else {
                 rect = MMRect( 0, 0, self.width, self.height, scale: game.scaleFactor )
             }
-                    
-            let vertexData = game.createVertexData(texture: self, rect: rect)
             
-            let renderPassDescriptor = MTLRenderPassDescriptor()
-            renderPassDescriptor.colorAttachments[0].texture = texture
-            renderPassDescriptor.colorAttachments[0].loadAction = .load
-            
-            let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
-
-            renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
-            renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
-
-            renderEncoder.setRenderPipelineState(shader.pipelineState)
-            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
-            renderEncoder.endEncoding()
+            drawShader(shader, rect)
         }
     }
 }
