@@ -101,7 +101,7 @@ class AssetFolder   : Codable
     func getAsset(_ name: String,_ type: Asset.AssetType = .JavaScript) -> Asset?
     {
         for asset in assets {
-            if asset.name == name && asset.type == type {
+            if asset.type == type && (asset.name == name || String(asset.name.split(separator: ".")[0]) == name) {
                 return asset
             }
         }

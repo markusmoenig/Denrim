@@ -45,6 +45,8 @@
 		2B32992224FE3D02007C3386 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992024FE3D02007C3386 /* Shader.swift */; };
 		2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
 		2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
+		2B32992724FF9344007C3386 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992624FF91E1007C3386 /* HelpView.swift */; };
+		2B32992824FF9345007C3386 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992624FF91E1007C3386 /* HelpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +75,7 @@
 		2B01C89E24FB8C7500E86449 /* MetalStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalStates.swift; sourceTree = "<group>"; };
 		2B32992024FE3D02007C3386 /* Shader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shader.swift; sourceTree = "<group>"; };
 		2B32992324FF21EC007C3386 /* ShaderCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderCompiler.swift; sourceTree = "<group>"; };
+		2B32992624FF91E1007C3386 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +121,7 @@
 				2B01C87A24FB824900E86449 /* Metal.metal */,
 				2B01C88224FB824A00E86449 /* Metal.h */,
 				2B01C87D24FB824900E86449 /* ScriptEditor.swift */,
+				2B32992624FF91E1007C3386 /* HelpView.swift */,
 				2B01C87C24FB824900E86449 /* Utils.swift */,
 				2B32992324FF21EC007C3386 /* ShaderCompiler.swift */,
 				2B32991F24FE3CC2007C3386 /* Classes */,
@@ -276,6 +280,7 @@
 				2B01C88724FB824A00E86449 /* Metal.metal in Sources */,
 				2B01C89C24FB844C00E86449 /* MetalView.swift in Sources */,
 				2B01C88B24FB824A00E86449 /* Utils.swift in Sources */,
+				2B32992824FF9345007C3386 /* HelpView.swift in Sources */,
 				2B01C86B24FB814C00E86449 /* DenrimDocument.swift in Sources */,
 				2B01C86D24FB814C00E86449 /* ContentView.swift in Sources */,
 				2B01C89324FB824A00E86449 /* JSBridge.swift in Sources */,
@@ -300,6 +305,7 @@
 				2B01C88824FB824A00E86449 /* Metal.metal in Sources */,
 				2B01C89D24FB844C00E86449 /* MetalView.swift in Sources */,
 				2B01C88C24FB824A00E86449 /* Utils.swift in Sources */,
+				2B32992724FF9344007C3386 /* HelpView.swift in Sources */,
 				2B01C86C24FB814C00E86449 /* DenrimDocument.swift in Sources */,
 				2B01C86E24FB814C00E86449 /* ContentView.swift in Sources */,
 				2B01C89424FB824A00E86449 /* JSBridge.swift in Sources */,

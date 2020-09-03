@@ -114,7 +114,6 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         let promise = JSPromise()
 
         DispatchQueue.main.async {
-
             let main = context?.objectForKeyedSubscript("_mT")?.toObject() as! Texture2D
             var texture : Texture2D? = nil
             let game = main.game!

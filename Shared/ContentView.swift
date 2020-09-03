@@ -12,8 +12,17 @@ struct ContentView: View {
 
     @State private var showAssetNamePopover: Bool = false
     @State private var assetName: String = ""
-    
+
+    @State private var helpIsShowing: Bool = false
     @State private var updateView: Bool = false
+    
+    @State private var metalViewIndex: Double = 1
+    @State private var helpViewIndex: Double = 0
+    
+    func showMetal() {
+        metalViewIndex = 1
+        helpViewIndex = 0
+    }
 
     var body: some View {
         NavigationView() {
@@ -108,14 +117,14 @@ struct ContentView: View {
                             document.game.assetFolder.addScript("New Script")
                             if let asset = document.game.assetFolder.current {
                                 assetName = String(asset.name.split(separator: ".")[0])
-                                showAssetNamePopover = true
+                                //showAssetNamePopover = true
                             }
                         })
                         Button("Shader", action: {
                             document.game.assetFolder.addShader("New Shader")
                             if let asset = document.game.assetFolder.current {
                                 assetName = String(asset.name.split(separator: ".")[0])
-                                showAssetNamePopover = true
+                                //showAssetNamePopover = true
                             }
                         })
                         Button("Image", action: {
@@ -137,7 +146,7 @@ struct ContentView: View {
                                     
                                     if let asset = document.game.assetFolder.current {
                                         assetName = String(asset.name.split(separator: ".")[0])
-                                        showAssetNamePopover = true
+                                        //showAssetNamePopover = true
                                     }
                                 }
                                 openPanel.close()
@@ -172,33 +181,44 @@ struct ContentView: View {
                     .frame(minWidth: 200)
                 }.padding()
             }
-            MetalView(document.game)
-                .frame(minWidth: 500)
-                .toolbar {
-                    ToolbarItemGroup(placement: .primaryAction) {
-                        Button(action: {
-                            document.game.start()
-                            
-                            updateView.toggle()
-                        })
-                        {
-                            Label("Run", systemImage: "play")
-                        }
-                        .keyboardShortcut("r")
-                        Button(action: {
-                            document.game.stop()
-                            updateView.toggle()
-                        }) {
-                            Label("Stop", systemImage: "stop")
-                        }.keyboardShortcut("t")
-                        .disabled(!document.game.isRunning)
-                        Menu("Documentation") {
-                            Button("Game Object") {
+            ZStack() {
+                HelpWebView()
+                    .zIndex(helpViewIndex)
+                MetalView(document.game)
+                    .zIndex(metalViewIndex)
+
+                    .frame(minWidth: 500)
+                    .toolbar {
+                        ToolbarItemGroup(placement: .primaryAction) {
+                            Button(action: {
+                                showMetal()
+                                document.game.start()
+                                updateView.toggle()
+                            })
+                            {
+                                Label("Run", systemImage: "play")
                             }
+                            .keyboardShortcut("r")
+                            Button(action: {
+                                document.game.stop()
+                                updateView.toggle()
+                            }) {
+                                Label("Stop", systemImage: "stop")
+                            }.keyboardShortcut("t")
+                            .disabled(!document.game.isRunning)
+                            Button("Help", action: {
+                                if helpViewIndex == 0 {
+                                    helpViewIndex = 1
+                                    metalViewIndex = 0
+                                } else {
+                                    helpViewIndex = 0
+                                    metalViewIndex = 1
+                                }
+                            })
+                            .keyboardShortcut("h")
                         }
-                    }
                 }
-            
+            }
         }
     }
 }
