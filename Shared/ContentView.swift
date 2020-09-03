@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Binding var document: DenrimDocument
-
+    
     @State private var showAssetNamePopover: Bool = false
     @State private var assetName: String = ""
 
@@ -34,6 +34,9 @@ struct ContentView: View {
                             }
                             .frame(height: g.size.height)
                             .tag(1)
+                            .onReceive(self.document.game.javaScriptErrorOccured) { state in
+                                self.updateView.toggle()
+                            }
                         } else {
                             #if os(OSX)
                             let image = NSImage(data: current.data[0])!

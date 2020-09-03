@@ -6,6 +6,7 @@
 //
 
 import MetalKit
+import Combine
 
 class Game              : ObservableObject
 {
@@ -35,8 +36,10 @@ class Game              : ObservableObject
     var isRunning       : Bool = false
     
     var jsError         = JSError()
-    
+        
     @Published var currentName = ""
+
+    public let javaScriptErrorOccured = PassthroughSubject<Bool,Never>()
 
     init()
     {
@@ -70,7 +73,6 @@ class Game              : ObservableObject
     
     func start()
     {
-
         jsError.error = nil
         jsBridge.compile(assetFolder)
 
@@ -82,6 +84,7 @@ class Game              : ObservableObject
     func stop()
     {
         jsBridge.stop()
+        javaScriptErrorOccured.send(true)
 
         isRunning = false
         view.isPaused = true
