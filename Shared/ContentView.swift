@@ -224,7 +224,7 @@ struct ContentView: View {
                             }) {
                                 Label("Update", systemImage: "arrow.counterclockwise")
                             }.keyboardShortcut("u")
-                            .disabled(document.game.isRunning && document.game.assetFolder.current?.type == .Shader )
+                            .disabled(document.game.isRunning || document.game.assetFolder.current?.type != .Shader )
                         }
                         ToolbarItemGroup(placement: .automatic) {
                             Button(helpViewIndex == 0 ? "Help" : "Hide", action: {

@@ -70,6 +70,7 @@ class Game              : ObservableObject
     
     func start()
     {
+
         jsError.error = nil
         jsBridge.compile(assetFolder)
 
@@ -171,29 +172,30 @@ class Game              : ObservableObject
     
     func createPreview(_ asset: Asset)
     {
-        if isRunning == false {
+        if isRunning == false && asset.type == .Shader {
             let compiler = ShaderCompiler(asset, self)
 
             compiler.compile({ (shader) in
-                print("finished")
                 
-                if self.gameCmdQueue == nil {
-                    self.gameCmdQueue = self.view.device!.makeCommandQueue()
+                DispatchQueue.main.async {
+                    if self.gameCmdQueue == nil {
+                        self.gameCmdQueue = self.view.device!.makeCommandQueue()
+                    }
+                    
+                    self.gameCmdBuffer = self.gameCmdQueue!.makeCommandBuffer()
+                    
+                    let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: self.scaleFactor )
+                    self.texture?.drawShader(shader, rect)
+                    
+                    self.gameCmdBuffer?.commit()
+                    
+                    self.gameCmdQueue = nil
+                    self.gameCmdBuffer = nil
+                    
+                    self.view.enableSetNeedsDisplay = true
+                    let nsrect : NSRect = NSRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+                    self.view.setNeedsDisplay(nsrect)
                 }
-                
-                self.gameCmdBuffer = self.gameCmdQueue!.makeCommandBuffer()
-                
-                let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: self.scaleFactor )
-                self.texture?.drawShader(shader, rect)
-                
-                self.gameCmdBuffer?.commit()
-                
-                self.gameCmdQueue = nil
-                self.gameCmdBuffer = nil
-                
-                self.view.enableSetNeedsDisplay = true
-                let nsrect : NSRect = NSRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-                self.view.setNeedsDisplay(nsrect)
             })
         }
     }
