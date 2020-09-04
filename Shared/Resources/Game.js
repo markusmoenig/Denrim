@@ -2,6 +2,8 @@ class Game
 {
     constructor()
     {
+        this.font = System.getFont("Square")
+        
         Texture2D.createFromImage({
             name: "spritesheet"
         })
@@ -82,5 +84,14 @@ class Game
                 shader: this.shader,
             })
         }
+                
+        main.drawText({
+            x: 100,
+            y: 100,
+            size: 30,
+            text: "DENRIM",
+            font: this.font,
+            color: Color.create(1,0,0,0.4)
+        })
     }
 }

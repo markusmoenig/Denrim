@@ -156,4 +156,28 @@ fragment float4 m4mTextureDrawable(RasterizerData in [[stage_in]],
     return sample;
 }
 
+float m4mMedian(float r, float g, float b) {
+    return max(min(r, g), min(max(r, g), b));
+}
 
+fragment float4 m4mTextDrawable(RasterizerData in [[stage_in]],
+                                constant TextUniform *data [[ buffer(0) ]],
+                                texture2d<half> inTexture [[ texture(1) ]])
+{
+    constexpr sampler textureSampler (mag_filter::linear,
+                                      min_filter::linear);
+    
+    float2 uv = in.textureCoordinate;
+    uv.y = 1 - uv.y;
+
+    uv /= data->atlasSize / data->fontSize;
+    uv += data->fontPos / data->atlasSize;
+
+    const half4 colorSample = inTexture.sample (textureSampler, uv );
+    
+    float4 sample = float4( colorSample );
+    
+    float d = m4mMedian(sample.r, sample.g, sample.b) - 0.5;
+    float w = clamp(d/fwidth(d) + 0.5, 0.0, 1.0);
+    return float4( data->color.x, data->color.y, data->color.z, w * data->color.w );
+}

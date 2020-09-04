@@ -36,11 +36,10 @@ class JSBridge
     {
         context = nil
         
-        if let scriptEditor = game.scriptEditor {
-            scriptEditor.clearAnnotations()
-        }
+        //if let scriptEditor = game.scriptEditor {
+        //    scriptEditor.clearAnnotations()
+        //}
         
-        //context = JSContext()!
         guard let jsContext = JSContext.plus else {exit(-1)}
         context = jsContext
         context?.globalObject.setValue(JSValue(object: game.texture, in: context!), forProperty: "_mT")
@@ -100,6 +99,18 @@ class JSBridge
         context.setObject(Color.self, forKeyedSubscript: "Color" as (NSCopying & NSObjectProtocol))
         context.setObject(Rect2D.self, forKeyedSubscript: "Rect2D" as (NSCopying & NSObjectProtocol))
         context.setObject(Texture2D.self, forKeyedSubscript: "Texture2D" as (NSCopying & NSObjectProtocol))
+        
+        // Fonts
+        
+        let openSans = Font(name: "OpenSans", game: game)
+        game.resources[openSans.uuid] = openSans
+
+        let square = Font(name: "Square", game: game)
+        game.resources[square.uuid] = square
+
+        let sourceCodePro = Font(name: "SourceCodePro", game: game)
+        game.resources[sourceCodePro.uuid] = sourceCodePro
+
     }
 }
 

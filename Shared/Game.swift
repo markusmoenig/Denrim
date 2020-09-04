@@ -36,6 +36,8 @@ class Game              : ObservableObject
     var isRunning       : Bool = false
     
     var jsError         = JSError()
+    
+    var resources       : [UUID:AnyObject] = [:]
         
     @Published var currentName = ""
 
@@ -83,8 +85,8 @@ class Game              : ObservableObject
     
     func stop()
     {
+        resources = [:]
         jsBridge.stop()
-        javaScriptErrorOccured.send(true)
 
         isRunning = false
         view.isPaused = true
@@ -116,6 +118,7 @@ class Game              : ObservableObject
     {
         if jsError.error != nil {
             stop()
+            javaScriptErrorOccured.send(true)
             return
         }
         

@@ -9,9 +9,19 @@ import SwiftUI
 
 @main
 struct DenrimApp: App {
+        
     var body: some Scene {
         DocumentGroup(newDocument: DenrimDocument()) { file in
             ContentView(document: file.$document)
+        }
+        .commands {
+            CommandMenu("Utilities") {
+                Button(action: {
+                    // How to get access to the current FileDocument ?
+                }) {
+                    Text("Test")
+                }
+            }
         }
     }
 }

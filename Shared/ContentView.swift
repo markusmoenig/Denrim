@@ -35,6 +35,9 @@ struct ContentView: View {
                             .frame(height: g.size.height)
                             .tag(1)
                             .onReceive(self.document.game.javaScriptErrorOccured) { state in
+                                if self.document.game.jsError.error != nil {
+                                    self.document.game.scriptEditor?.setError(self.document.game.jsError)
+                                }
                                 self.updateView.toggle()
                             }
                         } else {
@@ -205,6 +208,7 @@ struct ContentView: View {
                     .toolbar {
                         ToolbarItemGroup(placement: .navigation) {
                             Button(action: {
+                                document.game.stop()
                                 document.game.start()
                                 showMetal()
                                 updateView.toggle()

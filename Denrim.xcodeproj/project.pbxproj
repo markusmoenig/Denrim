@@ -47,6 +47,20 @@
 		2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
 		2B32992724FF9344007C3386 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992624FF91E1007C3386 /* HelpView.swift */; };
 		2B32992824FF9345007C3386 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992624FF91E1007C3386 /* HelpView.swift */; };
+		2B3299482501B5DC007C3386 /* Square.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299402501B5DB007C3386 /* Square.tiff */; };
+		2B3299492501B5DC007C3386 /* Square.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299402501B5DB007C3386 /* Square.tiff */; };
+		2B32994A2501B5DC007C3386 /* OpenSans.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299412501B5DB007C3386 /* OpenSans.json */; };
+		2B32994B2501B5DC007C3386 /* OpenSans.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299412501B5DB007C3386 /* OpenSans.json */; };
+		2B32994C2501B5DC007C3386 /* SourceCodePro.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299422501B5DB007C3386 /* SourceCodePro.tiff */; };
+		2B32994D2501B5DC007C3386 /* SourceCodePro.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299422501B5DB007C3386 /* SourceCodePro.tiff */; };
+		2B32994E2501B5DC007C3386 /* SourceCodePro.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299432501B5DB007C3386 /* SourceCodePro.json */; };
+		2B32994F2501B5DC007C3386 /* SourceCodePro.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299432501B5DB007C3386 /* SourceCodePro.json */; };
+		2B3299502501B5DC007C3386 /* OpenSans.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299442501B5DC007C3386 /* OpenSans.tiff */; };
+		2B3299512501B5DC007C3386 /* OpenSans.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299442501B5DC007C3386 /* OpenSans.tiff */; };
+		2B3299522501B5DC007C3386 /* Square.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299452501B5DC007C3386 /* Square.json */; };
+		2B3299532501B5DC007C3386 /* Square.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299452501B5DC007C3386 /* Square.json */; };
+		2B3299592501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
+		2B32995A2501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +90,13 @@
 		2B32992024FE3D02007C3386 /* Shader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shader.swift; sourceTree = "<group>"; };
 		2B32992324FF21EC007C3386 /* ShaderCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderCompiler.swift; sourceTree = "<group>"; };
 		2B32992624FF91E1007C3386 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+		2B3299402501B5DB007C3386 /* Square.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Square.tiff; sourceTree = "<group>"; };
+		2B3299412501B5DB007C3386 /* OpenSans.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OpenSans.json; sourceTree = "<group>"; };
+		2B3299422501B5DB007C3386 /* SourceCodePro.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = SourceCodePro.tiff; sourceTree = "<group>"; };
+		2B3299432501B5DB007C3386 /* SourceCodePro.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SourceCodePro.json; sourceTree = "<group>"; };
+		2B3299442501B5DC007C3386 /* OpenSans.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = OpenSans.tiff; sourceTree = "<group>"; };
+		2B3299452501B5DC007C3386 /* Square.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Square.json; sourceTree = "<group>"; };
+		2B3299582501B6F3007C3386 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +145,7 @@
 				2B32992624FF91E1007C3386 /* HelpView.swift */,
 				2B01C87C24FB824900E86449 /* Utils.swift */,
 				2B32992324FF21EC007C3386 /* ShaderCompiler.swift */,
+				2B32993F2501B592007C3386 /* Fonts */,
 				2B32991F24FE3CC2007C3386 /* Classes */,
 				2B01C88124FB824A00E86449 /* Resources */,
 				2B01C85824FB814C00E86449 /* Assets.xcassets */,
@@ -164,8 +186,22 @@
 				2B32992024FE3D02007C3386 /* Shader.swift */,
 				2B01C88424FB824A00E86449 /* System.swift */,
 				2B01C87B24FB824900E86449 /* Texture2D.swift */,
+				2B3299582501B6F3007C3386 /* Font.swift */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		2B32993F2501B592007C3386 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				2B3299412501B5DB007C3386 /* OpenSans.json */,
+				2B3299442501B5DC007C3386 /* OpenSans.tiff */,
+				2B3299432501B5DB007C3386 /* SourceCodePro.json */,
+				2B3299422501B5DB007C3386 /* SourceCodePro.tiff */,
+				2B3299452501B5DC007C3386 /* Square.json */,
+				2B3299402501B5DB007C3386 /* Square.tiff */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,8 +286,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B32994B2501B5DC007C3386 /* OpenSans.json in Resources */,
+				2B3299512501B5DC007C3386 /* OpenSans.tiff in Resources */,
 				2B01C89524FB824A00E86449 /* Resources in Resources */,
 				2B01C86F24FB814C00E86449 /* Assets.xcassets in Resources */,
+				2B3299532501B5DC007C3386 /* Square.json in Resources */,
+				2B3299492501B5DC007C3386 /* Square.tiff in Resources */,
+				2B32994D2501B5DC007C3386 /* SourceCodePro.tiff in Resources */,
+				2B32994F2501B5DC007C3386 /* SourceCodePro.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,8 +301,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B32994A2501B5DC007C3386 /* OpenSans.json in Resources */,
+				2B3299502501B5DC007C3386 /* OpenSans.tiff in Resources */,
 				2B01C89624FB824A00E86449 /* Resources in Resources */,
 				2B01C87024FB814C00E86449 /* Assets.xcassets in Resources */,
+				2B3299522501B5DC007C3386 /* Square.json in Resources */,
+				2B3299482501B5DC007C3386 /* Square.tiff in Resources */,
+				2B32994C2501B5DC007C3386 /* SourceCodePro.tiff in Resources */,
+				2B32994E2501B5DC007C3386 /* SourceCodePro.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +323,7 @@
 				2B01C88F24FB824A00E86449 /* Game.swift in Sources */,
 				2B01C89924FB824A00E86449 /* System.swift in Sources */,
 				2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */,
+				2B32995A2501B6F3007C3386 /* Font.swift in Sources */,
 				2B01C89724FB824A00E86449 /* Classes.swift in Sources */,
 				2B01C89124FB824A00E86449 /* Asset.swift in Sources */,
 				2B32992224FE3D02007C3386 /* Shader.swift in Sources */,
@@ -300,6 +349,7 @@
 				2B01C89024FB824A00E86449 /* Game.swift in Sources */,
 				2B01C89A24FB824A00E86449 /* System.swift in Sources */,
 				2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */,
+				2B3299592501B6F3007C3386 /* Font.swift in Sources */,
 				2B01C89824FB824A00E86449 /* Classes.swift in Sources */,
 				2B01C89224FB824A00E86449 /* Asset.swift in Sources */,
 				2B32992124FE3D02007C3386 /* Shader.swift in Sources */,

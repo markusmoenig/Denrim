@@ -28,6 +28,7 @@ import JavaScriptCore
     func drawTextures(_ array: NSArray)
     
     func drawShader(_ object: [AnyHashable:Any])
+    func drawText(_ object: [AnyHashable:Any])// -> TextBuffer
 
 
     // Imported as `Person.createWithFirstNameLastName(_:_:)`
@@ -370,6 +371,68 @@ class Texture2D                 : NSObject, Texture2D_JSExports
             }
             
             drawShader(shader, rect)
+        }
+    }
+    
+    /// Draws the given text
+    func drawText(_ object: [AnyHashable:Any])
+    {
+        var x : Float; if let v = object["x"] as? Float { x = v } else { x = 0 }
+        var y : Float; if let v = object["y"] as? Float { y = v } else { y = 0 }
+        let size : Float; if let v = object["size"] as? Float { size = v } else { size = 30 }
+        let text : String; if let v = object["text"] as? String { text = v } else { text = "" }
+        let font : Font?; if let v = object["font"] as? Font { font = v } else { font = nil }
+        let color : SIMD4<Float>; if let v = object["color"] as? Color { color = v.toSIMD() } else { color = SIMD4<Float>(1,1,1,1) }
+
+        let scaleFactor : Float = game.scaleFactor
+        
+        func drawChar(char: BMChar, x: Float, y: Float, adjScale: Float)
+        {
+            var data = TextUniform()
+            
+            data.atlasSize.x = Float(font!.atlas!.width) * scaleFactor
+            data.atlasSize.y = Float(font!.atlas!.height) * scaleFactor
+            data.fontPos.x = char.x * scaleFactor
+            data.fontPos.y = char.y * scaleFactor
+            data.fontSize.x = char.width * scaleFactor
+            data.fontSize.y = char.height * scaleFactor
+            data.color = color
+
+            let rect = MMRect(x, y, char.width * adjScale, char.height * adjScale, scale: scaleFactor)
+            let vertexData = game.createVertexData(texture: self, rect: rect)
+            
+            let renderPassDescriptor = MTLRenderPassDescriptor()
+            renderPassDescriptor.colorAttachments[0].texture = texture
+            renderPassDescriptor.colorAttachments[0].loadAction = .load
+            
+            let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+
+            renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+            renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+
+            renderEncoder.setFragmentBytes(&data, length: MemoryLayout<TextUniform>.stride, index: 0)
+            renderEncoder.setFragmentTexture(font!.atlas, index: 1)
+
+            renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawTextChar))
+            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+            renderEncoder.endEncoding()
+        }
+        
+        if let font = font {
+         
+            let scale : Float = (1.0 / font.bmFont!.common.lineHeight) * size
+            let adjScale : Float = scale// / 2
+            
+            var posX = x / game.scaleFactor
+            let posY = y / game.scaleFactor
+
+            for c in text {
+                let bmChar = font.getItemForChar( c )
+                if bmChar != nil {
+                    drawChar(char: bmChar!, x: posX + bmChar!.xoffset * adjScale, y: posY + bmChar!.yoffset * adjScale, adjScale: adjScale)
+                    posX += bmChar!.xadvance * adjScale;
+                }
+            }
         }
     }
 }

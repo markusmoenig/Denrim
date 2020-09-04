@@ -48,4 +48,12 @@ typedef struct
 
 } BoxUniform;
 
+typedef struct
+{
+    vector_float2   atlasSize;
+    vector_float2   fontPos;
+    vector_float2   fontSize;
+    vector_float4   color;
+} TextUniform;
+
 #endif /* Metal_h */
