@@ -39,26 +39,61 @@ class JSBridge
         //if let scriptEditor = game.scriptEditor {
         //    scriptEditor.clearAnnotations()
         //}
+
+        func countLines(_ string: String) -> Int32
+        {
+            let ns = string as NSString
+            var lines : Int32 = 0
+            
+            ns.enumerateLines { (str, _) in
+                lines += 1
+            }
+            
+            return lines
+        }
         
         guard let jsContext = JSContext.plus else {exit(-1)}
         context = jsContext
         context?.globalObject.setValue(JSValue(object: game.texture, in: context!), forProperty: "_mT")
+        
+        var from    : [Int32] = []
+        var to      : [Int32] = []
+        var assets  : [Asset] = []
         
         context?.exceptionHandler = { context, value in
             if self.game.jsError.error == nil {
                 self.game.jsError.line = value?.objectForKeyedSubscript("line")?.toInt32()
                 self.game.jsError.column = value?.objectForKeyedSubscript("column")?.toInt32()
                 self.game.jsError.error = value?.toString()
+                
+                for (index, l) in to.enumerated() {
+                    if l > self.game.jsError.line! {
+                        self.game.jsError.asset = assets[index]
+                        self.game.jsError.line = self.game.jsError.line! - from[index]
+                    }
+                }
             }
         }
         
         registerInContext(context!)
 
+        var jsCode = ""
+        
         for asset in assetFolder.assets {
             if asset.type == .JavaScript {
-                context!.evaluateScript(asset.value)
+                if to.isEmpty {
+                    from.append(0)
+                } else {
+                    from.append(to.last!)
+                }
+                jsCode += asset.value
+                to.append(countLines(jsCode))
+                assets.append(asset)
             }
         }
+        
+        context!.evaluateScript(jsCode)
+
         
         context?.evaluateScript("var game = new Game();")
     }
@@ -96,7 +131,7 @@ class JSBridge
     {
         loadAndExecuteResource("Enums")
         context.setObject(System.self, forKeyedSubscript: "System" as (NSCopying & NSObjectProtocol))
-        context.setObject(Color.self, forKeyedSubscript: "Color" as (NSCopying & NSObjectProtocol))
+        context.setObject(Vec4.self, forKeyedSubscript: "Vec4" as (NSCopying & NSObjectProtocol))
         context.setObject(Rect2D.self, forKeyedSubscript: "Rect2D" as (NSCopying & NSObjectProtocol))
         context.setObject(Texture2D.self, forKeyedSubscript: "Texture2D" as (NSCopying & NSObjectProtocol))
         

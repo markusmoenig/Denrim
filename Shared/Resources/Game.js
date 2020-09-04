@@ -38,7 +38,7 @@ class Game
                 border: 4,
                 round: 5,
                 rotation: this.rotation,
-                borderColor: Color.create(1,0,0,0.4)
+                borderColor: Vec4.create(1,0,0,0.4)
             });
     }
     
@@ -54,14 +54,14 @@ class Game
     draw()
     {
         let main = Texture2D.main();
-        main.clear(Color.create(0,0,0,1));
+        main.clear(Vec4.create(0,0,0,1));
         
         main.drawDisks([{
             x: 5,
             y: 5,
             radius: 100,
             border: 5,
-            borderColor: Color.create(1,0,0,0.5)
+            borderColor: Vec4.create(1,0,0,0.5)
         }]);
                 
         for (var i = 0; i < 150; i +=1)
@@ -91,7 +91,7 @@ class Game
             size: 30,
             text: "DENRIM",
             font: this.font,
-            color: Color.create(1,0,0,0.4)
+            color: Vec4.create(1,0,0,0.4)
         })
     }
 }

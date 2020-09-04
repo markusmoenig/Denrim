@@ -10,18 +10,45 @@ import SwiftUI
 @main
 struct DenrimApp: App {
         
+    @StateObject var appState = AppState()
+
     var body: some Scene {
         DocumentGroup(newDocument: DenrimDocument()) { file in
             ContentView(document: file.$document)
         }
         .commands {
-            CommandMenu("Utilities") {
+            
+            CommandGroup(replacing: .help) {
                 Button(action: {
-                    // How to get access to the current FileDocument ?
+                    if let doc = appState.currentDocument {
+                        print(doc.game.currentName)
+                    }
                 }) {
-                    Text("Test")
+                    Text("Denrim Help")
+                }
+            }
+            CommandMenu("Project") {
+                Button(action: {}) {
+                    Text("Dark mode")
+                }
+
+                Button(action: {}) {
+                    Text("Light mode")
+                }
+
+                Button(action: {}) {
+                    Text("System mode")
                 }
             }
         }
     }
+    
+    private func createView(for file: FileDocumentConfiguration<DenrimDocument>) -> some View {
+        appState.currentDocument = file.document
+        return ContentView(document: file.$document)
+    }
+}
+
+class AppState: ObservableObject {
+    @Published var currentDocument: DenrimDocument?
 }

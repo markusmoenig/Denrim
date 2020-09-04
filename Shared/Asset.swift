@@ -73,15 +73,19 @@ class AssetFolder   : Codable
         }
     }
     
-    func addImage(_ name: String, _ url: URL)
+    func addImage(_ name: String, _ urls: [URL])
     {
-        if let imageData: Data = try? Data(contentsOf: url) {
-            let asset = Asset(type: .Image, name: name, data: [imageData])
-            assets.append(asset)
-            game.currentName = name
-            current = asset
-            game.scriptEditor?.createSession(asset)
+        let asset = Asset(type: .Image, name: name)
+        assets.append(asset)
+
+        for url in urls {
+            if let imageData: Data = try? Data(contentsOf: url) {
+                asset.data.append(imageData)
+            }
         }
+        
+        game.currentName = name
+        current = asset
     }
     
     func select(_ id: UUID)

@@ -8,16 +8,16 @@
 import Foundation
 import JavaScriptCore
 
-@objc protocol Color_JSExports: JSExport {
+@objc protocol Vec4_JSExports: JSExport {
     var red         : Float { get set }
     var green       : Float { get set }
     var blue        : Float { get set }
     var alpha       : Float { get set }
 
-    static func create(_ r: Float,_ g: Float,_ b: Float,_ a:Float) -> Color
+    static func create(_ r: Float,_ g: Float,_ b: Float,_ a:Float) -> Vec4
 }
 
-class Color             : NSObject, Color_JSExports
+class Vec4              : NSObject, Vec4_JSExports
 {
     var red             : Float = 1
     var green           : Float = 1
@@ -38,9 +38,9 @@ class Color             : NSObject, Color_JSExports
         return SIMD4<Float>(red, green, blue, alpha)
     }
     
-    class func create(_ r: Float,_ g: Float,_ b: Float,_ a:Float) -> Color
+    class func create(_ r: Float,_ g: Float,_ b: Float,_ a:Float) -> Vec4
     {
-        return Color(r,g,b,a)
+        return Vec4(r,g,b,a)
     }
 }
 
