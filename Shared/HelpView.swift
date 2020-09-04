@@ -63,12 +63,13 @@ struct DocWebView: UIViewRepresentable {
     public typealias UIViewType = WKWebView
 
     private let webView: WKWebView = WKWebView()
-    public func makeUIView(context: UIViewRepresentableContext<SwiftUIWebView>) -> WKWebView {
+    public func makeUIView(context: UIViewRepresentableContext<DocWebView>) -> WKWebView {
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator as? WKUIDelegate
         
         if let url = Bundle.main.url(forResource: "doc.md", withExtension: "html", subdirectory: "Resources") {
             
+            webView.isHidden = true
             webView.loadFileURL(url, allowingReadAccessTo: url)
             let request = URLRequest(url: url)
             webView.load(request)
@@ -77,20 +78,13 @@ struct DocWebView: UIViewRepresentable {
         return webView
     }
 
-    public func updateUIView(_ uiView: WKWebView, context: UIViewRepresentableContext<SwiftUIWebView>) { }
+    public func updateUIView(_ uiView: WKWebView, context: UIViewRepresentableContext<DocWebView>) { }
 
     public func makeCoordinator() -> Coordinator {
-        return Coordinator(game)
+        return Coordinator()
     }
     
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
-        
-        private var game: Game
-
-        init(_ game: Game) {
-           //Initialise the WebViewModel
-           self.game = game
-        }
         
         func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         }
@@ -101,7 +95,7 @@ struct DocWebView: UIViewRepresentable {
 
         //After the webpage is loaded, assign the data in WebViewModel class
         public func webView(_ web: WKWebView, didFinish: WKNavigation!) {
-            game.scriptEditor = ScriptEditor(web, game)
+            //game.scriptEditor = ScriptEditor(web, game)
         }
 
         public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) { }

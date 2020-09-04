@@ -11,7 +11,8 @@ import MetalKit
 public class DMTKView       : MTKView
 {
     var game                : Game!
-    var trackingArea        : NSTrackingArea?
+
+    #if os(OSX)
     
     override public var acceptsFirstResponder: Bool { return true }
     
@@ -48,6 +49,7 @@ public class DMTKView       : MTKView
             createMouseEvent(type: "TouchType.UP", event)
         }
     }
+    #endif
 }
 
 #if os(OSX)
@@ -124,7 +126,7 @@ struct MetalView: UIViewRepresentable {
     }
     
     func makeUIView(context: UIViewRepresentableContext<MetalView>) -> MTKView {
-        let mtkView = MTKView()
+        let mtkView = DMTKView()
         mtkView.delegate = context.coordinator
         mtkView.preferredFramesPerSecond = 60
         mtkView.enableSetNeedsDisplay = true

@@ -198,9 +198,11 @@ class Game              : ObservableObject
                     self.gameCmdQueue = nil
                     self.gameCmdBuffer = nil
                     
+                    #if os(OSX)
                     self.view.enableSetNeedsDisplay = true
                     let nsrect : NSRect = NSRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
                     self.view.setNeedsDisplay(nsrect)
+                    #endif
                 }
             })
         }
