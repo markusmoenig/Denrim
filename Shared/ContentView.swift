@@ -20,6 +20,8 @@ struct ContentView: View {
     @State private var helpIsVisible: Bool = false
 
     @State private var imageIndex: Double = 0
+    
+    @State private var showDeleteAssetAlert: Bool = false
 
     var body: some View {
         NavigationView() {
@@ -82,23 +84,18 @@ struct ContentView: View {
                 .frame(minWidth: 120, idealWidth: 200)
                 .layoutPriority(0)
             }
+            .navigationSubtitle("Assets")
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
                     Menu {
                         Menu("Script") {
                             Button("Object Script", action: {
                                 document.game.assetFolder.addScript("New Script")
-                                //if let asset = document.game.assetFolder.current {
-                                    //assetName = String(asset.name.split(separator: ".")[0])
-                                    //showAssetNamePopover = true
-                                //}
+                                updateView.toggle()
                             })
                             Button("Empty Script", action: {
                                 document.game.assetFolder.addScript("New Script")
-                                //if let asset = document.game.assetFolder.current {
-                                    //assetName = String(asset.name.split(separator: ".")[0])
-                                    //showAssetNamePopover = true
-                                //}
+                                updateView.toggle()
                             })
                         }
                         Button("Shader", action: {
@@ -108,6 +105,7 @@ struct ContentView: View {
                                 //showAssetNamePopover = true
                                 document.game.createPreview(asset)
                             }
+                            updateView.toggle()
                         })
                         Button("Image(s)", action: {
                             #if os(OSX)
@@ -210,66 +208,94 @@ struct ContentView: View {
             .layoutPriority(2)
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
-
+                    
                     // Optional toolbar items depending on asset
                     if let asset = document.game.assetFolder.current {
-                        if asset.type == .Image {
-                            Menu("Image Group")
+                        
+                        Button(action: {
+                            assetName = String(asset.name.split(separator: ".")[0])
+                            showAssetNamePopover = true
+                        })
+                        {
+                            Label("Rename", systemImage: "pencil")//rectangle.and.pencil.and.ellipsis")
+                        }
+                        .disabled(asset.name == "Game.js")
+                        
+                        if asset.type == .JavaScript || asset.type == .Shader {
+                            Button(action: {
+                                showDeleteAssetAlert = true
+                            })
                             {
-                                Button(action: {
-                                    #if os(OSX)
-                                    
-                                    let openPanel = NSOpenPanel()
-                                    openPanel.canChooseFiles = true
-                                    openPanel.allowsMultipleSelection = true
-                                    openPanel.canChooseDirectories = false
-                                    openPanel.canCreateDirectories = false
-                                    openPanel.title = "Select Image(s)"
-                                    //openPanel.directoryURL =  containerUrl
-                                    openPanel.showsHiddenFiles = false
-                                    //openPanel.allowedFileTypes = [appExtension]
-                                    
-                                    openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
-                                        if response == NSApplication.ModalResponse.OK {
-                                            if openPanel.url != nil {
-                                                document.game.assetFolder.addImages(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls, existingAsset: document.game.assetFolder.current)
-                                                scriptIsVisible = false
-                                                updateView.toggle()
-                                            }
-                                        }
-                                        openPanel.close()
-                                    }
-                                    #endif
-                                })
-                                {
-                                    Label("Add to Group", systemImage: "plus")
-                                }
-                                Button(action: {
-                                    if let asset = document.game.assetFolder.current {
-                                        asset.data.remove(at: Int(imageIndex))
-                                    }
-                                    updateView.toggle()
-                                })
-                                {
-                                    Label("Remove Image", systemImage: "minus")
-                                }
-                                .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
-                                Button(action: {
-                                    if let asset = document.game.assetFolder.current {
-                                        if let index = document.game.assetFolder.assets.firstIndex(of: asset) {
-                                            document.game.assetFolder.assets.remove(at: index)
-                                            document.game.assetFolder.current = document.game.assetFolder.assets[0]
-                                            self.updateView.toggle()
-                                        }
-                                    }
-                                })
-                                {
-                                    Label("Remove Group", systemImage: "minus")
-                                }
+                                Label("Remove Script", systemImage: "minus")
                             }
+                            .disabled(asset.name == "Game.js")
+                        } else
+                        if asset.type == .Image {
+                            Button(action: {
+                                #if os(OSX)
+                                
+                                let openPanel = NSOpenPanel()
+                                openPanel.canChooseFiles = true
+                                openPanel.allowsMultipleSelection = true
+                                openPanel.canChooseDirectories = false
+                                openPanel.canCreateDirectories = false
+                                openPanel.title = "Select Image(s)"
+                                //openPanel.directoryURL =  containerUrl
+                                openPanel.showsHiddenFiles = false
+                                //openPanel.allowedFileTypes = [appExtension]
+                                
+                                openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
+                                    if response == NSApplication.ModalResponse.OK {
+                                        if openPanel.url != nil {
+                                            document.game.assetFolder.addImages(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls, existingAsset: document.game.assetFolder.current)
+                                            scriptIsVisible = false
+                                            updateView.toggle()
+                                        }
+                                    }
+                                    openPanel.close()
+                                }
+                                #endif
+                            })
+                            {
+                                Label("Add to Group", systemImage: "plus")
+                            }
+                            
+                            Button(action: {
+                                showDeleteAssetAlert = true
+                            })
+                            {
+                                Label("Remove Image Group", systemImage: "minus")
+                            }
+                            
+                            Button(action: {
+                                if let asset = document.game.assetFolder.current {
+                                    asset.data.remove(at: Int(imageIndex))
+                                }
+                                updateView.toggle()
+                            })
+                            {
+                                Label("Remove Image", systemImage: "minus.circle")
+                            }
+                            .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
                         }
                     }
                 }
+            }
+            .alert(isPresented: $showDeleteAssetAlert) {
+                Alert(
+                    title: Text("Do you want to delete the asset?"),
+                    message: Text("This action cannot be undone!"),
+                    primaryButton: .destructive(Text("Yes"), action: {
+                        if let asset = document.game.assetFolder.current {
+                            if let index = document.game.assetFolder.assets.firstIndex(of: asset) {
+                                document.game.assetFolder.assets.remove(at: index)
+                                document.game.assetFolder.select(document.game.assetFolder.assets[0].id)
+                                self.updateView.toggle()
+                            }
+                        }
+                    }),
+                    secondaryButton: .cancel(Text("No"), action: {})
+                )
             }
             // Popover for asset name
             .popover(isPresented: self.$showAssetNamePopover,
