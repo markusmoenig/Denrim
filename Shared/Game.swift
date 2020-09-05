@@ -39,8 +39,6 @@ class Game              : ObservableObject
     
     var resources       : [UUID:AnyObject] = [:]
         
-    @Published var currentName = ""
-
     public let javaScriptErrorOccured = PassthroughSubject<Bool,Never>()
 
     init()

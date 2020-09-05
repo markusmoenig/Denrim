@@ -31,7 +31,6 @@ class AssetFolder   : Codable
         
         if let gameTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
             assets.append(Asset(type: .JavaScript, name: "Game.js", value: gameTemplate))
-            game.currentName = "Game.js"
             current = assets[0]
         }
     }
@@ -52,7 +51,6 @@ class AssetFolder   : Codable
     {
         let asset = Asset(type: .JavaScript, name: name + ".js", value: value)
         assets.append(asset)
-        game.currentName = name + ".js"
         current = asset
         game.scriptEditor?.createSession(asset)
     }
@@ -67,16 +65,21 @@ class AssetFolder   : Codable
                 
             let asset = Asset(type: .Shader, name: name + ".sh", value: shaderTemplate)
             assets.append(asset)
-            game.currentName = name + ".sh"
             current = asset
             game.scriptEditor?.createSession(asset)
         }
     }
     
-    func addImage(_ name: String, _ urls: [URL])
+    func addImages(_ name: String, _ urls: [URL], existingAsset: Asset? = nil)
     {
-        let asset = Asset(type: .Image, name: name)
-        assets.append(asset)
+        let asset: Asset
+            
+        if existingAsset != nil {
+            asset = existingAsset!
+        } else {
+            asset = Asset(type: .Image, name: name)
+            assets.append(asset)
+        }
 
         for url in urls {
             if let imageData: Data = try? Data(contentsOf: url) {
@@ -84,7 +87,6 @@ class AssetFolder   : Codable
             }
         }
         
-        game.currentName = name
         current = asset
     }
     
@@ -92,11 +94,10 @@ class AssetFolder   : Codable
     {
         for asset in assets {
             if asset.id == id {
-                game.currentName = asset.name
-                current = asset
                 if asset.type == .JavaScript || asset.type == .Shader {
                     game.scriptEditor?.setAssetSession(asset)
                 }
+                current = asset
                 break
             }
         }

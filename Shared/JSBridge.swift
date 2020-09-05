@@ -70,6 +70,7 @@ class JSBridge
                     if l > self.game.jsError.line! {
                         self.game.jsError.asset = assets[index]
                         self.game.jsError.line = self.game.jsError.line! - from[index]
+                        break
                     }
                 }
             }

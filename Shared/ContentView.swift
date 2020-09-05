@@ -15,20 +15,15 @@ struct ContentView: View {
 
     @State private var helpIsShowing: Bool = false
     @State private var updateView: Bool = false
-    
-    @State private var metalViewIndex: Double = 1
-    @State private var helpViewIndex: Double = 0
+
+    @State private var scriptIsVisible: Bool = true
+    @State private var helpIsVisible: Bool = false
 
     @State private var imageIndex: Double = 0
 
-    func showMetal() {
-        metalViewIndex = 1
-        helpViewIndex = 0
-    }
-
     var body: some View {
         NavigationView() {
-            HStack() {
+            NavigationView() {
                 List {
                     Section(header: Text("Scripts")) {
                         ForEach(document.game.assetFolder.assets, id: \.id) { asset in
@@ -36,11 +31,11 @@ struct ContentView: View {
                                 Button(action: {
                                     document.game.assetFolder.select(asset.id)
                                     document.game.createPreview(asset)
+                                    scriptIsVisible = true
                                     updateView.toggle()
                                 })
                                 {
                                     Text(asset.name)
-
                                 }
                                 .buttonStyle(PlainButtonStyle())
                                 .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
@@ -53,6 +48,7 @@ struct ContentView: View {
                                 Button(action: {
                                     document.game.assetFolder.select(asset.id)
                                     document.game.createPreview(asset)
+                                    scriptIsVisible = true
                                     updateView.toggle()
                                 })
                                 {
@@ -64,12 +60,13 @@ struct ContentView: View {
                             }
                         }
                     }
-                    Section(header: Text("Images")) {
+                    Section(header: Text("Image Groups")) {
                         ForEach(document.game.assetFolder.assets, id: \.id) { asset in
                             if asset.type == .Image {
                                 Button(action: {
                                     document.game.assetFolder.select(asset.id)
                                     document.game.createPreview(asset)
+                                    scriptIsVisible = false
                                     updateView.toggle()
                                 })
                                 {
@@ -84,33 +81,105 @@ struct ContentView: View {
                 }
                 .frame(minWidth: 120, idealWidth: 200)
                 .layoutPriority(0)
-                GeometryReader { g in
-                    ScrollView {
-                        if let current = document.game.assetFolder.current {
-                            if current.type != .Image {
-                                WebView(document.game).tabItem {
-                                }
-                                .frame(height: g.size.height)
-                                .tag(1)
-                                .onReceive(self.document.game.javaScriptErrorOccured) { state in
-                                    
-                                    if let asset = self.document.game.jsError.asset {
-                                        print(asset.name)
-                                        document.game.assetFolder.select(asset.id)
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .primaryAction) {
+                    Menu {
+                        Menu("Script") {
+                            Button("Object Script", action: {
+                                document.game.assetFolder.addScript("New Script")
+                                //if let asset = document.game.assetFolder.current {
+                                    //assetName = String(asset.name.split(separator: ".")[0])
+                                    //showAssetNamePopover = true
+                                //}
+                            })
+                            Button("Empty Script", action: {
+                                document.game.assetFolder.addScript("New Script")
+                                //if let asset = document.game.assetFolder.current {
+                                    //assetName = String(asset.name.split(separator: ".")[0])
+                                    //showAssetNamePopover = true
+                                //}
+                            })
+                        }
+                        Button("Shader", action: {
+                            document.game.assetFolder.addShader("New Shader")
+                            if let asset = document.game.assetFolder.current {
+                                //assetName = String(asset.name.split(separator: ".")[0])
+                                //showAssetNamePopover = true
+                                document.game.createPreview(asset)
+                            }
+                        })
+                        Button("Image(s)", action: {
+                            #if os(OSX)
+                            
+                            let openPanel = NSOpenPanel()
+                            openPanel.canChooseFiles = true
+                            openPanel.allowsMultipleSelection = true
+                            openPanel.canChooseDirectories = false
+                            openPanel.canCreateDirectories = false
+                            openPanel.title = "Select Image(s)"
+                            //openPanel.directoryURL =  containerUrl
+                            openPanel.showsHiddenFiles = false
+                            //openPanel.allowedFileTypes = [appExtension]
+                            
+                            openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
+                                if response == NSApplication.ModalResponse.OK {
+                                    if openPanel.url != nil {
+                                        document.game.assetFolder.addImages(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls)
+                                        
+                                        //if let asset = document.game.assetFolder.current {
+                                            //assetName = String(asset.name.split(separator: ".")[0])
+                                            //showAssetNamePopover = true
+                                        //}
+                                        scriptIsVisible = false
+                                        updateView.toggle()
                                     }
-                                    
-                                    if self.document.game.jsError.error != nil {
-                                        self.document.game.scriptEditor?.setError(self.document.game.jsError)
-                                    }
-                                    self.updateView.toggle()
                                 }
-                            } else {
-                                #if os(OSX)
-                                let image = NSImage(data: current.data[Int(imageIndex)])!
-                                #else
-                                let image = UIImage(data: current.data[Int(imageIndex)])!
-                                #endif
-                                VStack {
+                                openPanel.close()
+                            }
+                            #endif
+                        })
+                    }
+                    label: {
+                        Label("Add", systemImage: "plus")
+                    }
+                }
+            }
+            GeometryReader { g in
+                ScrollView {
+                    if let current = document.game.assetFolder.current {
+                        ZStack {
+                            WebView(document.game).tabItem {
+                            }
+                            .zIndex(scriptIsVisible ? 1 : 0)
+                            .frame(height: g.size.height)
+                            .tag(1)
+                            .onReceive(self.document.game.javaScriptErrorOccured) { state in
+                                
+                                if let asset = self.document.game.jsError.asset {
+                                    document.game.assetFolder.select(asset.id)
+                                }
+                                
+                                if self.document.game.jsError.error != nil {
+                                    self.document.game.scriptEditor?.setError(self.document.game.jsError)
+                                }
+                                self.updateView.toggle()
+                            }
+                            VStack {
+                                if current.type == .Image {
+                                    HStack {
+                                        if current.data.count >= 2 {
+                                            Text("Index " + String(Int(imageIndex)))
+                                            Slider(value: $imageIndex, in: 0...Double(current.data.count-1), step: 1)
+                                            .padding()
+                                        }
+                                    }
+                                    .padding()
+                                    #if os(OSX)
+                                    let image = NSImage(data: current.data[Int(imageIndex)])!
+                                    #else
+                                    let image = UIImage(data: current.data[Int(imageIndex)])!
+                                    #endif
                                     #if os(OSX)
                                     Image(nsImage: image)
                                         .resizable()
@@ -127,203 +196,139 @@ struct ContentView: View {
                                         Text("Height: \(Int(image.size.height))")
                                         Spacer()
                                     }.padding()
-                                    if current.data.count >= 2 {
-                                        Slider(value: $imageIndex, in: 0...Double(current.data.count-1), step: 1)
-                                    }
+
+                                    Spacer()
                                 }
                             }
+                            .zIndex(scriptIsVisible ? 0 : 1)
+                            .background(Color.gray)
                         }
-                    }.frame(height: g.size.height)
-                }
-                .frame(minWidth: 300)
-                .layoutPriority(2)
-                .toolbar {
-                    /*
-                    ToolbarItemGroup(placement: .primaryAction) {
-                        Menu(document.game.currentName) {
-                            Section(header: Text("Current Project")) {
-                                
-                            }
-                            Menu("Scripts")
-                            {
-                                ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                                    
-                                    if asset.type == .JavaScript {
-                                        Button(asset.name, action: {
-                                            self.document.game.assetFolder.select(asset.id)
-                                            updateView.toggle()
-                                        })
-                                    }
-                                }
-                            }
-                            Menu("Shader")
-                            {
-                                ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                                    if asset.type == .Shader {
-                                        Button(asset.name, action: {
-                                            document.game.assetFolder.select(asset.id)
-                                            document.game.createPreview(asset)
-                                            updateView.toggle()
-                                        })
-                                    }
-                                }
-                            }
-                            Menu("Images")
-                            {
-                                ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                                    if asset.type == .Image {
-                                        Button(asset.name, action: {
-                                            imageIndex = 0
-                                            document.game.assetFolder.select(asset.id)
-                                            updateView.toggle()
-                                        })
-                                    }
-                                }
-                            }
-                            Divider()
-                            Button("Rename Asset", action: {
-                                if let asset = document.game.assetFolder.current {
-                                    assetName = String(asset.name.split(separator: ".")[0])
-                                    showAssetNamePopover = true
-                                }
-                            })
-                        }.frame(minWidth: 150)
                     }
-                    */
-                    ToolbarItemGroup(placement: .automatic) {
-                        /*
-                        Button(action: {
-                            if let asset = document.game.assetFolder.current {
-                                document.game.createPreview(asset)
-                            }
-                        }) {
-                            Label("Update", systemImage: "sidebar.left")
-                        }.keyboardShortcut("u")*/
-                        Button(action: {
-                            document.game.stop()
-                            document.game.start()
-                            showMetal()
-                            updateView.toggle()
-                        })
-                        {
-                            Label("Run", systemImage: "play.fill")
-                        }
-                        .keyboardShortcut("r")
-                        Button(action: {
-                            document.game.stop()
-                            updateView.toggle()
-                        }) {
-                            Label("Stop", systemImage: "stop.fill")
-                        }.keyboardShortcut("t")
-                        .disabled(!document.game.isRunning)
-                        Button(action: {
-                            if let asset = document.game.assetFolder.current {
-                                document.game.createPreview(asset)
-                            }
-                        }) {
-                            Label("Update", systemImage: "arrow.counterclockwise")
-                        }.keyboardShortcut("u")
-                        .disabled(document.game.isRunning || document.game.assetFolder.current?.type != .Shader )
-                        Spacer()
-                        Menu {
-                            Menu("Script") {
-                                Button("Object Script", action: {
-                                    document.game.assetFolder.addScript("New Script")
-                                    if let asset = document.game.assetFolder.current {
-                                        assetName = String(asset.name.split(separator: ".")[0])
-                                        //showAssetNamePopover = true
-                                    }
-                                })
-                                Button("Empty Script", action: {
-                                    document.game.assetFolder.addScript("New Script")
-                                    if let asset = document.game.assetFolder.current {
-                                        assetName = String(asset.name.split(separator: ".")[0])
-                                        //showAssetNamePopover = true
-                                    }
-                                })
-                            }
-                            Button("Shader", action: {
-                                document.game.assetFolder.addShader("New Shader")
-                                if let asset = document.game.assetFolder.current {
-                                    assetName = String(asset.name.split(separator: ".")[0])
-                                    //showAssetNamePopover = true
-                                    document.game.createPreview(asset)
-                                }
-                            })
-                            Button("Image", action: {
-                                #if os(OSX)
-                                
-                                let openPanel = NSOpenPanel()
-                                openPanel.canChooseFiles = true
-                                openPanel.allowsMultipleSelection = true
-                                openPanel.canChooseDirectories = false
-                                openPanel.canCreateDirectories = false
-                                openPanel.title = "Select Image(s)"
-                                //openPanel.directoryURL =  containerUrl
-                                openPanel.showsHiddenFiles = false
-                                //openPanel.allowedFileTypes = [appExtension]
-                                
-                                openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
-                                    if response == NSApplication.ModalResponse.OK {
-                                        if openPanel.url != nil {
-                                            document.game.assetFolder.addImage(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls)
-                                            
-                                            if let asset = document.game.assetFolder.current {
-                                                assetName = String(asset.name.split(separator: ".")[0])
-                                                //showAssetNamePopover = true
+                }.frame(height: g.size.height)
+            }
+            .frame(minWidth: 300)
+            .layoutPriority(2)
+            .toolbar {
+                ToolbarItemGroup(placement: .primaryAction) {
+
+                    // Optional toolbar items depending on asset
+                    if let asset = document.game.assetFolder.current {
+                        if asset.type == .Image {
+                            Menu("Image Group")
+                            {
+                                Button(action: {
+                                    #if os(OSX)
+                                    
+                                    let openPanel = NSOpenPanel()
+                                    openPanel.canChooseFiles = true
+                                    openPanel.allowsMultipleSelection = true
+                                    openPanel.canChooseDirectories = false
+                                    openPanel.canCreateDirectories = false
+                                    openPanel.title = "Select Image(s)"
+                                    //openPanel.directoryURL =  containerUrl
+                                    openPanel.showsHiddenFiles = false
+                                    //openPanel.allowedFileTypes = [appExtension]
+                                    
+                                    openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
+                                        if response == NSApplication.ModalResponse.OK {
+                                            if openPanel.url != nil {
+                                                document.game.assetFolder.addImages(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls, existingAsset: document.game.assetFolder.current)
+                                                scriptIsVisible = false
+                                                updateView.toggle()
                                             }
                                         }
+                                        openPanel.close()
                                     }
-                                    openPanel.close()
+                                    #endif
+                                })
+                                {
+                                    Label("Add to Group", systemImage: "plus")
                                 }
-                                #endif
-                            })
-                        }
-                        label: {
-                            Label("Add", systemImage: "plus")
+                                Button(action: {
+                                    if let asset = document.game.assetFolder.current {
+                                        asset.data.remove(at: Int(imageIndex))
+                                    }
+                                    updateView.toggle()
+                                })
+                                {
+                                    Label("Remove Image", systemImage: "minus")
+                                }
+                                .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
+                                Button(action: {
+                                    if let asset = document.game.assetFolder.current {
+                                        if let index = document.game.assetFolder.assets.firstIndex(of: asset) {
+                                            document.game.assetFolder.assets.remove(at: index)
+                                            document.game.assetFolder.current = document.game.assetFolder.assets[0]
+                                            self.updateView.toggle()
+                                        }
+                                    }
+                                })
+                                {
+                                    Label("Remove Group", systemImage: "minus")
+                                }
+                            }
                         }
                     }
                 }
-                // Popover for asset name
-                .popover(isPresented: self.$showAssetNamePopover,
-                         arrowEdge: .top
-                ) {
-                    VStack(alignment: .leading) {
-                        Text("Name")
-                        TextField("Name", text: $assetName, onEditingChanged: { (changed) in
-                            if let asset = document.game.assetFolder.current {
-                                if asset.type == .JavaScript {
-                                    asset.name = assetName + ".js"
-                                } else
-                                if asset.type == .Shader {
-                                    asset.name = assetName + ".sh"
-                                } else {
-                                    asset.name = assetName
-                                }
-                                document.game.currentName = asset.name
+            }
+            // Popover for asset name
+            .popover(isPresented: self.$showAssetNamePopover,
+                     arrowEdge: .top
+            ) {
+                VStack(alignment: .leading) {
+                    Text("Name")
+                    TextField("Name", text: $assetName, onEditingChanged: { (changed) in
+                        if let asset = document.game.assetFolder.current {
+                            if asset.type == .JavaScript {
+                                asset.name = assetName + ".js"
+                            } else
+                            if asset.type == .Shader {
+                                asset.name = assetName + ".sh"
+                            } else {
+                                asset.name = assetName
                             }
-                        })
-                        .frame(minWidth: 200)
-                    }.padding()
-                }
+                            self.updateView.toggle()
+                        }
+                    })
+                    .frame(minWidth: 200)
+                }.padding()
             }
             ZStack() {
                 HelpWebView()
-                    .zIndex(helpViewIndex)
+                    .zIndex(helpIsVisible ? 1 : 0)
                 MetalView(document.game)
-                    .zIndex(metalViewIndex)
+                    .zIndex(helpIsVisible ? 0 : 1)
                     .frame(minWidth: 200)
                     .toolbar {
                         ToolbarItemGroup(placement: .automatic) {
-                            Spacer()
-                            Button(helpViewIndex == 0 ? "Help" : "Hide", action: {
-                                if helpViewIndex == 0 {
-                                    helpViewIndex = 1
-                                    metalViewIndex = 0
-                                } else {
-                                    helpViewIndex = 0
-                                    metalViewIndex = 1
+                            Button(action: {
+                                document.game.stop()
+                                document.game.start()
+                                helpIsVisible = false
+                                updateView.toggle()
+                            })
+                            {
+                                Label("Run", systemImage: "play.fill")
+                            }
+                            .keyboardShortcut("r")
+                            Button(action: {
+                                document.game.stop()
+                                updateView.toggle()
+                            }) {
+                                Label("Stop", systemImage: "stop.fill")
+                            }.keyboardShortcut("t")
+                            .disabled(!document.game.isRunning)
+                            Button(action: {
+                                if let asset = document.game.assetFolder.current {
+                                    document.game.createPreview(asset)
                                 }
+                            }) {
+                                Label("Update", systemImage: "arrow.counterclockwise")
+                            }.keyboardShortcut("u")
+                            .disabled(document.game.isRunning || document.game.assetFolder.current?.type != .Shader )
+                            Spacer()
+                            Button(!helpIsVisible ? "Help" : "Hide", action: {
+                                helpIsVisible.toggle()
                             })
                             .keyboardShortcut("h")
                         }

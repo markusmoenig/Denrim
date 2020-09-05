@@ -33,7 +33,7 @@ class ScriptEditor
             sessions += 1
         }
         
-        if asset.type == .JavaScript || asset.type == .Image {
+        if asset.type == .JavaScript {
             webView.evaluateJavaScript(
                 """
                 var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
@@ -92,7 +92,10 @@ class ScriptEditor
             column: \(error.column!),
             text: "\(error.error!)",
             type: "error" // also warning and information
-            }])
+            }]);
+
+            editor.scrollToLine(\(error.line!-1), true, true, function () {});
+
             """, completionHandler: { (value, error ) in
          })
     }

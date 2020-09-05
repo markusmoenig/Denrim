@@ -20,8 +20,8 @@ struct DenrimApp: App {
             
             CommandGroup(replacing: .help) {
                 Button(action: {
-                    if let doc = appState.currentDocument {
-                        print(doc.game.currentName)
+                    if appState.currentDocument != nil {
+                        print("test")
                     }
                 }) {
                     Text("Denrim Help")
