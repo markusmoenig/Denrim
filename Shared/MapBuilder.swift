@@ -11,6 +11,8 @@ class MapBuilder
 {
     let game            : Game
     
+    var images          : [String:MTLTexture] = [:]
+    
     enum Types : String, CaseIterable
     {
         case Image = "Image";
@@ -44,7 +46,6 @@ class MapBuilder
 
             if str.firstIndex(of: "#") != nil {
                 let split = str.split(separator: "#")
-                print(split)
                 if split.count == 2 {
                     leftOfComment = String(str.split(separator: "#")[0])
                 } else {
@@ -54,15 +55,16 @@ class MapBuilder
                 leftOfComment = str
             }
             
-            print(leftOfComment)
+            leftOfComment = String(leftOfComment.filter { !" \n\t\r".contains($0) })
+            
             if leftOfComment.count > 0 {
                 
                 let values = leftOfComment.split(separator: "=")
 
                 if values.count == 2 {
                     
-                    let leftValue = values[0].trimmingCharacters(in: .whitespacesAndNewlines)
-                    let rightValue = values[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    let leftValue = String(values[0])
+                    let rightValue = values[1]
 
                     var rightValueArray = rightValue.split(separator: "<")
                     
@@ -119,20 +121,34 @@ class MapBuilder
             game.scriptEditor?.setError(error)
         } else {
             game.scriptEditor?.clearAnnotations()
-        }
-        //print(error, errorLine)
-        
+        }        
     }
     
     func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout JSError)
     {
         print("Processing Assignment", type, variable, options, error.line!)
+        if type == .Image {
+            if let group = options["group"] as? String {
+                if let asset = game.assetFolder.getAsset(group, .Image) {
+                    var index : Int = 0
+                    if let ind = options["index"] as? Int {
+                        index = ind
+                    }
+                    if index >= 0 && index < asset.data.count {
+                        
+                    } else { error.error = "Image group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
+                } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
+            } else { error.error = "Image type for '\(variable)' expects a 'Group' option" }
+        }
     }
     
     func parser_processOptions(_ options: [String:String],_ error: inout JSError) -> [String:Any]
     {
+        print("Processing Options", options)
+
         let stringOptions = ["group"]
-        
+        let integerOptions = ["index"]
+
         var res: [String:Any] = [:]
         
         for(name, value) in options {
@@ -140,8 +156,21 @@ class MapBuilder
                 // String
                 res[name] = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
             } else
+            if integerOptions.firstIndex(of: name) != nil {
+                // Integer
+                if let v = Int(value) {
+                    res[name] = v
+                } else { error.error = "The \(name) option expects an integer argument" }
+            } else
             if name == "rect" {
-                //let array = value.split(
+                let array = value.split(separator: ",")
+                if array.count == 4 {
+                    let x : Float; if let v = Float(array[0]) { x = v } else { x = 0 }
+                    let y : Float; if let v = Float(array[1]) { y = v } else { y = 0 }
+                    let width : Float; if let v = Float(array[2]) { width = v } else { width = 1 }
+                    let height : Float; if let v = Float(array[3]) { height = v } else { height = 1 }
+                    res[name] = MMRect(x, y, width, height)
+                } else { error.error = "Rect must have 4 arguments" }
             }
         }
         
