@@ -44,6 +44,24 @@ struct ContentView: View {
                             }
                         }
                     }
+                    Section(header: Text("Maps")) {
+                        ForEach(document.game.assetFolder.assets, id: \.id) { asset in
+                            if asset.type == .Map {
+                                Button(action: {
+                                    document.game.assetFolder.select(asset.id)
+                                    document.game.createPreview(asset)
+                                    scriptIsVisible = false
+                                    updateView.toggle()
+                                })
+                                {
+                                    Text(asset.name)
+
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
+                            }
+                        }
+                    }
                     Section(header: Text("Shaders")) {
                         ForEach(document.game.assetFolder.assets, id: \.id) { asset in
                             if asset.type == .Shader {
@@ -98,6 +116,10 @@ struct ContentView: View {
                                 updateView.toggle()
                             })
                         }
+                        Button("Map", action: {
+                            document.game.assetFolder.addMap("New Map")
+                            updateView.toggle()
+                        })
                         Button("Shader", action: {
                             document.game.assetFolder.addShader("New Shader")
                             if let asset = document.game.assetFolder.current {
@@ -343,7 +365,7 @@ struct ContentView: View {
                             }) {
                                 Label("Stop", systemImage: "stop.fill")
                             }.keyboardShortcut("t")
-                            .disabled(!document.game.isRunning)
+                            .disabled(document.game.state == .Idle)
                             Button(action: {
                                 if let asset = document.game.assetFolder.current {
                                     document.game.createPreview(asset)
@@ -351,7 +373,7 @@ struct ContentView: View {
                             }) {
                                 Label("Update", systemImage: "arrow.counterclockwise")
                             }.keyboardShortcut("u")
-                            .disabled(document.game.isRunning || document.game.assetFolder.current?.type != .Shader )
+                            .disabled(document.game.state == .Running || document.game.assetFolder.current?.type != .Shader )
                             Spacer()
                             Button(!helpIsVisible ? "Help" : "Hide", action: {
                                 helpIsVisible.toggle()

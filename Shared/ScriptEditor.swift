@@ -20,7 +20,7 @@ class ScriptEditor
         self.webView = view
         self.game = game
         
-        if let asset = game.assetFolder.getAsset("Game.js") {
+        if let asset = game.assetFolder.getAsset("Game") {
             //setValue(value: asset.value)
             createSession(asset)
         }
@@ -48,6 +48,15 @@ class ScriptEditor
                 var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
                 editor.setSession(\(asset.scriptName))
                 editor.session.setMode("ace/mode/metal");
+                """, completionHandler: { (value, error ) in
+             })
+        } else
+        if asset.type == .Map {
+            webView.evaluateJavaScript(
+                """
+                var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
+                editor.setSession(\(asset.scriptName))
+                editor.session.setMode("ace/mode/txt");
                 """, completionHandler: { (value, error ) in
              })
         }

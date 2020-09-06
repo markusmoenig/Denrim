@@ -10,6 +10,12 @@ import Combine
 
 class Game              : ObservableObject
 {
+    enum State {
+        case Idle, Running, Paused
+    }
+    
+    var state           : State = .Idle
+    
     var view            : DMTKView!
     var device          : MTLDevice!
     var commandQueue    : MTLCommandQueue!
@@ -31,9 +37,9 @@ class Game              : ObservableObject
     var gameCmdBuffer   : MTLCommandBuffer? = nil
     
     var scriptEditor    : ScriptEditor? = nil
-    
+    var mapBuilder      : MapBuilder!
+
     var textureLoader   : MTKTextureLoader!
-    var isRunning       : Bool = false
     
     var jsError         = JSError()
     
@@ -50,10 +56,13 @@ class Game              : ObservableObject
         #else
         scaleFactor = Float(UIScreen.main.scale)
         #endif
-
+        
         jsBridge = JSBridge(self)
+        
         assetFolder = AssetFolder()
         assetFolder.setup(self)
+        
+        mapBuilder = MapBuilder(self)
     }
     
     func setupView(_ view: DMTKView)
@@ -76,7 +85,7 @@ class Game              : ObservableObject
         jsError.error = nil
         jsBridge.compile(assetFolder)
 
-        isRunning = true
+        state = .Running
         view.enableSetNeedsDisplay = false
         view.isPaused = false
     }
@@ -86,7 +95,7 @@ class Game              : ObservableObject
         resources = [:]
         jsBridge.stop()
 
-        isRunning = false
+        state = .Idle
         view.isPaused = true
     }
     
@@ -147,7 +156,7 @@ class Game              : ObservableObject
         commandBuffer?.commit()
         commandBuffer = nil
 
-        if isRunning {
+        if state == .Running {
             DispatchQueue.main.async {
                 
                 if self.gameCmdQueue == nil {
@@ -176,7 +185,7 @@ class Game              : ObservableObject
     
     func createPreview(_ asset: Asset)
     {
-        if isRunning == false && asset.type == .Shader {
+        if state == .Idle && asset.type == .Shader {
             let compiler = ShaderCompiler(asset, self)
 
             compiler.compile({ (shader) in

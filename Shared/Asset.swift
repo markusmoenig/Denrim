@@ -30,7 +30,7 @@ class AssetFolder   : Codable
         }
         
         if let gameTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
-            assets.append(Asset(type: .JavaScript, name: "Game.js", value: gameTemplate))
+            assets.append(Asset(type: .JavaScript, name: "Game", value: gameTemplate))
             current = assets[0]
         }
     }
@@ -49,7 +49,7 @@ class AssetFolder   : Codable
     
     func addScript(_ name: String, value: String = "")
     {
-        let asset = Asset(type: .JavaScript, name: name + ".js", value: value)
+        let asset = Asset(type: .JavaScript, name: name, value: value)
         assets.append(asset)
         current = asset
         game.scriptEditor?.createSession(asset)
@@ -63,11 +63,26 @@ class AssetFolder   : Codable
         
         if let shaderTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
                 
-            let asset = Asset(type: .Shader, name: name + ".sh", value: shaderTemplate)
+            let asset = Asset(type: .Shader, name: name, value: shaderTemplate)
             assets.append(asset)
             current = asset
             game.scriptEditor?.createSession(asset)
         }
+    }
+    
+    func addMap(_ name: String)
+    {
+        //guard let path = Bundle.main.path(forResource: "Shader", ofType: "txt", inDirectory: "Resources") else {
+        //    return
+        //}
+        
+        //if let mapTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
+                
+            let asset = Asset(type: .Map, name: name, value: "")
+            assets.append(asset)
+            current = asset
+            game.scriptEditor?.createSession(asset)
+        //}
     }
     
     func addImages(_ name: String, _ urls: [URL], existingAsset: Asset? = nil)
@@ -118,6 +133,9 @@ class AssetFolder   : Codable
         for asset in assets {
             if asset.name == name {
                 asset.value = value
+                if game.state == .Idle {
+                    game.mapBuilder.compile(asset)
+                }
             }
         }
     }
@@ -126,7 +144,7 @@ class AssetFolder   : Codable
 class Asset         : Codable, Equatable
 {
     enum AssetType  : Int, Codable {
-        case JavaScript, Image, Shader
+        case JavaScript, Image, Shader, Map
     }
     
     var type        : AssetType = .JavaScript

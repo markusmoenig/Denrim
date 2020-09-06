@@ -33,19 +33,19 @@ public class DMTKView       : MTKView
     }
         
     override public func mouseDown(with event: NSEvent) {
-        if game.isRunning {
+        if game.state == .Running {
             createMouseEvent(type: "TouchType.DOWN", event)
         }
     }
     
     override public func mouseDragged(with event: NSEvent) {
-        if game.isRunning {
+        if game.state == .Running {
             createMouseEvent(type: "TouchType.MOVE", event)
         }
     }
     
     override public func mouseUp(with event: NSEvent) {
-        if game.isRunning {
+        if game.state == .Running {
             createMouseEvent(type: "TouchType.UP", event)
         }
     }
