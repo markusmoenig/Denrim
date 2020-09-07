@@ -102,7 +102,7 @@ struct ContentView: View {
                 .frame(minWidth: 120, idealWidth: 200)
                 .layoutPriority(0)
             }
-            .navigationSubtitle("Assets")
+            .navigationTitle("Assets")
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
                     Menu {

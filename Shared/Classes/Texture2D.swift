@@ -74,6 +74,7 @@ class Texture2D                 : NSObject, Texture2D_JSExports
     
     deinit
     {
+        print("release texture")
         if texture != nil {
             texture!.setPurgeableState(.empty)
             texture = nil
@@ -162,12 +163,12 @@ class Texture2D                 : NSObject, Texture2D_JSExports
     {
         var x : Float; if let v = object["x"] as? Float { x = v } else { x = 0 }
         var y : Float; if let v = object["y"] as? Float { y = v } else { y = 0 }
-        let radius : Float; if let v = object["radius"] as? Float { radius = v } else { radius = 0 }
+        let radius : Float; if let v = object["radius"] as? Float { radius = v } else { radius = 100 }
         let border : Float; if let v = object["border"] as? Float { border = v } else { border = 0 }
         let onion : Float;  if let v = object["onion"] as? Float { onion = v } else { onion = 0 }
         let fillColor : SIMD4<Float>; if let v = object["color"] as? Vec4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
         let borderColor : SIMD4<Float>; if let v = object["borderColor"] as? Vec4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
-
+        
         x /= game.scaleFactor
         y /= game.scaleFactor
         

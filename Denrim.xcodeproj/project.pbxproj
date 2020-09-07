@@ -63,6 +63,8 @@
 		2B32995A2501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
 		2BEFCF8F250473B1003C00B0 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
 		2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
+		2BFC028B2505EDA500AB489E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
+		2BFC028C2505EDA500AB489E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +102,7 @@
 		2B3299452501B5DC007C3386 /* Square.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Square.json; sourceTree = "<group>"; };
 		2B3299582501B6F3007C3386 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBuilder.swift; sourceTree = "<group>"; };
+		2BFC028A2505EDA500AB489E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +194,7 @@
 				2B01C88424FB824A00E86449 /* System.swift */,
 				2B01C87B24FB824900E86449 /* Texture2D.swift */,
 				2B3299582501B6F3007C3386 /* Font.swift */,
+				2BFC028A2505EDA500AB489E /* Map.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -333,6 +337,7 @@
 				2B32992224FE3D02007C3386 /* Shader.swift in Sources */,
 				2B01C88D24FB824A00E86449 /* ScriptEditor.swift in Sources */,
 				2B01C88924FB824A00E86449 /* Texture2D.swift in Sources */,
+				2BFC028C2505EDA500AB489E /* Map.swift in Sources */,
 				2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
 				2B01C88724FB824A00E86449 /* Metal.metal in Sources */,
 				2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */,
@@ -360,6 +365,7 @@
 				2B32992124FE3D02007C3386 /* Shader.swift in Sources */,
 				2B01C88E24FB824A00E86449 /* ScriptEditor.swift in Sources */,
 				2B01C88A24FB824A00E86449 /* Texture2D.swift in Sources */,
+				2BFC028B2505EDA500AB489E /* Map.swift in Sources */,
 				2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
 				2B01C88824FB824A00E86449 /* Metal.metal in Sources */,
 				2BEFCF8F250473B1003C00B0 /* MapBuilder.swift in Sources */,

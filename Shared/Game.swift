@@ -103,32 +103,34 @@ class Game              : ObservableObject
     {
         if texture == nil {
             texture = Texture2D(self)
+    
+            viewportSize.x = UInt32(texture!.width)
+            viewportSize.y = UInt32(texture!.height)
             
-            viewportSize.x = UInt32(view.frame.width)
-            viewportSize.y = UInt32(view.frame.height)
-            
-            screenWidth = Float(view.frame.width)
-            screenHeight = Float(view.frame.height)
+            screenWidth = Float(texture!.width)
+            screenHeight = Float(texture!.height)
         } else
         if texture!.texture.width != Int(view.frame.width) || texture!.texture.height != Int(view.frame.height) {
             texture?.allocateTexture(width: Int(view.frame.width), height: Int(view.frame.height))
             
-            viewportSize.x = UInt32(view.frame.width)
-            viewportSize.y = UInt32(view.frame.height)
+            viewportSize.x = UInt32(texture!.width)
+            viewportSize.y = UInt32(texture!.height)
             
-            screenWidth = Float(view.frame.width)
-            screenHeight = Float(view.frame.height)
+            screenWidth = Float(texture!.width)
+            screenHeight = Float(texture!.height)
         }
     }
     
     func draw()
     {
-        if jsError.error != nil {
-            stop()
-            javaScriptErrorOccured.send(true)
-            return
+        if state == .Running {
+            if jsError.error != nil {
+                stop()
+                javaScriptErrorOccured.send(true)
+                return
+            }
         }
-        
+                
         checkTexture()
         
         guard let drawable = view.currentDrawable else {
@@ -159,11 +161,7 @@ class Game              : ObservableObject
         if state == .Running {
             DispatchQueue.main.async {
                 
-                if self.gameCmdQueue == nil {
-                    self.gameCmdQueue = self.view.device!.makeCommandQueue()
-                }
-                
-                self.gameCmdBuffer = self.gameCmdQueue!.makeCommandBuffer()
+                self.startDrawing()
 
                 //#if DEBUG
                 //let startTime = Double(Date().timeIntervalSince1970)
@@ -183,6 +181,22 @@ class Game              : ObservableObject
         }
     }
     
+    func startDrawing()
+    {
+        if gameCmdQueue == nil {
+            gameCmdQueue = view.device!.makeCommandQueue()
+        }
+        gameCmdBuffer = gameCmdQueue!.makeCommandBuffer()
+    }
+    
+    func stopDrawing(deleteQueue: Bool = true)
+    {
+        if deleteQueue {
+            self.gameCmdQueue = nil
+        }
+        self.gameCmdBuffer = nil
+    }
+    
     func createPreview(_ asset: Asset)
     {
         if state == .Idle && asset.type == .Shader {
@@ -191,28 +205,30 @@ class Game              : ObservableObject
             compiler.compile({ (shader) in
                 
                 DispatchQueue.main.async {
-                    if self.gameCmdQueue == nil {
-                        self.gameCmdQueue = self.view.device!.makeCommandQueue()
-                    }
-                    
-                    self.gameCmdBuffer = self.gameCmdQueue!.makeCommandBuffer()
+                    self.startDrawing()
                     
                     let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: self.scaleFactor )
                     self.texture?.drawShader(shader, rect)
                     
                     self.gameCmdBuffer?.commit()
+                    self.stopDrawing()
                     
-                    self.gameCmdQueue = nil
-                    self.gameCmdBuffer = nil
-                    
-                    #if os(OSX)
-                    self.view.enableSetNeedsDisplay = true
-                    let nsrect : NSRect = NSRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-                    self.view.setNeedsDisplay(nsrect)
-                    #endif
+                    self.updateOnce()
                 }
             })
         }
+    }
+    
+    /// Updates the display once
+    func updateOnce()
+    {
+        self.view.enableSetNeedsDisplay = true
+        #if os(OSX)
+        let nsrect : NSRect = NSRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        self.view.setNeedsDisplay(nsrect)
+        #else
+        self.view.setNeedsDisplay()
+        #endif
     }
     
     func drawTexture(renderEncoder: MTLRenderCommandEncoder)

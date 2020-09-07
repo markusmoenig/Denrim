@@ -5,7 +5,7 @@
 //  Created by Markus Moenig on 26/8/20.
 //
 
-import Foundation
+import MetalKit
 
 class AssetFolder   : Codable
 {
@@ -51,7 +51,7 @@ class AssetFolder   : Codable
     {
         let asset = Asset(type: .JavaScript, name: name, value: value)
         assets.append(asset)
-        current = asset
+        select(asset.id)
         game.scriptEditor?.createSession(asset)
     }
     
@@ -65,7 +65,7 @@ class AssetFolder   : Codable
                 
             let asset = Asset(type: .Shader, name: name, value: shaderTemplate)
             assets.append(asset)
-            current = asset
+            select(asset.id)
             game.scriptEditor?.createSession(asset)
         }
     }
@@ -80,7 +80,7 @@ class AssetFolder   : Codable
                 
             let asset = Asset(type: .Map, name: name, value: "")
             assets.append(asset)
-            current = asset
+            select(asset.id)
             game.scriptEditor?.createSession(asset)
         //}
     }
@@ -102,15 +102,32 @@ class AssetFolder   : Codable
             }
         }
         
-        current = asset
+        select(asset.id)
     }
     
     func select(_ id: UUID)
     {
+        if let current = current {
+            if current.type == .Map {
+                if game.mapBuilder.cursorTimer != nil {
+                    game.mapBuilder.stopTimer(current)
+                }
+            }
+        }
+
         for asset in assets {
             if asset.id == id {
-                if asset.type == .JavaScript || asset.type == .Shader {
+                if asset.type == .JavaScript || asset.type == .Shader || asset.type == .Map {
                     game.scriptEditor?.setAssetSession(asset)
+                    
+                    if asset.type == .Map {
+                        if game.state == .Idle {
+                            game.mapBuilder.compile(asset)
+                            if game.mapBuilder.cursorTimer == nil {
+                                game.mapBuilder.startTimer(asset)
+                            }
+                        }
+                    }
                 }
                 current = asset
                 break
@@ -123,6 +140,19 @@ class AssetFolder   : Codable
         for asset in assets {
             if asset.type == type && (asset.name == name || String(asset.name.split(separator: ".")[0]) == name) {
                 return asset
+            }
+        }
+        return nil
+    }
+    
+    func getAssetTexture(_ name: String,_ index: Int = 0) -> MTLTexture?
+    {
+        if let asset = getAsset(name, .Image) {
+            if index >= 0 && index < asset.data.count {
+                let data = asset.data[index]
+                
+                let options: [MTKTextureLoader.Option : Any] = [.generateMipmaps : false, .SRGB : false]                
+                return try? game.textureLoader.newTexture(data: data, options: options)
             }
         }
         return nil
@@ -157,8 +187,12 @@ class Asset         : Codable, Equatable
     var value       = ""
     
     var data        : [Data] = []
-    
+
+    // For the script based assets
     var scriptName  = ""
+
+    // If this is a .Map asset
+    var map         : Map? = nil
         
     private enum CodingKeys: String, CodingKey {
         case type

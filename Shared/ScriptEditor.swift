@@ -26,7 +26,7 @@ class ScriptEditor
         }
     }
     
-    func createSession(_ asset: Asset)
+    func createSession(_ asset: Asset,_ cb: (()->())? = nil)
     {
         if asset.scriptName.isEmpty {
             asset.scriptName = "session" + String(sessions)
@@ -40,6 +40,9 @@ class ScriptEditor
                 editor.setSession(\(asset.scriptName))
                 editor.session.setMode("ace/mode/javascript");
                 """, completionHandler: { (value, error ) in
+                    if let cb = cb {
+                        cb()
+                    }
              })
         } else
         if asset.type == .Shader {
@@ -49,6 +52,9 @@ class ScriptEditor
                 editor.setSession(\(asset.scriptName))
                 editor.session.setMode("ace/mode/metal");
                 """, completionHandler: { (value, error ) in
+                    if let cb = cb {
+                        cb()
+                    }
              })
         } else
         if asset.type == .Map {
@@ -58,6 +64,9 @@ class ScriptEditor
                 editor.setSession(\(asset.scriptName))
                 editor.session.setMode("ace/mode/txt");
                 """, completionHandler: { (value, error ) in
+                    if let cb = cb {
+                        cb()
+                    }
              })
         }
     }
@@ -67,7 +76,7 @@ class ScriptEditor
         webView.evaluateJavaScript(
             """
             \(asset.scriptName).getValue()
-            """, completionHandler: { (value, error ) in
+            """, completionHandler: { (value, error) in
                 if let value = value as? String {
                     cb(value)
                 }
@@ -85,11 +94,23 @@ class ScriptEditor
     
     func setAssetSession(_ asset: Asset)
     {
-        let cmd = """
-        editor.setSession(\(asset.scriptName))
-        """
-        webView.evaluateJavaScript(cmd, completionHandler: { (value, error ) in
-        })
+        func setSession()
+        {
+            let cmd = """
+            editor.setSession(\(asset.scriptName))
+            """
+            webView.evaluateJavaScript(cmd, completionHandler: { (value, error ) in
+            })
+        }
+        
+        if asset.scriptName.isEmpty == true {
+            createSession(asset, { () in
+                setSession()
+            })
+        } else {
+            setSession()
+        }
+
     }
     
     func setError(_ error: JSError )
@@ -106,6 +127,18 @@ class ScriptEditor
             editor.scrollToLine(\(error.line!-1), true, true, function () {});
 
             """, completionHandler: { (value, error ) in
+         })
+    }
+    
+    func getSessionCursor(_ cb: @escaping (Int32)->() )
+    {
+        webView.evaluateJavaScript(
+            """
+            editor.getCursorPosition().row
+            """, completionHandler: { (value, error ) in
+                if let v = value as? Int32 {
+                    cb(v)
+                }
          })
     }
     

@@ -9,38 +9,38 @@ import Foundation
 import JavaScriptCore
 
 @objc protocol Vec4_JSExports: JSExport {
-    var red         : Float { get set }
-    var green       : Float { get set }
-    var blue        : Float { get set }
-    var alpha       : Float { get set }
+    var x           : Float { get set }
+    var y           : Float { get set }
+    var z           : Float { get set }
+    var w           : Float { get set }
 
-    static func create(_ r: Float,_ g: Float,_ b: Float,_ a:Float) -> Vec4
+    static func create(_ x: Float,_ y: Float,_ z: Float,_ w:Float) -> Vec4
 }
 
 class Vec4              : NSObject, Vec4_JSExports
 {
-    var red             : Float = 1
-    var green           : Float = 1
-    var blue            : Float = 1
-    var alpha           : Float = 1
+    var x           : Float = 1
+    var y           : Float = 1
+    var z           : Float = 1
+    var w           : Float = 1
 
-    init(_ r: Float = 1,_ g: Float = 1,_ b: Float = 1,_ a:Float = 1)
+    init(_ x: Float = 1,_ y: Float = 1,_ z: Float = 1,_ w:Float = 1)
     {
-        red = r
-        green = g
-        blue = b
-        alpha = a
+        self.x = x
+        self.y = y
+        self.z = z
+        self.w = w
         super.init()
     }
     
     func toSIMD() -> SIMD4<Float>
     {
-        return SIMD4<Float>(red, green, blue, alpha)
+        return SIMD4<Float>(x, y, z, w)
     }
     
-    class func create(_ r: Float,_ g: Float,_ b: Float,_ a:Float) -> Vec4
+    class func create(_ x: Float,_ y: Float,_ z: Float,_ w:Float) -> Vec4
     {
-        return Vec4(r,g,b,a)
+        return Vec4(x,y,z,w)
     }
 }
 

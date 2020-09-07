@@ -42,6 +42,11 @@ struct DenrimDocument: FileDocument {
         if data.isEmpty == false {
             game.assetFolder = folder
             game.assetFolder.game = game
+            
+            // Make sure there is a selected asset
+            if game.assetFolder.assets.count > 0 {
+                game.assetFolder.current = game.assetFolder.assets[0]
+            }
         }
     }
     

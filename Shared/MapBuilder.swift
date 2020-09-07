@@ -6,13 +6,15 @@
 //
 
 import MetalKit
+import JavaScriptCore
 
 class MapBuilder
 {
     let game            : Game
     
-    var images          : [String:MTLTexture] = [:]
-    
+    var cursorTimer     : Timer? = nil
+    var scriptLine      : Int32? = nil
+
     enum Types : String, CaseIterable
     {
         case Image = "Image";
@@ -27,6 +29,10 @@ class MapBuilder
     {
         print("compiling...")
         
+        if asset.map == nil {
+            asset.map = Map()
+        }
+                
         let ns = asset.value as NSString
         var lineNumber : Int32 = 0
         
@@ -106,7 +112,7 @@ class MapBuilder
                          
                             let map = self.parser_processOptions(options, &error)
                             if error.error == nil {
-                                self.parser_processAssignment(type, variable: leftValue, options: map, error: &error)
+                                self.parser_processAssignment(type, variable: leftValue, options: map, error: &error, map: asset.map!)
                             }
                         } else { createError("Unknown Type `\(rightValueArray[0])`")}
                     }
@@ -117,14 +123,17 @@ class MapBuilder
         }
         
         if error.error != nil {
-            print(error.error!)
+            error.line = error.line! + 1
             game.scriptEditor?.setError(error)
         } else {
             game.scriptEditor?.clearAnnotations()
+            DispatchQueue.main.async {
+                self.createPreview(asset.map!)
+            }
         }        
     }
     
-    func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout JSError)
+    func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout JSError, map: Map)
     {
         print("Processing Assignment", type, variable, options, error.line!)
         if type == .Image {
@@ -135,7 +144,15 @@ class MapBuilder
                         index = ind
                     }
                     if index >= 0 && index < asset.data.count {
-                        
+                        if map.images[variable] == nil {
+                            let data = asset.data[index]
+                            
+                            let options: [MTKTextureLoader.Option : Any] = [.generateMipmaps : false, .SRGB : false]
+                            if let texture  = try? game.textureLoader.newTexture(data: data, options: options) {
+                                map.images[variable] = Texture2D(game, texture: texture)
+                                map.lines[error.line!] = variable
+                            }
+                        }
                     } else { error.error = "Image group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
                 } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
             } else { error.error = "Image type for '\(variable)' expects a 'Group' option" }
@@ -177,7 +194,71 @@ class MapBuilder
         return res
     }
     
-    func createPreview()
+    func createPreview(_ map: Map)
     {
+        game.startDrawing()
+        
+        game.texture?.clear(Vec4(0,0,0,1))
+        
+        /*
+        var map : [AnyHashable : Any] = [:]
+        map["radius"] = Float(200)
+        game.texture?.drawDisk(map)*/
+        var name : String? = nil
+        if let line = scriptLine {
+            if let n = map.lines[line] {
+                name = n
+            }
+        }
+        
+        if let name = name {
+            // Find the asset
+            if let texture = map.images[name] {
+                var object : [AnyHashable : Any] = [:]
+                object["texture"] = texture
+                
+                game.texture?.drawTexture(object)
+            }
+        }
+
+        game.gameCmdBuffer?.commit()
+        game.stopDrawing()
+                
+        game.updateOnce()
+    }
+    
+    func startTimer(_ asset: Asset)
+    {
+        DispatchQueue.main.async(execute: {
+            let timer = Timer.scheduledTimer(timeInterval: 1,
+                                             target: self,
+                                             selector: #selector(self.cursorCallback),
+                                             userInfo: asset,
+                                             repeats: true)
+            self.cursorTimer = timer
+        })
+    }
+    
+    func stopTimer(_ asset: Asset)
+    {
+        if cursorTimer != nil {
+            cursorTimer?.invalidate()
+            cursorTimer = nil
+        }
+        asset.map = nil
+    }
+    
+    @objc func cursorCallback(_ timer: Timer) {
+        if game.state == .Idle && game.scriptEditor != nil {
+            game.scriptEditor!.getSessionCursor({ (line) in
+                let asset = (timer.userInfo as! Asset)
+
+                let needsUpdate = self.scriptLine != line
+                self.scriptLine = line
+                if needsUpdate && asset.map != nil {
+                    self.createPreview(asset.map!)
+                }
+            })
+        }
     }
 }
