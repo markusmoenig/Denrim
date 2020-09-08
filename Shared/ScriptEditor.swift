@@ -142,6 +142,31 @@ class ScriptEditor
          })
     }
     
+    func getChangeDelta(_ cb: @escaping (Int32, Int32)->() )
+    {
+        webView.evaluateJavaScript(
+            """
+            delta
+            """, completionHandler: { (value, error ) in
+                //print(value)
+                if let map = value as? [String:Any] {
+                    var from : Int32 = -1
+                    var to   : Int32 = -1
+                    if let f = map["start"] as? [String:Any] {
+                        if let ff = f["row"] as? Int32 {
+                            from = ff
+                        }
+                    }
+                    if let t = map["end"] as? [String:Any] {
+                        if let tt = t["row"] as? Int32 {
+                            to = tt
+                        }
+                    }
+                    cb(from, to)
+                }
+         })
+    }
+    
     func clearAnnotations()
     {
         webView.evaluateJavaScript(
@@ -155,7 +180,9 @@ class ScriptEditor
     {
         if let asset = game.assetFolder.current {
             getAssetValue(asset, { (value) in
-                self.game.assetFolder.assetUpdated(name: asset.name, value: value)
+                self.getChangeDelta({ (from, to) in
+                    self.game.assetFolder.assetUpdated(name: asset.name, value: value, deltaStart: from, deltaEnd: to)
+                })
             })
         }
     }

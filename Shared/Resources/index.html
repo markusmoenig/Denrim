@@ -26,8 +26,10 @@
     editor.session.setMode("ace/mode/javascript");
     
     var reportChanges = true;
-    editor.on('change', function(delta) {
+    var delta = 0;
+    editor.on('change', function(d) {
         if (reportChanges) {
+            delta = d;
             window.webkit.messageHandlers.jsHandler.postMessage("update");
         }
     });

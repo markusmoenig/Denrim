@@ -158,13 +158,13 @@ class AssetFolder   : Codable
         return nil
     }
     
-    func assetUpdated(name: String, value: String)
+    func assetUpdated(name: String, value: String, deltaStart: Int32, deltaEnd: Int32)
     {
         for asset in assets {
             if asset.name == name {
                 asset.value = value
                 if game.state == .Idle {
-                    game.mapBuilder.compile(asset)
+                    game.mapBuilder.compile(asset, deltaStart: deltaStart, deltaEnd: deltaEnd)
                 }
             }
         }

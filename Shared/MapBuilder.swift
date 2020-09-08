@@ -14,10 +14,14 @@ class MapBuilder
     
     var cursorTimer     : Timer? = nil
     var scriptLine      : Int32? = nil
-
+    
     enum Types : String, CaseIterable
     {
-        case Image = "Image";
+        case Image = "Image"        // Points to a single image
+        case Sequence = "Sequence"  // Points to a range of images in a group or a range of tiles in an image
+        case Tile = "Tile"          // Points to a single subrect of an image
+        case Alias = "Alias"        // An alias of one of the above assets
+        case Layer = "Layer"        // Contains alias data of a layer
     }
     
     init(_ game: Game)
@@ -25,7 +29,7 @@ class MapBuilder
         self.game = game
     }
     
-    func compile(_ asset: Asset)
+    func compile(_ asset: Asset, deltaStart: Int32 = -1, deltaEnd: Int32 = -1)
     {
         print("compiling...")
         
@@ -42,12 +46,42 @@ class MapBuilder
         func createError(_ errorText: String = "Syntax Error") {
             error.error = errorText
         }
-
+        
         ns.enumerateLines { (str, _) in
             
             if error.error != nil { return }
             error.line = lineNumber
-                      
+            
+            // Layer Data ?
+            if str.starts(with: ":") {
+                
+                var data = String(str.filter { !" \n\t\r".contains($0) })
+                data.removeFirst()
+                
+                var lastLine : Int32 = -1
+                var lastVar  : String = ""
+                for (line, variable) in asset.map!.lines {
+                    if line > lastLine {
+                        lastLine = line
+                        lastVar = variable
+                    }
+                }
+                
+                if asset.map!.layers[lastVar] != nil {
+                    asset.map!.layers[lastVar]!.data.append(data)
+                }
+ 
+                lineNumber += 1
+                return
+            }
+            
+            /*
+            // Skipping lines outside the delta
+            if deltaEnd >= 0 && (lineNumber < deltaStart || lineNumber > deltaEnd) {
+                lineNumber += 1
+                return
+            }*/
+            
             var leftOfComment : String
 
             if str.firstIndex(of: "#") != nil {
@@ -90,22 +124,26 @@ class MapBuilder
                             
                             //print("1", rightValueArray)
                             rightValueArray.removeFirst()
-                            while rightValueArray.count > 0 {
-                                let array = rightValueArray[0].split(separator: ":")
-                                //print("2", array)
-                                rightValueArray.removeFirst()
-                                if array.count == 2 {
-                                    let optionName = array[0].lowercased()
-                                    var values = array[1]
-                                    //print("option", optionName, "value", values)
-                                                                        
-                                    if values.count > 0 && values.last! != ">" {
-                                        createError("No closing '>' for option '\(optionName)'")
-                                    } else {
-                                        values = values.dropLast()
-                                    }
-                                    options[optionName] = String(values)
-                                } else { createError(); rightValueArray = [] }
+                            if rightValueArray.count == 1 && rightValueArray[0] == ">" {
+                                // Empty Arguments
+                            } else {
+                                while rightValueArray.count > 0 {
+                                    let array = rightValueArray[0].split(separator: ":")
+                                    //print("2", array)
+                                    rightValueArray.removeFirst()
+                                    if array.count == 2 {
+                                        let optionName = array[0].lowercased()
+                                        var values = array[1]
+                                        //print("option", optionName, "value", values)
+                                                                            
+                                        if values.count > 0 && values.last! != ">" {
+                                            createError("No closing '>' for option '\(optionName)'")
+                                        } else {
+                                            values = values.dropLast()
+                                        }
+                                        options[optionName] = String(values)
+                                    } else { createError(); rightValueArray = [] }
+                                }
                             }
                             
                             // test = Image<Group: "imagegroup"><Index: 0><Rect: 0,0,0,0> # adwddawd
@@ -136,6 +174,7 @@ class MapBuilder
     func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout JSError, map: Map)
     {
         print("Processing Assignment", type, variable, options, error.line!)
+        
         if type == .Image {
             if let group = options["group"] as? String {
                 if let asset = game.assetFolder.getAsset(group, .Image) {
@@ -144,27 +183,47 @@ class MapBuilder
                         index = ind
                     }
                     if index >= 0 && index < asset.data.count {
+                        if map.images[variable] != nil {
+                            map.images[variable] = nil
+                        }
                         if map.images[variable] == nil {
+                            //print("Creating image for ", variable)
                             let data = asset.data[index]
                             
-                            let options: [MTKTextureLoader.Option : Any] = [.generateMipmaps : false, .SRGB : false]
-                            if let texture  = try? game.textureLoader.newTexture(data: data, options: options) {
-                                map.images[variable] = Texture2D(game, texture: texture)
+                            let texOptions: [MTKTextureLoader.Option : Any] = [.generateMipmaps : false, .SRGB : false]
+                            if let texture  = try? game.textureLoader.newTexture(data: data, options: texOptions) {
+                                map.images[variable] = MapImage(texture2D: Texture2D(game, texture: texture), options: options)
                                 map.lines[error.line!] = variable
                             }
                         }
                     } else { error.error = "Image group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
                 } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
             } else { error.error = "Image type for '\(variable)' expects a 'Group' option" }
-        }
+        } else
+        if type == .Alias {
+            if variable.count == 2 {
+                if let id = options["id"] as? String {
+                    
+                    if map.images[id] != nil {
+                        map.aliases[variable] = MapAlias(type: .Image, pointsTo: id, options: options)
+                        map.lines[error.line!] = variable
+                    }
+                }
+            } else { error.error = "Alias '\(variable)' must contain of two characters" }
+        } else
+        if type == .Layer {
+            map.layers[variable] = MapLayer(data: [], options: options)
+            map.lines[error.line!] = variable
+        } else { error.error = "Unknown type '\(type.rawValue)'" }
     }
     
     func parser_processOptions(_ options: [String:String],_ error: inout JSError) -> [String:Any]
     {
         print("Processing Options", options)
 
-        let stringOptions = ["group"]
+        let stringOptions = ["group", "id"]
         let integerOptions = ["index"]
+        let boolOptions = ["repeatx"]
 
         var res: [String:Any] = [:]
         
@@ -178,6 +237,12 @@ class MapBuilder
                 if let v = Int(value) {
                     res[name] = v
                 } else { error.error = "The \(name) option expects an integer argument" }
+            } else
+            if boolOptions.firstIndex(of: name) != nil {
+                // Boolean
+                if let v = Bool(value) {
+                    res[name] = v
+                } else { error.error = "The \(name) option expects an boolean argument" }
             } else
             if name == "rect" {
                 let array = value.split(separator: ",")
@@ -211,13 +276,22 @@ class MapBuilder
             }
         }
         
+        map.game = game
+        map.texture = game.texture
+        
         if let name = name {
             // Find the asset
-            if let texture = map.images[name] {
+            if let image = map.images[name] {
                 var object : [AnyHashable : Any] = [:]
-                object["texture"] = texture
+                object["texture"] = image.texture2D
                 
                 game.texture?.drawTexture(object)
+            } else
+            if let alias = map.aliases[name] {                
+                map.drawAlias(0,0,alias)
+            } else
+            if let layer = map.layers[name] {
+                map.drawLayer(0,0,layer)
             }
         }
 
