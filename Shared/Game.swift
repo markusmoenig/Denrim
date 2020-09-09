@@ -99,7 +99,7 @@ class Game              : ObservableObject
         view.isPaused = true
     }
     
-    func checkTexture()
+    func checkTexture() -> Bool
     {
         if texture == nil {
             texture = Texture2D(self)
@@ -109,6 +109,7 @@ class Game              : ObservableObject
             
             screenWidth = Float(texture!.width)
             screenHeight = Float(texture!.height)
+            return true
         } else
         if texture!.texture.width != Int(view.frame.width) || texture!.texture.height != Int(view.frame.height) {
             texture?.allocateTexture(width: Int(view.frame.width), height: Int(view.frame.height))
@@ -118,7 +119,9 @@ class Game              : ObservableObject
             
             screenWidth = Float(texture!.width)
             screenHeight = Float(texture!.height)
+            return true
         }
+        return false
     }
     
     func draw()
@@ -131,7 +134,18 @@ class Game              : ObservableObject
             }
         }
                 
-        checkTexture()
+        if checkTexture() && state == .Idle{
+            // We need to update the screen
+            if assetFolder.current?.type == .Map && assetFolder.current?.map != nil {
+                if let mapBuilder = mapBuilder {
+                    mapBuilder.createPreview(assetFolder.current!.map!)
+                }
+            } else {
+                startDrawing()
+                texture?.clear(Vec4(0,0,0,1))
+                stopDrawing()
+            }
+        }
         
         guard let drawable = view.currentDrawable else {
             return
@@ -191,6 +205,8 @@ class Game              : ObservableObject
     
     func stopDrawing(deleteQueue: Bool = true)
     {
+        gameCmdBuffer?.commit()
+
         if deleteQueue {
             self.gameCmdQueue = nil
         }
@@ -210,9 +226,7 @@ class Game              : ObservableObject
                     let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: self.scaleFactor )
                     self.texture?.drawShader(shader, rect)
                     
-                    self.gameCmdBuffer?.commit()
                     self.stopDrawing()
-                    
                     self.updateOnce()
                 }
             })

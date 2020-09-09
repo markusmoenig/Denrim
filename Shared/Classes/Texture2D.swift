@@ -148,7 +148,7 @@ class Texture2D                 : NSObject, Texture2D_JSExports
     
     func clear(_ color: Any)
     {
-        let color : SIMD4<Float> = color as? Vec4 == nil ? SIMD4<Float>(0,0,0,0) : (color as! Vec4).toSIMD()
+        let color : SIMD4<Float> = color as? Vec4 == nil ? SIMD4<Float>(0,0,0,1) : (color as! Vec4).toSIMD()
 
         let renderPassDescriptor = MTLRenderPassDescriptor()
 
@@ -156,6 +156,54 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         renderPassDescriptor.colorAttachments[0].texture = texture
         renderPassDescriptor.colorAttachments[0].loadAction = .clear
         let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+        renderEncoder.endEncoding()
+    }
+    
+    func drawChecker()
+    {
+        var x : Float = 0
+        var y : Float = 0
+        let width : Float = self.width * game.scaleFactor
+        let height : Float = self.height * game.scaleFactor
+        let round : Float = 0
+        let border : Float = 0
+        let rotation : Float = 0
+        let onion : Float = 0
+        let fillColor : SIMD4<Float> = SIMD4<Float>(0.306, 0.310, 0.314, 1.000)
+        let borderColor : SIMD4<Float> = SIMD4<Float>(0.216, 0.220, 0.224, 1.000)
+
+        x /= game.scaleFactor
+        y /= game.scaleFactor
+
+        var data = BoxUniform()
+        data.onion = onion / game.scaleFactor
+        data.size = float2(width / game.scaleFactor, height / game.scaleFactor)
+        data.round = round / game.scaleFactor
+        data.borderSize = border / game.scaleFactor
+        data.fillColor = fillColor
+        data.borderColor = borderColor
+        
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = texture
+        renderPassDescriptor.colorAttachments[0].loadAction = .load
+        
+        let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+
+        data.pos.x = x
+        data.pos.y = y
+        data.rotation = rotation.degreesToRadians
+        data.screenSize = float2(self.width / game.scaleFactor, self.height / game.scaleFactor)
+
+        let rect = MMRect(0, 0, self.width / game.scaleFactor, self.height / game.scaleFactor, scale: game.scaleFactor)
+        let vertexData = game.createVertexData(texture: self, rect: rect)
+                                
+        renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+        renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+
+        renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
+        renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBackPattern))
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+        
         renderEncoder.endEncoding()
     }
     
@@ -285,7 +333,7 @@ class Texture2D                 : NSObject, Texture2D_JSExports
             var height : Float; if let v = object["height"] as? Float { height = v } else { height = Float(sourceTexture.height) }
             let alpha : Float; if let v = object["alpha"] as? Float { alpha = v } else { alpha = 1.0 }
             
-            let subRect : Rect2D?; if let v = object["subRect"] as? Rect2D { subRect = v } else { subRect = nil }
+            let subRect : Rect2D?; if let v = object["rect"] as? Rect2D { subRect = v } else { subRect = nil }
 
             x /= game.scaleFactor
             y /= game.scaleFactor

@@ -118,6 +118,36 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
     return col;
 }
 
+// --- Box Drawable
+fragment float4 m4mBoxPatternDrawable(RasterizerData in [[stage_in]],
+                               constant BoxUniform *data [[ buffer(0) ]] )
+{
+    float2 uv = in.textureCoordinate * ( data->screenSize );
+    uv -= float2( data->screenSize / 2.0 );
+    
+    float2 d = abs( uv ) - data->size / 2.0;
+    float dist = length(max(d,float2(0))) + min(max(d.x,d.y),0.0);
+    
+    float4 checkerColor1 = data->fillColor;
+    float4 checkerColor2 = data->borderColor;
+    
+    //uv = fragCoord;
+    //uv -= float2( data->size / 2 );
+    
+    float4 col = checkerColor1;
+    
+    float cWidth = 12.0;
+    float cHeight = 12.0;
+    
+    if ( fmod( floor( uv.x / cWidth ), 2.0 ) == 0.0 ) {
+        if ( fmod( floor( uv.y / cHeight ), 2.0 ) != 0.0 ) col=checkerColor2;
+    } else {
+        if ( fmod( floor( uv.y / cHeight ), 2.0 ) == 0.0 ) col=checkerColor2;
+    }
+    
+    return float4( col.xyz, m4mFillMask( dist ) );
+}
+
 // Copy texture
 fragment float4 m4mCopyTextureDrawable(RasterizerData in [[stage_in]],
                                 constant TextureUniform *data [[ buffer(0) ]],
@@ -138,9 +168,11 @@ fragment float4 m4mTextureDrawable(RasterizerData in [[stage_in]],
                                 constant TextureUniform *data [[ buffer(0) ]],
                                 texture2d<half> inTexture [[ texture(1) ]])
 {
-    constexpr sampler textureSampler (mag_filter::linear,
-                                      min_filter::linear);
+    //constexpr sampler textureSampler (mag_filter::linear,
+    //                                  min_filter::linear);
     
+    constexpr sampler textureSampler (mag_filter::nearest,
+                                      min_filter::nearest);
     float2 uv = in.textureCoordinate;
     uv.y = 1 - uv.y;
     

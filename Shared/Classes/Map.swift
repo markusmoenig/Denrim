@@ -56,46 +56,78 @@ class Map                   : NSObject, Map_JSExports
         super.init()
     }
     
-    func drawAlias(_ x: Float,_ y: Float,_ alias: MapAlias)
+    @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: MapAlias, scale: Float = 1) -> (Float, Float)
     {
         var object : [AnyHashable : Any] = [:]
+        var rc     : (Float, Float) = (0,0)
 
         if alias.type == .Image {
             if let image = images[alias.pointsTo] {
+                
+                var width = image.texture2D.width * scale
+                var height = image.texture2D.height * scale
+
                 object["x"] = x
                 object["y"] = y
+                object["width"] = width
+                object["height"] = height
                 object["texture"] = image.texture2D
                 
-                game?.texture?.drawTexture(object)
+                if let v = alias.options["rect"] as? Rect2D {
+                    object["rect"] = v
+                    width = v.width * scale
+                    height = v.height * scale
+                    
+                    object["width"] = width
+                    object["height"] = height
+                }
             
+                game?.texture?.drawTexture(object)
+
                 if let v = alias.options["repeatx"] as? Bool {
                     if v == true {
-                        var posX : Float = x + image.texture2D.width
+                        var posX : Float = x + width
                         while posX < game!.texture!.width {
                             object["x"] = posX
                             game?.texture?.drawTexture(object)
-                            posX += image.texture2D.width
+                            posX += width
                         }
                     }
                 }
+                
+                rc.0 = width
+                rc.1 = height
             }
         }
+        
+        return rc
     }
     
-    func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer)
+    func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer, scale: Float = 1)
     {
+        var xPos = x
+        var yPos = y
+        
         for line in layer.data {
             
-            var index : Int = 0
+            var index     : Int = 0
+            var maxHeight : Float = 0
             
             while index < line.count - 1 {
                 
                 let a = String(line[line.index(line.startIndex, offsetBy: index)]) + String(line[line.index(line.startIndex, offsetBy: index+1)])
                 if let alias = aliases[a] {
-                    drawAlias(0, 0, alias)
+                    let advance = drawAlias(xPos, yPos, alias, scale: scale)
+                    xPos += advance.0
+                    if advance.1 > maxHeight {
+                        maxHeight = advance.1
+                    }
                 }
                 index += 2
             }
+            
+            yPos += maxHeight
+            xPos = x
         }
     }
 }

@@ -47,21 +47,61 @@ class MapBuilder
             error.error = errorText
         }
         
+        // Adjust changed range to cover the whole area if the last item was a layer
+        var dStart = deltaStart
+        var dEnd = deltaEnd
+        
+        if dEnd >= 0 {
+            // Get the previous line item
+            var lastLine : Int32 = -1
+            var lastVar  : String = ""
+            for (line, variable) in asset.map!.lines {
+                if line > lastLine && line <= dStart {
+                    lastLine = line
+                    lastVar = variable
+                }
+            }
+            
+            if asset.map!.layers[lastVar] != nil {
+                // The last item was a layer, adjust the start position
+                dStart = lastLine
+                
+                // Now we need to adjust the end position to cover the whole layer range
+                var nextLine : Int32 = 100000
+                for (line, _) in asset.map!.lines {
+                    if line > dStart && line < nextLine {
+                        nextLine = line
+                    }
+                }
+                
+                dEnd = nextLine
+                //print("Range adjusted to", dStart, dEnd)
+            }
+        }
+        
         ns.enumerateLines { (str, _) in
             
             if error.error != nil { return }
             error.line = lineNumber
             
+            // Skipping lines outside the delta
+            if dEnd >= 0 && (lineNumber < dStart || lineNumber > dEnd) {
+                print("Skipping", lineNumber)
+                lineNumber += 1
+                return
+            }
+            
             // Layer Data ?
             if str.starts(with: ":") {
                 
-                var data = String(str.filter { !" \n\t\r".contains($0) })
+                var data = str
                 data.removeFirst()
+                data = data.trimmingCharacters(in: .whitespaces)
                 
                 var lastLine : Int32 = -1
                 var lastVar  : String = ""
                 for (line, variable) in asset.map!.lines {
-                    if line > lastLine {
+                    if line > lastLine && line < lineNumber {
                         lastLine = line
                         lastVar = variable
                     }
@@ -74,13 +114,6 @@ class MapBuilder
                 lineNumber += 1
                 return
             }
-            
-            /*
-            // Skipping lines outside the delta
-            if deltaEnd >= 0 && (lineNumber < deltaStart || lineNumber > deltaEnd) {
-                lineNumber += 1
-                return
-            }*/
             
             var leftOfComment : String
 
@@ -95,7 +128,7 @@ class MapBuilder
                 leftOfComment = str
             }
             
-            leftOfComment = String(leftOfComment.filter { !" \n\t\r".contains($0) })
+            leftOfComment = leftOfComment.trimmingCharacters(in: .whitespaces)//String(leftOfComment.filter { !" \n\t\r".contains($0) })
             
             if leftOfComment.count > 0 {
                 
@@ -103,16 +136,17 @@ class MapBuilder
 
                 if values.count == 2 {
                     
-                    let leftValue = String(values[0])
-                    let rightValue = values[1]
+                    let leftValue = String(values[0]).trimmingCharacters(in: .whitespaces)
+                    let rightValue = values[1].trimmingCharacters(in: .whitespaces)
 
                     var rightValueArray = rightValue.split(separator: "<")
                     
                     if rightValueArray.count > 0 {
                         
+                        let possbibleType = String(rightValueArray[0]).trimmingCharacters(in: .whitespaces)
                         var type : Types? = nil
                         Types.allCases.forEach {
-                            if $0.rawValue == rightValueArray[0] {
+                            if $0.rawValue == possbibleType {
                                 if type != nil { return }
                                 type = $0
                             }
@@ -122,7 +156,6 @@ class MapBuilder
                             
                             var options : [String: String] = [:]
                             
-                            //print("1", rightValueArray)
                             rightValueArray.removeFirst()
                             if rightValueArray.count == 1 && rightValueArray[0] == ">" {
                                 // Empty Arguments
@@ -132,14 +165,14 @@ class MapBuilder
                                     //print("2", array)
                                     rightValueArray.removeFirst()
                                     if array.count == 2 {
-                                        let optionName = array[0].lowercased()
-                                        var values = array[1]
+                                        let optionName = array[0].lowercased().trimmingCharacters(in: .whitespaces)
+                                        var values = array[1].trimmingCharacters(in: .whitespaces)
                                         //print("option", optionName, "value", values)
                                                                             
                                         if values.count > 0 && values.last! != ">" {
                                             createError("No closing '>' for option '\(optionName)'")
                                         } else {
-                                            values = values.dropLast()
+                                            values = String(values.dropLast())
                                         }
                                         options[optionName] = String(values)
                                     } else { createError(); rightValueArray = [] }
@@ -248,10 +281,10 @@ class MapBuilder
                 let array = value.split(separator: ",")
                 if array.count == 4 {
                     let x : Float; if let v = Float(array[0]) { x = v } else { x = 0 }
-                    let y : Float; if let v = Float(array[1]) { y = v } else { y = 0 }
-                    let width : Float; if let v = Float(array[2]) { width = v } else { width = 1 }
-                    let height : Float; if let v = Float(array[3]) { height = v } else { height = 1 }
-                    res[name] = MMRect(x, y, width, height)
+                    let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
+                    let width : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
+                    let height : Float; if let v = Float(array[3].trimmingCharacters(in: .whitespaces)) { height = v } else { height = 1 }
+                    res[name] = Rect2D(x, y, width, height)
                 } else { error.error = "Rect must have 4 arguments" }
             }
         }
@@ -261,18 +294,28 @@ class MapBuilder
     
     func createPreview(_ map: Map)
     {
-        game.startDrawing()
+        game.startDrawing()        
+        //game.texture?.clear(Vec4(0,0,0,1))
+        game.texture?.drawChecker()
         
-        game.texture?.clear(Vec4(0,0,0,1))
-        
-        /*
-        var map : [AnyHashable : Any] = [:]
-        map["radius"] = Float(200)
-        game.texture?.drawDisk(map)*/
         var name : String? = nil
         if let line = scriptLine {
             if let n = map.lines[line] {
                 name = n
+            } else {
+                    
+                var lastLine : Int32 = -1
+                var lastVar  : String = ""
+                for (l, variable) in map.lines {
+                    if l > lastLine && l < line {
+                        lastLine = l
+                        lastVar = variable
+                    }
+                }
+                
+                if map.layers[lastVar] != nil {
+                    name = lastVar
+                }
             }
         }
         
@@ -288,16 +331,14 @@ class MapBuilder
                 game.texture?.drawTexture(object)
             } else
             if let alias = map.aliases[name] {                
-                map.drawAlias(0,0,alias)
+                map.drawAlias(0,0,alias, scale: 4)
             } else
             if let layer = map.layers[name] {
-                map.drawLayer(0,0,layer)
+                map.drawLayer(0,0,layer, scale: 4)
             }
         }
 
-        game.gameCmdBuffer?.commit()
         game.stopDrawing()
-                
         game.updateOnce()
     }
     

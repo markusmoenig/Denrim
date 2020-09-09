@@ -10,7 +10,7 @@ import MetalKit
 class MetalStates {
     
     enum States : Int {
-        case DrawDisc, CopyTexture, DrawTexture, DrawBox, DrawBoxExt, DrawTextChar
+        case DrawDisc, CopyTexture, DrawTexture, DrawBox, DrawBoxExt, DrawTextChar, DrawBackPattern
     }
     
     let defaultLibrary          : MTLLibrary!
@@ -48,6 +48,7 @@ class MetalStates {
         states[States.DrawBox.rawValue] = createQuadState(name: "m4mBoxDrawable")
         states[States.DrawBoxExt.rawValue] = createQuadState(name: "m4mBoxDrawableExt")
         states[States.DrawTextChar.rawValue] = createQuadState(name: "m4mTextDrawable")
+        states[States.DrawBackPattern.rawValue] = createQuadState(name: "m4mBoxPatternDrawable")
     }
     
     /// Creates a quod state from an optional library and the function name
