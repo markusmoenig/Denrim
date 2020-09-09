@@ -31,6 +31,11 @@ struct MapLayer {
     var options     : [String:Any]
 }
 
+struct MapScene {
+
+    var options     : [String:Any]
+}
+
 @objc protocol Map_JSExports: JSExport {
 }
 
@@ -39,6 +44,7 @@ class Map                   : NSObject, Map_JSExports
     var images              : [String:MapImage] = [:]
     var aliases             : [String:MapAlias] = [:]
     var layers              : [String:MapLayer] = [:]
+    var scenes              : [String:MapScene] = [:]
 
     var lines               : [Int32:String] = [:]
 
@@ -47,6 +53,9 @@ class Map                   : NSObject, Map_JSExports
     
     deinit {
         images = [:]
+        aliases = [:]
+        layers = [:]
+        scenes = [:]
         lines = [:]
         print("release map")
     }
@@ -128,6 +137,17 @@ class Map                   : NSObject, Map_JSExports
             
             yPos += maxHeight
             xPos = x
+        }
+    }
+    
+    func drawScene(_ x: Float,_ y: Float,_ scene: MapScene, scale: Float = 1)
+    {
+        if let sceneLayers = scene.options["layers"] as? [String] {
+            for l in sceneLayers {
+                if let layer = layers[l] {
+                    drawLayer(x, y, layer, scale: scale)
+                }
+            }
         }
     }
 }

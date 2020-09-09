@@ -19,9 +19,9 @@ class MapBuilder
     {
         case Image = "Image"        // Points to a single image
         case Sequence = "Sequence"  // Points to a range of images in a group or a range of tiles in an image
-        case Tile = "Tile"          // Points to a single subrect of an image
-        case Alias = "Alias"        // An alias of one of the above assets
+        case Alias = "Alias"        // An alias of or into one of the above assets
         case Layer = "Layer"        // Contains alias data of a layer
+        case Scene = "Scene"        // List of layers
     }
     
     init(_ game: Game)
@@ -151,7 +151,7 @@ class MapBuilder
                                 type = $0
                             }
                         }
-                        
+                                                
                         if let type = type {
                             
                             var options : [String: String] = [:]
@@ -208,6 +208,17 @@ class MapBuilder
     {
         print("Processing Assignment", type, variable, options, error.line!)
         
+        func setLine(_ variable: String)
+        {
+            // Remove previous lines with the same variable
+            for (l,v) in map.lines {
+                if v == variable {
+                    map.lines[l] = nil
+                }
+            }
+            map.lines[error.line!] = variable
+        }
+        
         if type == .Image {
             if let group = options["group"] as? String {
                 if let asset = game.assetFolder.getAsset(group, .Image) {
@@ -226,7 +237,7 @@ class MapBuilder
                             let texOptions: [MTKTextureLoader.Option : Any] = [.generateMipmaps : false, .SRGB : false]
                             if let texture  = try? game.textureLoader.newTexture(data: data, options: texOptions) {
                                 map.images[variable] = MapImage(texture2D: Texture2D(game, texture: texture), options: options)
-                                map.lines[error.line!] = variable
+                                setLine(variable)
                             }
                         }
                     } else { error.error = "Image group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
@@ -239,14 +250,18 @@ class MapBuilder
                     
                     if map.images[id] != nil {
                         map.aliases[variable] = MapAlias(type: .Image, pointsTo: id, options: options)
-                        map.lines[error.line!] = variable
+                        setLine(variable)
                     }
                 }
             } else { error.error = "Alias '\(variable)' must contain of two characters" }
         } else
         if type == .Layer {
             map.layers[variable] = MapLayer(data: [], options: options)
-            map.lines[error.line!] = variable
+            setLine(variable)
+        } else
+        if type == .Scene {
+            map.scenes[variable] = MapScene(options: options)
+            setLine(variable)
         } else { error.error = "Unknown type '\(type.rawValue)'" }
     }
     
@@ -257,6 +272,7 @@ class MapBuilder
         let stringOptions = ["group", "id"]
         let integerOptions = ["index"]
         let boolOptions = ["repeatx"]
+        let stringArrayOptions = ["layers"]
 
         var res: [String:Any] = [:]
         
@@ -276,6 +292,16 @@ class MapBuilder
                 if let v = Bool(value) {
                     res[name] = v
                 } else { error.error = "The \(name) option expects an boolean argument" }
+            } else
+            if stringArrayOptions.firstIndex(of: name) != nil {
+                // StringArray
+                let array = value.split(separator: ",")
+                
+                var layers : [String] = []
+                for l in array {
+                    layers.append(l.trimmingCharacters(in: .whitespaces))
+                }
+                res[name] = layers
             } else
             if name == "rect" {
                 let array = value.split(separator: ",")
@@ -297,6 +323,8 @@ class MapBuilder
         game.startDrawing()        
         //game.texture?.clear(Vec4(0,0,0,1))
         game.texture?.drawChecker()
+        
+        print(map.lines)
         
         var name : String? = nil
         if let line = scriptLine {
@@ -323,6 +351,8 @@ class MapBuilder
         map.texture = game.texture
         
         if let name = name {
+            
+            print("11", name)
             // Find the asset
             if let image = map.images[name] {
                 var object : [AnyHashable : Any] = [:]
@@ -331,10 +361,14 @@ class MapBuilder
                 game.texture?.drawTexture(object)
             } else
             if let alias = map.aliases[name] {                
-                map.drawAlias(0,0,alias, scale: 4)
+                map.drawAlias(0, 0, alias, scale: 4)
             } else
             if let layer = map.layers[name] {
-                map.drawLayer(0,0,layer, scale: 4)
+                print(layer)
+                map.drawLayer(0, 0, layer, scale: 4)
+            } else
+            if let scene = map.scenes[name] {
+                map.drawScene(0, 0, scene, scale: 4)
             }
         }
 
