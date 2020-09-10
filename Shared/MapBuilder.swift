@@ -15,6 +15,8 @@ class MapBuilder
     var cursorTimer     : Timer? = nil
     var scriptLine      : Int32? = nil
     
+    let mapPreview      : MapPreview
+    
     enum Types : String, CaseIterable
     {
         case Image = "Image"        // Points to a single image
@@ -27,6 +29,7 @@ class MapBuilder
     init(_ game: Game)
     {
         self.game = game
+        mapPreview = MapPreview(game)
     }
     
     @discardableResult func compile(_ asset: Asset, deltaStart: Int32 = -1, deltaEnd: Int32 = -1) -> JSError
@@ -86,7 +89,7 @@ class MapBuilder
             
             // Skipping lines outside the delta
             if dEnd >= 0 && (lineNumber < dStart || lineNumber > dEnd) {
-                print("Skipping", lineNumber)
+                //print("Skipping", lineNumber)
                 lineNumber += 1
                 return
             }
@@ -248,6 +251,35 @@ class MapBuilder
                 } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
             } else { error.error = "Image type for '\(variable)' expects a 'Group' option" }
         } else
+        if type == .Sequence {
+            if let group = options["group"] as? String {
+                if let asset = game.assetFolder.getAsset(group, .Image) {
+                    var from : Int = 0
+                    var to : Int = 0
+                    if let vec = options["range"] as? Vec2 {
+                        from = Int(vec.x)
+                        to = Int(vec.y)
+                    }
+                    var array : [Texture2D] = []
+                    for index in from...to {
+                        if index >= 0 && index < asset.data.count {
+                            //print("Creating image for ", variable)
+                            let data = asset.data[index]
+                            
+                            let texOptions: [MTKTextureLoader.Option : Any] = [.generateMipmaps : false, .SRGB : false]
+                            if let texture  = try? game.textureLoader.newTexture(data: data, options: texOptions) {
+                                array.append(Texture2D(game, texture: texture))
+                            }
+                        } else { error.error = "Sequence group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
+                    }
+                    if map.sequences[variable] != nil {
+                        map.sequences[variable] = nil
+                    }
+                    map.sequences[variable] = MapSequence(texture2D: array, options: options)
+                    setLine(variable)
+                } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
+            } else { error.error = "Sequence type for '\(variable)' expects a 'Group' option" }
+        } else
         if type == .Alias {
             if variable.count == 2 {
                 if let id = options["id"] as? String {
@@ -275,7 +307,7 @@ class MapBuilder
 
         let stringOptions = ["group", "id"]
         let integerOptions = ["index"]
-        let sizeOptions = ["sceneoffset"]
+        let sizeOptions = ["sceneoffset", "range"]
         let boolOptions = ["repeatx"]
         let stringArrayOptions = ["layers"]
 
@@ -309,6 +341,7 @@ class MapBuilder
                 res[name] = layers
             } else
             if sizeOptions.firstIndex(of: name) != nil {
+                // Size
                 let array = value.split(separator: ",")
                 if array.count == 2 {
                     let width : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
@@ -333,11 +366,7 @@ class MapBuilder
     
     func createPreview(_ map: Map)
     {
-        game.startDrawing()        
-        //game.texture?.clear(Vec4(0,0,0,1))
-        game.texture?.drawChecker()
-        
-        print(map.lines)
+        //print(map.lines)
         
         var name : String? = nil
         if let line = scriptLine {
@@ -363,27 +392,7 @@ class MapBuilder
         map.game = game
         map.texture = game.texture
         
-        if let name = name {
-            // Find the asset
-            if let image = map.images[name] {
-                var object : [AnyHashable : Any] = [:]
-                object["texture"] = image.texture2D
-                
-                game.texture?.drawTexture(object)
-            } else
-            if let alias = map.aliases[name] {                
-                map.drawAlias(0, 0, alias, scale: 4)
-            } else
-            if let layer = map.layers[name] {
-                map.drawLayer(0, 0, layer, scale: 4)
-            } else
-            if let scene = map.scenes[name] {
-                map.drawScene(0, 0, scene, scale: 1)
-            }
-        }
-
-        game.stopDrawing()
-        game.updateOnce()
+        mapPreview.preview(map, name)
     }
     
     func startTimer(_ asset: Asset)
@@ -404,6 +413,7 @@ class MapBuilder
             cursorTimer?.invalidate()
             cursorTimer = nil
         }
+        mapPreview.stopTimer()
         asset.map = nil
     }
     

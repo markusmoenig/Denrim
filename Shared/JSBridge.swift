@@ -20,6 +20,7 @@ struct JSError
 class JSBridge
 {
     var context         : JSContext? = nil
+    var physicsContext  : JSContext? = nil
     var game            : Game!
     
     init(_ game: Game)
@@ -35,7 +36,8 @@ class JSBridge
     func compile(_ assetFolder: AssetFolder)
     {
         context = nil
-        
+        physicsContext = nil
+
         //if let scriptEditor = game.scriptEditor {
         //    scriptEditor.clearAnnotations()
         //}
@@ -55,7 +57,7 @@ class JSBridge
         guard let jsContext = JSContext.plus else {exit(-1)}
         context = jsContext
         context?.globalObject.setValue(JSValue(object: game.texture, in: context!), forProperty: "_mT")
-        
+                
         var from    : [Int32] = []
         var to      : [Int32] = []
         var assets  : [Asset] = []
@@ -97,10 +99,30 @@ class JSBridge
 
         
         context?.evaluateScript("var game = new Game();")
+        //context?.evaluateScript("var engine = Matter.Engine.create();")
+        //context?.evaluateScript("var world = planck.World();")
+        
+        // Physics
+        
+        physicsContext = JSContext(virtualMachine: JSVirtualMachine())
+        physicsContext?.exceptionHandler = { context, value in
+            if let error = value?.toString() {
+                print(error)
+            }
+        }
+        loadAndExecuteResource(physicsContext!, "planck.min")
+        physicsContext?.evaluateScript("var world = planck.World();")
     }
     
     func stop() {
+        if context != nil {
+            //let go = context!.globalObject.toDictionary()
+            //context!["game"] = nil
+            //context!["Square"] = nil
+        }
+        game.resources = [:]
         context = nil
+        physicsContext = nil
     }
     
     func step()
@@ -117,20 +139,20 @@ class JSBridge
         }
     }
     
-    func loadAndExecuteResource(_ name: String)
+    func loadAndExecuteResource(_ context: JSContext, _ name: String)
     {
         guard let path = Bundle.main.path(forResource: name, ofType: "js", inDirectory: "Resources") else {
             return
         }
                 
         if let string = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
-            context?.evaluateScript(string)
+            context.evaluateScript(string)
         }
     }
     
     func registerInContext(_ context: JSContext)
     {
-        loadAndExecuteResource("Enums")
+        loadAndExecuteResource(context, "Enums")
         context.setObject(System.self, forKeyedSubscript: "System" as (NSCopying & NSObjectProtocol))
         context.setObject(Vec4.self, forKeyedSubscript: "Vec4" as (NSCopying & NSObjectProtocol))
         context.setObject(Vec2.self, forKeyedSubscript: "Vec2" as (NSCopying & NSObjectProtocol))
@@ -138,8 +160,7 @@ class JSBridge
         context.setObject(Texture2D.self, forKeyedSubscript: "Texture2D" as (NSCopying & NSObjectProtocol))
         context.setObject(Map.self, forKeyedSubscript: "Map" as (NSCopying & NSObjectProtocol))
 
-        // Fonts
-        
+        // Fonts        
         let openSans = Font(name: "OpenSans", game: game)
         game.resources[openSans.uuid] = openSans
 
@@ -149,6 +170,9 @@ class JSBridge
         let sourceCodePro = Font(name: "SourceCodePro", game: game)
         game.resources[sourceCodePro.uuid] = sourceCodePro
 
+        // Physics
+        //loadAndExecuteResource("matter.min")
+        //loadAndExecuteResource("planck.min")
     }
 }
 

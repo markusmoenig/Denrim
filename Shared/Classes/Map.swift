@@ -14,6 +14,12 @@ struct MapImage {
     var options     : [String:Any]
 }
 
+struct MapSequence {
+    
+    var texture2D   : [Texture2D] = []
+    var options     : [String:Any]
+}
+
 struct MapAlias {
     
     enum AliasType {
@@ -47,6 +53,7 @@ class Map                   : NSObject, Map_JSExports
 {
     var images              : [String:MapImage] = [:]
     var aliases             : [String:MapAlias] = [:]
+    var sequences           : [String:MapSequence] = [:]
     var layers              : [String:MapLayer] = [:]
     var scenes              : [String:MapScene] = [:]
 
@@ -55,14 +62,14 @@ class Map                   : NSObject, Map_JSExports
     weak var game           : Game? = nil
     weak var texture        : Texture2D? = nil
     
-    
     deinit {
+        print("release map start")
         images = [:]
         aliases = [:]
         layers = [:]
         scenes = [:]
         lines = [:]
-        print("release map")
+        print("release map stop")
     }
     
     override init()
