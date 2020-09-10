@@ -9,10 +9,9 @@ class Game
         })
         .then(image => this.image = image)
         .catch(e => System.log(e))
-        
-        
+                
         System.compileShader({
-            name: "New Shader.sh",
+            name: "New Shader",
         })
         .then( shader => {
             this.shader = shader

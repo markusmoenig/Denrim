@@ -29,7 +29,7 @@ class MapBuilder
         self.game = game
     }
     
-    func compile(_ asset: Asset, deltaStart: Int32 = -1, deltaEnd: Int32 = -1)
+    @discardableResult func compile(_ asset: Asset, deltaStart: Int32 = -1, deltaEnd: Int32 = -1) -> JSError
     {
         print("compiling...")
         
@@ -193,15 +193,19 @@ class MapBuilder
             lineNumber += 1
         }
         
-        if error.error != nil {
-            error.line = error.line! + 1
-            game.scriptEditor?.setError(error)
-        } else {
-            game.scriptEditor?.clearAnnotations()
-            DispatchQueue.main.async {
-                self.createPreview(asset.map!)
+        if game.state == .Idle {
+            if error.error != nil {
+                error.line = error.line! + 1
+                game.scriptEditor?.setError(error)
+            } else {
+                game.scriptEditor?.clearAnnotations()
+                DispatchQueue.main.async {
+                    self.createPreview(asset.map!)
+                }
             }
-        }        
+        }
+        
+        return error
     }
     
     func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout JSError, map: Map)
@@ -271,6 +275,7 @@ class MapBuilder
 
         let stringOptions = ["group", "id"]
         let integerOptions = ["index"]
+        let sizeOptions = ["sceneoffset"]
         let boolOptions = ["repeatx"]
         let stringArrayOptions = ["layers"]
 
@@ -303,6 +308,14 @@ class MapBuilder
                 }
                 res[name] = layers
             } else
+            if sizeOptions.firstIndex(of: name) != nil {
+                let array = value.split(separator: ",")
+                if array.count == 2 {
+                    let width : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
+                    let height : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { height = v } else { height = 1 }
+                    res[name] = Vec2(width, height)
+                } else { error.error = "Vec2 must have 2 arguments" }
+            }
             if name == "rect" {
                 let array = value.split(separator: ",")
                 if array.count == 4 {
@@ -351,8 +364,6 @@ class MapBuilder
         map.texture = game.texture
         
         if let name = name {
-            
-            print("11", name)
             // Find the asset
             if let image = map.images[name] {
                 var object : [AnyHashable : Any] = [:]
@@ -364,11 +375,10 @@ class MapBuilder
                 map.drawAlias(0, 0, alias, scale: 4)
             } else
             if let layer = map.layers[name] {
-                print(layer)
                 map.drawLayer(0, 0, layer, scale: 4)
             } else
             if let scene = map.scenes[name] {
-                map.drawScene(0, 0, scene, scale: 4)
+                map.drawScene(0, 0, scene, scale: 1)
             }
         }
 
@@ -379,7 +389,7 @@ class MapBuilder
     func startTimer(_ asset: Asset)
     {
         DispatchQueue.main.async(execute: {
-            let timer = Timer.scheduledTimer(timeInterval: 1,
+            let timer = Timer.scheduledTimer(timeInterval: 0.2,
                                              target: self,
                                              selector: #selector(self.cursorCallback),
                                              userInfo: asset,

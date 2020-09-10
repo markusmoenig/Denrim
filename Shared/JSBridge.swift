@@ -133,9 +133,11 @@ class JSBridge
         loadAndExecuteResource("Enums")
         context.setObject(System.self, forKeyedSubscript: "System" as (NSCopying & NSObjectProtocol))
         context.setObject(Vec4.self, forKeyedSubscript: "Vec4" as (NSCopying & NSObjectProtocol))
+        context.setObject(Vec2.self, forKeyedSubscript: "Vec2" as (NSCopying & NSObjectProtocol))
         context.setObject(Rect2D.self, forKeyedSubscript: "Rect2D" as (NSCopying & NSObjectProtocol))
         context.setObject(Texture2D.self, forKeyedSubscript: "Texture2D" as (NSCopying & NSObjectProtocol))
-        
+        context.setObject(Map.self, forKeyedSubscript: "Map" as (NSCopying & NSObjectProtocol))
+
         // Fonts
         
         let openSans = Font(name: "OpenSans", game: game)

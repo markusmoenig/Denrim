@@ -44,6 +44,36 @@ class Vec4              : NSObject, Vec4_JSExports
     }
 }
 
+@objc protocol Vec2_JSExports: JSExport {
+    var x           : Float { get set }
+    var y           : Float { get set }
+
+    static func create(_ x: Float,_ y: Float) -> Vec2
+}
+
+class Vec2              : NSObject, Vec2_JSExports
+{
+    var x           : Float = 0
+    var y           : Float = 0
+
+    init(_ x: Float = 0,_ y: Float = 0)
+    {
+        self.x = x
+        self.y = y
+        super.init()
+    }
+    
+    func toSIMD() -> SIMD2<Float>
+    {
+        return SIMD2<Float>(x, y)
+    }
+    
+    class func create(_ x: Float,_ y: Float) -> Vec2
+    {
+        return Vec2(x,y)
+    }
+}
+
 @objc protocol Rect2D_JSExports: JSExport {
     var x           : Float { get set }
     var y           : Float { get set }
