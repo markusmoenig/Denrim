@@ -16,7 +16,7 @@ class MapBuilder
     var scriptLine      : Int32? = nil
     
     let mapPreview      : MapPreview
-    
+
     enum Types : String, CaseIterable
     {
         case Image = "Image"        // Points to a single image
@@ -32,12 +32,14 @@ class MapBuilder
         mapPreview = MapPreview(game)
     }
     
-    @discardableResult func compile(_ asset: Asset, deltaStart: Int32 = -1, deltaEnd: Int32 = -1) -> JSError
+    @discardableResult func compile(_ asset: Asset) -> JSError
     {
         print("compiling...")
         
         if asset.map == nil {
             asset.map = Map()
+        } else {
+            asset.map!.clear()
         }
                 
         let ns = asset.value as NSString
@@ -50,49 +52,10 @@ class MapBuilder
             error.error = errorText
         }
         
-        // Adjust changed range to cover the whole area if the last item was a layer
-        var dStart = deltaStart
-        var dEnd = deltaEnd
-        
-        if dEnd >= 0 {
-            // Get the previous line item
-            var lastLine : Int32 = -1
-            var lastVar  : String = ""
-            for (line, variable) in asset.map!.lines {
-                if line > lastLine && line <= dStart {
-                    lastLine = line
-                    lastVar = variable
-                }
-            }
-            
-            if asset.map!.layers[lastVar] != nil {
-                // The last item was a layer, adjust the start position
-                dStart = lastLine
-                
-                // Now we need to adjust the end position to cover the whole layer range
-                var nextLine : Int32 = 100000
-                for (line, _) in asset.map!.lines {
-                    if line > dStart && line < nextLine {
-                        nextLine = line
-                    }
-                }
-                
-                dEnd = nextLine
-                //print("Range adjusted to", dStart, dEnd)
-            }
-        }
-        
         ns.enumerateLines { (str, _) in
             
             if error.error != nil { return }
             error.line = lineNumber
-            
-            // Skipping lines outside the delta
-            if dEnd >= 0 && (lineNumber < dStart || lineNumber > dEnd) {
-                //print("Skipping", lineNumber)
-                lineNumber += 1
-                return
-            }
             
             // Layer Data ?
             if str.starts(with: ":") {
@@ -238,14 +201,9 @@ class MapBuilder
                             map.images[variable] = nil
                         }
                         if map.images[variable] == nil {
-                            //print("Creating image for ", variable)
-                            let data = asset.data[index]
-                            
-                            let texOptions: [MTKTextureLoader.Option : Any] = [.generateMipmaps : false, .SRGB : false]
-                            if let texture  = try? game.textureLoader.newTexture(data: data, options: texOptions) {
-                                map.images[variable] = MapImage(texture2D: Texture2D(game, texture: texture), options: options)
-                                setLine(variable)
-                            }
+                            let resourceName : String = asset.id.uuidString + ":" + String(index)
+                            map.images[variable] = MapImage(resourceName: resourceName, options: options)
+                            setLine(variable)
                         }
                     } else { error.error = "Image group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
                 } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
@@ -260,22 +218,18 @@ class MapBuilder
                         from = Int(vec.x)
                         to = Int(vec.y)
                     }
-                    var array : [Texture2D] = []
+                    var array : [String] = []
                     for index in from...to {
                         if index >= 0 && index < asset.data.count {
                             //print("Creating image for ", variable)
-                            let data = asset.data[index]
-                            
-                            let texOptions: [MTKTextureLoader.Option : Any] = [.generateMipmaps : false, .SRGB : false]
-                            if let texture  = try? game.textureLoader.newTexture(data: data, options: texOptions) {
-                                array.append(Texture2D(game, texture: texture))
-                            }
+                            let resourceName : String = asset.id.uuidString + ":" + String(index)
+                            array.append(resourceName)
                         } else { error.error = "Sequence group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
                     }
                     if map.sequences[variable] != nil {
                         map.sequences[variable] = nil
                     }
-                    map.sequences[variable] = MapSequence(texture2D: array, options: options)
+                    map.sequences[variable] = MapSequence(resourceNames: array, options: options)
                     setLine(variable)
                 } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
             } else { error.error = "Sequence type for '\(variable)' expects a 'Group' option" }
@@ -366,7 +320,7 @@ class MapBuilder
     
     func createPreview(_ map: Map)
     {
-        //print(map.lines)
+        print(map.lines)
         
         var name : String? = nil
         if let line = scriptLine {

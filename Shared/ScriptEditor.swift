@@ -180,9 +180,10 @@ class ScriptEditor
     {
         if let asset = game.assetFolder.current {
             getAssetValue(asset, { (value) in
-                self.getChangeDelta({ (from, to) in
-                    self.game.assetFolder.assetUpdated(name: asset.name, value: value, deltaStart: from, deltaEnd: to)
-                })
+                self.game.assetFolder.assetUpdated(id: asset.id, value: value)
+                //self.getChangeDelta({ (from, to) in
+                //    self.game.assetFolder.assetUpdated(id: asset.id, value: value, deltaStart: from, deltaEnd: to)
+                //})
             })
         }
     }

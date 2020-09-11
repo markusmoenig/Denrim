@@ -34,7 +34,9 @@ class MapPreview
 
             if let image = map.images[variable] {
                 stopTimer()
-                drawTexture(image.texture2D)
+                if let texture2D = map.getImageResource(image.resourceName) {
+                    drawTexture(texture2D)
+                }
             } else
             if let seq = map.sequences[variable] {
                 if let range = seq.options["range"] as? Vec2 {
@@ -42,7 +44,12 @@ class MapPreview
                         animIndex = Int(range.x)
                     }
                 }
-                drawTexture(seq.texture2D[animIndex])
+                
+                let resourceName = seq.resourceNames[animIndex]
+                if let texture2D = map.getImageResource(resourceName) {
+                    drawTexture(texture2D)
+                }
+                
                 if animationTimer == nil {
                     startTimer()
                 }

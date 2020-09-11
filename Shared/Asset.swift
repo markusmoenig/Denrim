@@ -112,6 +112,7 @@ class AssetFolder   : Codable
                 if game.mapBuilder.cursorTimer != nil {
                     game.mapBuilder.stopTimer(current)
                 }
+                current.map = nil
             }
         }
 
@@ -145,6 +146,16 @@ class AssetFolder   : Codable
         return nil
     }
     
+    func getAssetById(_ id: UUID,_ type: Asset.AssetType = .JavaScript) -> Asset?
+    {
+        for asset in assets {
+            if asset.type == type && asset.id == id {
+                return asset
+            }
+        }
+        return nil
+    }
+    
     func getAssetTexture(_ name: String,_ index: Int = 0) -> MTLTexture?
     {
         if let asset = getAsset(name, .Image) {
@@ -158,13 +169,15 @@ class AssetFolder   : Codable
         return nil
     }
     
-    func assetUpdated(name: String, value: String, deltaStart: Int32, deltaEnd: Int32)
+    func assetUpdated(id: UUID, value: String)//, deltaStart: Int32, deltaEnd: Int32)
     {
         for asset in assets {
-            if asset.name == name {
+            if asset.id == id {
                 asset.value = value
-                if game.state == .Idle {
-                    game.mapBuilder.compile(asset, deltaStart: deltaStart, deltaEnd: deltaEnd)
+                if asset.type == .Map {
+                    if game.state == .Idle {
+                        game.mapBuilder.compile(asset)//, deltaStart: deltaStart, deltaEnd: deltaEnd)
+                    }
                 }
             }
         }

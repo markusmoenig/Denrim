@@ -133,8 +133,6 @@
 		2B6D0BDF250B08080098F244 /* b2Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B88250B08080098F244 /* b2Wrappers.swift */; };
 		2B6D0BE0250B08080098F244 /* b2Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B89250B08080098F244 /* b2Math.swift */; };
 		2B6D0BE1250B08080098F244 /* b2Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B89250B08080098F244 /* b2Math.swift */; };
-		2B6D0BE2250B08080098F244 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8A250B08080098F244 /* Info.plist */; };
-		2B6D0BE3250B08080098F244 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8A250B08080098F244 /* Info.plist */; };
 		2B6D0BE4250B08080098F244 /* b2BroadPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8C250B08080098F244 /* b2BroadPhase.swift */; };
 		2B6D0BE5250B08080098F244 /* b2BroadPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8C250B08080098F244 /* b2BroadPhase.swift */; };
 		2B6D0BE6250B08080098F244 /* b2EdgeShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8E250B08080098F244 /* b2EdgeShape.swift */; };
@@ -163,6 +161,7 @@
 		2B6D0BFD250B08080098F244 /* b2CollideCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B99250B08080098F244 /* b2CollideCircles.swift */; };
 		2B6D0BFE250B0AAE0098F244 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
 		2B6D0BFF250B0B490098F244 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
+		2B6D0C02250B16C00098F244 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6D0C01250B16C00098F244 /* CloudKit.framework */; };
 		2BEFCF8F250473B1003C00B0 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
 		2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
 		2BFC028B2505EDA500AB489E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
@@ -232,7 +231,6 @@
 		2B6D0B7C250B08080098F244 /* b2Island.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Island.swift; sourceTree = "<group>"; };
 		2B6D0B7D250B08080098F244 /* b2ContactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2ContactManager.swift; sourceTree = "<group>"; };
 		2B6D0B7E250B08080098F244 /* b2Fixture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Fixture.swift; sourceTree = "<group>"; };
-		2B6D0B7F250B08080098F244 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
 		2B6D0B81250B08080098F244 /* b2Rope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Rope.swift; sourceTree = "<group>"; };
 		2B6D0B83250B08080098F244 /* b2Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Timer.swift; sourceTree = "<group>"; };
 		2B6D0B84250B08080098F244 /* b2GrowableStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2GrowableStack.swift; sourceTree = "<group>"; };
@@ -241,7 +239,6 @@
 		2B6D0B87250B08080098F244 /* b2Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Common.swift; sourceTree = "<group>"; };
 		2B6D0B88250B08080098F244 /* b2Wrappers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Wrappers.swift; sourceTree = "<group>"; };
 		2B6D0B89250B08080098F244 /* b2Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Math.swift; sourceTree = "<group>"; };
-		2B6D0B8A250B08080098F244 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B6D0B8C250B08080098F244 /* b2BroadPhase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2BroadPhase.swift; sourceTree = "<group>"; };
 		2B6D0B8E250B08080098F244 /* b2EdgeShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2EdgeShape.swift; sourceTree = "<group>"; };
 		2B6D0B8F250B08080098F244 /* b2PolygonShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2PolygonShape.swift; sourceTree = "<group>"; };
@@ -255,6 +252,7 @@
 		2B6D0B97250B08080098F244 /* b2TimeOfImpact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2TimeOfImpact.swift; sourceTree = "<group>"; };
 		2B6D0B98250B08080098F244 /* b2Collision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Collision.swift; sourceTree = "<group>"; };
 		2B6D0B99250B08080098F244 /* b2CollideCircles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CollideCircles.swift; sourceTree = "<group>"; };
+		2B6D0C01250B16C00098F244 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBuilder.swift; sourceTree = "<group>"; };
 		2BFC028A2505EDA500AB489E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -271,6 +269,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B6D0C02250B16C00098F244 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +283,7 @@
 				2B01C85F24FB814C00E86449 /* iOS */,
 				2B01C86624FB814C00E86449 /* macOS */,
 				2B01C85E24FB814C00E86449 /* Products */,
+				2B6D0C00250B16C00098F244 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -372,10 +372,8 @@
 			isa = PBXGroup;
 			children = (
 				2B6D0B60250B08080098F244 /* Dynamics */,
-				2B6D0B7F250B08080098F244 /* Box2D.h */,
 				2B6D0B80250B08080098F244 /* Rope */,
 				2B6D0B82250B08080098F244 /* Common */,
-				2B6D0B8A250B08080098F244 /* Info.plist */,
 				2B6D0B8B250B08080098F244 /* Collision */,
 			);
 			path = Box2D;
@@ -482,6 +480,14 @@
 			path = Shapes;
 			sourceTree = "<group>";
 		};
+		2B6D0C00250B16C00098F244 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2B6D0C01250B16C00098F244 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -566,7 +572,6 @@
 			files = (
 				2B32994B2501B5DC007C3386 /* OpenSans.json in Resources */,
 				2B3299512501B5DC007C3386 /* OpenSans.tiff in Resources */,
-				2B6D0BE3250B08080098F244 /* Info.plist in Resources */,
 				2B01C89524FB824A00E86449 /* Resources in Resources */,
 				2B01C86F24FB814C00E86449 /* Assets.xcassets in Resources */,
 				2B3299532501B5DC007C3386 /* Square.json in Resources */,
@@ -582,7 +587,6 @@
 			files = (
 				2B32994A2501B5DC007C3386 /* OpenSans.json in Resources */,
 				2B3299502501B5DC007C3386 /* OpenSans.tiff in Resources */,
-				2B6D0BE2250B08080098F244 /* Info.plist in Resources */,
 				2B01C89624FB824A00E86449 /* Resources in Resources */,
 				2B01C87024FB814C00E86449 /* Assets.xcassets in Resources */,
 				2B3299522501B5DC007C3386 /* Square.json in Resources */,
@@ -881,7 +885,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.Denrim;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -907,7 +911,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.Denrim;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -935,7 +939,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.Denrim;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
@@ -960,7 +964,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.Denrim;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
