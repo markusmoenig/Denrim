@@ -26,6 +26,15 @@ class ScriptEditor
         }
     }
     
+    func setTheme(_ theme: String)
+    {
+        webView.evaluateJavaScript(
+            """
+            editor.setTheme("ace/theme/\(theme)");
+            """, completionHandler: { (value, error ) in
+         })
+    }
+    
     func createSession(_ asset: Asset,_ cb: (()->())? = nil)
     {
         if asset.scriptName.isEmpty {
@@ -39,6 +48,8 @@ class ScriptEditor
                 var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
                 editor.setSession(\(asset.scriptName))
                 editor.session.setMode("ace/mode/javascript");
+                //editor.setTheme("ace/theme/idle_fingers");
+                //editor.setTheme("ace/theme/tomorrow_night");
                 """, completionHandler: { (value, error ) in
                     if let cb = cb {
                         cb()
@@ -62,7 +73,9 @@ class ScriptEditor
                 """
                 var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
                 editor.setSession(\(asset.scriptName))
-                editor.session.setMode("ace/mode/txt");
+                editor.session.setMode("ace/mode/denrim");
+                //editor.setTheme("ace/theme/idle_fingers");
+                //editor.setTheme("ace/theme/tomorrow_night");
                 """, completionHandler: { (value, error ) in
                     if let cb = cb {
                         cb()

@@ -162,6 +162,8 @@
 		2B6D0BFE250B0AAE0098F244 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
 		2B6D0BFF250B0B490098F244 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
 		2B6D0C02250B16C00098F244 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6D0C01250B16C00098F244 /* CloudKit.framework */; };
+		2B6D0C04250B3BF70098F244 /* Physics2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0C03250B3BF70098F244 /* Physics2D.swift */; };
+		2B6D0C05250B3BF70098F244 /* Physics2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0C03250B3BF70098F244 /* Physics2D.swift */; };
 		2BEFCF8F250473B1003C00B0 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
 		2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
 		2BFC028B2505EDA500AB489E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
@@ -253,6 +255,7 @@
 		2B6D0B98250B08080098F244 /* b2Collision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Collision.swift; sourceTree = "<group>"; };
 		2B6D0B99250B08080098F244 /* b2CollideCircles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CollideCircles.swift; sourceTree = "<group>"; };
 		2B6D0C01250B16C00098F244 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		2B6D0C03250B3BF70098F244 /* Physics2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Physics2D.swift; sourceTree = "<group>"; };
 		2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBuilder.swift; sourceTree = "<group>"; };
 		2BFC028A2505EDA500AB489E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -347,6 +350,7 @@
 			children = (
 				2B01C88324FB824A00E86449 /* Classes.swift */,
 				2B32992024FE3D02007C3386 /* Shader.swift */,
+				2B6D0C03250B3BF70098F244 /* Physics2D.swift */,
 				2B01C88424FB824A00E86449 /* System.swift */,
 				2B01C87B24FB824900E86449 /* Texture2D.swift */,
 				2B3299582501B6F3007C3386 /* Font.swift */,
@@ -654,6 +658,7 @@
 				2B6D0BD1250B08080098F244 /* b2Fixture.swift in Sources */,
 				2B6D0BE7250B08080098F244 /* b2EdgeShape.swift in Sources */,
 				2B6D0BD9250B08080098F244 /* b2Draw.swift in Sources */,
+				2B6D0C05250B3BF70098F244 /* Physics2D.swift in Sources */,
 				2B6D0BED250B08080098F244 /* b2Shape.swift in Sources */,
 				2B6D0BA9250B08080098F244 /* b2PolygonContact.swift in Sources */,
 				2B01C88B24FB824A00E86449 /* Utils.swift in Sources */,
@@ -732,6 +737,7 @@
 				2B6D0BD0250B08080098F244 /* b2Fixture.swift in Sources */,
 				2B6D0BE6250B08080098F244 /* b2EdgeShape.swift in Sources */,
 				2B6D0BD8250B08080098F244 /* b2Draw.swift in Sources */,
+				2B6D0C04250B3BF70098F244 /* Physics2D.swift in Sources */,
 				2B6D0BEC250B08080098F244 /* b2Shape.swift in Sources */,
 				2B6D0BA8250B08080098F244 /* b2PolygonContact.swift in Sources */,
 				2B01C88C24FB824A00E86449 /* Utils.swift in Sources */,
