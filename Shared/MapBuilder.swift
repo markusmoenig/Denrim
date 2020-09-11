@@ -16,6 +16,8 @@ class MapBuilder
     var scriptLine      : Int32? = nil
     
     let mapPreview      : MapPreview
+    
+    var currentLayer    : String? = nil
 
     enum Types : String, CaseIterable
     {
@@ -58,27 +60,21 @@ class MapBuilder
             error.line = lineNumber
             
             // Layer Data ?
-            if str.starts(with: ":") {
-                
-                var data = str
-                data.removeFirst()
-                data = data.trimmingCharacters(in: .whitespaces)
-                
-                var lastLine : Int32 = -1
-                var lastVar  : String = ""
-                for (line, variable) in asset.map!.lines {
-                    if line > lastLine && line < lineNumber {
-                        lastLine = line
-                        lastVar = variable
-                    }
+            if self.currentLayer != nil {
+                if str.starts(with: ":") {
+                    
+                    var data = str
+                    data.removeFirst()
+                    data = data.trimmingCharacters(in: .whitespaces)
+                    
+                    asset.map!.layers[self.currentLayer!]?.data.append(data)
+                    
+                    lineNumber += 1
+                    return
+                } else {
+                    asset.map!.layers[self.currentLayer!]?.endLine = lineNumber
+                    self.currentLayer = nil
                 }
-                
-                if asset.map!.layers[lastVar] != nil {
-                    asset.map!.layers[lastVar]!.data.append(data)
-                }
- 
-                lineNumber += 1
-                return
             }
             
             var leftOfComment : String
@@ -248,6 +244,7 @@ class MapBuilder
         if type == .Layer {
             map.layers[variable] = MapLayer(data: [], options: options)
             setLine(variable)
+            currentLayer = variable
         } else
         if type == .Scene {
             map.scenes[variable] = MapScene(options: options)
@@ -320,14 +317,13 @@ class MapBuilder
     
     func createPreview(_ map: Map)
     {
-        print(map.lines)
-        
         var name : String? = nil
         if let line = scriptLine {
             if let n = map.lines[line] {
                 name = n
             } else {
                     
+                // Check if the last line was a layer
                 var lastLine : Int32 = -1
                 var lastVar  : String = ""
                 for (l, variable) in map.lines {
@@ -337,8 +333,11 @@ class MapBuilder
                     }
                 }
                 
+                // If yes, check if the line is inside the layer range
                 if map.layers[lastVar] != nil {
-                    name = lastVar
+                        if line < map.layers[lastVar]!.endLine {
+                        name = lastVar
+                    }
                 }
             }
         }

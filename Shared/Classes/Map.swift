@@ -35,6 +35,7 @@ struct MapLayer {
 
     var data            : [String] = []
     var options         : [String:Any]
+    var endLine         : Int32 = 0
 }
 
 struct MapScene {
