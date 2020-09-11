@@ -20,7 +20,6 @@ struct JSError
 class JSBridge
 {
     var context         : JSContext? = nil
-    var physicsContext  : JSContext? = nil
     var game            : Game!
     
     init(_ game: Game)
@@ -36,7 +35,6 @@ class JSBridge
     func compile(_ assetFolder: AssetFolder)
     {
         context = nil
-        physicsContext = nil
 
         //if let scriptEditor = game.scriptEditor {
         //    scriptEditor.clearAnnotations()
@@ -96,22 +94,7 @@ class JSBridge
         }
         
         context!.evaluateScript(jsCode)
-
-        
         context?.evaluateScript("var game = new Game();")
-        //context?.evaluateScript("var engine = Matter.Engine.create();")
-        //context?.evaluateScript("var world = planck.World();")
-        
-        // Physics
-        
-        physicsContext = JSContext(virtualMachine: JSVirtualMachine())
-        physicsContext?.exceptionHandler = { context, value in
-            if let error = value?.toString() {
-                print(error)
-            }
-        }
-        loadAndExecuteResource(physicsContext!, "planck.min")
-        physicsContext?.evaluateScript("var world = planck.World();")
     }
     
     func stop() {
@@ -120,9 +103,7 @@ class JSBridge
             //context!["game"] = nil
             //context!["Square"] = nil
         }
-        game.resources = [:]
         context = nil
-        physicsContext = nil
     }
     
     func step()
@@ -169,10 +150,6 @@ class JSBridge
 
         let sourceCodePro = Font(name: "SourceCodePro", game: game)
         game.resources[sourceCodePro.uuid] = sourceCodePro
-
-        // Physics
-        //loadAndExecuteResource("matter.min")
-        //loadAndExecuteResource("planck.min")
     }
 }
 

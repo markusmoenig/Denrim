@@ -63,6 +63,106 @@
 		2B32995A2501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
 		2B6D0B5A2509EEE80098F244 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
 		2B6D0B5B2509EEE80098F244 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
+		2B6D0B9A250B08080098F244 /* b2Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B61250B08080098F244 /* b2Body.swift */; };
+		2B6D0B9B250B08080098F244 /* b2Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B61250B08080098F244 /* b2Body.swift */; };
+		2B6D0B9C250B08080098F244 /* b2CircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B63250B08080098F244 /* b2CircleContact.swift */; };
+		2B6D0B9D250B08080098F244 /* b2CircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B63250B08080098F244 /* b2CircleContact.swift */; };
+		2B6D0B9E250B08080098F244 /* b2ChainAndPolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B64250B08080098F244 /* b2ChainAndPolygonContact.swift */; };
+		2B6D0B9F250B08080098F244 /* b2ChainAndPolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B64250B08080098F244 /* b2ChainAndPolygonContact.swift */; };
+		2B6D0BA0250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B65250B08080098F244 /* b2ChainAndCircleContact.swift */; };
+		2B6D0BA1250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B65250B08080098F244 /* b2ChainAndCircleContact.swift */; };
+		2B6D0BA2250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B66250B08080098F244 /* b2EdgeAndPolygonContact.swift */; };
+		2B6D0BA3250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B66250B08080098F244 /* b2EdgeAndPolygonContact.swift */; };
+		2B6D0BA4250B08080098F244 /* b2ContactSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B67250B08080098F244 /* b2ContactSolver.swift */; };
+		2B6D0BA5250B08080098F244 /* b2ContactSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B67250B08080098F244 /* b2ContactSolver.swift */; };
+		2B6D0BA6250B08080098F244 /* b2EdgeAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B68250B08080098F244 /* b2EdgeAndCircleContact.swift */; };
+		2B6D0BA7250B08080098F244 /* b2EdgeAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B68250B08080098F244 /* b2EdgeAndCircleContact.swift */; };
+		2B6D0BA8250B08080098F244 /* b2PolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B69250B08080098F244 /* b2PolygonContact.swift */; };
+		2B6D0BA9250B08080098F244 /* b2PolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B69250B08080098F244 /* b2PolygonContact.swift */; };
+		2B6D0BAA250B08080098F244 /* b2PolygonAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6A250B08080098F244 /* b2PolygonAndCircleContact.swift */; };
+		2B6D0BAB250B08080098F244 /* b2PolygonAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6A250B08080098F244 /* b2PolygonAndCircleContact.swift */; };
+		2B6D0BAC250B08080098F244 /* b2Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6B250B08080098F244 /* b2Contact.swift */; };
+		2B6D0BAD250B08080098F244 /* b2Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6B250B08080098F244 /* b2Contact.swift */; };
+		2B6D0BAE250B08080098F244 /* b2WheelJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6D250B08080098F244 /* b2WheelJoint.swift */; };
+		2B6D0BAF250B08080098F244 /* b2WheelJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6D250B08080098F244 /* b2WheelJoint.swift */; };
+		2B6D0BB0250B08080098F244 /* b2DistanceJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6E250B08080098F244 /* b2DistanceJoint.swift */; };
+		2B6D0BB1250B08080098F244 /* b2DistanceJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6E250B08080098F244 /* b2DistanceJoint.swift */; };
+		2B6D0BB2250B08080098F244 /* b2RevoluteJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6F250B08080098F244 /* b2RevoluteJoint.swift */; };
+		2B6D0BB3250B08080098F244 /* b2RevoluteJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6F250B08080098F244 /* b2RevoluteJoint.swift */; };
+		2B6D0BB4250B08080098F244 /* b2Joint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B70250B08080098F244 /* b2Joint.swift */; };
+		2B6D0BB5250B08080098F244 /* b2Joint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B70250B08080098F244 /* b2Joint.swift */; };
+		2B6D0BB6250B08080098F244 /* b2MotorJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B71250B08080098F244 /* b2MotorJoint.swift */; };
+		2B6D0BB7250B08080098F244 /* b2MotorJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B71250B08080098F244 /* b2MotorJoint.swift */; };
+		2B6D0BB8250B08080098F244 /* b2FrictionJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B72250B08080098F244 /* b2FrictionJoint.swift */; };
+		2B6D0BB9250B08080098F244 /* b2FrictionJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B72250B08080098F244 /* b2FrictionJoint.swift */; };
+		2B6D0BBA250B08080098F244 /* b2GearJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B73250B08080098F244 /* b2GearJoint.swift */; };
+		2B6D0BBB250B08080098F244 /* b2GearJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B73250B08080098F244 /* b2GearJoint.swift */; };
+		2B6D0BBC250B08080098F244 /* b2RopeJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B74250B08080098F244 /* b2RopeJoint.swift */; };
+		2B6D0BBD250B08080098F244 /* b2RopeJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B74250B08080098F244 /* b2RopeJoint.swift */; };
+		2B6D0BBE250B08080098F244 /* b2PrismaticJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B75250B08080098F244 /* b2PrismaticJoint.swift */; };
+		2B6D0BBF250B08080098F244 /* b2PrismaticJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B75250B08080098F244 /* b2PrismaticJoint.swift */; };
+		2B6D0BC0250B08080098F244 /* b2PulleyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B76250B08080098F244 /* b2PulleyJoint.swift */; };
+		2B6D0BC1250B08080098F244 /* b2PulleyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B76250B08080098F244 /* b2PulleyJoint.swift */; };
+		2B6D0BC2250B08080098F244 /* b2MouseJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B77250B08080098F244 /* b2MouseJoint.swift */; };
+		2B6D0BC3250B08080098F244 /* b2MouseJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B77250B08080098F244 /* b2MouseJoint.swift */; };
+		2B6D0BC4250B08080098F244 /* b2WeldJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B78250B08080098F244 /* b2WeldJoint.swift */; };
+		2B6D0BC5250B08080098F244 /* b2WeldJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B78250B08080098F244 /* b2WeldJoint.swift */; };
+		2B6D0BC6250B08080098F244 /* b2World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B79250B08080098F244 /* b2World.swift */; };
+		2B6D0BC7250B08080098F244 /* b2World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B79250B08080098F244 /* b2World.swift */; };
+		2B6D0BC8250B08080098F244 /* b2WorldCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7A250B08080098F244 /* b2WorldCallbacks.swift */; };
+		2B6D0BC9250B08080098F244 /* b2WorldCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7A250B08080098F244 /* b2WorldCallbacks.swift */; };
+		2B6D0BCA250B08080098F244 /* b2TimeStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7B250B08080098F244 /* b2TimeStep.swift */; };
+		2B6D0BCB250B08080098F244 /* b2TimeStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7B250B08080098F244 /* b2TimeStep.swift */; };
+		2B6D0BCC250B08080098F244 /* b2Island.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7C250B08080098F244 /* b2Island.swift */; };
+		2B6D0BCD250B08080098F244 /* b2Island.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7C250B08080098F244 /* b2Island.swift */; };
+		2B6D0BCE250B08080098F244 /* b2ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7D250B08080098F244 /* b2ContactManager.swift */; };
+		2B6D0BCF250B08080098F244 /* b2ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7D250B08080098F244 /* b2ContactManager.swift */; };
+		2B6D0BD0250B08080098F244 /* b2Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7E250B08080098F244 /* b2Fixture.swift */; };
+		2B6D0BD1250B08080098F244 /* b2Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7E250B08080098F244 /* b2Fixture.swift */; };
+		2B6D0BD2250B08080098F244 /* b2Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B81250B08080098F244 /* b2Rope.swift */; };
+		2B6D0BD3250B08080098F244 /* b2Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B81250B08080098F244 /* b2Rope.swift */; };
+		2B6D0BD6250B08080098F244 /* b2GrowableStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B84250B08080098F244 /* b2GrowableStack.swift */; };
+		2B6D0BD7250B08080098F244 /* b2GrowableStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B84250B08080098F244 /* b2GrowableStack.swift */; };
+		2B6D0BD8250B08080098F244 /* b2Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B85250B08080098F244 /* b2Draw.swift */; };
+		2B6D0BD9250B08080098F244 /* b2Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B85250B08080098F244 /* b2Draw.swift */; };
+		2B6D0BDA250B08080098F244 /* b2Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B86250B08080098F244 /* b2Settings.swift */; };
+		2B6D0BDB250B08080098F244 /* b2Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B86250B08080098F244 /* b2Settings.swift */; };
+		2B6D0BDC250B08080098F244 /* b2Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B87250B08080098F244 /* b2Common.swift */; };
+		2B6D0BDD250B08080098F244 /* b2Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B87250B08080098F244 /* b2Common.swift */; };
+		2B6D0BDE250B08080098F244 /* b2Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B88250B08080098F244 /* b2Wrappers.swift */; };
+		2B6D0BDF250B08080098F244 /* b2Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B88250B08080098F244 /* b2Wrappers.swift */; };
+		2B6D0BE0250B08080098F244 /* b2Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B89250B08080098F244 /* b2Math.swift */; };
+		2B6D0BE1250B08080098F244 /* b2Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B89250B08080098F244 /* b2Math.swift */; };
+		2B6D0BE2250B08080098F244 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8A250B08080098F244 /* Info.plist */; };
+		2B6D0BE3250B08080098F244 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8A250B08080098F244 /* Info.plist */; };
+		2B6D0BE4250B08080098F244 /* b2BroadPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8C250B08080098F244 /* b2BroadPhase.swift */; };
+		2B6D0BE5250B08080098F244 /* b2BroadPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8C250B08080098F244 /* b2BroadPhase.swift */; };
+		2B6D0BE6250B08080098F244 /* b2EdgeShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8E250B08080098F244 /* b2EdgeShape.swift */; };
+		2B6D0BE7250B08080098F244 /* b2EdgeShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8E250B08080098F244 /* b2EdgeShape.swift */; };
+		2B6D0BE8250B08080098F244 /* b2PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8F250B08080098F244 /* b2PolygonShape.swift */; };
+		2B6D0BE9250B08080098F244 /* b2PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8F250B08080098F244 /* b2PolygonShape.swift */; };
+		2B6D0BEA250B08080098F244 /* b2ChainShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B90250B08080098F244 /* b2ChainShape.swift */; };
+		2B6D0BEB250B08080098F244 /* b2ChainShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B90250B08080098F244 /* b2ChainShape.swift */; };
+		2B6D0BEC250B08080098F244 /* b2Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B91250B08080098F244 /* b2Shape.swift */; };
+		2B6D0BED250B08080098F244 /* b2Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B91250B08080098F244 /* b2Shape.swift */; };
+		2B6D0BEE250B08080098F244 /* b2CircleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B92250B08080098F244 /* b2CircleShape.swift */; };
+		2B6D0BEF250B08080098F244 /* b2CircleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B92250B08080098F244 /* b2CircleShape.swift */; };
+		2B6D0BF0250B08080098F244 /* b2DynamicTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B93250B08080098F244 /* b2DynamicTree.swift */; };
+		2B6D0BF1250B08080098F244 /* b2DynamicTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B93250B08080098F244 /* b2DynamicTree.swift */; };
+		2B6D0BF2250B08080098F244 /* b2CollideEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B94250B08080098F244 /* b2CollideEdge.swift */; };
+		2B6D0BF3250B08080098F244 /* b2CollideEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B94250B08080098F244 /* b2CollideEdge.swift */; };
+		2B6D0BF4250B08080098F244 /* b2Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B95250B08080098F244 /* b2Distance.swift */; };
+		2B6D0BF5250B08080098F244 /* b2Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B95250B08080098F244 /* b2Distance.swift */; };
+		2B6D0BF6250B08080098F244 /* b2CollidePolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B96250B08080098F244 /* b2CollidePolygon.swift */; };
+		2B6D0BF7250B08080098F244 /* b2CollidePolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B96250B08080098F244 /* b2CollidePolygon.swift */; };
+		2B6D0BF8250B08080098F244 /* b2TimeOfImpact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B97250B08080098F244 /* b2TimeOfImpact.swift */; };
+		2B6D0BF9250B08080098F244 /* b2TimeOfImpact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B97250B08080098F244 /* b2TimeOfImpact.swift */; };
+		2B6D0BFA250B08080098F244 /* b2Collision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B98250B08080098F244 /* b2Collision.swift */; };
+		2B6D0BFB250B08080098F244 /* b2Collision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B98250B08080098F244 /* b2Collision.swift */; };
+		2B6D0BFC250B08080098F244 /* b2CollideCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B99250B08080098F244 /* b2CollideCircles.swift */; };
+		2B6D0BFD250B08080098F244 /* b2CollideCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B99250B08080098F244 /* b2CollideCircles.swift */; };
+		2B6D0BFE250B0AAE0098F244 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
+		2B6D0BFF250B0B490098F244 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
 		2BEFCF8F250473B1003C00B0 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
 		2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
 		2BFC028B2505EDA500AB489E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
@@ -104,6 +204,57 @@
 		2B3299452501B5DC007C3386 /* Square.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Square.json; sourceTree = "<group>"; };
 		2B3299582501B6F3007C3386 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		2B6D0B592509EEE80098F244 /* MapPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPreview.swift; sourceTree = "<group>"; };
+		2B6D0B61250B08080098F244 /* b2Body.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Body.swift; sourceTree = "<group>"; };
+		2B6D0B63250B08080098F244 /* b2CircleContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CircleContact.swift; sourceTree = "<group>"; };
+		2B6D0B64250B08080098F244 /* b2ChainAndPolygonContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2ChainAndPolygonContact.swift; sourceTree = "<group>"; };
+		2B6D0B65250B08080098F244 /* b2ChainAndCircleContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2ChainAndCircleContact.swift; sourceTree = "<group>"; };
+		2B6D0B66250B08080098F244 /* b2EdgeAndPolygonContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2EdgeAndPolygonContact.swift; sourceTree = "<group>"; };
+		2B6D0B67250B08080098F244 /* b2ContactSolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2ContactSolver.swift; sourceTree = "<group>"; };
+		2B6D0B68250B08080098F244 /* b2EdgeAndCircleContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2EdgeAndCircleContact.swift; sourceTree = "<group>"; };
+		2B6D0B69250B08080098F244 /* b2PolygonContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2PolygonContact.swift; sourceTree = "<group>"; };
+		2B6D0B6A250B08080098F244 /* b2PolygonAndCircleContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2PolygonAndCircleContact.swift; sourceTree = "<group>"; };
+		2B6D0B6B250B08080098F244 /* b2Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Contact.swift; sourceTree = "<group>"; };
+		2B6D0B6D250B08080098F244 /* b2WheelJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2WheelJoint.swift; sourceTree = "<group>"; };
+		2B6D0B6E250B08080098F244 /* b2DistanceJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2DistanceJoint.swift; sourceTree = "<group>"; };
+		2B6D0B6F250B08080098F244 /* b2RevoluteJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2RevoluteJoint.swift; sourceTree = "<group>"; };
+		2B6D0B70250B08080098F244 /* b2Joint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Joint.swift; sourceTree = "<group>"; };
+		2B6D0B71250B08080098F244 /* b2MotorJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2MotorJoint.swift; sourceTree = "<group>"; };
+		2B6D0B72250B08080098F244 /* b2FrictionJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2FrictionJoint.swift; sourceTree = "<group>"; };
+		2B6D0B73250B08080098F244 /* b2GearJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2GearJoint.swift; sourceTree = "<group>"; };
+		2B6D0B74250B08080098F244 /* b2RopeJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2RopeJoint.swift; sourceTree = "<group>"; };
+		2B6D0B75250B08080098F244 /* b2PrismaticJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2PrismaticJoint.swift; sourceTree = "<group>"; };
+		2B6D0B76250B08080098F244 /* b2PulleyJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2PulleyJoint.swift; sourceTree = "<group>"; };
+		2B6D0B77250B08080098F244 /* b2MouseJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2MouseJoint.swift; sourceTree = "<group>"; };
+		2B6D0B78250B08080098F244 /* b2WeldJoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2WeldJoint.swift; sourceTree = "<group>"; };
+		2B6D0B79250B08080098F244 /* b2World.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2World.swift; sourceTree = "<group>"; };
+		2B6D0B7A250B08080098F244 /* b2WorldCallbacks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2WorldCallbacks.swift; sourceTree = "<group>"; };
+		2B6D0B7B250B08080098F244 /* b2TimeStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2TimeStep.swift; sourceTree = "<group>"; };
+		2B6D0B7C250B08080098F244 /* b2Island.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Island.swift; sourceTree = "<group>"; };
+		2B6D0B7D250B08080098F244 /* b2ContactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2ContactManager.swift; sourceTree = "<group>"; };
+		2B6D0B7E250B08080098F244 /* b2Fixture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Fixture.swift; sourceTree = "<group>"; };
+		2B6D0B7F250B08080098F244 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
+		2B6D0B81250B08080098F244 /* b2Rope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Rope.swift; sourceTree = "<group>"; };
+		2B6D0B83250B08080098F244 /* b2Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Timer.swift; sourceTree = "<group>"; };
+		2B6D0B84250B08080098F244 /* b2GrowableStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2GrowableStack.swift; sourceTree = "<group>"; };
+		2B6D0B85250B08080098F244 /* b2Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Draw.swift; sourceTree = "<group>"; };
+		2B6D0B86250B08080098F244 /* b2Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Settings.swift; sourceTree = "<group>"; };
+		2B6D0B87250B08080098F244 /* b2Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Common.swift; sourceTree = "<group>"; };
+		2B6D0B88250B08080098F244 /* b2Wrappers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Wrappers.swift; sourceTree = "<group>"; };
+		2B6D0B89250B08080098F244 /* b2Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Math.swift; sourceTree = "<group>"; };
+		2B6D0B8A250B08080098F244 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B6D0B8C250B08080098F244 /* b2BroadPhase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2BroadPhase.swift; sourceTree = "<group>"; };
+		2B6D0B8E250B08080098F244 /* b2EdgeShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2EdgeShape.swift; sourceTree = "<group>"; };
+		2B6D0B8F250B08080098F244 /* b2PolygonShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2PolygonShape.swift; sourceTree = "<group>"; };
+		2B6D0B90250B08080098F244 /* b2ChainShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2ChainShape.swift; sourceTree = "<group>"; };
+		2B6D0B91250B08080098F244 /* b2Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Shape.swift; sourceTree = "<group>"; };
+		2B6D0B92250B08080098F244 /* b2CircleShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CircleShape.swift; sourceTree = "<group>"; };
+		2B6D0B93250B08080098F244 /* b2DynamicTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2DynamicTree.swift; sourceTree = "<group>"; };
+		2B6D0B94250B08080098F244 /* b2CollideEdge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CollideEdge.swift; sourceTree = "<group>"; };
+		2B6D0B95250B08080098F244 /* b2Distance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Distance.swift; sourceTree = "<group>"; };
+		2B6D0B96250B08080098F244 /* b2CollidePolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CollidePolygon.swift; sourceTree = "<group>"; };
+		2B6D0B97250B08080098F244 /* b2TimeOfImpact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2TimeOfImpact.swift; sourceTree = "<group>"; };
+		2B6D0B98250B08080098F244 /* b2Collision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Collision.swift; sourceTree = "<group>"; };
+		2B6D0B99250B08080098F244 /* b2CollideCircles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CollideCircles.swift; sourceTree = "<group>"; };
 		2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBuilder.swift; sourceTree = "<group>"; };
 		2BFC028A2505EDA500AB489E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -158,6 +309,7 @@
 				2B32992324FF21EC007C3386 /* ShaderCompiler.swift */,
 				2B32993F2501B592007C3386 /* Fonts */,
 				2B32991F24FE3CC2007C3386 /* Classes */,
+				2B6D0B5F250B08080098F244 /* Box2D */,
 				2B01C88124FB824A00E86449 /* Resources */,
 				2B01C85824FB814C00E86449 /* Assets.xcassets */,
 			);
@@ -214,6 +366,120 @@
 				2B3299402501B5DB007C3386 /* Square.tiff */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		2B6D0B5F250B08080098F244 /* Box2D */ = {
+			isa = PBXGroup;
+			children = (
+				2B6D0B60250B08080098F244 /* Dynamics */,
+				2B6D0B7F250B08080098F244 /* Box2D.h */,
+				2B6D0B80250B08080098F244 /* Rope */,
+				2B6D0B82250B08080098F244 /* Common */,
+				2B6D0B8A250B08080098F244 /* Info.plist */,
+				2B6D0B8B250B08080098F244 /* Collision */,
+			);
+			path = Box2D;
+			sourceTree = "<group>";
+		};
+		2B6D0B60250B08080098F244 /* Dynamics */ = {
+			isa = PBXGroup;
+			children = (
+				2B6D0B61250B08080098F244 /* b2Body.swift */,
+				2B6D0B62250B08080098F244 /* Contacts */,
+				2B6D0B6C250B08080098F244 /* Joints */,
+				2B6D0B79250B08080098F244 /* b2World.swift */,
+				2B6D0B7A250B08080098F244 /* b2WorldCallbacks.swift */,
+				2B6D0B7B250B08080098F244 /* b2TimeStep.swift */,
+				2B6D0B7C250B08080098F244 /* b2Island.swift */,
+				2B6D0B7D250B08080098F244 /* b2ContactManager.swift */,
+				2B6D0B7E250B08080098F244 /* b2Fixture.swift */,
+			);
+			path = Dynamics;
+			sourceTree = "<group>";
+		};
+		2B6D0B62250B08080098F244 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				2B6D0B63250B08080098F244 /* b2CircleContact.swift */,
+				2B6D0B64250B08080098F244 /* b2ChainAndPolygonContact.swift */,
+				2B6D0B65250B08080098F244 /* b2ChainAndCircleContact.swift */,
+				2B6D0B66250B08080098F244 /* b2EdgeAndPolygonContact.swift */,
+				2B6D0B67250B08080098F244 /* b2ContactSolver.swift */,
+				2B6D0B68250B08080098F244 /* b2EdgeAndCircleContact.swift */,
+				2B6D0B69250B08080098F244 /* b2PolygonContact.swift */,
+				2B6D0B6A250B08080098F244 /* b2PolygonAndCircleContact.swift */,
+				2B6D0B6B250B08080098F244 /* b2Contact.swift */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		2B6D0B6C250B08080098F244 /* Joints */ = {
+			isa = PBXGroup;
+			children = (
+				2B6D0B6D250B08080098F244 /* b2WheelJoint.swift */,
+				2B6D0B6E250B08080098F244 /* b2DistanceJoint.swift */,
+				2B6D0B6F250B08080098F244 /* b2RevoluteJoint.swift */,
+				2B6D0B70250B08080098F244 /* b2Joint.swift */,
+				2B6D0B71250B08080098F244 /* b2MotorJoint.swift */,
+				2B6D0B72250B08080098F244 /* b2FrictionJoint.swift */,
+				2B6D0B73250B08080098F244 /* b2GearJoint.swift */,
+				2B6D0B74250B08080098F244 /* b2RopeJoint.swift */,
+				2B6D0B75250B08080098F244 /* b2PrismaticJoint.swift */,
+				2B6D0B76250B08080098F244 /* b2PulleyJoint.swift */,
+				2B6D0B77250B08080098F244 /* b2MouseJoint.swift */,
+				2B6D0B78250B08080098F244 /* b2WeldJoint.swift */,
+			);
+			path = Joints;
+			sourceTree = "<group>";
+		};
+		2B6D0B80250B08080098F244 /* Rope */ = {
+			isa = PBXGroup;
+			children = (
+				2B6D0B81250B08080098F244 /* b2Rope.swift */,
+			);
+			path = Rope;
+			sourceTree = "<group>";
+		};
+		2B6D0B82250B08080098F244 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2B6D0B83250B08080098F244 /* b2Timer.swift */,
+				2B6D0B84250B08080098F244 /* b2GrowableStack.swift */,
+				2B6D0B85250B08080098F244 /* b2Draw.swift */,
+				2B6D0B86250B08080098F244 /* b2Settings.swift */,
+				2B6D0B87250B08080098F244 /* b2Common.swift */,
+				2B6D0B88250B08080098F244 /* b2Wrappers.swift */,
+				2B6D0B89250B08080098F244 /* b2Math.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2B6D0B8B250B08080098F244 /* Collision */ = {
+			isa = PBXGroup;
+			children = (
+				2B6D0B8C250B08080098F244 /* b2BroadPhase.swift */,
+				2B6D0B8D250B08080098F244 /* Shapes */,
+				2B6D0B93250B08080098F244 /* b2DynamicTree.swift */,
+				2B6D0B94250B08080098F244 /* b2CollideEdge.swift */,
+				2B6D0B95250B08080098F244 /* b2Distance.swift */,
+				2B6D0B96250B08080098F244 /* b2CollidePolygon.swift */,
+				2B6D0B97250B08080098F244 /* b2TimeOfImpact.swift */,
+				2B6D0B98250B08080098F244 /* b2Collision.swift */,
+				2B6D0B99250B08080098F244 /* b2CollideCircles.swift */,
+			);
+			path = Collision;
+			sourceTree = "<group>";
+		};
+		2B6D0B8D250B08080098F244 /* Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				2B6D0B8E250B08080098F244 /* b2EdgeShape.swift */,
+				2B6D0B8F250B08080098F244 /* b2PolygonShape.swift */,
+				2B6D0B90250B08080098F244 /* b2ChainShape.swift */,
+				2B6D0B91250B08080098F244 /* b2Shape.swift */,
+				2B6D0B92250B08080098F244 /* b2CircleShape.swift */,
+			);
+			path = Shapes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,6 +566,7 @@
 			files = (
 				2B32994B2501B5DC007C3386 /* OpenSans.json in Resources */,
 				2B3299512501B5DC007C3386 /* OpenSans.tiff in Resources */,
+				2B6D0BE3250B08080098F244 /* Info.plist in Resources */,
 				2B01C89524FB824A00E86449 /* Resources in Resources */,
 				2B01C86F24FB814C00E86449 /* Assets.xcassets in Resources */,
 				2B3299532501B5DC007C3386 /* Square.json in Resources */,
@@ -315,6 +582,7 @@
 			files = (
 				2B32994A2501B5DC007C3386 /* OpenSans.json in Resources */,
 				2B3299502501B5DC007C3386 /* OpenSans.tiff in Resources */,
+				2B6D0BE2250B08080098F244 /* Info.plist in Resources */,
 				2B01C89624FB824A00E86449 /* Resources in Resources */,
 				2B01C87024FB814C00E86449 /* Assets.xcassets in Resources */,
 				2B3299522501B5DC007C3386 /* Square.json in Resources */,
@@ -332,27 +600,76 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B01C86924FB814C00E86449 /* DenrimApp.swift in Sources */,
+				2B6D0BAF250B08080098F244 /* b2WheelJoint.swift in Sources */,
+				2B6D0BE5250B08080098F244 /* b2BroadPhase.swift in Sources */,
+				2B6D0BF3250B08080098F244 /* b2CollideEdge.swift in Sources */,
 				2B01C88F24FB824A00E86449 /* Game.swift in Sources */,
+				2B6D0BA1250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */,
+				2B6D0BEF250B08080098F244 /* b2CircleShape.swift in Sources */,
+				2B6D0BB5250B08080098F244 /* b2Joint.swift in Sources */,
+				2B6D0BC9250B08080098F244 /* b2WorldCallbacks.swift in Sources */,
+				2B6D0BBB250B08080098F244 /* b2GearJoint.swift in Sources */,
+				2B6D0BFE250B0AAE0098F244 /* b2Timer.swift in Sources */,
 				2B01C89924FB824A00E86449 /* System.swift in Sources */,
+				2B6D0BCD250B08080098F244 /* b2Island.swift in Sources */,
+				2B6D0BF9250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */,
+				2B6D0BFB250B08080098F244 /* b2Collision.swift in Sources */,
+				2B6D0BF7250B08080098F244 /* b2CollidePolygon.swift in Sources */,
+				2B6D0BBF250B08080098F244 /* b2PrismaticJoint.swift in Sources */,
 				2B32995A2501B6F3007C3386 /* Font.swift in Sources */,
+				2B6D0B9F250B08080098F244 /* b2ChainAndPolygonContact.swift in Sources */,
+				2B6D0BA5250B08080098F244 /* b2ContactSolver.swift in Sources */,
+				2B6D0BDD250B08080098F244 /* b2Common.swift in Sources */,
+				2B6D0BFD250B08080098F244 /* b2CollideCircles.swift in Sources */,
+				2B6D0BB3250B08080098F244 /* b2RevoluteJoint.swift in Sources */,
+				2B6D0BCF250B08080098F244 /* b2ContactManager.swift in Sources */,
 				2B01C89724FB824A00E86449 /* Classes.swift in Sources */,
 				2B01C89124FB824A00E86449 /* Asset.swift in Sources */,
+				2B6D0BAD250B08080098F244 /* b2Contact.swift in Sources */,
+				2B6D0BA3250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
+				2B6D0BDF250B08080098F244 /* b2Wrappers.swift in Sources */,
 				2B32992224FE3D02007C3386 /* Shader.swift in Sources */,
+				2B6D0BB9250B08080098F244 /* b2FrictionJoint.swift in Sources */,
 				2B01C88D24FB824A00E86449 /* ScriptEditor.swift in Sources */,
+				2B6D0BCB250B08080098F244 /* b2TimeStep.swift in Sources */,
+				2B6D0BC7250B08080098F244 /* b2World.swift in Sources */,
+				2B6D0BC5250B08080098F244 /* b2WeldJoint.swift in Sources */,
 				2B01C88924FB824A00E86449 /* Texture2D.swift in Sources */,
+				2B6D0BC3250B08080098F244 /* b2MouseJoint.swift in Sources */,
+				2B6D0BC1250B08080098F244 /* b2PulleyJoint.swift in Sources */,
+				2B6D0B9D250B08080098F244 /* b2CircleContact.swift in Sources */,
 				2BFC028C2505EDA500AB489E /* Map.swift in Sources */,
 				2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
 				2B01C88724FB824A00E86449 /* Metal.metal in Sources */,
 				2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */,
+				2B6D0BA7250B08080098F244 /* b2EdgeAndCircleContact.swift in Sources */,
+				2B6D0BF1250B08080098F244 /* b2DynamicTree.swift in Sources */,
+				2B6D0BBD250B08080098F244 /* b2RopeJoint.swift in Sources */,
 				2B01C89C24FB844C00E86449 /* MetalView.swift in Sources */,
+				2B6D0BD1250B08080098F244 /* b2Fixture.swift in Sources */,
+				2B6D0BE7250B08080098F244 /* b2EdgeShape.swift in Sources */,
+				2B6D0BD9250B08080098F244 /* b2Draw.swift in Sources */,
+				2B6D0BED250B08080098F244 /* b2Shape.swift in Sources */,
+				2B6D0BA9250B08080098F244 /* b2PolygonContact.swift in Sources */,
 				2B01C88B24FB824A00E86449 /* Utils.swift in Sources */,
+				2B6D0B9B250B08080098F244 /* b2Body.swift in Sources */,
+				2B6D0BB7250B08080098F244 /* b2MotorJoint.swift in Sources */,
+				2B6D0BAB250B08080098F244 /* b2PolygonAndCircleContact.swift in Sources */,
+				2B6D0BE1250B08080098F244 /* b2Math.swift in Sources */,
 				2B32992824FF9345007C3386 /* HelpView.swift in Sources */,
+				2B6D0BEB250B08080098F244 /* b2ChainShape.swift in Sources */,
 				2B01C86B24FB814C00E86449 /* DenrimDocument.swift in Sources */,
+				2B6D0BDB250B08080098F244 /* b2Settings.swift in Sources */,
 				2B01C86D24FB814C00E86449 /* ContentView.swift in Sources */,
+				2B6D0BD7250B08080098F244 /* b2GrowableStack.swift in Sources */,
 				2B6D0B5B2509EEE80098F244 /* MapPreview.swift in Sources */,
 				2B01C89324FB824A00E86449 /* JSBridge.swift in Sources */,
+				2B6D0BD3250B08080098F244 /* b2Rope.swift in Sources */,
 				2B01C88524FB824A00E86449 /* MathLibrary.swift in Sources */,
+				2B6D0BB1250B08080098F244 /* b2DistanceJoint.swift in Sources */,
+				2B6D0BE9250B08080098F244 /* b2PolygonShape.swift in Sources */,
+				2B6D0BF5250B08080098F244 /* b2Distance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,27 +678,76 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B01C86A24FB814C00E86449 /* DenrimApp.swift in Sources */,
+				2B6D0BAE250B08080098F244 /* b2WheelJoint.swift in Sources */,
+				2B6D0BE4250B08080098F244 /* b2BroadPhase.swift in Sources */,
+				2B6D0BF2250B08080098F244 /* b2CollideEdge.swift in Sources */,
 				2B01C89024FB824A00E86449 /* Game.swift in Sources */,
+				2B6D0BA0250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */,
+				2B6D0BEE250B08080098F244 /* b2CircleShape.swift in Sources */,
+				2B6D0BB4250B08080098F244 /* b2Joint.swift in Sources */,
+				2B6D0BC8250B08080098F244 /* b2WorldCallbacks.swift in Sources */,
+				2B6D0BBA250B08080098F244 /* b2GearJoint.swift in Sources */,
+				2B6D0BFF250B0B490098F244 /* b2Timer.swift in Sources */,
 				2B01C89A24FB824A00E86449 /* System.swift in Sources */,
+				2B6D0BCC250B08080098F244 /* b2Island.swift in Sources */,
+				2B6D0BF8250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */,
+				2B6D0BFA250B08080098F244 /* b2Collision.swift in Sources */,
+				2B6D0BF6250B08080098F244 /* b2CollidePolygon.swift in Sources */,
+				2B6D0BBE250B08080098F244 /* b2PrismaticJoint.swift in Sources */,
 				2B3299592501B6F3007C3386 /* Font.swift in Sources */,
+				2B6D0B9E250B08080098F244 /* b2ChainAndPolygonContact.swift in Sources */,
+				2B6D0BA4250B08080098F244 /* b2ContactSolver.swift in Sources */,
+				2B6D0BDC250B08080098F244 /* b2Common.swift in Sources */,
+				2B6D0BFC250B08080098F244 /* b2CollideCircles.swift in Sources */,
+				2B6D0BB2250B08080098F244 /* b2RevoluteJoint.swift in Sources */,
+				2B6D0BCE250B08080098F244 /* b2ContactManager.swift in Sources */,
 				2B01C89824FB824A00E86449 /* Classes.swift in Sources */,
 				2B01C89224FB824A00E86449 /* Asset.swift in Sources */,
+				2B6D0BAC250B08080098F244 /* b2Contact.swift in Sources */,
+				2B6D0BA2250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
+				2B6D0BDE250B08080098F244 /* b2Wrappers.swift in Sources */,
 				2B32992124FE3D02007C3386 /* Shader.swift in Sources */,
+				2B6D0BB8250B08080098F244 /* b2FrictionJoint.swift in Sources */,
 				2B01C88E24FB824A00E86449 /* ScriptEditor.swift in Sources */,
+				2B6D0BCA250B08080098F244 /* b2TimeStep.swift in Sources */,
+				2B6D0BC6250B08080098F244 /* b2World.swift in Sources */,
+				2B6D0BC4250B08080098F244 /* b2WeldJoint.swift in Sources */,
 				2B01C88A24FB824A00E86449 /* Texture2D.swift in Sources */,
+				2B6D0BC2250B08080098F244 /* b2MouseJoint.swift in Sources */,
+				2B6D0BC0250B08080098F244 /* b2PulleyJoint.swift in Sources */,
+				2B6D0B9C250B08080098F244 /* b2CircleContact.swift in Sources */,
 				2BFC028B2505EDA500AB489E /* Map.swift in Sources */,
 				2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
 				2B01C88824FB824A00E86449 /* Metal.metal in Sources */,
 				2BEFCF8F250473B1003C00B0 /* MapBuilder.swift in Sources */,
+				2B6D0BA6250B08080098F244 /* b2EdgeAndCircleContact.swift in Sources */,
+				2B6D0BF0250B08080098F244 /* b2DynamicTree.swift in Sources */,
+				2B6D0BBC250B08080098F244 /* b2RopeJoint.swift in Sources */,
 				2B01C89D24FB844C00E86449 /* MetalView.swift in Sources */,
+				2B6D0BD0250B08080098F244 /* b2Fixture.swift in Sources */,
+				2B6D0BE6250B08080098F244 /* b2EdgeShape.swift in Sources */,
+				2B6D0BD8250B08080098F244 /* b2Draw.swift in Sources */,
+				2B6D0BEC250B08080098F244 /* b2Shape.swift in Sources */,
+				2B6D0BA8250B08080098F244 /* b2PolygonContact.swift in Sources */,
 				2B01C88C24FB824A00E86449 /* Utils.swift in Sources */,
+				2B6D0B9A250B08080098F244 /* b2Body.swift in Sources */,
+				2B6D0BB6250B08080098F244 /* b2MotorJoint.swift in Sources */,
+				2B6D0BAA250B08080098F244 /* b2PolygonAndCircleContact.swift in Sources */,
+				2B6D0BE0250B08080098F244 /* b2Math.swift in Sources */,
 				2B32992724FF9344007C3386 /* HelpView.swift in Sources */,
+				2B6D0BEA250B08080098F244 /* b2ChainShape.swift in Sources */,
 				2B01C86C24FB814C00E86449 /* DenrimDocument.swift in Sources */,
+				2B6D0BDA250B08080098F244 /* b2Settings.swift in Sources */,
 				2B01C86E24FB814C00E86449 /* ContentView.swift in Sources */,
+				2B6D0BD6250B08080098F244 /* b2GrowableStack.swift in Sources */,
 				2B6D0B5A2509EEE80098F244 /* MapPreview.swift in Sources */,
 				2B01C89424FB824A00E86449 /* JSBridge.swift in Sources */,
+				2B6D0BD2250B08080098F244 /* b2Rope.swift in Sources */,
 				2B01C88624FB824A00E86449 /* MathLibrary.swift in Sources */,
+				2B6D0BB0250B08080098F244 /* b2DistanceJoint.swift in Sources */,
+				2B6D0BE8250B08080098F244 /* b2PolygonShape.swift in Sources */,
+				2B6D0BF4250B08080098F244 /* b2Distance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
