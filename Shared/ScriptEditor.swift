@@ -33,7 +33,7 @@ class ScriptEditor
     {
         let theme: String
         if colorScheme == .light {
-            theme = "dawn"
+            theme = "tomorrow"
         } else {
             theme = "tomorrow_night"
         }
