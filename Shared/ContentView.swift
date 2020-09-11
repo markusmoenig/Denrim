@@ -23,6 +23,8 @@ struct ContentView: View {
     
     @State private var showDeleteAssetAlert: Bool = false
 
+    @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
+
     var body: some View {
         NavigationView() {
             NavigationView() {
@@ -169,7 +171,7 @@ struct ContentView: View {
                 ScrollView {
                     if let current = document.game.assetFolder.current {
                         ZStack {
-                            WebView(document.game).tabItem {
+                            WebView(document.game, deviceColorScheme).tabItem {
                             }
                             .zIndex(scriptIsVisible ? 1 : 0)
                             .frame(height: g.size.height)
@@ -184,6 +186,9 @@ struct ContentView: View {
                                     self.document.game.scriptEditor?.setError(self.document.game.jsError)
                                 }
                                 self.updateView.toggle()
+                            }
+                            .onChange(of: deviceColorScheme) { newValue in
+                                document.game.scriptEditor?.setTheme(newValue)
                             }
                             VStack {
                                 if current.type == .Image {
