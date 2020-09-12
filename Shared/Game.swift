@@ -83,10 +83,11 @@ class Game              : ObservableObject
     
     func start()
     {
+        state = .Running
+
         jsError.error = nil
         jsBridge.compile(assetFolder)
 
-        state = .Running
         view.enableSetNeedsDisplay = false
         view.isPaused = false
     }

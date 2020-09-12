@@ -137,7 +137,7 @@ class Font          : NSObject, Font_JSExports
         if game.availableFonts.firstIndex(of: name) != nil {
             let font = Font(name: name, game: game)
             game.resources.append(font)
-            return font
+            return font//JSManagedValue(value: JSValue(object: font, in: game.jsBridge.context))
         }
 
         return nil

@@ -22,6 +22,8 @@ class JSBridge
     var context         : JSContext? = nil
     var game            : Game!
     
+    var gameValue       : JSValue? = nil
+    
     var fonts           : [Font] = []
     
     init(_ game: Game)
@@ -96,7 +98,7 @@ class JSBridge
         }
         
         context!.evaluateScript(jsCode)
-        context?.evaluateScript("var game = new Game();")
+        gameValue = context?.evaluateScript("var game = new Game(); game")
     }
     
     func stop() {
@@ -115,13 +117,14 @@ class JSBridge
         }
         game.resources = []
         
+        gameValue = nil
         context = nil
     }
     
     func step()
     {
-        if let context = context {
-            context.evaluateScript("game.draw();")
+        if let game = gameValue {
+            game.invokeMethod("draw", withArguments: [])
         }
     }
     

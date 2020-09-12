@@ -40,7 +40,17 @@ struct MapLayer {
 
 struct MapObject2D {
 
+    var objectValue     : JSManagedValue? = nil
+    var positionValue   : JSManagedValue? = nil
+    var body            : b2Body? = nil
+    
     var name            : String = ""
+    var options         : [String:Any]
+}
+
+struct MapPhysics2D {
+
+    var world           : b2World? = nil
     var options         : [String:Any]
 }
 
@@ -64,6 +74,8 @@ class Map                   : NSObject, Map_JSExports
     var layers              : [String:MapLayer] = [:]
     var scenes              : [String:MapScene] = [:]
     var objects2D           : [String:MapObject2D] = [:]
+    
+    var physics2D           : MapPhysics2D? = nil
 
     var lines               : [Int32:String] = [:]
     
@@ -107,8 +119,49 @@ class Map                   : NSObject, Map_JSExports
          
             if let asset = game.assetFolder.getAsset(mapName, .Map) {
                 let error = game.mapBuilder.compile(asset)
-                                    
                 if error.error == nil {
+                    if let map = asset.map {
+                        
+                        if map.physics2D != nil {
+                            let gravity = b2Vec2(0.0, -10.0)
+                            map.physics2D!.world = b2World(gravity: gravity)
+                        }
+                        
+                        for (variable, object) in map.objects2D {
+                            if let className = object.options["class"] as? String {
+                                let cmd = "var \(variable) = new \(className)(); \(variable)"
+                                map.objects2D[variable]?.objectValue = JSManagedValue(value: context?.evaluateScript(cmd))
+                                map.objects2D[variable]?.positionValue = JSManagedValue(value: context?.evaluateScript("\(variable).position"))
+
+                                if map.physics2D != nil {
+                                    // Define the dynamic body. We set its position and call the body factory.
+                                    let bodyDef = b2BodyDef()
+                                    bodyDef.type = b2BodyType.dynamicBody
+                                    bodyDef.position.set(100.0, 0.0)
+                                    let body = map.physics2D!.world!.createBody(bodyDef)
+                                    
+                                    // Define another box shape for our dynamic body.
+                                    let dynamicBox = b2PolygonShape()
+                                    dynamicBox.setAsBox(halfWidth: 1.0, halfHeight: 1.0)
+                                    
+                                    // Define the dynamic body fixture.
+                                    let fixtureDef = b2FixtureDef()
+                                    fixtureDef.shape = dynamicBox
+                                    
+                                    // Set the box density to be non-zero, so it will be dynamic.
+                                    fixtureDef.density = 1.0
+                                    
+                                    // Override the default friction.
+                                    fixtureDef.friction = 0.3
+                                    
+                                    // Add the shape to the body.
+                                    body.createFixture(fixtureDef)
+                                    
+                                    map.objects2D[variable]?.body = body
+                                }
+                            }
+                        }
+                    }
                     return asset.map!
                     //promise.success(value: asset.map!)
                 } else {
@@ -165,6 +218,29 @@ class Map                   : NSObject, Map_JSExports
         if let sceneName = object["scene"] as? String {
             if let scene = scenes[sceneName] {
                 drawScene(0, 0, scene)
+            }
+        }
+        
+        if let physics2D = physics2D, physics2D.world != nil {
+        
+            let timeStep: b2Float = 1.0 / 60.0
+            let velocityIterations = 6
+            let positionIterations = 2
+        
+            physics2D.world!.step(timeStep: timeStep, velocityIterations: velocityIterations, positionIterations: positionIterations)
+            
+            for (_, object) in objects2D {
+                if let body = object.body {
+                    object.positionValue?.value.setValue(body.position.y, forProperty: "y")
+                }
+            }
+        }
+        
+        for (_, object) in objects2D {
+            
+            if let value = object.objectValue {
+                value.value.invokeMethod("draw", withArguments: [])
+                //context?.evaluateScript("\(variable).draw();")
             }
         }
     }

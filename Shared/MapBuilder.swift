@@ -26,6 +26,7 @@ class MapBuilder
         case Alias = "Alias"        // An alias of or into one of the above assets
         case Layer = "Layer"        // Contains alias data of a layer
         case Scene = "Scene"        // List of layers
+        case Physics2D = "Physics2D"// 2D Physics
         case Object2D = "Object2D"  // An 2D object
     }
     
@@ -246,6 +247,10 @@ class MapBuilder
             map.layers[variable] = MapLayer(data: [], options: options)
             setLine(variable)
             currentLayer = variable
+        } else
+        if type == .Physics2D {
+            map.physics2D = MapPhysics2D(options: options)
+            setLine(variable)
         } else
         if type == .Object2D {
             map.objects2D[variable] = MapObject2D(name: variable, options: options)
