@@ -12,9 +12,6 @@ import JavaScriptCore
 @objc protocol System_JSExports: JSExport {
     var width: Float { get }
     var height: Float { get }
-            
-    static func getAvailableFonts() -> [String]
-    static func createFont(_ name: String) -> Font
 
     static func compileShader(_ object: [AnyHashable:Any]) -> JSPromise?
 
@@ -35,22 +32,6 @@ class System            : NSObject, System_JSExports
     var width           : Float = 0
     var height          : Float = 0
     
-    class func getAvailableFonts() -> [String]
-    {
-        let game = getGameObject()
-
-        return game.availableFonts
-    }
-    
-    class func createFont(_ name: String) -> Font
-    {
-        let game = getGameObject()
-
-        let font = Font(name: name, game: game)
-        game.resources.append(font)
-        return font
-    }
-        
     class func compileShader(_ object: [AnyHashable:Any]) -> JSPromise?
     {
         let game = getGameObject()

@@ -14,7 +14,7 @@ import JavaScriptCore
     var height: Float { get }
 
     static func main() -> Texture2D
-    static func createFromImage(_ object: [AnyHashable:Any]) -> JSPromise
+    static func create(_ object: [AnyHashable:Any]) -> JSPromise
 
     func clear(_ color: Any)
     
@@ -115,7 +115,7 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         return main
     }
     
-    class func createFromImage(_ object: [AnyHashable:Any]) -> JSPromise
+    class func create(_ object: [AnyHashable:Any]) -> JSPromise
     {
         let context = JSContext.current()
         let promise = JSPromise()

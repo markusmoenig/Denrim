@@ -153,6 +153,7 @@ class JSBridge
         context.setObject(Rect2D.self, forKeyedSubscript: "Rect2D" as (NSCopying & NSObjectProtocol))
         context.setObject(Texture2D.self, forKeyedSubscript: "Texture2D" as (NSCopying & NSObjectProtocol))
         context.setObject(Map.self, forKeyedSubscript: "Map" as (NSCopying & NSObjectProtocol))
+        context.setObject(Font.self, forKeyedSubscript: "Font" as (NSCopying & NSObjectProtocol))
     }
 }
 

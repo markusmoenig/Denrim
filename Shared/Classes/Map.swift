@@ -51,7 +51,7 @@ struct MapScene {
 
 @objc protocol Map_JSExports: JSExport {
     
-    static func compile(_ object: [AnyHashable:Any]) -> Map
+    static func create(_ object: [AnyHashable:Any]) -> Map?
 
     func draw(_ object: [AnyHashable:Any])
 }
@@ -96,7 +96,7 @@ class Map                   : NSObject, Map_JSExports
         }
     }
     
-    class func compile(_ object: [AnyHashable:Any]) -> Map
+    class func create(_ object: [AnyHashable:Any]) -> Map?
     {
         let context = JSContext.current()
 
@@ -122,7 +122,7 @@ class Map                   : NSObject, Map_JSExports
         }
     
         
-        return Map()
+        return nil
     }
     
     /*

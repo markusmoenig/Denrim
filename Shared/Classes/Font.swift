@@ -75,6 +75,8 @@ class TextBuffer    : NSObject, TextBuffer_JSExports
     
     var name        : String { get }
 
+    static func getAvailableFonts() -> [String]
+    static func create(_ name: String) -> Font?
     //func createTextBuffer(_ object: [AnyHashable:Any]) -> TextBuffer
 }
 
@@ -119,6 +121,26 @@ class Font          : NSObject, Font_JSExports
             bmFont = nil
         }
         print("freeing font", name)
+    }
+    
+    class func getAvailableFonts() -> [String]
+    {
+        let game = getGameObject()
+
+        return game.availableFonts
+    }
+    
+    class func create(_ name: String) -> Font?
+    {
+        let game = getGameObject()
+
+        if game.availableFonts.firstIndex(of: name) != nil {
+            let font = Font(name: name, game: game)
+            game.resources.append(font)
+            return font
+        }
+
+        return nil
     }
     
     /*
@@ -199,5 +221,13 @@ class Font          : NSObject, Font_JSExports
         }
         
         return rect;
+    }
+    
+    /// Returns the game object for this context
+    static func getGameObject() -> Game {
+        let context = JSContext.current()
+        let main = context?.objectForKeyedSubscript("_mT")?.toObject() as! Texture2D
+        //let main = (context!["_mT"] as? JSValue)!.toObject() as! Texture2D
+        return main.game!
     }
 }

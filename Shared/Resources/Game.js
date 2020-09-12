@@ -2,9 +2,9 @@ class Game
 {
     constructor()
     {
-        this.font = System.createFont("Square")
+        this.font = Font.create("Square")
         
-        Texture2D.createFromImage({
+        Texture2D.create({
             name: "spritesheet"
         })
         .then(image => this.image = image)
