@@ -74,6 +74,11 @@ class Texture2D                 : NSObject, Texture2D_JSExports
     
     deinit
     {
+        clear()
+    }
+    
+    func clear()
+    {
         print("release texture")
         if texture != nil {
             texture!.setPurgeableState(.empty)
@@ -127,6 +132,7 @@ class Texture2D                 : NSObject, Texture2D_JSExports
 
                     if let mtlTexture = try? game.textureLoader.newTexture(data: asset.data[0], options: options) {
                         texture = Texture2D(game, texture: mtlTexture)
+                        game.resources.append(texture!)
                         promise.success(value: texture)
                     } else {
                         promise.fail(error: "Image cannot be decoded")

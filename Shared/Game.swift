@@ -43,8 +43,9 @@ class Game              : ObservableObject
     
     var jsError         = JSError()
     
-    var resources       : [UUID:AnyObject] = [:]
-        
+    var resources       : [AnyObject] = []
+    var availableFonts  : [String] = ["OpenSans", "Square", "SourceCodePro"]
+            
     public let javaScriptErrorOccured = PassthroughSubject<Bool,Never>()
 
     init()
@@ -92,7 +93,6 @@ class Game              : ObservableObject
     
     func stop()
     {
-        resources = [:]
         jsBridge.stop()
 
         state = .Idle

@@ -13,8 +13,8 @@ import JavaScriptCore
     var width: Float { get }
     var height: Float { get }
             
-    static func getFonts() -> [Font]
-    static func getFont(_ name: String) -> Font
+    static func getAvailableFonts() -> [String]
+    static func createFont(_ name: String) -> Font
 
     static func compileShader(_ object: [AnyHashable:Any]) -> JSPromise?
 
@@ -35,28 +35,20 @@ class System            : NSObject, System_JSExports
     var width           : Float = 0
     var height          : Float = 0
     
-    class func getFonts() -> [Font]
+    class func getAvailableFonts() -> [String]
     {
         let game = getGameObject()
-        var fonts : [Font] = []
-        
-        for (_, object) in game.resources {
-            if let font = object as? Font {
-                fonts.append(font)
-            }
-        }
-        return fonts
+
+        return game.availableFonts
     }
     
-    class func getFont(_ name: String) -> Font
+    class func createFont(_ name: String) -> Font
     {
-        let list = getFonts()
-        for f in list {
-            if f.name == name {
-                return f
-            }
-        }
-        return list[0]
+        let game = getGameObject()
+
+        let font = Font(name: name, game: game)
+        game.resources.append(font)
+        return font
     }
         
     class func compileShader(_ object: [AnyHashable:Any]) -> JSPromise?

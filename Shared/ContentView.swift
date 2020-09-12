@@ -246,7 +246,7 @@ struct ContentView: View {
                         {
                             Label("Rename", systemImage: "pencil")//rectangle.and.pencil.and.ellipsis")
                         }
-                        .disabled(asset.name == "Game.js")
+                        .disabled(asset.name == "Game")
                         
                         if asset.type == .JavaScript || asset.type == .Shader {
                             Button(action: {
@@ -255,7 +255,7 @@ struct ContentView: View {
                             {
                                 Label("Remove Script", systemImage: "minus")
                             }
-                            .disabled(asset.name == "Game.js")
+                            .disabled(asset.name == "Game")
                         } else
                         if asset.type == .Image {
                             Button(action: {
@@ -332,14 +332,7 @@ struct ContentView: View {
                     Text("Name")
                     TextField("Name", text: $assetName, onEditingChanged: { (changed) in
                         if let asset = document.game.assetFolder.current {
-                            if asset.type == .JavaScript {
-                                asset.name = assetName + ".js"
-                            } else
-                            if asset.type == .Shader {
-                                asset.name = assetName + ".sh"
-                            } else {
-                                asset.name = assetName
-                            }
+                            asset.name = assetName
                             self.updateView.toggle()
                         }
                     })

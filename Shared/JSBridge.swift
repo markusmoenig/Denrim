@@ -22,6 +22,8 @@ class JSBridge
     var context         : JSContext? = nil
     var game            : Game!
     
+    var fonts           : [Font] = []
+    
     init(_ game: Game)
     {
         self.game = game
@@ -98,11 +100,21 @@ class JSBridge
     }
     
     func stop() {
-        if context != nil {
-            //let go = context!.globalObject.toDictionary()
-            //context!["game"] = nil
-            //context!["Square"] = nil
+        
+        for asset in game.assetFolder.assets {
+            asset.map = nil
         }
+        
+        for r in game.resources {
+            if let f = r as? Font {
+                f.clear()
+            } else
+            if let t = r as? Texture2D {
+                t.clear()
+            }
+        }
+        game.resources = []
+        
         context = nil
     }
     
@@ -134,22 +146,13 @@ class JSBridge
     func registerInContext(_ context: JSContext)
     {
         loadAndExecuteResource(context, "Enums")
+        
         context.setObject(System.self, forKeyedSubscript: "System" as (NSCopying & NSObjectProtocol))
         context.setObject(Vec4.self, forKeyedSubscript: "Vec4" as (NSCopying & NSObjectProtocol))
         context.setObject(Vec2.self, forKeyedSubscript: "Vec2" as (NSCopying & NSObjectProtocol))
         context.setObject(Rect2D.self, forKeyedSubscript: "Rect2D" as (NSCopying & NSObjectProtocol))
         context.setObject(Texture2D.self, forKeyedSubscript: "Texture2D" as (NSCopying & NSObjectProtocol))
         context.setObject(Map.self, forKeyedSubscript: "Map" as (NSCopying & NSObjectProtocol))
-
-        // Fonts        
-        let openSans = Font(name: "OpenSans", game: game)
-        game.resources[openSans.uuid] = openSans
-
-        let square = Font(name: "Square", game: game)
-        game.resources[square.uuid] = square
-
-        let sourceCodePro = Font(name: "SourceCodePro", game: game)
-        game.resources[sourceCodePro.uuid] = sourceCodePro
     }
 }
 

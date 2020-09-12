@@ -2,7 +2,7 @@ class Game
 {
     constructor()
     {
-        this.font = System.getFont("Square")
+        this.font = System.createFont("Square")
         
         Texture2D.createFromImage({
             name: "spritesheet"
@@ -74,7 +74,7 @@ class Game
             width: 680,
             height: 472,
             alpha: 0.5,
-            subRect: Rect2D.create(680 * this.counter,0,680,472),
+            rect: Rect2D.create(680 * this.counter,0,680,472),
             texture: this.image
         })
                 

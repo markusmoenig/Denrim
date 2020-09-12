@@ -26,6 +26,7 @@ class MapBuilder
         case Alias = "Alias"        // An alias of or into one of the above assets
         case Layer = "Layer"        // Contains alias data of a layer
         case Scene = "Scene"        // List of layers
+        case Object2D = "Object2D"  // An 2D object
     }
     
     init(_ game: Game)
@@ -49,7 +50,7 @@ class MapBuilder
         
         var error = JSError()
         error.column = 0
-        
+                
         func createError(_ errorText: String = "Syntax Error") {
             error.error = errorText
         }
@@ -246,6 +247,10 @@ class MapBuilder
             setLine(variable)
             currentLayer = variable
         } else
+        if type == .Object2D {
+            map.objects2D[variable] = MapObject2D(name: variable, options: options)
+            setLine(variable)
+        } else
         if type == .Scene {
             map.scenes[variable] = MapScene(options: options)
             setLine(variable)
@@ -256,7 +261,7 @@ class MapBuilder
     {
         print("Processing Options", options)
 
-        let stringOptions = ["group", "id"]
+        let stringOptions = ["group", "id", "class"]
         let integerOptions = ["index"]
         let sizeOptions = ["sceneoffset", "range"]
         let boolOptions = ["repeatx"]

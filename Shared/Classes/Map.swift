@@ -38,6 +38,12 @@ struct MapLayer {
     var endLine         : Int32 = 0
 }
 
+struct MapObject2D {
+
+    var name            : String = ""
+    var options         : [String:Any]
+}
+
 struct MapScene {
 
     var options         : [String:Any]
@@ -45,7 +51,7 @@ struct MapScene {
 
 @objc protocol Map_JSExports: JSExport {
     
-    static func compile(_ object: [AnyHashable:Any]) -> JSPromise
+    static func compile(_ object: [AnyHashable:Any]) -> Map
 
     func draw(_ object: [AnyHashable:Any])
 }
@@ -57,6 +63,7 @@ class Map                   : NSObject, Map_JSExports
     var sequences           : [String:MapSequence] = [:]
     var layers              : [String:MapLayer] = [:]
     var scenes              : [String:MapScene] = [:]
+    var objects2D           : [String:MapObject2D] = [:]
 
     var lines               : [Int32:String] = [:]
     
@@ -66,7 +73,6 @@ class Map                   : NSObject, Map_JSExports
     weak var texture        : Texture2D? = nil
     
     deinit {
-        print("release map")
         clear()
         resources = [:]
     }
@@ -76,15 +82,50 @@ class Map                   : NSObject, Map_JSExports
         super.init()
     }
     
-    func clear()
+    func clear(_ releaseResources: Bool = false)
     {
+        print("release map")
         images = [:]
         aliases = [:]
         layers = [:]
         scenes = [:]
+        objects2D = [:]
         lines = [:]
+        if releaseResources {
+            resources = [:]
+        }
     }
     
+    class func compile(_ object: [AnyHashable:Any]) -> Map
+    {
+        let context = JSContext.current()
+
+        let main = context?.objectForKeyedSubscript("_mT")?.toObject() as! Texture2D
+        let game = main.game!
+        
+        if let mapName = object["name"] as? String {
+         
+            if let asset = game.assetFolder.getAsset(mapName, .Map) {
+                let error = game.mapBuilder.compile(asset)
+                                    
+                if error.error == nil {
+                    return asset.map!
+                    //promise.success(value: asset.map!)
+                } else {
+                    //promise.fail(error: error.error!)
+                }
+            } else {
+                //promise.fail(error: "Map not found")
+            }
+        } else {
+            //promise.fail(error: "Map name not specified")
+        }
+    
+        
+        return Map()
+    }
+    
+    /*
     class func compile(_ object: [AnyHashable:Any]) -> JSPromise
     {
         let context = JSContext.current()
@@ -113,7 +154,7 @@ class Map                   : NSObject, Map_JSExports
         }
         
         return promise
-    }
+    }*/
     
     func draw(_ object: [AnyHashable:Any])
     {

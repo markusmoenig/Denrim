@@ -108,6 +108,11 @@ class Font          : NSObject, Font_JSExports
     }
     
     deinit {
+        clear()
+    }
+    
+    func clear()
+    {
         if let texture = atlas {
             texture.setPurgeableState(.empty)
             atlas = nil
