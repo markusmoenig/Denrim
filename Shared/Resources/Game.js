@@ -31,7 +31,7 @@ class Game
         for (var i = 0; i < 150; i +=1)
             this.objects.push({
                 x: 50 + (i % 10) * 40,
-                y: 50 + (i / 10) * 40,
+                y: -50 - (i / 10) * 40,
                 width: 40,
                 height: 40,
                 border: 4,
@@ -57,7 +57,7 @@ class Game
         
         main.drawDisks([{
             x: 5,
-            y: 5,
+            y: -5,
             radius: 100,
             border: 5,
             borderColor: Vec4.create(1,0,0,0.5)
@@ -86,7 +86,7 @@ class Game
                 
         main.drawText({
             x: 100,
-            y: 100,
+            y: -100,
             size: 30,
             text: "DENRIM",
             font: this.font,

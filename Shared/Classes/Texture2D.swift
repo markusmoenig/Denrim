@@ -223,6 +223,7 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         let fillColor : SIMD4<Float>; if let v = object["color"] as? Vec4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
         let borderColor : SIMD4<Float>; if let v = object["borderColor"] as? Vec4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
         
+        y = -y;
         x /= game.scaleFactor
         y /= game.scaleFactor
         
@@ -274,6 +275,7 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         let fillColor : SIMD4<Float>; if let v = object["color"] as? Vec4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
         let borderColor : SIMD4<Float>; if let v = object["borderColor"] as? Vec4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
 
+        y = -y;
         x /= game.scaleFactor
         y /= game.scaleFactor
 
@@ -341,6 +343,7 @@ class Texture2D                 : NSObject, Texture2D_JSExports
             
             let subRect : Rect2D?; if let v = object["rect"] as? Rect2D { subRect = v } else { subRect = nil }
 
+            y = -y;
             x /= game.scaleFactor
             y /= game.scaleFactor
             
@@ -439,6 +442,7 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         let font : Font?; if let v = object["font"] as? Font { font = v } else { font = nil }
         let color : SIMD4<Float>; if let v = object["color"] as? Vec4 { color = v.toSIMD() } else { color = SIMD4<Float>(1,1,1,1) }
 
+        y = -y;
         let scaleFactor : Float = game.scaleFactor
         
         func drawChar(char: BMChar, x: Float, y: Float, adjScale: Float)

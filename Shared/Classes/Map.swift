@@ -50,6 +50,7 @@ struct MapObject2D {
 
 struct MapPhysics2D {
 
+    var ppm             : Float = 100
     var world           : b2World? = nil
     var options         : [String:Any]
 }
@@ -134,10 +135,11 @@ class Map                   : NSObject, Map_JSExports
                                 map.objects2D[variable]?.positionValue = JSManagedValue(value: context?.evaluateScript("\(variable).position"))
 
                                 if map.physics2D != nil {
+                                    let ppm = map.physics2D!.ppm
                                     // Define the dynamic body. We set its position and call the body factory.
                                     let bodyDef = b2BodyDef()
                                     bodyDef.type = b2BodyType.dynamicBody
-                                    bodyDef.position.set(100.0, 0.0)
+                                    bodyDef.position.set(100.0 / ppm, 0.0 / ppm)
                                     let body = map.physics2D!.world!.createBody(bodyDef)
                                     
                                     // Define another box shape for our dynamic body.
@@ -229,9 +231,11 @@ class Map                   : NSObject, Map_JSExports
         
             physics2D.world!.step(timeStep: timeStep, velocityIterations: velocityIterations, positionIterations: positionIterations)
             
+            let ppm = physics2D.ppm
+
             for (_, object) in objects2D {
                 if let body = object.body {
-                    object.positionValue?.value.setValue(body.position.y, forProperty: "y")
+                    object.positionValue?.value.setValue(body.position.y * ppm, forProperty: "y")
                 }
             }
         }
@@ -342,7 +346,7 @@ class Map                   : NSObject, Map_JSExports
                 index += 2
             }
             
-            yPos += maxHeight
+            yPos -= maxHeight
             xPos = x
         }
     }
