@@ -28,6 +28,7 @@ class MapBuilder
         case Scene = "Scene"        // List of layers
         case Physics2D = "Physics2D"// 2D Physics
         case Object2D = "Object2D"  // An 2D object
+        case Fixture2D = "Fixture2D"// A fixture for an Object2D
     }
     
     init(_ game: Game)
@@ -249,7 +250,11 @@ class MapBuilder
             currentLayer = variable
         } else
         if type == .Physics2D {
-            map.physics2D = MapPhysics2D(options: options)
+            map.physics2D[variable] = MapPhysics2D(options: options)
+            setLine(variable)
+        } else
+        if type == .Fixture2D {
+            map.fixtures2D[variable] = MapFixture2D(options: options)
             setLine(variable)
         } else
         if type == .Object2D {
@@ -266,9 +271,9 @@ class MapBuilder
     {
         print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "class"]
+        let stringOptions = ["group", "id", "class", "physics", "mode", "object"]
         let integerOptions = ["index"]
-        let sizeOptions = ["sceneoffset", "range"]
+        let vec2Options = ["sceneoffset", "range", "gravity", "position", "box"]
         let boolOptions = ["repeatx"]
         let stringArrayOptions = ["layers"]
 
@@ -301,8 +306,8 @@ class MapBuilder
                 }
                 res[name] = layers
             } else
-            if sizeOptions.firstIndex(of: name) != nil {
-                // Size
+            if vec2Options.firstIndex(of: name) != nil {
+                // vec2
                 let array = value.split(separator: ",")
                 if array.count == 2 {
                     let width : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
