@@ -137,7 +137,7 @@ class JSBridge
     
     func loadAndExecuteResource(_ context: JSContext, _ name: String)
     {
-        guard let path = Bundle.main.path(forResource: name, ofType: "js", inDirectory: "Resources") else {
+        guard let path = Bundle.main.path(forResource: name, ofType: "js", inDirectory: "Files") else {
             return
         }
                 

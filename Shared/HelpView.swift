@@ -19,7 +19,7 @@ struct DocWebView: NSViewRepresentable {
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator as? WKUIDelegate
         
-        if let url = Bundle.main.url(forResource: "doc.md", withExtension: "html", subdirectory: "Resources") {
+        if let url = Bundle.main.url(forResource: "doc.md", withExtension: "html", subdirectory: "Files") {
             
             webView.isHidden = true
             webView.loadFileURL(url, allowingReadAccessTo: url)
@@ -67,7 +67,7 @@ struct DocWebView: UIViewRepresentable {
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator as? WKUIDelegate
         
-        if let url = Bundle.main.url(forResource: "doc.md", withExtension: "html", subdirectory: "Resources") {
+        if let url = Bundle.main.url(forResource: "doc.md", withExtension: "html", subdirectory: "Files") {
             
             webView.isHidden = true
             webView.loadFileURL(url, allowingReadAccessTo: url)

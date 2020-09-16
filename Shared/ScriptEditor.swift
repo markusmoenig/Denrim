@@ -230,7 +230,7 @@ struct SwiftUIWebView: NSViewRepresentable {
         webView.uiDelegate = context.coordinator as? WKUIDelegate
         webView.configuration.userContentController.add(context.coordinator, name: "jsHandler")
         
-        if let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "Resources") {
+        if let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "Files") {
             
             webView.isHidden = true
             webView.loadFileURL(url, allowingReadAccessTo: url)
@@ -294,7 +294,7 @@ struct SwiftUIWebView: UIViewRepresentable {
         webView.uiDelegate = context.coordinator as? WKUIDelegate
         webView.configuration.userContentController.add(context.coordinator, name: "jsHandler")
         
-        if let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "Resources") {
+        if let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "Files") {
             
             webView.loadFileURL(url, allowingReadAccessTo: url)
             let request = URLRequest(url: url)

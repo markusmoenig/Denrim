@@ -25,7 +25,7 @@ class AssetFolder   : Codable
     {
         self.game = game
         
-        guard let path = Bundle.main.path(forResource: "Game", ofType: "js", inDirectory: "Resources") else {
+        guard let path = Bundle.main.path(forResource: "Game", ofType: "js", inDirectory: "Files") else {
             return
         }
         
@@ -57,7 +57,7 @@ class AssetFolder   : Codable
     
     func addShader(_ name: String)
     {
-        guard let path = Bundle.main.path(forResource: "Shader", ofType: "txt", inDirectory: "Resources") else {
+        guard let path = Bundle.main.path(forResource: "Shader", ofType: "txt", inDirectory: "Files") else {
             return
         }
         
@@ -72,7 +72,7 @@ class AssetFolder   : Codable
     
     func addMap(_ name: String)
     {
-        //guard let path = Bundle.main.path(forResource: "Shader", ofType: "txt", inDirectory: "Resources") else {
+        //guard let path = Bundle.main.path(forResource: "Shader", ofType: "txt", inDirectory: "Files") else {
         //    return
         //}
         
