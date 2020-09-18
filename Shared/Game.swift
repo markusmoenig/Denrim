@@ -37,6 +37,8 @@ class Game              : ObservableObject
     var gameCmdBuffer   : MTLCommandBuffer? = nil
     
     var scriptEditor    : ScriptEditor? = nil
+    var file            : File? = nil
+
     var mapBuilder      : MapBuilder!
 
     var textureLoader   : MTKTextureLoader!
@@ -58,6 +60,7 @@ class Game              : ObservableObject
         scaleFactor = Float(UIScreen.main.scale)
         #endif
         
+        file = File()
         jsBridge = JSBridge(self)
         
         assetFolder = AssetFolder()

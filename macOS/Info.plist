@@ -9,9 +9,11 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.example.plain-text</string>
+				<string>com.Denrim.game</string>
 			</array>
 			<key>NSUbiquitousDocumentUserActivityType</key>
 			<string>$(PRODUCT_BUNDLE_IDENTIFIER).example-document</string>
@@ -35,6 +37,29 @@
 	<string>1</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.content</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Denrim Game</string>
+			<key>UTTypeIcons</key>
+			<dict/>
+			<key>UTTypeIdentifier</key>
+			<string>com.Denrim.game</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>denrim</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>

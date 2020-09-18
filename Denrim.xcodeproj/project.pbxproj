@@ -62,6 +62,8 @@
 		2B3299532501B5DC007C3386 /* Square.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299452501B5DC007C3386 /* Square.json */; };
 		2B3299592501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
 		2B32995A2501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
+		2B53617E25147B3300E8A20D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53617D25147B3300E8A20D /* File.swift */; };
+		2B53617F25147B3300E8A20D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53617D25147B3300E8A20D /* File.swift */; };
 		2B6D0B5A2509EEE80098F244 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
 		2B6D0B5B2509EEE80098F244 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
 		2B6D0B9A250B08080098F244 /* b2Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B61250B08080098F244 /* b2Body.swift */; };
@@ -207,6 +209,7 @@
 		2B3299442501B5DC007C3386 /* OpenSans.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = OpenSans.tiff; sourceTree = "<group>"; };
 		2B3299452501B5DC007C3386 /* Square.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Square.json; sourceTree = "<group>"; };
 		2B3299582501B6F3007C3386 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		2B53617D25147B3300E8A20D /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		2B6D0B592509EEE80098F244 /* MapPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPreview.swift; sourceTree = "<group>"; };
 		2B6D0B61250B08080098F244 /* b2Body.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Body.swift; sourceTree = "<group>"; };
 		2B6D0B63250B08080098F244 /* b2CircleContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CircleContact.swift; sourceTree = "<group>"; };
@@ -315,6 +318,7 @@
 				2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */,
 				2B6D0B592509EEE80098F244 /* MapPreview.swift */,
 				2B32992324FF21EC007C3386 /* ShaderCompiler.swift */,
+				2B53617D25147B3300E8A20D /* File.swift */,
 				2B32993F2501B592007C3386 /* Fonts */,
 				2B32991F24FE3CC2007C3386 /* Classes */,
 				2B6D0B5F250B08080098F244 /* Box2D */,
@@ -622,6 +626,7 @@
 				2B6D0BEF250B08080098F244 /* b2CircleShape.swift in Sources */,
 				2B6D0BB5250B08080098F244 /* b2Joint.swift in Sources */,
 				2B6D0BC9250B08080098F244 /* b2WorldCallbacks.swift in Sources */,
+				2B53617F25147B3300E8A20D /* File.swift in Sources */,
 				2B6D0BBB250B08080098F244 /* b2GearJoint.swift in Sources */,
 				2B6D0BFE250B0AAE0098F244 /* b2Timer.swift in Sources */,
 				2B01C89924FB824A00E86449 /* System.swift in Sources */,
@@ -701,6 +706,7 @@
 				2B6D0BEE250B08080098F244 /* b2CircleShape.swift in Sources */,
 				2B6D0BB4250B08080098F244 /* b2Joint.swift in Sources */,
 				2B6D0BC8250B08080098F244 /* b2WorldCallbacks.swift in Sources */,
+				2B53617E25147B3300E8A20D /* File.swift in Sources */,
 				2B6D0BBA250B08080098F244 /* b2GearJoint.swift in Sources */,
 				2B6D0BFF250B0B490098F244 /* b2Timer.swift in Sources */,
 				2B01C89A24FB824A00E86449 /* System.swift in Sources */,

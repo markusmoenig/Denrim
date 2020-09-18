@@ -7,9 +7,11 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.example.plain-text</string>
+				<string>com.Denrim.game</string>
 			</array>
 			<key>NSUbiquitousDocumentUserActivityType</key>
 			<string>$(PRODUCT_BUNDLE_IDENTIFIER).example-document</string>
@@ -61,6 +63,29 @@
 	</array>
 	<key>UISupportsDocumentBrowser</key>
 	<true/>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.content</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Denrim Game</string>
+			<key>UTTypeIconFiles</key>
+			<array/>
+			<key>UTTypeIdentifier</key>
+			<string>com.Denrim.game</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>denrim</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>

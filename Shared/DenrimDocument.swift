@@ -9,8 +9,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 extension UTType {
-    static var exampleText: UTType {
-        UTType(importedAs: "com.example.plain-text")
+    static var denrimGame: UTType {
+        UTType(exportedAs: "com.Denrim.game")
     }
 }
 
@@ -21,7 +21,7 @@ struct DenrimDocument: FileDocument {
     init() {
     }
 
-    static var readableContentTypes: [UTType] { [.exampleText] }
+    static var readableContentTypes: [UTType] { [.denrimGame] }
 
     /*
     init(configuration: ReadConfiguration) throws {
