@@ -38,6 +38,7 @@ class BehaviorBuilder
     
     var leaves          : [BehaviorNodeItem] =
     [
+        BehaviorNodeItem("Clear", { (_ options: [String:Any]) -> BehaviorNode in return Clear(options) }),
         BehaviorNodeItem("DrawDisk", { (_ options: [String:Any]) -> BehaviorNode in return DrawDisk(options) })
     ]
     
@@ -58,7 +59,7 @@ class BehaviorBuilder
         if asset.behavior == nil {
             asset.behavior = BehaviorContext(game)
         } else {
-            //asset.behavior!.clear()
+            asset.behavior!.clear()
         }
         
         print("compile")
@@ -91,11 +92,19 @@ class BehaviorBuilder
             }
             
             leftOfComment = leftOfComment.trimmingCharacters(in: .whitespaces)
+            
+            var variableName : String? = nil
+            // --- Check for variable assignment
+            let values = leftOfComment.split(separator: "=")
+            if values.count == 2 {
+                variableName = String(values[0]).trimmingCharacters(in: .whitespaces)
+                leftOfComment = String(values[1])
+            }
 
             if leftOfComment.count > 0 {
                 let arguments = leftOfComment.split(separator: " ", omittingEmptySubsequences: true)
                 if arguments.count > 0 {
-                    print(level, arguments)
+                    //print(level, arguments)
                     
                     let cmd = arguments[0].trimmingCharacters(in: .whitespaces)
                     if cmd == "tree" {
@@ -117,41 +126,61 @@ class BehaviorBuilder
                         if rightValueArray.count > 0 {
                             
                             let possbibleCmd = String(rightValueArray[0]).trimmingCharacters(in: .whitespaces)
-
-                            for leave in self.leaves {
-                                if leave.name == possbibleCmd {
-                                    
-                                    var options : [String: String] = [:]
-                                    
-                                    rightValueArray.removeFirst()
-                                    if rightValueArray.count == 1 && rightValueArray[0] == ">" {
-                                        // Empty Arguments
-                                    } else {
-                                        while rightValueArray.count > 0 {
-                                            let array = rightValueArray[0].split(separator: ":")
-                                            //print("2", array)
-                                            rightValueArray.removeFirst()
-                                            if array.count == 2 {
-                                                let optionName = array[0].lowercased().trimmingCharacters(in: .whitespaces)
-                                                var values = array[1].trimmingCharacters(in: .whitespaces)
-                                                //print("option", optionName, "value", values)
-                                                                                    
-                                                if values.count > 0 && values.last! != ">" {
-                                                    createError("No closing '>' for option '\(optionName)'")
-                                                } else {
-                                                    values = String(values.dropLast())
-                                                }
-                                                options[optionName] = String(values)
-                                            } else { createError(); rightValueArray = [] }
+                            
+                            if variableName == nil {
+                                
+                                // Looking for leave
+                                for leave in self.leaves {
+                                    if leave.name == possbibleCmd {
+                                        
+                                        var options : [String: String] = [:]
+                                        
+                                        // Fill in options
+                                        rightValueArray.removeFirst()
+                                        if rightValueArray.count == 1 && rightValueArray[0] == ">" {
+                                            // Empty Arguments
+                                        } else {
+                                            while rightValueArray.count > 0 {
+                                                let array = rightValueArray[0].split(separator: ":")
+                                                //print("2", array)
+                                                rightValueArray.removeFirst()
+                                                if array.count == 2 {
+                                                    let optionName = array[0].lowercased().trimmingCharacters(in: .whitespaces)
+                                                    var values = array[1].trimmingCharacters(in: .whitespaces)
+                                                    //print("option", optionName, "value", values)
+                                                                                        
+                                                    if values.count > 0 && values.last! != ">" {
+                                                        createError("No closing '>' for option '\(optionName)'")
+                                                    } else {
+                                                        values = String(values.dropLast())
+                                                    }
+                                                    options[optionName] = String(values)
+                                                } else { createError(); rightValueArray = [] }
+                                            }
+                                        }
+                                        
+                                        let nodeOptions = self.parser_processOptions(options, &error)
+                                        //print(options, nodeOptions)
+                                        if error.error == nil {
+                                            currentBranch?.leaves.append(leave.createNode(nodeOptions))
                                         }
                                     }
-                                    
-                                    let nodeOptions = self.parser_processOptions(options, &error)
-                                    
-                                    print(options, nodeOptions)
-                                    if error.error == nil {
-                                        currentBranch?.leaves.append(leave.createNode(nodeOptions))
-                                    }
+                                }
+                            } else {
+                                // Variable
+                                let possibleVariableType = rightValueArray[0].trimmingCharacters(in: .whitespaces)
+                                if possibleVariableType == "Vec2" {
+                                    rightValueArray.removeFirst()
+                                    let array = rightValueArray[0].split(separator: ",")
+                                    if array.count == 2 {
+                                        let left = array[0].lowercased().trimmingCharacters(in: .whitespaces)
+                                        let right = array[1].lowercased().dropLast().trimmingCharacters(in: .whitespaces)
+                                        if left.isEmpty == false && right.isEmpty == false {
+                                            let value = Vec2(Float(left)!, Float(right)!)
+                                            print("323", value.x, value.y)
+                                            asset.behavior!.addVariable(variableName!, value)
+                                        } else { createError() }
+                                    } else { createError() }
                                 }
                             }
                         }
@@ -228,7 +257,13 @@ class BehaviorBuilder
                     let width : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
                     let height : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { height = v } else { height = 1 }
                     res[name] = Vec2(width, height)
-                } else { error.error = "Vec2 must have 2 arguments" }
+                } else
+                if array.count == 1 {
+                    let variableName = String(array[0]).trimmingCharacters(in: .whitespaces)
+                    if let v = error.asset!.behavior?.getVariableValue(variableName) as? Vec2 {
+                        res[name] = v
+                    } else { error.error = "Variable '\(variableName)' not found" }
+                } else { error.error = "Wrong argument count for Vec2" }
             }
             if name == "rect" {
                 let array = value.split(separator: ",")

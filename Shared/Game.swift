@@ -183,7 +183,7 @@ class Game              : ObservableObject
         commandBuffer = nil
 
         if state == .Running {
-            DispatchQueue.main.async {
+            //DispatchQueue.main.async {
                 
                 self.startDrawing()
 
@@ -206,7 +206,7 @@ class Game              : ObservableObject
                 //self.gameCmdQueue = nil
                 self.gameCmdBuffer = nil
             }
-        }
+        //}
     }
     
     func startDrawing()

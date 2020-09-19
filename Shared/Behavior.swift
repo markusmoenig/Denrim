@@ -51,7 +51,14 @@ class BehaviorTree  : BehaviorNode
 
 class BehaviorVariable
 {
+    var name        : String
+    var value       : Any
     
+    init(_ name: String,_ value:Any)
+    {
+        self.name = name
+        self.value = value
+    }
 }
 
 class BehaviorContext
@@ -64,6 +71,27 @@ class BehaviorContext
     init(_ game: Game)
     {
         self.game = game
+    }
+    
+    func clear()
+    {
+        trees = []
+        variables = []
+    }
+    
+    func addVariable(_ name: String,_ value: Any)
+    {
+        variables.append(BehaviorVariable(name, value))
+    }
+    
+    func getVariableValue(_ name: String) -> Any?
+    {
+        for v in variables {
+            if v.name == name {
+                return v.value
+            }
+        }
+        return nil
     }
     
     func execute(name: String)

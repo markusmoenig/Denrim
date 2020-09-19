@@ -184,17 +184,17 @@ class Texture2D                 : NSObject
     
     func drawDisk(_ options: [String : Any])
     {
-        var x : Float; if let v = options["x"] as? Float { x = v } else { x = 0 }
-        var y : Float; if let v = options["y"] as? Float { y = v } else { y = 0 }
+        var position : SIMD2<Float>; if let v = options["position"] as? Vec2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
+
         let radius : Float; if let v = options["radius"] as? Float { radius = v } else { radius = 100 }
         let border : Float; if let v = options["border"] as? Float { border = v } else { border = 0 }
         let onion : Float;  if let v = options["onion"] as? Float { onion = v } else { onion = 0 }
         let fillColor : SIMD4<Float>; if let v = options["color"] as? Vec4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
         let borderColor : SIMD4<Float>; if let v = options["borderColor"] as? Vec4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
         
-        y = -y;
-        x /= game.scaleFactor
-        y /= game.scaleFactor
+        position.y = -position.y
+        position.x /= game.scaleFactor
+        position.y /= game.scaleFactor
         
         var data = DiscUniform()
         data.borderSize = border / game.scaleFactor
@@ -203,7 +203,7 @@ class Texture2D                 : NSObject
         data.borderColor = borderColor
         data.onion = onion / game.scaleFactor
 
-        let rect = MMRect(x - data.borderSize / 2, y - data.borderSize / 2, data.radius * 2 + data.borderSize * 2, data.radius * 2 + data.borderSize * 2, scale: game.scaleFactor )
+        let rect = MMRect(position.x - data.borderSize / 2, position.y - data.borderSize / 2, data.radius * 2 + data.borderSize * 2, data.radius * 2 + data.borderSize * 2, scale: game.scaleFactor )
         let vertexData = game.createVertexData(texture: self, rect: rect)
         
         let renderPassDescriptor = MTLRenderPassDescriptor()

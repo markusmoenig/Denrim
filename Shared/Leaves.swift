@@ -7,6 +7,17 @@
 
 import Foundation
 
+class Clear      : BehaviorNode
+{
+    @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
+    {
+        print("drawclear")
+        
+        game.texture!.clear(options)
+        return .Success
+    }
+}
+
 class DrawDisk      : BehaviorNode
 {
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
