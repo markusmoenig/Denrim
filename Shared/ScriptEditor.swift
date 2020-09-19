@@ -51,12 +51,12 @@ class ScriptEditor
             sessions += 1
         }
         
-        if asset.type == .JavaScript {
+        if asset.type == .Behavior {
             webView.evaluateJavaScript(
                 """
                 var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
                 editor.setSession(\(asset.scriptName))
-                editor.session.setMode("ace/mode/javascript");
+                //editor.session.setMode("ace/mode/javascript");
                 //editor.setTheme("ace/theme/idle_fingers");
                 //editor.setTheme("ace/theme/tomorrow_night");
                 """, completionHandler: { (value, error ) in
@@ -135,7 +135,7 @@ class ScriptEditor
 
     }
     
-    func setError(_ error: JSError )
+    func setError(_ error: CompileError )
     {
         webView.evaluateJavaScript(
             """

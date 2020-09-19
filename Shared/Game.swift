@@ -28,7 +28,6 @@ class Game              : ObservableObject
     var scaleFactor     : Float
     
     var assetFolder     : AssetFolder!
-    var jsBridge        : JSBridge!
     
     var screenWidth     : Float = 0
     var screenHeight    : Float = 0
@@ -40,16 +39,15 @@ class Game              : ObservableObject
     var file            : File? = nil
 
     var mapBuilder      : MapBuilder!
+    var behaviorBuilder : BehaviorBuilder!
 
     var textureLoader   : MTKTextureLoader!
-    
-    var jsError         = JSError()
-    
+        
     var resources       : [AnyObject] = []
     var availableFonts  : [String] = ["OpenSans", "Square", "SourceCodePro"]
+    
+    var gameContext     : BehaviorContext? = nil
             
-    public let javaScriptErrorOccured = PassthroughSubject<Bool,Never>()
-
     init()
     {
         viewportSize = vector_uint2( 0, 0 )
@@ -61,12 +59,13 @@ class Game              : ObservableObject
         #endif
         
         file = File()
-        jsBridge = JSBridge(self)
+        //jsBridge = JSBridge(self)
         
         assetFolder = AssetFolder()
         assetFolder.setup(self)
         
         mapBuilder = MapBuilder(self)
+        behaviorBuilder = BehaviorBuilder(self)
     }
     
     func setupView(_ view: DMTKView)
@@ -86,19 +85,34 @@ class Game              : ObservableObject
     
     func start()
     {
-        state = .Running
+        var hasError: Bool = false
+        for asset in assetFolder.assets {
+            if asset.type == .Behavior {
+             
+                let error = behaviorBuilder.compile(asset)
+                if error.error != nil {
+                    hasError = true
+                    break
+                } else {
+                    if asset.type == .Behavior && asset.name == "Game" {
+                        gameContext = asset.behavior
+                    }
+                }
+            }
+        }
 
-        jsError.error = nil
-        jsBridge.compile(assetFolder)
+        if !hasError {
+            state = .Running
 
-        view.enableSetNeedsDisplay = false
-        view.isPaused = false
+            view.enableSetNeedsDisplay = false
+            view.isPaused = false
+        }
     }
     
     func stop()
     {
-        jsBridge.stop()
-
+        gameContext = nil
+        
         state = .Idle
         view.isPaused = true
     }
@@ -130,14 +144,6 @@ class Game              : ObservableObject
     
     func draw()
     {
-        if state == .Running {
-            if jsError.error != nil {
-                stop()
-                javaScriptErrorOccured.send(true)
-                return
-            }
-        }
-                
         if checkTexture() && state == .Idle{
             // We need to update the screen
             if assetFolder.current?.type == .Map && assetFolder.current?.map != nil {
@@ -185,7 +191,9 @@ class Game              : ObservableObject
                 //let startTime = Double(Date().timeIntervalSince1970)
                 //#endif
 
-                self.jsBridge.step()
+                if let context = self.gameContext {
+                    context.execute(name: "draw")
+                }
 
                 //#if DEBUG
                 //print("JS Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)

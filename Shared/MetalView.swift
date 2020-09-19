@@ -22,6 +22,7 @@ public class DMTKView       : MTKView
         location.y = CGFloat(frame.height) - location.y
         location = convert(location, from: nil)
         
+        /*
         game.jsBridge.execute(
         """
         game.touch({
@@ -30,6 +31,7 @@ public class DMTKView       : MTKView
             y: \(location.y)
         })
         """)
+        */
     }
         
     override public func mouseDown(with event: NSEvent) {

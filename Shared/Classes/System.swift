@@ -13,7 +13,7 @@ import JavaScriptCore
     var width: Float { get }
     var height: Float { get }
 
-    static func compileShader(_ object: [AnyHashable:Any]) -> JSPromise?
+    //static func compileShader(_ object: [AnyHashable:Any]) -> JSPromise?
 
     static func setTimeout(_ callback : JSValue,_ ms : Double) -> String
     static func clearTimeout(_ identifier: String)
@@ -32,6 +32,7 @@ class System            : NSObject, System_JSExports
     var width           : Float = 0
     var height          : Float = 0
     
+    /*
     class func compileShader(_ object: [AnyHashable:Any]) -> JSPromise?
     {
         let game = getGameObject()
@@ -57,7 +58,7 @@ class System            : NSObject, System_JSExports
         })
         
         return promise
-    }
+    }*/
     
     deinit {
         print("system deinit")

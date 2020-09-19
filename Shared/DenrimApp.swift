@@ -6,15 +6,22 @@
 //
 
 import SwiftUI
+import Combine
 
 @main
 struct DenrimApp: App {
         
     @StateObject var appState = AppState()
 
+    private let exportCommand = PassthroughSubject<Void, Never>()
+
     var body: some Scene {
         DocumentGroup(newDocument: DenrimDocument()) { file in
             ContentView(document: file.$document)
+                .onReceive(exportCommand) { _ in
+                    print("test")
+                    //file.document.beginExport()
+                }
         }
         .commands {
             
@@ -27,18 +34,13 @@ struct DenrimApp: App {
                     Text("Denrim Help")
                 }
             }
-            CommandMenu("Project") {
-                Button(action: {}) {
-                    Text("Dark mode")
+            CommandMenu("Examples") {
+                Button(action: {
+                    exportCommand.send()
+                }) {
+                    Text("Pong")
                 }
-
-                Button(action: {}) {
-                    Text("Light mode")
-                }
-
-                Button(action: {}) {
-                    Text("System mode")
-                }
+                //.keyboardShortcut("e", modifiers: .command)
             }
         }
     }

@@ -29,9 +29,9 @@ struct ContentView: View {
         NavigationView() {
             NavigationView() {
                 List {
-                    Section(header: Text("Scripts")) {
+                    Section(header: Text("Behavior")) {
                         ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                            if asset.type == .JavaScript {
+                            if asset.type == .Behavior {
                                 Button(action: {
                                     document.game.assetFolder.select(asset.id)
                                     document.game.createPreview(asset)
@@ -46,7 +46,7 @@ struct ContentView: View {
                             }
                         }
                     }
-                    Section(header: Text("Maps")) {
+                    Section(header: Text("Map Files")) {
                         ForEach(document.game.assetFolder.assets, id: \.id) { asset in
                             if asset.type == .Map {
                                 Button(action: {
@@ -108,17 +108,13 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
                     Menu {
-                        Menu("Script") {
-                            Button("Object Script", action: {
-                                document.game.assetFolder.addScript("New Script")
-                                updateView.toggle()
-                            })
-                            Button("Empty Script", action: {
-                                document.game.assetFolder.addScript("New Script")
+                        Menu("Behavior") {
+                            Button("Object 2D", action: {
+                                document.game.assetFolder.addBehaviorTree("New BT")
                                 updateView.toggle()
                             })
                         }
-                        Button("Map", action: {
+                        Button("Map File", action: {
                             document.game.assetFolder.addMap("New Map")
                             updateView.toggle()
                         })
@@ -176,17 +172,18 @@ struct ContentView: View {
                             .zIndex(scriptIsVisible ? 1 : 0)
                             .frame(height: g.size.height)
                             .tag(1)
-                            .onReceive(self.document.game.javaScriptErrorOccured) { state in
+                            /*
+                            .onReceive(self.document.game.compileErrorOccured) { state in
                                 
-                                if let asset = self.document.game.jsError.asset {
+                                if let asset = self.document.game.error.asset {
                                     document.game.assetFolder.select(asset.id)
                                 }
                                 
-                                if self.document.game.jsError.error != nil {
-                                    self.document.game.scriptEditor?.setError(self.document.game.jsError)
+                                if self.document.game.error.error != nil {
+                                    self.document.game.scriptEditor?.setError(self.document.game.error)
                                 }
                                 self.updateView.toggle()
-                            }
+                            }*/
                             .onChange(of: deviceColorScheme) { newValue in
                                 document.game.scriptEditor?.setTheme(newValue)
                             }
@@ -248,12 +245,12 @@ struct ContentView: View {
                         }
                         .disabled(asset.name == "Game")
                         
-                        if asset.type == .JavaScript || asset.type == .Shader {
+                        if asset.type == .Behavior || asset.type == .Shader {
                             Button(action: {
                                 showDeleteAssetAlert = true
                             })
                             {
-                                Label("Remove Script", systemImage: "minus")
+                                Label("Remove", systemImage: "minus")
                             }
                             .disabled(asset.name == "Game")
                         } else

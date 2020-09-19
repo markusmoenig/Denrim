@@ -25,12 +25,12 @@ class AssetFolder   : Codable
     {
         self.game = game
         
-        guard let path = Bundle.main.path(forResource: "Game", ofType: "js", inDirectory: "Files") else {
+        guard let path = Bundle.main.path(forResource: "Game", ofType: "bt", inDirectory: "Files") else {
             return
         }
         
         if let gameTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
-            assets.append(Asset(type: .JavaScript, name: "Game", value: gameTemplate))
+            assets.append(Asset(type: .Behavior, name: "Game", value: gameTemplate))
             current = assets[0]
         }
     }
@@ -47,9 +47,9 @@ class AssetFolder   : Codable
         try container.encode(assets, forKey: .assets)
     }
     
-    func addScript(_ name: String, value: String = "")
+    func addBehaviorTree(_ name: String, value: String = "")
     {
-        let asset = Asset(type: .JavaScript, name: name, value: value)
+        let asset = Asset(type: .Behavior, name: name, value: value)
         assets.append(asset)
         select(asset.id)
         game.scriptEditor?.createSession(asset)
@@ -118,11 +118,14 @@ class AssetFolder   : Codable
 
         for asset in assets {
             if asset.id == id {
-                if asset.type == .JavaScript || asset.type == .Shader || asset.type == .Map {
+                if asset.type == .Behavior || asset.type == .Shader || asset.type == .Map {
                     game.scriptEditor?.setAssetSession(asset)
                     
-                    if asset.type == .Map {
-                        if game.state == .Idle {
+                    if game.state == .Idle {
+                        if asset.type == .Behavior {
+                            game.behaviorBuilder.compile(asset)
+                        } else
+                        if asset.type == .Map {
                             game.mapBuilder.compile(asset)
                             if game.mapBuilder.cursorTimer == nil {
                                 game.mapBuilder.startTimer(asset)
@@ -136,7 +139,7 @@ class AssetFolder   : Codable
         }
     }
     
-    func getAsset(_ name: String,_ type: Asset.AssetType = .JavaScript) -> Asset?
+    func getAsset(_ name: String,_ type: Asset.AssetType = .Behavior) -> Asset?
     {
         for asset in assets {
             if asset.type == type && (asset.name == name || String(asset.name.split(separator: ".")[0]) == name) {
@@ -146,7 +149,7 @@ class AssetFolder   : Codable
         return nil
     }
     
-    func getAssetById(_ id: UUID,_ type: Asset.AssetType = .JavaScript) -> Asset?
+    func getAssetById(_ id: UUID,_ type: Asset.AssetType = .Behavior) -> Asset?
     {
         for asset in assets {
             if asset.type == type && asset.id == id {
@@ -174,8 +177,11 @@ class AssetFolder   : Codable
         for asset in assets {
             if asset.id == id {
                 asset.value = value
-                if asset.type == .Map {
-                    if game.state == .Idle {
+                if game.state == .Idle {
+                    if asset.type == .Behavior {
+                        game.behaviorBuilder.compile(asset)
+                    } else
+                    if asset.type == .Map {
                         game.mapBuilder.compile(asset)//, deltaStart: deltaStart, deltaEnd: deltaEnd)
                     }
                 }
@@ -187,10 +193,10 @@ class AssetFolder   : Codable
 class Asset         : Codable, Equatable
 {
     enum AssetType  : Int, Codable {
-        case JavaScript, Image, Shader, Map
+        case Behavior, Image, Shader, Map
     }
     
-    var type        : AssetType = .JavaScript
+    var type        : AssetType = .Behavior
     
     var id          = UUID()
     
@@ -206,6 +212,9 @@ class Asset         : Codable, Equatable
 
     // If this is a .Map asset
     var map         : Map? = nil
+    
+    // If this is a .Behavior asset
+    var behavior    : BehaviorContext? = nil
         
     private enum CodingKeys: String, CodingKey {
         case type

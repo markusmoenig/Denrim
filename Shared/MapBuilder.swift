@@ -37,7 +37,7 @@ class MapBuilder
         mapPreview = MapPreview(game)
     }
     
-    @discardableResult func compile(_ asset: Asset) -> JSError
+    @discardableResult func compile(_ asset: Asset) -> CompileError
     {
         print("compiling...")
         
@@ -50,7 +50,7 @@ class MapBuilder
         let ns = asset.value as NSString
         var lineNumber : Int32 = 0
         
-        var error = JSError()
+        var error = CompileError()
         error.column = 0
                 
         func createError(_ errorText: String = "Syntax Error") {
@@ -173,7 +173,7 @@ class MapBuilder
         return error
     }
     
-    func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout JSError, map: Map)
+    func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout CompileError, map: Map)
     {
         print("Processing Assignment", type, variable, options, error.line!)
         
@@ -267,7 +267,7 @@ class MapBuilder
         } else { error.error = "Unknown type '\(type.rawValue)'" }
     }
     
-    func parser_processOptions(_ options: [String:String],_ error: inout JSError) -> [String:Any]
+    func parser_processOptions(_ options: [String:String],_ error: inout CompileError) -> [String:Any]
     {
         print("Processing Options", options)
 

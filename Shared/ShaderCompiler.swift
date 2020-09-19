@@ -18,7 +18,7 @@ class ShaderCompiler
         self.asset = asset
         self.game = game
     }
-    
+    /*
     func compile(_ object: [AnyHashable:Any],_ promise: JSPromise)
     {
         var code = getHeaderCode()
@@ -68,6 +68,7 @@ class ShaderCompiler
         
         game.device.makeLibrary( source: code, options: nil, completionHandler: compiledCB)
     }
+    */
     
     func compile(_ cb: @escaping (Shader) -> ())
     {

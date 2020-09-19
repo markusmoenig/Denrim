@@ -85,7 +85,7 @@ class JSBridge
         var jsCode = ""
         
         for asset in assetFolder.assets {
-            if asset.type == .JavaScript {
+            if asset.type == .Behavior {
                 if to.isEmpty {
                     from.append(0)
                 } else {

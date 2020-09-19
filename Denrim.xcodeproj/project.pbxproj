@@ -29,8 +29,6 @@
 		2B01C89024FB824A00E86449 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87E24FB824900E86449 /* Game.swift */; };
 		2B01C89124FB824A00E86449 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87F24FB824900E86449 /* Asset.swift */; };
 		2B01C89224FB824A00E86449 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87F24FB824900E86449 /* Asset.swift */; };
-		2B01C89324FB824A00E86449 /* JSBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88024FB824900E86449 /* JSBridge.swift */; };
-		2B01C89424FB824A00E86449 /* JSBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88024FB824900E86449 /* JSBridge.swift */; };
 		2B01C89524FB824A00E86449 /* Files in Resources */ = {isa = PBXBuildFile; fileRef = 2B01C88124FB824A00E86449 /* Files */; };
 		2B01C89624FB824A00E86449 /* Files in Resources */ = {isa = PBXBuildFile; fileRef = 2B01C88124FB824A00E86449 /* Files */; };
 		2B01C89724FB824A00E86449 /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88324FB824A00E86449 /* Classes.swift */; };
@@ -64,6 +62,10 @@
 		2B32995A2501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
 		2B53617E25147B3300E8A20D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53617D25147B3300E8A20D /* File.swift */; };
 		2B53617F25147B3300E8A20D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53617D25147B3300E8A20D /* File.swift */; };
+		2B53618E2514952800E8A20D /* Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53618D2514952800E8A20D /* Behavior.swift */; };
+		2B53618F2514952800E8A20D /* Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53618D2514952800E8A20D /* Behavior.swift */; };
+		2B536195251498C400E8A20D /* BehaviorBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B536194251498C400E8A20D /* BehaviorBuilder.swift */; };
+		2B536196251498C400E8A20D /* BehaviorBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B536194251498C400E8A20D /* BehaviorBuilder.swift */; };
 		2B6D0B5A2509EEE80098F244 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
 		2B6D0B5B2509EEE80098F244 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
 		2B6D0B9A250B08080098F244 /* b2Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B61250B08080098F244 /* b2Body.swift */; };
@@ -210,6 +212,8 @@
 		2B3299452501B5DC007C3386 /* Square.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Square.json; sourceTree = "<group>"; };
 		2B3299582501B6F3007C3386 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		2B53617D25147B3300E8A20D /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		2B53618D2514952800E8A20D /* Behavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Behavior.swift; sourceTree = "<group>"; };
+		2B536194251498C400E8A20D /* BehaviorBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorBuilder.swift; sourceTree = "<group>"; };
 		2B6D0B592509EEE80098F244 /* MapPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPreview.swift; sourceTree = "<group>"; };
 		2B6D0B61250B08080098F244 /* b2Body.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Body.swift; sourceTree = "<group>"; };
 		2B6D0B63250B08080098F244 /* b2CircleContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CircleContact.swift; sourceTree = "<group>"; };
@@ -319,6 +323,8 @@
 				2B6D0B592509EEE80098F244 /* MapPreview.swift */,
 				2B32992324FF21EC007C3386 /* ShaderCompiler.swift */,
 				2B53617D25147B3300E8A20D /* File.swift */,
+				2B53618D2514952800E8A20D /* Behavior.swift */,
+				2B536194251498C400E8A20D /* BehaviorBuilder.swift */,
 				2B32993F2501B592007C3386 /* Fonts */,
 				2B32991F24FE3CC2007C3386 /* Classes */,
 				2B6D0B5F250B08080098F244 /* Box2D */,
@@ -643,6 +649,7 @@
 				2B6D0BFD250B08080098F244 /* b2CollideCircles.swift in Sources */,
 				2B6D0BB3250B08080098F244 /* b2RevoluteJoint.swift in Sources */,
 				2B6D0BCF250B08080098F244 /* b2ContactManager.swift in Sources */,
+				2B536196251498C400E8A20D /* BehaviorBuilder.swift in Sources */,
 				2B01C89724FB824A00E86449 /* Classes.swift in Sources */,
 				2B01C89124FB824A00E86449 /* Asset.swift in Sources */,
 				2B6D0BAD250B08080098F244 /* b2Contact.swift in Sources */,
@@ -682,9 +689,9 @@
 				2B01C86B24FB814C00E86449 /* DenrimDocument.swift in Sources */,
 				2B6D0BDB250B08080098F244 /* b2Settings.swift in Sources */,
 				2B01C86D24FB814C00E86449 /* ContentView.swift in Sources */,
+				2B53618F2514952800E8A20D /* Behavior.swift in Sources */,
 				2B6D0BD7250B08080098F244 /* b2GrowableStack.swift in Sources */,
 				2B6D0B5B2509EEE80098F244 /* MapPreview.swift in Sources */,
-				2B01C89324FB824A00E86449 /* JSBridge.swift in Sources */,
 				2B6D0BD3250B08080098F244 /* b2Rope.swift in Sources */,
 				2B01C88524FB824A00E86449 /* MathLibrary.swift in Sources */,
 				2B6D0BB1250B08080098F244 /* b2DistanceJoint.swift in Sources */,
@@ -723,6 +730,7 @@
 				2B6D0BFC250B08080098F244 /* b2CollideCircles.swift in Sources */,
 				2B6D0BB2250B08080098F244 /* b2RevoluteJoint.swift in Sources */,
 				2B6D0BCE250B08080098F244 /* b2ContactManager.swift in Sources */,
+				2B536195251498C400E8A20D /* BehaviorBuilder.swift in Sources */,
 				2B01C89824FB824A00E86449 /* Classes.swift in Sources */,
 				2B01C89224FB824A00E86449 /* Asset.swift in Sources */,
 				2B6D0BAC250B08080098F244 /* b2Contact.swift in Sources */,
@@ -762,9 +770,9 @@
 				2B01C86C24FB814C00E86449 /* DenrimDocument.swift in Sources */,
 				2B6D0BDA250B08080098F244 /* b2Settings.swift in Sources */,
 				2B01C86E24FB814C00E86449 /* ContentView.swift in Sources */,
+				2B53618E2514952800E8A20D /* Behavior.swift in Sources */,
 				2B6D0BD6250B08080098F244 /* b2GrowableStack.swift in Sources */,
 				2B6D0B5A2509EEE80098F244 /* MapPreview.swift in Sources */,
-				2B01C89424FB824A00E86449 /* JSBridge.swift in Sources */,
 				2B6D0BD2250B08080098F244 /* b2Rope.swift in Sources */,
 				2B01C88624FB824A00E86449 /* MathLibrary.swift in Sources */,
 				2B6D0BB0250B08080098F244 /* b2DistanceJoint.swift in Sources */,

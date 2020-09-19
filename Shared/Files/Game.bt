@@ -1,0 +1,6 @@
+tree "init"
+    position = Number<Value: 10>
+
+tree "update"
+
+tree "draw"
