@@ -123,7 +123,7 @@ class Texture2D                 : NSObject
     
     func clear(_ options: [String:Any] = [:])
     {
-        let color : SIMD4<Float>; if let v = options["color"] as? Vec4 { color = v.toSIMD() } else { color = SIMD4<Float>(0,0,0,1) }
+        let color : SIMD4<Float>; if let v = options["color"] as? Float4 { color = v.toSIMD() } else { color = SIMD4<Float>(0,0,0,1) }
 
         let renderPassDescriptor = MTLRenderPassDescriptor()
 
@@ -184,13 +184,13 @@ class Texture2D                 : NSObject
     
     func drawDisk(_ options: [String : Any])
     {
-        var position : SIMD2<Float>; if let v = options["position"] as? Vec2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
+        var position : SIMD2<Float>; if let v = options["position"] as? Float2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
 
         let radius : Float; if let v = options["radius"] as? Float { radius = v } else { radius = 100 }
         let border : Float; if let v = options["border"] as? Float { border = v } else { border = 0 }
         let onion : Float;  if let v = options["onion"] as? Float { onion = v } else { onion = 0 }
-        let fillColor : SIMD4<Float>; if let v = options["color"] as? Vec4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
-        let borderColor : SIMD4<Float>; if let v = options["borderColor"] as? Vec4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
+        let fillColor : SIMD4<Float>; if let v = options["color"] as? Float4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
+        let borderColor : SIMD4<Float>; if let v = options["borderColor"] as? Float4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
         
         position.y = -position.y
         position.x /= game.scaleFactor
@@ -231,8 +231,8 @@ class Texture2D                 : NSObject
         let border : Float; if let v = object["border"] as? Float { border = v } else { border = 0 }
         let rotation : Float; if let v = object["rotation"] as? Float { rotation = v } else { rotation = 0 }
         let onion : Float;  if let v = object["onion"] as? Float { onion = v } else { onion = 0 }
-        let fillColor : SIMD4<Float>; if let v = object["color"] as? Vec4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
-        let borderColor : SIMD4<Float>; if let v = object["borderColor"] as? Vec4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
+        let fillColor : SIMD4<Float>; if let v = object["color"] as? Float4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
+        let borderColor : SIMD4<Float>; if let v = object["borderColor"] as? Float4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
 
         y = -y;
         x /= game.scaleFactor
@@ -399,7 +399,7 @@ class Texture2D                 : NSObject
         let size : Float; if let v = object["size"] as? Float { size = v } else { size = 30 }
         let text : String; if let v = object["text"] as? String { text = v } else { text = "" }
         let font : Font?; if let v = object["font"] as? Font { font = v } else { font = nil }
-        let color : SIMD4<Float>; if let v = object["color"] as? Vec4 { color = v.toSIMD() } else { color = SIMD4<Float>(1,1,1,1) }
+        let color : SIMD4<Float>; if let v = object["color"] as? Float4 { color = v.toSIMD() } else { color = SIMD4<Float>(1,1,1,1) }
 
         y = -y;
         let scaleFactor : Float = game.scaleFactor

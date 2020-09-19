@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Vec4
+class Float4
 {
     var x           : Float = 1
     var y           : Float = 1
@@ -28,7 +28,7 @@ class Vec4
     }
 }
 
-class Vec2
+class Float2
 {
     var x           : Float = 0
     var y           : Float = 0

@@ -75,7 +75,7 @@ class BehaviorBuilder
             error.line = lineNumber
             
             let level = (str.prefix(while: {$0 == " "}).count) / 4
-            print(str, level)
+            //print(str, level)
             
             //
             var leftOfComment : String
@@ -169,17 +169,27 @@ class BehaviorBuilder
                             } else {
                                 // Variable
                                 let possibleVariableType = rightValueArray[0].trimmingCharacters(in: .whitespaces)
-                                if possibleVariableType == "Vec2" {
+                                if possibleVariableType == "Float2" {
                                     rightValueArray.removeFirst()
                                     let array = rightValueArray[0].split(separator: ",")
                                     if array.count == 2 {
                                         let left = array[0].lowercased().trimmingCharacters(in: .whitespaces)
                                         let right = array[1].lowercased().dropLast().trimmingCharacters(in: .whitespaces)
                                         if left.isEmpty == false && right.isEmpty == false {
-                                            let value = Vec2(Float(left)!, Float(right)!)
-                                            print("323", value.x, value.y)
-                                            asset.behavior!.addVariable(variableName!, value)
+                                            let xValue : Float? = Float(left)
+                                            let yValue : Float? = Float(right)
+                                            if xValue != nil && yValue != nil {
+                                                let value = Float2(Float(left)!, Float(right)!)
+                                                asset.behavior!.addVariable(variableName!, value)
+                                            } else { createError() }
                                         } else { createError() }
+                                    } else { createError() }
+                                } else
+                                if possibleVariableType == "Float" {
+                                    rightValueArray.removeFirst()
+                                    let value = rightValueArray[0].lowercased().dropLast().trimmingCharacters(in: .whitespaces)
+                                    if let floatValue = Float(value) {
+                                        asset.behavior!.addVariable(variableName!, floatValue)
                                     } else { createError() }
                                 }
                             }
@@ -232,7 +242,13 @@ class BehaviorBuilder
                 // Integer
                 if let v = Float(value) {
                     res[name] = v
-                } else { error.error = "The \(name) option expects an float argument" }
+                } else {
+                    let variableName = value.trimmingCharacters(in: .whitespaces)
+                    if let v = error.asset!.behavior?.getVariableValue(variableName) as? Float {
+                        res[name] = v
+                    } else { error.error = "Variable '\(variableName)' not found" }
+                }
+                //{ error.error = "The \(name) option expects an float argument" }
             } else
             if boolOptions.firstIndex(of: name) != nil {
                 // Boolean
@@ -256,11 +272,11 @@ class BehaviorBuilder
                 if array.count == 2 {
                     let width : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
                     let height : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { height = v } else { height = 1 }
-                    res[name] = Vec2(width, height)
+                    res[name] = Float2(width, height)
                 } else
                 if array.count == 1 {
                     let variableName = String(array[0]).trimmingCharacters(in: .whitespaces)
-                    if let v = error.asset!.behavior?.getVariableValue(variableName) as? Vec2 {
+                    if let v = error.asset!.behavior?.getVariableValue(variableName) as? Float2 {
                         res[name] = v
                     } else { error.error = "Variable '\(variableName)' not found" }
                 } else { error.error = "Wrong argument count for Vec2" }

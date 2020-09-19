@@ -213,7 +213,7 @@ class MapBuilder
                 if let asset = game.assetFolder.getAsset(group, .Image) {
                     var from : Int = 0
                     var to : Int = 0
-                    if let vec = options["range"] as? Vec2 {
+                    if let vec = options["range"] as? Float2 {
                         from = Int(vec.x)
                         to = Int(vec.y)
                     }
@@ -312,7 +312,7 @@ class MapBuilder
                 if array.count == 2 {
                     let width : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
                     let height : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { height = v } else { height = 1 }
-                    res[name] = Vec2(width, height)
+                    res[name] = Float2(width, height)
                 } else { error.error = "Vec2 must have 2 arguments" }
             }
             if name == "rect" {

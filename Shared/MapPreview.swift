@@ -39,7 +39,7 @@ class MapPreview
                 }
             } else
             if let seq = map.sequences[variable] {
-                if let range = seq.options["range"] as? Vec2 {
+                if let range = seq.options["range"] as? Float2 {
                     if animIndex > Int(range.y) {
                         animIndex = Int(range.x)
                     }

@@ -1,9 +1,10 @@
 tree "init"
-    position = Vec2<100, -100>
+    position = Float2<100, -100>
+    radius = Float<100>
 
 tree "update"
 
 tree "draw"
     Clear
-    DrawDisk<Position: position><Radius: 50>
+    DrawDisk<Position: position><Radius: radius>
 

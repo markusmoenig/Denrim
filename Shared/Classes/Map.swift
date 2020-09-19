@@ -132,7 +132,7 @@ class Map                   : NSObject, Map_JSExports
                         // Physics2D
                         for (variable, object) in map.physics2D {
                             var gravity = b2Vec2(0.0, -10.0)
-                            if let gravityOption = object.options["gravity"] as? Vec2 {
+                            if let gravityOption = object.options["gravity"] as? Float2 {
                                 gravity.x = gravityOption.x
                                 gravity.y = gravityOption.y
                             }
@@ -154,7 +154,7 @@ class Map                   : NSObject, Map_JSExports
                                         let bodyDef = b2BodyDef()
                                         bodyDef.type = b2BodyType.staticBody
 
-                                        if let position = object.options["position"] as? Vec2 {
+                                        if let position = object.options["position"] as? Float2 {
                                             bodyDef.position.set(position.x / ppm, position.y / ppm)
                                         } else {
                                             bodyDef.position.set(100.0 / ppm, 100.0 / ppm)
@@ -178,7 +178,7 @@ class Map                   : NSObject, Map_JSExports
                                                     
                                                     let shape = b2PolygonShape()
                                                     
-                                                    if let box = object.options["box"] as? Vec2 {
+                                                    if let box = object.options["box"] as? Float2 {
                                                         shape.setAsBox(halfWidth: box.x / ppm, halfHeight: box.y / ppm)
                                                     } else {
                                                         shape.setAsBox(halfWidth: 1.0 / ppm, halfHeight: 1.0 / ppm)
@@ -404,7 +404,7 @@ class Map                   : NSObject, Map_JSExports
                     var layerOffX : Float = 0
                     var layerOffY : Float = 0
                     
-                    if let sOff = layer.options["sceneoffset"] as? Vec2 {
+                    if let sOff = layer.options["sceneoffset"] as? Float2 {
                         layerOffX = sOff.x
                         layerOffY = sOff.y
                     }
