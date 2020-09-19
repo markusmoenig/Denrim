@@ -94,7 +94,7 @@ class Game              : ObservableObject
                     hasError = true
                     break
                 } else {
-                    if asset.type == .Behavior && asset.name == "Game" {
+                    if asset.name == "Game" {
                         gameContext = asset.behavior
                     }
                 }
@@ -152,7 +152,7 @@ class Game              : ObservableObject
                 }
             } else {
                 startDrawing()
-                texture?.clear(Vec4(0,0,0,1))
+                texture?.clear()
                 stopDrawing()
             }
         }
@@ -190,6 +190,8 @@ class Game              : ObservableObject
                 //#if DEBUG
                 //let startTime = Double(Date().timeIntervalSince1970)
                 //#endif
+
+                self.texture?.clear()
 
                 if let context = self.gameContext {
                     context.execute(name: "draw")

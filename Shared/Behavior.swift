@@ -16,6 +16,14 @@ class BehaviorNode {
     // Only applicable for branch nodes like a sequence
     var leaves              : [BehaviorNode] = []
     
+    // Options
+    var options             : [String:Any]
+    
+    init(_ options: [String:Any] = [:])
+    {
+        self.options = options
+    }
+    
     /// Executes a node inside a behaviour tree
     @discardableResult func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {

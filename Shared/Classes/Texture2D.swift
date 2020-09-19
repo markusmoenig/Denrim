@@ -6,36 +6,8 @@
 //
 
 import MetalKit
-import JavaScriptCore
 
-// Protocol must be declared with `@objc`
-@objc protocol Texture2D_JSExports: JSExport {
-    var width: Float { get }
-    var height: Float { get }
-
-    static func main() -> Texture2D
-    //static func create(_ object: [AnyHashable:Any]) -> JSPromise
-
-    func clear(_ color: Any)
-    
-    func drawDisk(_ object: [AnyHashable : Any])
-    func drawDisks(_ array: NSArray)
-    
-    func drawBox(_ object: [AnyHashable : Any])
-    func drawBoxes(_ array: NSArray)
-    
-    func drawTexture(_ object: [AnyHashable : Any])
-    func drawTextures(_ array: NSArray)
-    
-    func drawShader(_ object: [AnyHashable:Any])
-    func drawText(_ object: [AnyHashable:Any])// -> TextBuffer
-
-
-    // Imported as `Person.createWithFirstNameLastName(_:_:)`
-    //static func createWith(firstName: String, lastName: String) -> Person
-}
-
-class Texture2D                 : NSObject, Texture2D_JSExports
+class Texture2D                 : NSObject
 {
     var texture                 : MTLTexture!
     
@@ -74,18 +46,13 @@ class Texture2D                 : NSObject, Texture2D_JSExports
     
     deinit
     {
-        clear()
-    }
-    
-    func clear()
-    {
         print("release texture")
         if texture != nil {
             texture!.setPurgeableState(.empty)
             texture = nil
         }
     }
-    
+
     func allocateTexture(width: Int, height: Int)
     {
         if texture != nil {
@@ -107,13 +74,14 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         texture = game.device.makeTexture(descriptor: textureDescriptor)
     }
     
+    /*
     class func main() -> Texture2D
     {
         let context = JSContext.current()
         let main = context?.objectForKeyedSubscript("_mT")?.toObject() as! Texture2D
         
         return main
-    }
+    }*/
     
     /*
     class func create(_ object: [AnyHashable:Any]) -> JSPromise
@@ -153,9 +121,9 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         return promise
     }*/
     
-    func clear(_ color: Any)
+    func clear(_ options: [String:Any] = [:])
     {
-        let color : SIMD4<Float> = color as? Vec4 == nil ? SIMD4<Float>(0,0,0,1) : (color as! Vec4).toSIMD()
+        let color : SIMD4<Float>; if let v = options["color"] as? Vec4 { color = v.toSIMD() } else { color = SIMD4<Float>(0,0,0,1) }
 
         let renderPassDescriptor = MTLRenderPassDescriptor()
 
@@ -214,15 +182,15 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         renderEncoder.endEncoding()
     }
     
-    func drawDisk(_ object: [AnyHashable : Any])
+    func drawDisk(_ options: [String : Any])
     {
-        var x : Float; if let v = object["x"] as? Float { x = v } else { x = 0 }
-        var y : Float; if let v = object["y"] as? Float { y = v } else { y = 0 }
-        let radius : Float; if let v = object["radius"] as? Float { radius = v } else { radius = 100 }
-        let border : Float; if let v = object["border"] as? Float { border = v } else { border = 0 }
-        let onion : Float;  if let v = object["onion"] as? Float { onion = v } else { onion = 0 }
-        let fillColor : SIMD4<Float>; if let v = object["color"] as? Vec4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
-        let borderColor : SIMD4<Float>; if let v = object["borderColor"] as? Vec4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
+        var x : Float; if let v = options["x"] as? Float { x = v } else { x = 0 }
+        var y : Float; if let v = options["y"] as? Float { y = v } else { y = 0 }
+        let radius : Float; if let v = options["radius"] as? Float { radius = v } else { radius = 100 }
+        let border : Float; if let v = options["border"] as? Float { border = v } else { border = 0 }
+        let onion : Float;  if let v = options["onion"] as? Float { onion = v } else { onion = 0 }
+        let fillColor : SIMD4<Float>; if let v = options["color"] as? Vec4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
+        let borderColor : SIMD4<Float>; if let v = options["borderColor"] as? Vec4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
         
         y = -y;
         x /= game.scaleFactor
@@ -251,16 +219,6 @@ class Texture2D                 : NSObject, Texture2D_JSExports
         renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawDisc))
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         renderEncoder.endEncoding()
-    }
-    
-    func drawDisks(_ array: NSArray)
-    {
-        for jsvalue in array {
-            
-            if let object = jsvalue as? [AnyHashable : Any] {
-                drawDisk(object)
-            }
-        }
     }
     
     func drawBox(_ object: [AnyHashable : Any])

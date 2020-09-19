@@ -4,3 +4,4 @@ tree "init"
 tree "update"
 
 tree "draw"
+    DrawDisk
