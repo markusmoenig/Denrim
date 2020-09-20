@@ -533,8 +533,8 @@ struct ContentView: View {
                     Button(action: {
                         helpIsVisible.toggle()
                     }) {
+                        //Text(!helpIsVisible ? "Help" : "Hide")
                         Label("Help", systemImage: "questionmark")
-                        Text(!helpIsVisible ? "Help" : "Hide")
                     }
                     .keyboardShortcut("h")
                 }
