@@ -47,7 +47,11 @@ class Game              : ObservableObject
     var availableFonts  : [String] = ["OpenSans", "Square", "SourceCodePro"]
     
     var gameContext     : BehaviorContext? = nil
-            
+    
+    // Preview Size, UI only
+    var previewFactor   : CGFloat = 4
+    var previewOpacity  : Double = 0.5
+
     init()
     {
         viewportSize = vector_uint2( 0, 0 )

@@ -36,7 +36,7 @@ struct ContentView: View {
     @State private var showImageItems: Bool = false
 
     @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
-
+    
     var body: some View {
         NavigationView() {
             List {
@@ -257,78 +257,82 @@ struct ContentView: View {
             }
             .frame(minWidth: 300, maxWidth: .infinity)*/
             
-            ZStack(alignment: .topTrailing) {
-                WebView(document.game, deviceColorScheme)
-                .zIndex(0)
-                .frame(minWidth: 300, maxWidth: .infinity)
-                .layoutPriority(2)
-                .alert(isPresented: $showDeleteAssetAlert) {
-                    Alert(
-                        title: Text("Do you want to delete the asset?"),
-                        message: Text("This action cannot be undone!"),
-                        primaryButton: .destructive(Text("Yes"), action: {
-                            if let asset = document.game.assetFolder.current {
-                                if let index = document.game.assetFolder.assets.firstIndex(of: asset) {
-                                    document.game.assetFolder.assets.remove(at: index)
-                                    document.game.assetFolder.select(document.game.assetFolder.assets[0].id)
-                                    self.updateView.toggle()
+            GeometryReader { geometry in
+                ZStack(alignment: .topTrailing) {
+                    WebView(document.game, deviceColorScheme)
+                    .zIndex(0)
+                    .frame(minWidth: 300, maxWidth: .infinity)
+                    .layoutPriority(2)
+                    .alert(isPresented: $showDeleteAssetAlert) {
+                        Alert(
+                            title: Text("Do you want to delete the asset?"),
+                            message: Text("This action cannot be undone!"),
+                            primaryButton: .destructive(Text("Yes"), action: {
+                                if let asset = document.game.assetFolder.current {
+                                    if let index = document.game.assetFolder.assets.firstIndex(of: asset) {
+                                        document.game.assetFolder.assets.remove(at: index)
+                                        document.game.assetFolder.select(document.game.assetFolder.assets[0].id)
+                                        self.updateView.toggle()
+                                    }
+                                }
+                            }),
+                            secondaryButton: .cancel(Text("No"), action: {})
+                        )
+                    }
+                    MetalView(document.game)
+                        .zIndex(1)
+                        .frame(minWidth: 0,
+                               maxWidth: document.game.state == .Running ? .infinity : geometry.size.width / document.game.previewFactor,
+                               minHeight: 0,
+                               maxHeight: document.game.state == .Running ? .infinity : geometry.size.height / document.game.previewFactor,
+                               alignment: .topTrailing)
+                        .opacity(document.game.previewOpacity)
+                        .animation(.default)
+                
+                    VStack {
+                        if document.game.assetFolder.current!.type == .Image {
+                            HStack {
+                                if document.game.assetFolder.current!.data.count >= 2 {
+                                    Text("Index " + String(Int(imageIndex)))
+                                    Slider(value: $imageIndex, in: 0...Double(document.game.assetFolder.current!.data.count-1), step: 1)
+                                    .padding()
                                 }
                             }
-                        }),
-                        secondaryButton: .cancel(Text("No"), action: {})
-                    )
-                }
-                MetalView(document.game)
-                    .zIndex(1)
-                    .frame(minWidth: 0,
-                           maxWidth: document.game.state == .Running ? .infinity : 200,
-                           minHeight: 0,
-                           maxHeight: document.game.state == .Running ? .infinity : 200)
-                    .opacity(0.5)
-                    .animation(.default)
-                VStack {
-                    if document.game.assetFolder.current!.type == .Image {
-                        HStack {
-                            if document.game.assetFolder.current!.data.count >= 2 {
-                                Text("Index " + String(Int(imageIndex)))
-                                Slider(value: $imageIndex, in: 0...Double(document.game.assetFolder.current!.data.count-1), step: 1)
-                                .padding()
-                            }
-                        }
-                        .padding()
-                        #if os(OSX)
-                        let image = NSImage(data: document.game.assetFolder.current!.data[Int(imageIndex)])!
-                        #else
-                        let image = UIImage(data: document.game.assetFolder.current!.data[Int(imageIndex)])!
-                        #endif
-                        #if os(OSX)
-                        Image(nsImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                        #else
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                        #endif
-                        HStack {
-                            Spacer()
-                            Text("Width: \(Int(image.size.width))")
-                            Spacer()
-                            Text("Height: \(Int(image.size.height))")
-                            Spacer()
-                        }.padding()
+                            .padding()
+                            #if os(OSX)
+                            let image = NSImage(data: document.game.assetFolder.current!.data[Int(imageIndex)])!
+                            #else
+                            let image = UIImage(data: document.game.assetFolder.current!.data[Int(imageIndex)])!
+                            #endif
+                            #if os(OSX)
+                            Image(nsImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            #else
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            #endif
+                            HStack {
+                                Spacer()
+                                Text("Width: \(Int(image.size.width))")
+                                Spacer()
+                                Text("Height: \(Int(image.size.height))")
+                                Spacer()
+                            }.padding()
 
-                        Spacer()
+                            Spacer()
+                        }
                     }
+                    .zIndex(scriptIsVisible ? 0 : 1)
+                    .background(Color.gray)
+                    HelpWebView()
+                        .zIndex(helpIsVisible ? 3 : -1)
+                        .frame(minWidth: 0,
+                               maxWidth: .infinity,
+                               minHeight: 0,
+                               maxHeight: .infinity)
                 }
-                .zIndex(scriptIsVisible ? 0 : 1)
-                .background(Color.gray)
-                HelpWebView()
-                    .zIndex(helpIsVisible ? 3 : -1)
-                    .frame(minWidth: 0,
-                           maxWidth: .infinity,
-                           minHeight: 0,
-                           maxHeight: .infinity)
             }
             .layoutPriority(2)
             .toolbar {
@@ -385,6 +389,7 @@ struct ContentView: View {
                         })
                     }
                     label: {
+                        Text(" Asset")//.foregroundColor(Color.gray)
                         Label("Add", systemImage: "plus")
                     }
                     
@@ -488,9 +493,49 @@ struct ContentView: View {
                         Label("Update", systemImage: "arrow.counterclockwise")
                     }.keyboardShortcut("u")
                     .disabled(document.game.state == .Running || document.game.assetFolder.current?.type != .Shader )
-                    Button(!helpIsVisible ? "Help" : "Hide", action: {
+                    
+                    Menu {
+                        Section(header: Text("Preview")) {
+                            Button("Small", action: {
+                                document.game.previewFactor = 4
+                                updateView.toggle()
+                            })
+                            Button("Medium", action: {
+                                document.game.previewFactor = 2
+                                updateView.toggle()
+                            })
+                            Button("Large", action: {
+                                document.game.previewFactor = 1
+                                updateView.toggle()
+                            })
+                        }
+                        Section(header: Text("Opacity")) {
+                            Button("Opacity Off", action: {
+                                document.game.previewOpacity = 0
+                                updateView.toggle()
+                            })
+                            Button("Opacity Half", action: {
+                                document.game.previewOpacity = 0.5
+                                updateView.toggle()
+                            })
+                            Button("Opacity Full", action: {
+                                document.game.previewOpacity = 1.0
+                                updateView.toggle()
+                            })
+                        }
+                    }
+                    label: {
+                        //Text("Preview")
+                        Label("View", systemImage: "viewfinder")
+                    }
+                    
+                    // Documentation
+                    Button(action: {
                         helpIsVisible.toggle()
-                    })
+                    }) {
+                        Label("Help", systemImage: "questionmark")
+                        Text(!helpIsVisible ? "Help" : "Hide")
+                    }
                     .keyboardShortcut("h")
                 }
             }
