@@ -320,7 +320,7 @@ class Map                   : NSObject, Map_JSExports
 
     @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: MapAlias, scale: Float = 1) -> (Float, Float)
     {
-        var object : [AnyHashable : Any] = [:]
+        var object : [String:Any] = [:]
         var rc     : (Float, Float) = (0,0)
 
         if alias.type == .Image {

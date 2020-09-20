@@ -182,15 +182,14 @@ class Texture2D                 : NSObject
         renderEncoder.endEncoding()
     }
     
-    func drawDisk(_ options: [String : Any])
+    func drawDisk(_ options: [String:Any])
     {
         var position : SIMD2<Float>; if let v = options["position"] as? Float2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
-
         let radius : Float; if let v = options["radius"] as? Float { radius = v } else { radius = 100 }
         let border : Float; if let v = options["border"] as? Float { border = v } else { border = 0 }
         let onion : Float;  if let v = options["onion"] as? Float { onion = v } else { onion = 0 }
         let fillColor : SIMD4<Float>; if let v = options["color"] as? Float4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
-        let borderColor : SIMD4<Float>; if let v = options["borderColor"] as? Float4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
+        let borderColor : SIMD4<Float>; if let v = options["bordercolor"] as? Float4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
         
         position.y = -position.y
         position.x /= game.scaleFactor
@@ -221,22 +220,21 @@ class Texture2D                 : NSObject
         renderEncoder.endEncoding()
     }
     
-    func drawBox(_ object: [AnyHashable : Any])
+    func drawBox(_ options: [String:Any])
     {
-        var x : Float; if let v = object["x"] as? Float { x = v } else { x = 0 }
-        var y : Float; if let v = object["y"] as? Float { y = v } else { y = 0 }
-        let width : Float; if let v = object["width"] as? Float { width = v } else { width = 1 }
-        let height : Float; if let v = object["height"] as? Float { height = v } else { height = 1 }
-        let round : Float; if let v = object["round"] as? Float { round = v } else { round = 0 }
-        let border : Float; if let v = object["border"] as? Float { border = v } else { border = 0 }
-        let rotation : Float; if let v = object["rotation"] as? Float { rotation = v } else { rotation = 0 }
-        let onion : Float;  if let v = object["onion"] as? Float { onion = v } else { onion = 0 }
-        let fillColor : SIMD4<Float>; if let v = object["color"] as? Float4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
-        let borderColor : SIMD4<Float>; if let v = object["borderColor"] as? Float4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
+        var position : SIMD2<Float>; if let v = options["position"] as? Float2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
+        let width : Float; if let v = options["width"] as? Float { width = v } else { width = 1 }
+        let height : Float; if let v = options["height"] as? Float { height = v } else { height = 1 }
+        let round : Float; if let v = options["round"] as? Float { round = v } else { round = 0 }
+        let border : Float; if let v = options["border"] as? Float { border = v } else { border = 0 }
+        let rotation : Float; if let v = options["rotation"] as? Float { rotation = v } else { rotation = 0 }
+        let onion : Float;  if let v = options["onion"] as? Float { onion = v } else { onion = 0 }
+        let fillColor : SIMD4<Float>; if let v = options["color"] as? Float4 { fillColor = v.toSIMD() } else { fillColor = SIMD4<Float>(1,1,1,1) }
+        let borderColor : SIMD4<Float>; if let v = options["bordercolor"] as? Float4 { borderColor = v.toSIMD() } else { borderColor = SIMD4<Float>(0,0,0,0) }
 
-        y = -y;
-        x /= game.scaleFactor
-        y /= game.scaleFactor
+        position.y = -position.y;
+        position.x /= game.scaleFactor
+        position.y /= game.scaleFactor
 
         var data = BoxUniform()
         data.onion = onion / game.scaleFactor
@@ -253,7 +251,7 @@ class Texture2D                 : NSObject
         let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
 
         if rotation == 0 {
-            let rect = MMRect(x, y, data.size.x, data.size.y, scale: game.scaleFactor)
+            let rect = MMRect(position.x, position.y, data.size.x, data.size.y, scale: game.scaleFactor)
             let vertexData = game.createVertexData(texture: self, rect: rect)
             renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
             renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
@@ -262,8 +260,8 @@ class Texture2D                 : NSObject
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBox))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         } else {
-            data.pos.x = x
-            data.pos.y = y
+            data.pos.x = position.x
+            data.pos.y = position.y
             data.rotation = rotation.degreesToRadians
             data.screenSize = float2(self.width / game.scaleFactor, self.height / game.scaleFactor)
 
@@ -280,31 +278,20 @@ class Texture2D                 : NSObject
         renderEncoder.endEncoding()
     }
     
-    func drawBoxes(_ array: NSArray)
+    func drawTexture(_ options: [String:Any])
     {
-        for jsvalue in array {
+        if let sourceTexture = options["texture"] as? Texture2D {
             
-            if let object = jsvalue as? [AnyHashable : Any] {
-                drawBox(object)
-            }
-        }
-    }
-    
-    func drawTexture(_ object: [AnyHashable : Any])
-    {
-        if let sourceTexture = object["texture"] as? Texture2D {
+            var position : SIMD2<Float>; if let v = options["position"] as? Float2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
+            var width : Float; if let v = options["width"] as? Float { width = v } else { width = Float(sourceTexture.width) }
+            var height : Float; if let v = options["height"] as? Float { height = v } else { height = Float(sourceTexture.height) }
+            let alpha : Float; if let v = options["alpha"] as? Float { alpha = v } else { alpha = 1.0 }
             
-            var x : Float; if let v = object["x"] as? Float { x = v } else { x = 0 }
-            var y : Float; if let v = object["y"] as? Float { y = v } else { y = 0 }
-            var width : Float; if let v = object["width"] as? Float { width = v } else { width = Float(sourceTexture.width) }
-            var height : Float; if let v = object["height"] as? Float { height = v } else { height = Float(sourceTexture.height) }
-            let alpha : Float; if let v = object["alpha"] as? Float { alpha = v } else { alpha = 1.0 }
-            
-            let subRect : Rect2D?; if let v = object["rect"] as? Rect2D { subRect = v } else { subRect = nil }
+            let subRect : Rect2D?; if let v = options["rect"] as? Rect2D { subRect = v } else { subRect = nil }
 
-            y = -y;
-            x /= game.scaleFactor
-            y /= game.scaleFactor
+            position.y = -position.y;
+            position.x /= game.scaleFactor
+            position.y /= game.scaleFactor
             
             width /= game.scaleFactor
             height /= game.scaleFactor
@@ -324,7 +311,7 @@ class Texture2D                 : NSObject
                 data.size.y = 1
             }
                     
-            let rect = MMRect( x, y, width, height, scale: game.scaleFactor )
+            let rect = MMRect( position.x, position.y, width, height, scale: game.scaleFactor )
             let vertexData = game.createVertexData(texture: self, rect: rect)
             
             let renderPassDescriptor = MTLRenderPassDescriptor()
@@ -342,16 +329,6 @@ class Texture2D                 : NSObject
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawTexture))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
             renderEncoder.endEncoding()
-        }
-    }
-    
-    func drawTextures(_ array: NSArray)
-    {
-        for jsvalue in array {
-            
-            if let object = jsvalue as? [AnyHashable : Any] {
-                drawTexture(object)
-            }
         }
     }
     
@@ -392,16 +369,15 @@ class Texture2D                 : NSObject
     }
     
     /// Draws the given text
-    func drawText(_ object: [AnyHashable:Any])
+    func drawText(_ options: [String:Any])
     {
-        var x : Float; if let v = object["x"] as? Float { x = v } else { x = 0 }
-        var y : Float; if let v = object["y"] as? Float { y = v } else { y = 0 }
-        let size : Float; if let v = object["size"] as? Float { size = v } else { size = 30 }
-        let text : String; if let v = object["text"] as? String { text = v } else { text = "" }
-        let font : Font?; if let v = object["font"] as? Font { font = v } else { font = nil }
-        let color : SIMD4<Float>; if let v = object["color"] as? Float4 { color = v.toSIMD() } else { color = SIMD4<Float>(1,1,1,1) }
+        var position : SIMD2<Float>; if let v = options["position"] as? Float2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
+        let size : Float; if let v = options["size"] as? Float { size = v } else { size = 30 }
+        let text : String; if let v = options["text"] as? String { text = v } else { text = "" }
+        let font : Font?; if let v = options["font"] as? Font { font = v } else { font = nil }
+        let color : SIMD4<Float>; if let v = options["color"] as? Float4 { color = v.toSIMD() } else { color = SIMD4<Float>(1,1,1,1) }
 
-        y = -y;
+        position.y = -position.y;
         let scaleFactor : Float = game.scaleFactor
         
         func drawChar(char: BMChar, x: Float, y: Float, adjScale: Float)
@@ -441,8 +417,8 @@ class Texture2D                 : NSObject
             let scale : Float = (1.0 / font.bmFont!.common.lineHeight) * size
             let adjScale : Float = scale// / 2
             
-            var posX = x / game.scaleFactor
-            let posY = y / game.scaleFactor
+            var posX = position.x / game.scaleFactor
+            let posY = position.y / game.scaleFactor
 
             for c in text {
                 let bmChar = font.getItemForChar( c )

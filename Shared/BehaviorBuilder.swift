@@ -33,13 +33,15 @@ class BehaviorBuilder
     
     var branches        : [BehaviorNodeItem] =
     [
-        BehaviorNodeItem("Sequence", { (_ options: [String:Any]) -> BehaviorNode in return BehaviorNode(options) })
+        BehaviorNodeItem("sequence", { (_ options: [String:Any]) -> BehaviorNode in return SequenceBranch(options) })
     ]
     
     var leaves          : [BehaviorNodeItem] =
     [
         BehaviorNodeItem("Clear", { (_ options: [String:Any]) -> BehaviorNode in return Clear(options) }),
-        BehaviorNodeItem("DrawDisk", { (_ options: [String:Any]) -> BehaviorNode in return DrawDisk(options) })
+        BehaviorNodeItem("DrawDisk", { (_ options: [String:Any]) -> BehaviorNode in return DrawDisk(options) }),
+        BehaviorNodeItem("DrawBox", { (_ options: [String:Any]) -> BehaviorNode in return DrawBox(options) }),
+        BehaviorNodeItem("DrawText", { (_ options: [String:Any]) -> BehaviorNode in return DrawText(options) })
     ]
     
     init(_ game: Game)
@@ -62,12 +64,11 @@ class BehaviorBuilder
             asset.behavior!.clear()
         }
         
-        print("compile")
         let ns = asset.value as NSString
         var lineNumber  : Int32 = 0
         
         var currentTree     : BehaviorTree? = nil
-        var currentBranch   : BehaviorNode? = nil
+        var currentBranch   : [BehaviorNode] = []
         var lastLevel       : Int = -1
 
         ns.enumerateLines { (str, _) in
@@ -75,9 +76,14 @@ class BehaviorBuilder
             error.line = lineNumber
             
             let level = (str.prefix(while: {$0 == " "}).count) / 4
-            //print(str, level)
-            
+            if level < lastLevel {
+                // Drop the last branch when indention decreases
+                _ = currentBranch.dropLast()
+            }
+    
             //
+            
+            var processed = false
             var leftOfComment : String
 
             if str.firstIndex(of: "#") != nil {
@@ -115,7 +121,6 @@ class BehaviorBuilder
                                 if level == 0 {
                                     //print("new tree", name)
                                     currentTree = BehaviorTree(name)
-                                    currentBranch = currentTree
                                     asset.behavior!.trees.append(currentTree!)
                                 }
                             } else { error.error = "Invalid name for tree '\(name)'" }
@@ -129,68 +134,95 @@ class BehaviorBuilder
                             
                             if variableName == nil {
                                 
-                                // Looking for leave
-                                for leave in self.leaves {
-                                    if leave.name == possbibleCmd {
-                                        
-                                        var options : [String: String] = [:]
-                                        
-                                        // Fill in options
-                                        rightValueArray.removeFirst()
-                                        if rightValueArray.count == 1 && rightValueArray[0] == ">" {
-                                            // Empty Arguments
-                                        } else {
-                                            while rightValueArray.count > 0 {
-                                                let array = rightValueArray[0].split(separator: ":")
-                                                //print("2", array)
-                                                rightValueArray.removeFirst()
-                                                if array.count == 2 {
-                                                    let optionName = array[0].lowercased().trimmingCharacters(in: .whitespaces)
-                                                    var values = array[1].trimmingCharacters(in: .whitespaces)
-                                                    //print("option", optionName, "value", values)
-                                                                                        
-                                                    if values.count > 0 && values.last! != ">" {
-                                                        createError("No closing '>' for option '\(optionName)'")
-                                                    } else {
-                                                        values = String(values.dropLast())
-                                                    }
-                                                    options[optionName] = String(values)
-                                                } else { createError(); rightValueArray = [] }
-                                            }
+                                // Looking for branch
+                                for branch in self.branches {
+                                    if branch.name == possbibleCmd {
+
+                                        let newBranch = branch.createNode([:])
+                                        if currentBranch.count == 0 {
+                                            currentTree?.leaves.append(newBranch)
                                         }
-                                        
-                                        let nodeOptions = self.parser_processOptions(options, &error)
-                                        //print(options, nodeOptions)
-                                        if error.error == nil {
-                                            currentBranch?.leaves.append(leave.createNode(nodeOptions))
+                                        currentBranch.append(newBranch)
+                                        processed = true
+                                    }
+                                }
+                                
+                                if processed == false {
+                                    // Looking for leave
+                                    for leave in self.leaves {
+                                        if leave.name == possbibleCmd {
+                                            
+                                            var options : [String: String] = [:]
+                                            
+                                            // Fill in options
+                                            rightValueArray.removeFirst()
+                                            if rightValueArray.count == 1 && rightValueArray[0] == ">" {
+                                                // Empty Arguments
+                                            } else {
+                                                while rightValueArray.count > 0 {
+                                                    let array = rightValueArray[0].split(separator: ":")
+                                                    //print("2", array)
+                                                    rightValueArray.removeFirst()
+                                                    if array.count == 2 {
+                                                        let optionName = array[0].lowercased().trimmingCharacters(in: .whitespaces)
+                                                        var values = array[1].trimmingCharacters(in: .whitespaces)
+                                                        //print("option", optionName, "value", values)
+                                                                                            
+                                                        if values.count > 0 && values.last! != ">" {
+                                                            createError("No closing '>' for option '\(optionName)'")
+                                                        } else {
+                                                            values = String(values.dropLast())
+                                                        }
+                                                        options[optionName] = String(values)
+                                                    } else { createError(); rightValueArray = [] }
+                                                }
+                                            }
+                                            
+                                            let nodeOptions = self.parser_processOptions(options, &error)
+                                            print(options, nodeOptions)
+                                            if error.error == nil {
+                                                if let branch = currentBranch.last {
+                                                    branch.leaves.append(leave.createNode(nodeOptions))
+                                                    processed = true
+                                                } else { createError("Leaf node without active branch") }
+                                            }
                                         }
                                     }
                                 }
-                            } else {
+                            } else
+                            if rightValueArray.count > 1 {
                                 // Variable
                                 let possibleVariableType = rightValueArray[0].trimmingCharacters(in: .whitespaces)
+                                if possibleVariableType == "Float4" {
+                                    rightValueArray.removeFirst()
+                                    let array = rightValueArray[0].split(separator: ",")
+                                    if array.count == 4 {
+                                        
+                                        let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
+                                        let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
+                                        let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 0 }
+                                        let w : Float; if let v = Float(array[3].dropLast().trimmingCharacters(in: .whitespaces)) { w = v } else { w = 0 }
+
+                                        let value = Float4(x, y, z, w)
+                                        asset.behavior!.addVariable(variableName!, value)
+                                    } else { createError() }
+                                } else
                                 if possibleVariableType == "Float2" {
                                     rightValueArray.removeFirst()
                                     let array = rightValueArray[0].split(separator: ",")
                                     if array.count == 2 {
-                                        let left = array[0].lowercased().trimmingCharacters(in: .whitespaces)
-                                        let right = array[1].lowercased().dropLast().trimmingCharacters(in: .whitespaces)
-                                        if left.isEmpty == false && right.isEmpty == false {
-                                            let xValue : Float? = Float(left)
-                                            let yValue : Float? = Float(right)
-                                            if xValue != nil && yValue != nil {
-                                                let value = Float2(Float(left)!, Float(right)!)
-                                                asset.behavior!.addVariable(variableName!, value)
-                                            } else { createError() }
-                                        } else { createError() }
+                                        
+                                        let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
+                                        let y : Float; if let v = Float(array[1].dropLast().trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
+
+                                        let value = Float2(x, y)
+                                        asset.behavior!.addVariable(variableName!, value)
                                     } else { createError() }
                                 } else
                                 if possibleVariableType == "Float" {
                                     rightValueArray.removeFirst()
-                                    let value = rightValueArray[0].lowercased().dropLast().trimmingCharacters(in: .whitespaces)
-                                    if let floatValue = Float(value) {
-                                        asset.behavior!.addVariable(variableName!, floatValue)
-                                    } else { createError() }
+                                    let value : Float; if let v = Float(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
+                                    asset.behavior!.addVariable(variableName!, value)
                                 }
                             }
                         }
@@ -218,10 +250,11 @@ class BehaviorBuilder
     {
         print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "class", "physics", "mode", "object"]
-        let floatOptions = ["radius"]
+        let stringOptions = ["text", "font"]
+        let floatOptions = ["radius", "width", "height", "size", "border", "rotation"]
         let integerOptions = ["index"]
-        let vec2Options = ["sceneoffset", "range", "gravity", "position", "box"]
+        let float2Options = ["position"]
+        let float4Options = ["rect", "color", "bordercolor"]
         let boolOptions = ["repeatx"]
         let stringArrayOptions = ["layers"]
 
@@ -266,8 +299,8 @@ class BehaviorBuilder
                 }
                 res[name] = layers
             } else
-            if vec2Options.firstIndex(of: name) != nil {
-                // vec2
+            if float2Options.firstIndex(of: name) != nil {
+                // Float2
                 let array = value.split(separator: ",")
                 if array.count == 2 {
                     let width : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
@@ -279,18 +312,25 @@ class BehaviorBuilder
                     if let v = error.asset!.behavior?.getVariableValue(variableName) as? Float2 {
                         res[name] = v
                     } else { error.error = "Variable '\(variableName)' not found" }
-                } else { error.error = "Wrong argument count for Vec2" }
-            }
-            if name == "rect" {
+                } else { error.error = "Wrong argument count for Float2" }
+            } else
+            if float4Options.firstIndex(of: name) != nil {
+                // Float4
                 let array = value.split(separator: ",")
                 if array.count == 4 {
                     let x : Float; if let v = Float(array[0]) { x = v } else { x = 0 }
                     let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
-                    let width : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
-                    let height : Float; if let v = Float(array[3].trimmingCharacters(in: .whitespaces)) { height = v } else { height = 1 }
-                    res[name] = Rect2D(x, y, width, height)
-                } else { error.error = "Rect must have 4 arguments" }
-            }
+                    let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 1 }
+                    let w : Float; if let v = Float(array[3].trimmingCharacters(in: .whitespaces)) { w = v } else { w = 1 }
+                    res[name] = Float4(x, y, z, w)
+                } else
+                if array.count == 1 {
+                    let variableName = String(array[0]).trimmingCharacters(in: .whitespaces)
+                    if let v = error.asset!.behavior?.getVariableValue(variableName) as? Float4 {
+                        res[name] = v
+                    } else { error.error = "Variable '\(variableName)' not found" }
+                } else { error.error = "Wrong argument count for Float4" }
+            } else { error.error = "Unknown option '\(name)'" }
         }
         
         return res

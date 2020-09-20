@@ -72,7 +72,7 @@ class MapPreview
     func drawTexture(_ texture: Texture2D)
     {
         if let map = map {
-            var object : [AnyHashable : Any] = [:]
+            var object : [String:Any] = [:]
             object["texture"] = texture
             
             map.texture?.drawTexture(object)
