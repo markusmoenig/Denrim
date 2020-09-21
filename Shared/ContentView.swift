@@ -189,6 +189,38 @@ struct ContentView: View {
             }
             .frame(minWidth: 140, idealWidth: 200)
             .layoutPriority(0)
+            // Asset deletion
+            .alert(isPresented: $showDeleteAssetAlert) {
+                Alert(
+                    title: Text("Do you want to delete the asset?"),
+                    message: Text("This action cannot be undone!"),
+                    primaryButton: .destructive(Text("Yes"), action: {
+                        if let asset = document.game.assetFolder.current {
+                            if let index = document.game.assetFolder.assets.firstIndex(of: asset) {
+                                document.game.assetFolder.assets.remove(at: index)
+                                document.game.assetFolder.select(document.game.assetFolder.assets[0].id)
+                                self.updateView.toggle()
+                            }
+                        }
+                    }),
+                    secondaryButton: .cancel(Text("No"), action: {})
+                )
+            }
+            // Edit Asset name
+            .popover(isPresented: self.$showAssetNamePopover,
+                     arrowEdge: .top
+            ) {
+                VStack(alignment: .leading) {
+                    Text("Name")
+                    TextField("Name", text: $assetName, onEditingChanged: { (changed) in
+                        if let asset = document.game.assetFolder.current {
+                            asset.name = assetName
+                            self.updateView.toggle()
+                        }
+                    })
+                    .frame(minWidth: 200)
+                }.padding()
+            }
             /*
             GeometryReader { g in
                 ScrollView {
@@ -259,34 +291,24 @@ struct ContentView: View {
             
             GeometryReader { geometry in
                 ZStack(alignment: .topTrailing) {
-                    WebView(document.game, deviceColorScheme)
-                    .zIndex(0)
-                    .frame(minWidth: 300, maxWidth: .infinity)
-                    .layoutPriority(2)
-                    .alert(isPresented: $showDeleteAssetAlert) {
-                        Alert(
-                            title: Text("Do you want to delete the asset?"),
-                            message: Text("This action cannot be undone!"),
-                            primaryButton: .destructive(Text("Yes"), action: {
-                                if let asset = document.game.assetFolder.current {
-                                    if let index = document.game.assetFolder.assets.firstIndex(of: asset) {
-                                        document.game.assetFolder.assets.remove(at: index)
-                                        document.game.assetFolder.select(document.game.assetFolder.assets[0].id)
-                                        self.updateView.toggle()
-                                    }
-                                }
-                            }),
-                            secondaryButton: .cancel(Text("No"), action: {})
-                        )
+                    ScrollView {
+
+                        WebView(document.game, deviceColorScheme).tabItem {
+                        }
+                            .frame(height: geometry.size.height)
+                            .tag(1)
                     }
+                        .zIndex(0)
+                        .frame(maxWidth: .infinity)
+                        .layoutPriority(2)
                     MetalView(document.game)
                         .zIndex(1)
                         .frame(minWidth: 0,
-                               maxWidth: document.game.state == .Running ? .infinity : geometry.size.width / document.game.previewFactor,
+                               maxWidth: geometry.size.width / document.game.previewFactor,
                                minHeight: 0,
-                               maxHeight: document.game.state == .Running ? .infinity : geometry.size.height / document.game.previewFactor,
+                               maxHeight: geometry.size.height / document.game.previewFactor,
                                alignment: .topTrailing)
-                        .opacity(document.game.previewOpacity)
+                        .opacity(document.game.state == .Running ? 1 : document.game.previewOpacity)
                         .animation(.default)
                 
                     VStack {
@@ -340,7 +362,7 @@ struct ContentView: View {
                     Menu {
                         Menu("Behavior") {
                             Button("Object 2D", action: {
-                                document.game.assetFolder.addBehaviorTree("New BT")
+                                document.game.assetFolder.addBehaviorTree("New Object 2D")
                                 updateView.toggle()
                             })
                         }
@@ -500,28 +522,34 @@ struct ContentView: View {
                                 document.game.previewFactor = 4
                                 updateView.toggle()
                             })
+                            .keyboardShortcut("1")
                             Button("Medium", action: {
                                 document.game.previewFactor = 2
                                 updateView.toggle()
                             })
+                            .keyboardShortcut("2")
                             Button("Large", action: {
                                 document.game.previewFactor = 1
                                 updateView.toggle()
                             })
+                            .keyboardShortcut("3")
                         }
                         Section(header: Text("Opacity")) {
                             Button("Opacity Off", action: {
                                 document.game.previewOpacity = 0
                                 updateView.toggle()
                             })
+                            .keyboardShortcut("4")
                             Button("Opacity Half", action: {
                                 document.game.previewOpacity = 0.5
                                 updateView.toggle()
                             })
+                            .keyboardShortcut("5")
                             Button("Opacity Full", action: {
                                 document.game.previewOpacity = 1.0
                                 updateView.toggle()
                             })
+                            .keyboardShortcut("6")
                         }
                     }
                     label: {
@@ -539,23 +567,6 @@ struct ContentView: View {
                     .keyboardShortcut("h")
                 }
             }
-            // Popover for asset name
-            .popover(isPresented: self.$showAssetNamePopover,
-                     arrowEdge: .top
-            ) {
-                VStack(alignment: .leading) {
-                    Text("Name")
-                    TextField("Name", text: $assetName, onEditingChanged: { (changed) in
-                        if let asset = document.game.assetFolder.current {
-                            asset.name = assetName
-                            self.updateView.toggle()
-                        }
-                    })
-                    .frame(minWidth: 200)
-                }.padding()
-            }
-        
-    
             /*
             ZStack() {
                 HelpWebView()

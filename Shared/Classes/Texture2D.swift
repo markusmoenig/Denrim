@@ -223,8 +223,7 @@ class Texture2D                 : NSObject
     func drawBox(_ options: [String:Any])
     {
         var position : SIMD2<Float>; if let v = options["position"] as? Float2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
-        let width : Float; if let v = options["width"] as? Float { width = v } else { width = 1 }
-        let height : Float; if let v = options["height"] as? Float { height = v } else { height = 1 }
+        var size : SIMD2<Float>; if let v = options["size"] as? Float2 { size = v.toSIMD() } else { size = SIMD2<Float>(1,1) }
         let round : Float; if let v = options["round"] as? Float { round = v } else { round = 0 }
         let border : Float; if let v = options["border"] as? Float { border = v } else { border = 0 }
         let rotation : Float; if let v = options["rotation"] as? Float { rotation = v } else { rotation = 0 }
@@ -238,7 +237,7 @@ class Texture2D                 : NSObject
 
         var data = BoxUniform()
         data.onion = onion / game.scaleFactor
-        data.size = float2(width / game.scaleFactor, height / game.scaleFactor)
+        data.size = float2(size.x / game.scaleFactor, size.y / game.scaleFactor)
         data.round = round / game.scaleFactor
         data.borderSize = border / game.scaleFactor
         data.fillColor = fillColor

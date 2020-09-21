@@ -33,6 +33,17 @@ public class DMTKView       : MTKView
         """)
         */
     }
+    
+    override public func keyDown(with event: NSEvent)
+    {
+        /*
+        keysDown.append(Float(event.keyCode))
+        if focusWidget != nil {
+            let keyEvent = MMKeyEvent(event.characters, event.keyCode)
+            focusWidget!.keyDown(keyEvent)
+        }*/
+        //super.keyDown(with: event)
+    }
         
     override public func mouseDown(with event: NSEvent) {
         if game.state == .Running {

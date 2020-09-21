@@ -30,6 +30,11 @@ class MapPreview
         game.startDrawing()
         map.texture?.drawChecker()
         
+        let screenSize = map.getScreenSize()
+        let aspectX = screenSize.x / Float(map.texture!.width)
+        let aspectY = screenSize.y / Float(map.texture!.height)
+        let aspect = min(aspectX, aspectX)
+
         if let variable = variable {
 
             if let image = map.images[variable] {
@@ -62,12 +67,34 @@ class MapPreview
             } else
             if let scene = map.scenes[variable] {
                 map.drawScene(0, 0, scene, scale: 1)
+            } else
+            if let shape = map.shapes2D[variable] {
+                if shape.shape == .Disk {
+                    map.texture?.drawDisk(shape.options)
+                } else
+                if shape.shape == .Box {
+                    var options = shape.options
+                    if let size = options["size"] as? Float2 {
+                        options["size"] = Float2(size.x / aspectX, size.y / aspectY)
+                    }
+                    if let position = options["position"] as? Float2 {
+                        options["position"] = Float2(position.x / aspectX, position.y / aspectY)
+                    }
+                    if let round = options["round"] as? Float {
+                        options["round"] = round / aspect
+                    }
+                    if let border = options["border"] as? Float {
+                        options["border"] = border / aspect
+                    }
+                    map.texture?.drawBox(options)
+                }
             }
         }
         
         game.stopDrawing()
         game.updateOnce()
     }
+    
     
     func drawTexture(_ texture: Texture2D)
     {

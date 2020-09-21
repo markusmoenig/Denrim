@@ -52,6 +52,14 @@ struct MapFixture2D {
     var options         : [String:Any]
 }
 
+struct MapShape2D {
+    enum Shapes {
+        case Disk, Box
+    }
+    var shape           : Shapes
+    var options         : [String:Any]
+}
+
 struct MapPhysics2D {
 
     var ppm             : Float = 100
@@ -64,14 +72,13 @@ struct MapScene {
     var options         : [String:Any]
 }
 
-@objc protocol Map_JSExports: JSExport {
-    
-    static func create(_ object: [AnyHashable:Any]) -> Map?
+struct MapCommand {
 
-    func draw(_ object: [AnyHashable:Any])
+    var command         : String
+    var options         : [String:Any]
 }
 
-class Map                   : NSObject, Map_JSExports
+class Map
 {
     var images              : [String:MapImage] = [:]
     var aliases             : [String:MapAlias] = [:]
@@ -81,6 +88,10 @@ class Map                   : NSObject, Map_JSExports
     var objects2D           : [String:MapObject2D] = [:]
     var fixtures2D          : [String:MapFixture2D] = [:]
     var physics2D           : [String:MapPhysics2D] = [:]
+
+    var shapes2D            : [String:MapShape2D] = [:]
+
+    var commands            : [MapCommand] = []
 
     var lines               : [Int32:String] = [:]
     
@@ -94,21 +105,19 @@ class Map                   : NSObject, Map_JSExports
         resources = [:]
     }
     
-    override init()
-    {
-        super.init()
-    }
-    
     func clear(_ releaseResources: Bool = false)
     {
         print("release map")
         images = [:]
         aliases = [:]
+        sequences = [:]
         layers = [:]
         scenes = [:]
         objects2D = [:]
         fixtures2D = [:]
         physics2D = [:]
+        shapes2D = [:]
+        commands = []
         lines = [:]
         if releaseResources {
             resources = [:]
@@ -412,5 +421,29 @@ class Map                   : NSObject, Map_JSExports
                 }
             }
         }
+    }
+    
+    // Get the screen size for the map file for the given platform
+    func getScreenSize() -> Float2 {
+        var size = Float2(640, 480)
+
+        var name = "Desktop"
+        #if os(iOS)
+        name = "Mobile"
+        #endif
+        
+        for s in commands {
+            if s.command == "ScreenSize" {
+                if let platform = s.options["platform"] as? String {
+                    if platform == name {
+                        if let i = s.options["size"] as? Float2 {
+                            size = i
+                        }
+                    }
+                }
+            }
+        }
+        
+        return size
     }
 }

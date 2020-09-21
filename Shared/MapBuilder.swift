@@ -29,6 +29,11 @@ class MapBuilder
         case Physics2D = "Physics2D"// 2D Physics
         case Object2D = "Object2D"  // An 2D object
         case Fixture2D = "Fixture2D"// A fixture for an Object2D
+
+        case Shape2D = "Shape2D"    // A fixture for an Object2D
+
+        // Commands
+        case ScreenSize = "ScreenSize"
     }
     
     init(_ game: Game)
@@ -99,10 +104,17 @@ class MapBuilder
                 
                 let values = leftOfComment.split(separator: "=")
 
-                if values.count == 2 {
+                if values.count == 1 || values.count == 2 {
                     
-                    let leftValue = String(values[0]).trimmingCharacters(in: .whitespaces)
-                    let rightValue = values[1].trimmingCharacters(in: .whitespaces)
+                    var leftValue : String? = nil
+                    var rightValue: String = ""
+                    
+                    if values.count == 2 {
+                        leftValue = String(values[0]).trimmingCharacters(in: .whitespaces)
+                        rightValue = values[1].trimmingCharacters(in: .whitespaces)
+                    } else {
+                        rightValue = values[0].trimmingCharacters(in: .whitespaces)
+                    }
 
                     var rightValueArray = rightValue.split(separator: "<")
                     
@@ -148,7 +160,11 @@ class MapBuilder
                          
                             let map = self.parser_processOptions(options, &error)
                             if error.error == nil {
-                                self.parser_processAssignment(type, variable: leftValue, options: map, error: &error, map: asset.map!)
+                                if let leftValue = leftValue {
+                                    self.parser_processAssignment(type, variable: leftValue, options: map, error: &error, map: asset.map!)
+                                } else {
+                                    self.parser_processCommand(type, options: map, error: &error, map: asset.map!)
+                                }
                             }
                         } else { createError("Unknown Type `\(rightValueArray[0])`")}
                     }
@@ -171,6 +187,13 @@ class MapBuilder
         }
         
         return error
+    }
+    
+    func parser_processCommand(_ type: Types, options: [String:Any], error: inout CompileError, map: Map)
+    {
+        print("Processing Command", type, options, error.line!)
+        
+        map.commands.append(MapCommand(command: type.rawValue, options: options))
     }
     
     func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout CompileError, map: Map)
@@ -261,6 +284,18 @@ class MapBuilder
             map.objects2D[variable] = MapObject2D(name: variable, options: options)
             setLine(variable)
         } else
+        if type == .Shape2D {
+            if let shapeName = options["shape"] as? String {
+                if shapeName.lowercased() == "disk" {
+                    map.shapes2D[variable] = MapShape2D(shape: .Disk, options: options)
+                    setLine(variable)
+                } else
+                if shapeName.lowercased() == "box" {
+                    map.shapes2D[variable] = MapShape2D(shape: .Box, options: options)
+                    setLine(variable)
+                }
+            }
+        } else
         if type == .Scene {
             map.scenes[variable] = MapScene(options: options)
             setLine(variable)
@@ -271,9 +306,10 @@ class MapBuilder
     {
         print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "class", "physics", "mode", "object"]
+        let stringOptions = ["group", "id", "class", "physics", "mode", "object", "shape", "platform"]
         let integerOptions = ["index"]
-        let vec2Options = ["sceneoffset", "range", "gravity", "position", "box"]
+        let floatOptions = ["round", "radius", "onion"]
+        let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size"]
         let boolOptions = ["repeatx"]
         let stringArrayOptions = ["layers"]
 
@@ -289,6 +325,12 @@ class MapBuilder
                 if let v = Int(value) {
                     res[name] = v
                 } else { error.error = "The \(name) option expects an integer argument" }
+            } else
+            if floatOptions.firstIndex(of: name) != nil {
+                // Float
+                if let v = Float(value) {
+                    res[name] = v
+                } else { error.error = "The \(name) option expects a float argument" }
             } else
             if boolOptions.firstIndex(of: name) != nil {
                 // Boolean
@@ -306,7 +348,7 @@ class MapBuilder
                 }
                 res[name] = layers
             } else
-            if vec2Options.firstIndex(of: name) != nil {
+            if float2Options.firstIndex(of: name) != nil {
                 // vec2
                 let array = value.split(separator: ",")
                 if array.count == 2 {
