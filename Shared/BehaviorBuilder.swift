@@ -38,6 +38,7 @@ class BehaviorBuilder
     
     var leaves          : [BehaviorNodeItem] =
     [
+        BehaviorNodeItem("SetScene", { (_ options: [String:Any]) -> BehaviorNode in return SetScene(options) }),
         BehaviorNodeItem("Clear", { (_ options: [String:Any]) -> BehaviorNode in return Clear(options) }),
         BehaviorNodeItem("DrawDisk", { (_ options: [String:Any]) -> BehaviorNode in return DrawDisk(options) }),
         BehaviorNodeItem("DrawBox", { (_ options: [String:Any]) -> BehaviorNode in return DrawBox(options) }),
@@ -250,7 +251,7 @@ class BehaviorBuilder
     {
         print("Processing Options", options)
 
-        let stringOptions = ["text", "font"]
+        let stringOptions = ["text", "font", "map", "scene"]
         let floatOptions = ["radius", "width", "height", "size", "border", "rotation"]
         let integerOptions = ["index"]
         let float2Options = ["position"]

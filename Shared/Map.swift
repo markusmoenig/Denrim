@@ -9,6 +9,7 @@ import MetalKit
 
 class Map
 {
+    // Resources
     var images              : [String:MapImage] = [:]
     var aliases             : [String:MapAlias] = [:]
     var sequences           : [String:MapSequence] = [:]
@@ -26,10 +27,13 @@ class Map
     
     var resources           : [String:Any] = [:]
 
+    // Rendering
+    
+    var globalAlpha         : Float = 1
+    
     // Have to be set!
     var game                : Game!
     var texture             : Texture2D!
-    
     var aspect              : float2!
     
     deinit {
@@ -407,6 +411,7 @@ class Map
         return size
     }
     
+    /// Draw a Box
     func drawBox(_ options: MapShapeData2D, aspect: float2)
     {
         var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)

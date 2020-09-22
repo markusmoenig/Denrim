@@ -47,7 +47,9 @@ class Game              : ObservableObject
     var availableFonts  : [String] = ["OpenSans", "Square", "SourceCodePro"]
     
     var gameContext     : BehaviorContext? = nil
-    
+    var currentMap      : Asset? = nil
+    var currentScene    : MapScene? = nil
+
     // Preview Size, UI only
     var previewFactor   : CGFloat = 4
     var previewOpacity  : Double = 0.5
@@ -100,6 +102,10 @@ class Game              : ObservableObject
                 } else {
                     if asset.name == "Game" {
                         gameContext = asset.behavior
+                        
+                        if let context = gameContext {
+                            context.execute(name: "init")
+                        }
                     }
                 }
             }
@@ -115,7 +121,9 @@ class Game              : ObservableObject
     
     func stop()
     {
-        gameContext = nil
+        gameContext = nil        
+        currentScene = nil
+        currentMap = nil
         
         state = .Idle
         view.isPaused = true
@@ -197,8 +205,17 @@ class Game              : ObservableObject
 
                 self.texture?.clear()
 
-                if let context = self.gameContext {
-                    context.execute(name: "draw")
+                //if let context = self.gameContext {
+                //    context.execute(name: "draw")
+                //}
+            
+                if let mapAsset = self.currentMap {
+                    if let map = mapAsset.map {
+                        //map.drawScene
+                        if let scene = self.currentScene {
+                            map.drawScene(0, 0, scene)
+                        }
+                    }
                 }
 
                 //#if DEBUG
