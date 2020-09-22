@@ -38,11 +38,13 @@ struct MapLayer {
     var endLine         : Int32 = 0
 }
 
-struct MapObject2D {
+struct MapBehavior {
 
     var objectValue     : JSManagedValue? = nil
     var positionValue   : JSManagedValue? = nil
     var body            : b2Body? = nil
+    
+    var behavior        : Asset
     
     var name            : String = ""
     var options         : [String:Any]
@@ -85,7 +87,7 @@ class Map
     var sequences           : [String:MapSequence] = [:]
     var layers              : [String:MapLayer] = [:]
     var scenes              : [String:MapScene] = [:]
-    var objects2D           : [String:MapObject2D] = [:]
+    var behavior            : [String:MapBehavior] = [:]
     var fixtures2D          : [String:MapFixture2D] = [:]
     var physics2D           : [String:MapPhysics2D] = [:]
 
@@ -113,7 +115,7 @@ class Map
         sequences = [:]
         layers = [:]
         scenes = [:]
-        objects2D = [:]
+        behavior = [:]
         fixtures2D = [:]
         physics2D = [:]
         shapes2D = [:]
@@ -149,11 +151,11 @@ class Map
                         }
                         
                         // Object2D
-                        for (variable, object) in map.objects2D {
+                        for (variable, object) in map.behavior {
                             if let className = object.options["class"] as? String {
                                 let cmd = "var \(variable) = new \(className)(); \(variable)"
-                                map.objects2D[variable]?.objectValue = JSManagedValue(value: context?.evaluateScript(cmd))
-                                map.objects2D[variable]?.positionValue = JSManagedValue(value: context?.evaluateScript("\(variable).position"))
+                                map.behavior[variable]?.objectValue = JSManagedValue(value: context?.evaluateScript(cmd))
+                                map.behavior[variable]?.positionValue = JSManagedValue(value: context?.evaluateScript("\(variable).position"))
 
                                 if let physicsName = object.options["physics"] as? String {
                                     if let physics2D = map.physics2D[physicsName] {
@@ -178,7 +180,7 @@ class Map
                                             }
                                         }
 
-                                        map.objects2D[variable]?.body = physics2D.world!.createBody(bodyDef)
+                                        map.behavior[variable]?.body = physics2D.world!.createBody(bodyDef)
                                         
                                         // Parse for fixtures for this object
                                         for (_, fixture) in map.fixtures2D {
@@ -206,7 +208,7 @@ class Map
                                                     fixtureDef.friction = 0.3
                                                     
                                                     // Add the shape to the body.
-                                                    map.objects2D[variable]?.body!.createFixture(fixtureDef)
+                                                    map.behavior[variable]?.body!.createFixture(fixtureDef)
                                                 }
                                             }
                                         }
@@ -284,7 +286,7 @@ class Map
             
             let ppm = physics2D.ppm
 
-            for (v, object) in objects2D {
+            for (v, object) in behavior {
                 if let body = object.body {
                     print(v, body.position.x, body.position.y)
                     object.positionValue?.value.setValue(body.position.x * ppm, forProperty: "x")
@@ -293,7 +295,7 @@ class Map
             }
         }
         
-        for (_, object) in objects2D {
+        for (_, object) in behavior {
             
             if let value = object.objectValue {
                 value.value.invokeMethod("draw", withArguments: [])
@@ -423,7 +425,6 @@ class Map
         }
     }
     
-    // Get the screen size for the map file for the given platform
     func getScreenSize() -> Float2 {
         var size = Float2(640, 480)
 

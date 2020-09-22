@@ -27,10 +27,10 @@ class MapBuilder
         case Layer = "Layer"        // Contains alias data of a layer
         case Scene = "Scene"        // List of layers
         case Physics2D = "Physics2D"// 2D Physics
-        case Object2D = "Object2D"  // An 2D object
+        case Behavior = "Behavior"  // Behavior Tree
         case Fixture2D = "Fixture2D"// A fixture for an Object2D
 
-        case Shape2D = "Shape2D"    // A fixture for an Object2D
+        case Shape2D = "Shape2D"    // A 2D Shape
 
         // Commands
         case ScreenSize = "ScreenSize"
@@ -280,19 +280,65 @@ class MapBuilder
             map.fixtures2D[variable] = MapFixture2D(options: options)
             setLine(variable)
         } else
-        if type == .Object2D {
-            map.objects2D[variable] = MapObject2D(name: variable, options: options)
-            setLine(variable)
+        if type == .Behavior {
+            if let behavior = options["name"] as? String {
+                if let asset = game.assetFolder.getAsset(behavior, .Behavior) {
+                    let rc = game.behaviorBuilder.compile(asset)
+                    if rc.error == nil {
+                        map.behavior[variable] = MapBehavior(behavior: asset, name: variable, options: options)
+                        setLine(variable)
+                    } else { error.error = "Referenced behavior contains errors" }
+                } else { error.error = "Could not find behavior '\(behavior)'" }
+            } else { error.error = "Missing behavior name" }
         } else
         if type == .Shape2D {
-            if let shapeName = options["shape"] as? String {
-                if shapeName.lowercased() == "disk" {
-                    map.shapes2D[variable] = MapShape2D(shape: .Disk, options: options)
-                    setLine(variable)
-                } else
-                if shapeName.lowercased() == "box" {
-                    map.shapes2D[variable] = MapShape2D(shape: .Box, options: options)
-                    setLine(variable)
+            var isValid = true
+            
+            func checkVarRef(_ name: String) -> Bool {
+                var isValid = false
+                var asset: Asset? = nil
+
+                let varArray = name.split(separator: ".")
+                for (name, behavior) in map.behavior {
+                    if name == varArray[0] {
+                        asset = behavior.behavior
+                        break
+                    }
+                }
+                
+                if let asset = asset {
+                    if let behavior = asset.behavior {
+                        for v in behavior.variables {
+                            if v.name == varArray[1] {
+                                isValid = true
+                            }
+                        }
+                        if isValid == false {
+                            error.error = "Behavior'\(varArray[0])' does not contain variable '\(varArray[1])'"
+                        }
+                    }
+                } else {
+                    error.error = "No behavior found with name '\(varArray[0])'"
+                }
+                
+                return isValid
+            }
+
+            // Check if variable references are valid
+            if let varRef = options["position"] as? String {
+                isValid = checkVarRef(varRef)
+            }
+            
+            if isValid {
+                if let shapeName = options["shape"] as? String {
+                    if shapeName.lowercased() == "disk" {
+                        map.shapes2D[variable] = MapShape2D(shape: .Disk, options: options)
+                        setLine(variable)
+                    } else
+                    if shapeName.lowercased() == "box" {
+                        map.shapes2D[variable] = MapShape2D(shape: .Box, options: options)
+                        setLine(variable)
+                    }
                 }
             }
         } else
@@ -306,7 +352,7 @@ class MapBuilder
     {
         print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "class", "physics", "mode", "object", "shape", "platform"]
+        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "shape", "platform"]
         let integerOptions = ["index"]
         let floatOptions = ["round", "radius", "onion"]
         let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size"]
@@ -336,7 +382,7 @@ class MapBuilder
                 // Boolean
                 if let v = Bool(value) {
                     res[name] = v
-                } else { error.error = "The \(name) option expects an boolean argument" }
+                } else { error.error = "The \(name) option expects a boolean argument" }
             } else
             if stringArrayOptions.firstIndex(of: name) != nil {
                 // StringArray
@@ -349,13 +395,20 @@ class MapBuilder
                 res[name] = layers
             } else
             if float2Options.firstIndex(of: name) != nil {
-                // vec2
+                // Float2
                 let array = value.split(separator: ",")
                 if array.count == 2 {
                     let width : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
                     let height : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { height = v } else { height = 1 }
                     res[name] = Float2(width, height)
-                } else { error.error = "Vec2 must have 2 arguments" }
+                } else
+                if array.count == 1 {
+                    let varRef = String(array[0]).trimmingCharacters(in: .whitespaces)
+                    let varArray = value.split(separator: ".")
+                    if varArray.count == 2 {
+                        res[name] = varRef
+                    } else { error.error = "Wrong variable reference (must contain '.')" }
+                } else { error.error = "Wrong argument count for Float2" }
             }
             if name == "rect" {
                 let array = value.split(separator: ",")

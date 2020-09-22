@@ -30,10 +30,10 @@ class MapPreview
         game.startDrawing()
         map.texture?.drawChecker()
         
-        let screenSize = map.getScreenSize()
-        let aspectX = screenSize.x / Float(map.texture!.width)
-        let aspectY = screenSize.y / Float(map.texture!.height)
-        let aspect = min(aspectX, aspectX)
+        //let screenSize = map.getScreenSize()
+        let aspectX = Float(map.texture!.width)
+        let aspectY = Float(map.texture!.height)
+        let aspect = min(aspectX, aspectY)
 
         if let variable = variable {
 
@@ -75,10 +75,10 @@ class MapPreview
                 if shape.shape == .Box {
                     var options = shape.options
                     if let size = options["size"] as? Float2 {
-                        options["size"] = Float2(size.x / aspectX, size.y / aspectY)
+                        options["size"] = Float2(size.x * aspectX, size.y * aspectY)
                     }
                     if let position = options["position"] as? Float2 {
-                        options["position"] = Float2(position.x / aspectX, position.y / aspectY)
+                        options["position"] = Float2(position.x * aspectX, position.y * aspectY)
                     }
                     if let round = options["round"] as? Float {
                         options["round"] = round / aspect
