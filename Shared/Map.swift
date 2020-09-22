@@ -6,79 +6,6 @@
 //
 
 import MetalKit
-import JavaScriptCore
-
-struct MapImage {
-    
-    var resourceName    : String
-    var options         : [String:Any]
-}
-
-struct MapSequence {
-    
-    var resourceNames   : [String] = []
-    var options         : [String:Any]
-}
-
-struct MapAlias {
-    
-    enum AliasType {
-        case Image
-    }
-    
-    var type            : AliasType
-    var pointsTo        : String
-    var options         : [String:Any]
-}
-
-struct MapLayer {
-
-    var data            : [String] = []
-    var options         : [String:Any]
-    var endLine         : Int32 = 0
-}
-
-struct MapBehavior {
-
-    var objectValue     : JSManagedValue? = nil
-    var positionValue   : JSManagedValue? = nil
-    var body            : b2Body? = nil
-    
-    var behavior        : Asset
-    
-    var name            : String = ""
-    var options         : [String:Any]
-}
-
-struct MapFixture2D {
-    var options         : [String:Any]
-}
-
-struct MapShape2D {
-    enum Shapes {
-        case Disk, Box
-    }
-    var shape           : Shapes
-    var options         : [String:Any]
-}
-
-struct MapPhysics2D {
-
-    var ppm             : Float = 100
-    var world           : b2World? = nil
-    var options         : [String:Any]
-}
-
-struct MapScene {
-
-    var options         : [String:Any]
-}
-
-struct MapCommand {
-
-    var command         : String
-    var options         : [String:Any]
-}
 
 class Map
 {
@@ -99,8 +26,11 @@ class Map
     
     var resources           : [String:Any] = [:]
 
-    weak var game           : Game? = nil
-    weak var texture        : Texture2D? = nil
+    // Have to be set!
+    var game                : Game!
+    var texture             : Texture2D!
+    
+    var aspect              : float2!
     
     deinit {
         clear()
@@ -126,6 +56,15 @@ class Map
         }
     }
     
+    func setup(game: Game)
+    {
+        self.game = game
+        self.texture = game.texture
+        
+        aspect = float2(texture.width, texture.height)
+    }
+    
+    /*
     class func create(_ object: [AnyHashable:Any]) -> Map?
     {
         let context = JSContext.current()
@@ -232,6 +171,7 @@ class Map
         
         return nil
     }
+    */
     
     /*
     class func compile(_ object: [AnyHashable:Any]) -> JSPromise
@@ -264,6 +204,7 @@ class Map
         return promise
     }*/
     
+    /*
     func draw(_ object: [AnyHashable:Any])
     {
         let context = JSContext.current()
@@ -302,7 +243,7 @@ class Map
                 //context?.evaluateScript("\(variable).draw();")
             }
         }
-    }
+    }*/
     
     func getImageResource(_ name: String) -> Texture2D?
     {
@@ -378,10 +319,28 @@ class Map
         return rc
     }
     
+    func drawShape(_ shape: MapShape2D)
+    {
+        if shape.shape == .Disk {
+            //map.texture?.drawDisk(shape.options)
+        } else
+        if shape.shape == .Box {
+            drawBox(shape.options, aspect: aspect)
+        }
+    }
+    
     func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer, scale: Float = 1)
     {
         var xPos = x
         var yPos = y
+        
+        if let shapes = layer.options["shapes"] as? [String] {
+            for shape in shapes {
+                if let sh = shapes2D[shape] {
+                    drawShape(sh)
+                }
+            }
+        }
         
         for line in layer.data {
             
@@ -446,5 +405,62 @@ class Map
         }
         
         return size
+    }
+    
+    func drawBox(_ options: MapShapeData2D, aspect: float2)
+    {
+        var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
+        let size : SIMD2<Float> = float2(options.size.x * aspect.x, options.size.y * aspect.y)
+        let round : Float = options.round
+        let border : Float = options.border
+        let rotation : Float = options.rotation
+        let onion : Float = options.onion
+        let fillColor : SIMD4<Float> = options.color
+        let borderColor : SIMD4<Float> = options.borderColor
+
+        position.y = -position.y;
+        position.x /= game.scaleFactor
+        position.y /= game.scaleFactor
+
+        var data = BoxUniform()
+        data.onion = onion / game.scaleFactor
+        data.size = float2(size.x / game.scaleFactor, size.y / game.scaleFactor)
+        data.round = round / game.scaleFactor
+        data.borderSize = border / game.scaleFactor
+        data.fillColor = fillColor
+        data.borderColor = borderColor
+        
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = texture.texture
+        renderPassDescriptor.colorAttachments[0].loadAction = .load
+        
+        let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+
+        if rotation == 0 {
+            let rect = MMRect(position.x, position.y, data.size.x, data.size.y, scale: game.scaleFactor)
+            let vertexData = game.createVertexData(texture: texture, rect: rect)
+            renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+            renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+
+            renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
+            renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBox))
+            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+        } else {
+            data.pos.x = position.x
+            data.pos.y = position.y
+            data.rotation = rotation.degreesToRadians
+            data.screenSize = float2(texture.width / game.scaleFactor, texture.height / game.scaleFactor)
+
+            let rect = MMRect(0, 0, texture.width / game.scaleFactor, texture.height / game.scaleFactor, scale: game.scaleFactor)
+            let vertexData = game.createVertexData(texture: texture, rect: rect)
+                                    
+            renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+            renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+
+            renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
+            renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBoxExt))
+            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+        }
+        renderEncoder.endEncoding()
     }
 }

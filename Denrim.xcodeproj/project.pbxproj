@@ -40,6 +40,8 @@
 		2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
 		2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
 		2B09E1E52511A620002DE701 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B09E1E42511A620002DE701 /* CloudKit.framework */; };
+		2B2882EA2519E69E00D1AB2D /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
+		2B2882EB2519E69E00D1AB2D /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
 		2B32992124FE3D02007C3386 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992024FE3D02007C3386 /* Shader.swift */; };
 		2B32992224FE3D02007C3386 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992024FE3D02007C3386 /* Shader.swift */; };
 		2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
@@ -205,6 +207,7 @@
 		2B01C89E24FB8C7500E86449 /* MetalStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalStates.swift; sourceTree = "<group>"; };
 		2B09E1E12511A619002DE701 /* Denrim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Denrim.entitlements; sourceTree = "<group>"; };
 		2B09E1E42511A620002DE701 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
+		2B2882E92519E69E00D1AB2D /* MapStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStructures.swift; sourceTree = "<group>"; };
 		2B32992024FE3D02007C3386 /* Shader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shader.swift; sourceTree = "<group>"; };
 		2B32992324FF21EC007C3386 /* ShaderCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderCompiler.swift; sourceTree = "<group>"; };
 		2B32992624FF91E1007C3386 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
@@ -333,6 +336,8 @@
 				2B536194251498C400E8A20D /* BehaviorBuilder.swift */,
 				2B71E7182516F5BA00F3317D /* Branches.swift */,
 				2B71E70D2515B21400F3317D /* Leaves.swift */,
+				2BFC028A2505EDA500AB489E /* Map.swift */,
+				2B2882E92519E69E00D1AB2D /* MapStructures.swift */,
 				2B32993F2501B592007C3386 /* Fonts */,
 				2B32991F24FE3CC2007C3386 /* Classes */,
 				2B6D0B5F250B08080098F244 /* Box2D */,
@@ -377,7 +382,6 @@
 				2B01C88424FB824A00E86449 /* System.swift */,
 				2B01C87B24FB824900E86449 /* Texture2D.swift */,
 				2B3299582501B6F3007C3386 /* Font.swift */,
-				2BFC028A2505EDA500AB489E /* Map.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -649,6 +653,7 @@
 				2B6D0BF9250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */,
 				2B6D0BFB250B08080098F244 /* b2Collision.swift in Sources */,
+				2B2882EB2519E69E00D1AB2D /* MapStructures.swift in Sources */,
 				2B6D0BF7250B08080098F244 /* b2CollidePolygon.swift in Sources */,
 				2B6D0BBF250B08080098F244 /* b2PrismaticJoint.swift in Sources */,
 				2B32995A2501B6F3007C3386 /* Font.swift in Sources */,
@@ -732,6 +737,7 @@
 				2B6D0BF8250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */,
 				2B6D0BFA250B08080098F244 /* b2Collision.swift in Sources */,
+				2B2882EA2519E69E00D1AB2D /* MapStructures.swift in Sources */,
 				2B6D0BF6250B08080098F244 /* b2CollidePolygon.swift in Sources */,
 				2B6D0BBE250B08080098F244 /* b2PrismaticJoint.swift in Sources */,
 				2B3299592501B6F3007C3386 /* Font.swift in Sources */,

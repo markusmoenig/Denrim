@@ -31,9 +31,9 @@ class MapPreview
         map.texture?.drawChecker()
         
         //let screenSize = map.getScreenSize()
-        let aspectX = Float(map.texture!.width)
-        let aspectY = Float(map.texture!.height)
-        let aspect = min(aspectX, aspectY)
+        //let aspect = float2(map.texture!.width, map.texture!.height)
+        //let aspectY = Float(map.texture!.height)
+        //let aspectRatio = min(aspect.x, aspect.y)
 
         if let variable = variable {
 
@@ -60,41 +60,22 @@ class MapPreview
                 }
             } else
             if let alias = map.aliases[variable] {
-                map.drawAlias(0, 0, alias, scale: 4)
+                map.drawAlias(0, 0, alias, scale: 1)
             } else
             if let layer = map.layers[variable] {
-                map.drawLayer(0, 0, layer, scale: 4)
+                map.drawLayer(0, 0, layer, scale: 1)
             } else
             if let scene = map.scenes[variable] {
                 map.drawScene(0, 0, scene, scale: 1)
             } else
             if let shape = map.shapes2D[variable] {
-                if shape.shape == .Disk {
-                    map.texture?.drawDisk(shape.options)
-                } else
-                if shape.shape == .Box {
-                    var options = shape.options
-                    if let size = options["size"] as? Float2 {
-                        options["size"] = Float2(size.x * aspectX, size.y * aspectY)
-                    }
-                    if let position = options["position"] as? Float2 {
-                        options["position"] = Float2(position.x * aspectX, position.y * aspectY)
-                    }
-                    if let round = options["round"] as? Float {
-                        options["round"] = round / aspect
-                    }
-                    if let border = options["border"] as? Float {
-                        options["border"] = border / aspect
-                    }
-                    map.texture?.drawBox(options)
-                }
+                map.drawShape(shape)
             }
         }
         
         game.stopDrawing()
         game.updateOnce()
     }
-    
     
     func drawTexture(_ texture: Texture2D)
     {

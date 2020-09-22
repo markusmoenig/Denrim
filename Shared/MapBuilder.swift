@@ -293,8 +293,9 @@ class MapBuilder
         } else
         if type == .Shape2D {
             var isValid = true
+            var replacedOptions = options
             
-            func checkVarRef(_ name: String) -> Bool {
+            func checkVarRef(_ name: String,_ optionName: String) -> Bool {
                 var isValid = false
                 var asset: Asset? = nil
 
@@ -311,6 +312,8 @@ class MapBuilder
                         for v in behavior.variables {
                             if v.name == varArray[1] {
                                 isValid = true
+                                replacedOptions[optionName] = v.value
+                                break
                             }
                         }
                         if isValid == false {
@@ -325,18 +328,19 @@ class MapBuilder
             }
 
             // Check if variable references are valid
+            // TODO Check if type is correct
             if let varRef = options["position"] as? String {
-                isValid = checkVarRef(varRef)
+                isValid = checkVarRef(varRef, "position")
             }
             
             if isValid {
                 if let shapeName = options["shape"] as? String {
                     if shapeName.lowercased() == "disk" {
-                        map.shapes2D[variable] = MapShape2D(shape: .Disk, options: options)
+                        map.shapes2D[variable] = MapShape2D(shape: .Disk, options: MapShapeData2D(replacedOptions))
                         setLine(variable)
                     } else
                     if shapeName.lowercased() == "box" {
-                        map.shapes2D[variable] = MapShape2D(shape: .Box, options: options)
+                        map.shapes2D[variable] = MapShape2D(shape: .Box, options: MapShapeData2D(replacedOptions))
                         setLine(variable)
                     }
                 }
@@ -357,7 +361,7 @@ class MapBuilder
         let floatOptions = ["round", "radius", "onion"]
         let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size"]
         let boolOptions = ["repeatx"]
-        let stringArrayOptions = ["layers"]
+        let stringArrayOptions = ["layers", "shapes"]
 
         var res: [String:Any] = [:]
         
@@ -452,9 +456,7 @@ class MapBuilder
             }
         }
         
-        map.game = game
-        map.texture = game.texture
-        
+        map.setup(game: game)
         mapPreview.preview(map, name)
     }
     
