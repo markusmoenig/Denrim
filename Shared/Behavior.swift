@@ -102,4 +102,11 @@ class BehaviorContext
             }
         }
     }
+    
+    func debug()
+    {
+        for tree in trees {
+            print(tree.name, tree.leaves.count )
+        }
+    }
 }

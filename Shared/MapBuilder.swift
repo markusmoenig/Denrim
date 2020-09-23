@@ -44,7 +44,7 @@ class MapBuilder
     
     @discardableResult func compile(_ asset: Asset) -> CompileError
     {
-        print("compiling...")
+        //print("compiling...")
         
         if asset.map == nil {
             asset.map = Map()
@@ -139,13 +139,11 @@ class MapBuilder
                             } else {
                                 while rightValueArray.count > 0 {
                                     let array = rightValueArray[0].split(separator: ":")
-                                    //print("2", array)
                                     rightValueArray.removeFirst()
                                     if array.count == 2 {
                                         let optionName = array[0].lowercased().trimmingCharacters(in: .whitespaces)
                                         var values = array[1].trimmingCharacters(in: .whitespaces)
-                                        //print("option", optionName, "value", values)
-                                                                            
+
                                         if values.count > 0 && values.last! != ">" {
                                             createError("No closing '>' for option '\(optionName)'")
                                         } else {
@@ -191,14 +189,14 @@ class MapBuilder
     
     func parser_processCommand(_ type: Types, options: [String:Any], error: inout CompileError, map: Map)
     {
-        print("Processing Command", type, options, error.line!)
+        //print("Processing Command", type, options, error.line!)
         
         map.commands.append(MapCommand(command: type.rawValue, options: options))
     }
     
     func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout CompileError, map: Map)
     {
-        print("Processing Assignment", type, variable, options, error.line!)
+        //print("Processing Assignment", type, variable, options, error.line!)
         
         func setLine(_ variable: String)
         {
@@ -243,7 +241,6 @@ class MapBuilder
                     var array : [String] = []
                     for index in from...to {
                         if index >= 0 && index < asset.data.count {
-                            //print("Creating image for ", variable)
                             let resourceName : String = asset.id.uuidString + ":" + String(index)
                             array.append(resourceName)
                         } else { error.error = "Sequence group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
@@ -354,7 +351,7 @@ class MapBuilder
     
     func parser_processOptions(_ options: [String:String],_ error: inout CompileError) -> [String:Any]
     {
-        print("Processing Options", options)
+        //print("Processing Options", options)
 
         let stringOptions = ["group", "id", "name", "physics", "mode", "object", "shape", "platform"]
         let integerOptions = ["index"]

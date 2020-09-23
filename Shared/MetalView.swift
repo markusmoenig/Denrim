@@ -14,6 +14,8 @@ public class DMTKView       : MTKView
 
     #if os(OSX)
     
+    var keysDown            : [Float] = []
+    
     override public var acceptsFirstResponder: Bool { return true }
     
     func createMouseEvent(type: String,_ event: NSEvent)
@@ -36,6 +38,8 @@ public class DMTKView       : MTKView
     
     override public func keyDown(with event: NSEvent)
     {
+        keysDown.append(Float(event.keyCode))
+
         /*
         keysDown.append(Float(event.keyCode))
         if focusWidget != nil {
@@ -43,6 +47,17 @@ public class DMTKView       : MTKView
             focusWidget!.keyDown(keyEvent)
         }*/
         //super.keyDown(with: event)
+    }
+    
+    override public func keyUp(with event: NSEvent)
+    {
+        keysDown.removeAll{$0 == Float(event.keyCode)}
+        /*
+        if focusWidget != nil {
+            let keyEvent = MMKeyEvent(event.characters, event.keyCode)
+            focusWidget!.keyUp(keyEvent)
+        }
+        //super.keyUp(with: event)*/
     }
         
     override public func mouseDown(with event: NSEvent) {

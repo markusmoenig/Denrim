@@ -39,6 +39,8 @@ class BehaviorBuilder
     var leaves          : [BehaviorNodeItem] =
     [
         BehaviorNodeItem("SetScene", { (_ options: [String:Any]) -> BehaviorNode in return SetScene(options) }),
+        BehaviorNodeItem("IsKeyDown", { (_ options: [String:Any]) -> BehaviorNode in return IsKeyDown(options) }),
+        
         BehaviorNodeItem("Clear", { (_ options: [String:Any]) -> BehaviorNode in return Clear(options) }),
         BehaviorNodeItem("DrawDisk", { (_ options: [String:Any]) -> BehaviorNode in return DrawDisk(options) }),
         BehaviorNodeItem("DrawBox", { (_ options: [String:Any]) -> BehaviorNode in return DrawBox(options) }),
@@ -120,9 +122,10 @@ class BehaviorBuilder
 
                             if CharacterSet.letters.isSuperset(of: CharacterSet(charactersIn: name)) {
                                 if level == 0 {
-                                    //print("new tree", name)
+                                    print("new current tree", name)
                                     currentTree = BehaviorTree(name)
                                     asset.behavior!.trees.append(currentTree!)
+                                    currentBranch = []
                                 }
                             } else { error.error = "Invalid name for tree '\(name)'" }
                         } else { error.error = "No name given for tree" }
@@ -143,6 +146,7 @@ class BehaviorBuilder
                                         if currentBranch.count == 0 {
                                             currentTree?.leaves.append(newBranch)
                                         }
+                                        print("adding branch to current tree", possbibleCmd)
                                         currentBranch.append(newBranch)
                                         processed = true
                                     }
@@ -185,6 +189,7 @@ class BehaviorBuilder
                                                 if let branch = currentBranch.last {
                                                     branch.leaves.append(leave.createNode(nodeOptions))
                                                     processed = true
+                                                    print("adding", possbibleCmd)
                                                 } else { createError("Leaf node without active branch") }
                                             }
                                         }
@@ -249,9 +254,9 @@ class BehaviorBuilder
     
     func parser_processOptions(_ options: [String:String],_ error: inout CompileError) -> [String:Any]
     {
-        print("Processing Options", options)
+        //print("Processing Options", options)
 
-        let stringOptions = ["text", "font", "map", "scene"]
+        let stringOptions = ["text", "font", "map", "scene", "key"]
         let floatOptions = ["radius", "width", "height", "size", "border", "rotation"]
         let integerOptions = ["index"]
         let float2Options = ["position"]

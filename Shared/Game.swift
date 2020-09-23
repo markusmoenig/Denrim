@@ -91,6 +91,8 @@ class Game              : ObservableObject
     
     func start()
     {
+        state = .Running
+
         var hasError: Bool = false
         for asset in assetFolder.assets {
             if asset.type == .Behavior {
@@ -113,9 +115,10 @@ class Game              : ObservableObject
 
         if !hasError {
             state = .Running
-
             view.enableSetNeedsDisplay = false
             view.isPaused = false
+        } else {
+            stop()
         }
     }
     
@@ -205,10 +208,10 @@ class Game              : ObservableObject
 
                 self.texture?.clear()
 
-                //if let context = self.gameContext {
-                //    context.execute(name: "draw")
-                //}
-            
+                if let context = self.gameContext {
+                    context.execute(name: "update")
+                }            
+                
                 if let mapAsset = self.currentMap {
                     if let map = mapAsset.map {
                         //map.drawScene
@@ -222,10 +225,7 @@ class Game              : ObservableObject
                 //print("JS Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)
                 //#endif
                 
-                self.gameCmdBuffer?.commit()
-                
-                //self.gameCmdQueue = nil
-                self.gameCmdBuffer = nil
+                stopDrawing(deleteQueue: true)
             }
         //}
     }
@@ -271,6 +271,7 @@ class Game              : ObservableObject
     /// Updates the display once
     func updateOnce()
     {
+        
         self.view.enableSetNeedsDisplay = true
         #if os(OSX)
         let nsrect : NSRect = NSRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
