@@ -47,7 +47,7 @@ func extractPair(_ options: [String:Any], variableName: String, context: Behavio
     var Data         = UpTo4Data()
     var variableData = UpTo4Data()
     
-    print("extractPair", options, variableName)
+    //print("extractPair", options, variableName)
 
     if let variableValue = extractVariableValue(options, variableName: variableName, context: context, error: &error) {
         if let f2 = variableValue as? Float2 {
@@ -60,10 +60,6 @@ func extractPair(_ options: [String:Any], variableName: String, context: Behavio
             variableData.data4 = f4
         }
     }
-    
-    //let array = string.split(separator: ",")
-
-    //print(array)
     
     return (Data, variableData)
 }

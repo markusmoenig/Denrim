@@ -137,11 +137,8 @@ class Subtract: BehaviorNode
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
-        print("0")
         if let pair = pair {
-            print("1")
             if pair.0.data2 != nil {
-                print("2", pair.1.data2!.x, pair.1.data2!.y)
                 pair.1.data2!.x -= pair.0.data2!.x
                 pair.1.data2!.y -= pair.0.data2!.y
                 return .Success

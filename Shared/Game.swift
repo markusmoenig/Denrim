@@ -104,10 +104,10 @@ class Game              : ObservableObject
                 } else {
                     if asset.name == "Game" {
                         gameContext = asset.behavior
-                        
-                        if let context = gameContext {
-                            context.execute(name: "init")
-                        }
+                    }
+                    
+                    if let context = gameContext {
+                        context.execute(name: "init")
                     }
                 }
             }

@@ -326,6 +326,7 @@ class BehaviorBuilder
                 if array.count == 1 {
                     let variableName = String(array[0]).trimmingCharacters(in: .whitespaces)
                     if let v = error.asset!.behavior?.getVariableValue(variableName) as? Float2 {
+                        print("get", v)
                         res[name] = v
                     } else { error.error = "Variable '\(variableName)' not found" }
                 } else { error.error = "Wrong argument count for Float2" }
