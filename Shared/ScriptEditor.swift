@@ -56,9 +56,7 @@ class ScriptEditor
                 """
                 var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
                 editor.setSession(\(asset.scriptName))
-                //editor.session.setMode("ace/mode/javascript");
-                //editor.setTheme("ace/theme/idle_fingers");
-                //editor.setTheme("ace/theme/tomorrow_night");
+                editor.session.setMode("ace/mode/denrim");
                 """, completionHandler: { (value, error ) in
                     if let cb = cb {
                         cb()
@@ -70,7 +68,7 @@ class ScriptEditor
                 """
                 var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
                 editor.setSession(\(asset.scriptName))
-                editor.session.setMode("ace/mode/metal");
+                //editor.session.setMode("ace/mode/metal");
                 """, completionHandler: { (value, error ) in
                     if let cb = cb {
                         cb()
@@ -83,8 +81,6 @@ class ScriptEditor
                 var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
                 editor.setSession(\(asset.scriptName))
                 editor.session.setMode("ace/mode/denrim");
-                //editor.setTheme("ace/theme/idle_fingers");
-                //editor.setTheme("ace/theme/tomorrow_night");
                 """, completionHandler: { (value, error ) in
                     if let cb = cb {
                         cb()

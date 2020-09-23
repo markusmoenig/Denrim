@@ -94,28 +94,28 @@ contexts [] {
 main : context {
    
    : pattern {
-      regex          \= (=)
-      styles []       = .punctuation;
-   }
-   
-   : pattern {
-      regex          \= (^[a-zA-Z0-9_]+[^=])
+      regex          \= (^[ ]*[a-zA-Z0-9_]+[ ]*=[ ]*)
       styles []       = .numeric;
    }
-   
+
    : pattern {
       regex          \= $${__MY_CONSTANT}
       styles []       = .keyword;
    }
    
    : pattern {
-      regex          \= (Group|Index|Rect|Id|RepeatX|Range|Layers)
+      regex          \= (Group|Index|Rect|Id|RepeatX|Range|Layers|Platform|Size|Name|Shapes|Position|IsKeyDown|DrawBox|SetScene|Float2|Float3|Float4|Float)
       styles []       = .comment;
    }
    
    : pattern {
-      regex          \= (Image|Alias|Layer|SceneOffset|Scene|Sequence)
+      regex          \= (Image|Alias|Layer|SceneOffset|Scene|Sequence|ScreenSize|Shape2D|Behavior|\.|Key|Map)
       styles []       = .keyword;
+   }
+   
+   : pattern {
+      regex          \= (Shape|Onion|Round)
+      styles []       = .comment;
    }
    
    : include "numeric" ;
@@ -196,7 +196,7 @@ main : context {
 
 numeric : context {
    : pattern {
-      regex          \= (\b\d+)
+      regex          \= (-*\b\d+\.*\d*)
       styles []       = .numeric;
    }
 }

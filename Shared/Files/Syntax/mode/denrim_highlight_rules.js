@@ -21,15 +21,19 @@ this.$rules = {
    },
    {
       "token" : "comment",
-      "regex" : "(Group|Index|Rect|Id|RepeatX|Range|Layers)"
+      "regex" : "(Group|Index|Rect|Id|RepeatX|Range|Layers|Platform|Size|Name|Shapes|Position|IsKeyDown|DrawBox)"
    },
    {
       "token" : "keyword",
-      "regex" : "(Image|Alias|Layer|SceneOffset|Scene|Sequence)"
+      "regex" : "(Image|Alias|Layer|SceneOffset|Scene|Sequence|ScreenSize|Shape2D|Behavior|\\.|Key)"
+   },
+   {
+      "token" : "comment",
+      "regex" : "(Shape)"
    },
    {
       "token" : "constant.numeric",
-      "regex" : "(\\b\\d+)"
+      "regex" : "(-*\\b\\d+.*\\d*)"
    },
    {
       "token" : "punctuation",
@@ -90,15 +94,19 @@ this.$rules = {
    },
    {
       "token" : "comment",
-      "regex" : "(Group|Index|Rect|Id|RepeatX|Range|Layers)"
+      "regex" : "(Group|Index|Rect|Id|RepeatX|Range|Layers|Platform|Size|Name|Shapes|Position|IsKeyDown|DrawBox)"
    },
    {
       "token" : "keyword",
-      "regex" : "(Image|Alias|Layer|SceneOffset|Scene|Sequence)"
+      "regex" : "(Image|Alias|Layer|SceneOffset|Scene|Sequence|ScreenSize|Shape2D|Behavior|\\.|Key)"
+   },
+   {
+      "token" : "comment",
+      "regex" : "(Shape)"
    },
    {
       "token" : "constant.numeric",
-      "regex" : "(\\b\\d+)"
+      "regex" : "(-*\\b\\d+.*\\d*)"
    },
    {
       "token" : "punctuation",
@@ -161,7 +169,7 @@ this.$rules = {
    },
    {
       "token" : "constant.numeric",
-      "regex" : "(\\b\\d+)"
+      "regex" : "(-*\\b\\d+.*\\d*)"
    },
    {
       "token" : "punctuation",
@@ -178,4 +186,3 @@ this.normalizeRules();
 oop.inherits(DenrimHighlightRules, TextHighlightRules);
 exports.DenrimHighlightRules = DenrimHighlightRules;
 });
-
