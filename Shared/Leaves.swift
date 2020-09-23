@@ -129,9 +129,23 @@ class IsKeyDown: BehaviorNode
 
 class Subtract: BehaviorNode
 {
+    var pair    : (UpTo4Data, UpTo4Data)? = nil
+    
+    override func verifyOptions(context: BehaviorContext, error: inout CompileError) {
+        pair = extractPair(options, variableName: "from", context: context, error: &error)
+    }
+    
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
-        if let key = options["value"] as? Float {
+        print("0")
+        if let pair = pair {
+            print("1")
+            if pair.0.data2 != nil {
+                print("2", pair.1.data2!.x, pair.1.data2!.y)
+                pair.1.data2!.x -= pair.0.data2!.x
+                pair.1.data2!.y -= pair.0.data2!.y
+                return .Success
+            }
         }
         return .Failure
     }

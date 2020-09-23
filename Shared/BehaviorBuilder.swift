@@ -41,6 +41,8 @@ class BehaviorBuilder
         BehaviorNodeItem("SetScene", { (_ options: [String:Any]) -> BehaviorNode in return SetScene(options) }),
         BehaviorNodeItem("IsKeyDown", { (_ options: [String:Any]) -> BehaviorNode in return IsKeyDown(options) }),
         
+        BehaviorNodeItem("Subtract", { (_ options: [String:Any]) -> BehaviorNode in return Subtract(options) }),
+
         BehaviorNodeItem("Clear", { (_ options: [String:Any]) -> BehaviorNode in return Clear(options) }),
         BehaviorNodeItem("DrawDisk", { (_ options: [String:Any]) -> BehaviorNode in return DrawDisk(options) }),
         BehaviorNodeItem("DrawBox", { (_ options: [String:Any]) -> BehaviorNode in return DrawBox(options) }),
@@ -185,8 +187,12 @@ class BehaviorBuilder
                                             let nodeOptions = self.parser_processOptions(options, &error)
                                             if error.error == nil {
                                                 if let branch = currentBranch.last {
-                                                    branch.leaves.append(leave.createNode(nodeOptions))
-                                                    processed = true
+                                                    let behaviorNode = leave.createNode(nodeOptions)
+                                                    behaviorNode.verifyOptions(context: asset.behavior!, error: &error)
+                                                    if error.error == nil {
+                                                        branch.leaves.append(behaviorNode)
+                                                        processed = true
+                                                    }
                                                 } else { createError("Leaf node without active branch") }
                                             }
                                         }
@@ -340,7 +346,9 @@ class BehaviorBuilder
                         res[name] = v
                     } else { error.error = "Variable '\(variableName)' not found" }
                 } else { error.error = "Wrong argument count for Float4" }
-            } else { error.error = "Unknown option '\(name)'" }
+            } else {
+                res[name] = value
+            }//else { error.error = "Unknown option '\(name)'" }
         }
         
         return res

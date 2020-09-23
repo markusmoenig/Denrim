@@ -329,6 +329,7 @@ class Map
             //map.texture?.drawDisk(shape.options)
         } else
         if shape.shape == .Box {
+            print("drawShape: Shape.position.x", shape.options.position.x)
             drawBox(shape.options, aspect: aspect)
         }
     }

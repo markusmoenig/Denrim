@@ -214,7 +214,18 @@ class Game              : ObservableObject
                 
                 if let mapAsset = self.currentMap {
                     if let map = mapAsset.map {
-                        //map.drawScene
+                        for (_, b) in map.behavior {
+                            if let context = b.behavior.behavior {
+                                context.execute(name: "update")
+                                /*
+                                if let posValue = context.getVariableValue("position") {
+                                    if let f2 = posValue as? Float2
+                                    {
+                                        print("pos value", f2.x, f2.y)
+                                    }
+                                }*/
+                            }
+                        }
                         if let scene = self.currentScene {
                             map.drawScene(0, 0, scene)
                         }

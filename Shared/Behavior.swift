@@ -24,6 +24,10 @@ class BehaviorNode {
         self.options = options
     }
     
+    /// Verify options
+    func verifyOptions(context: BehaviorContext, error: inout CompileError) {
+    }
+    
     /// Executes a node inside a behaviour tree
     @discardableResult func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {

@@ -40,6 +40,8 @@
 		2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
 		2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
 		2B09E1E52511A620002DE701 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B09E1E42511A620002DE701 /* CloudKit.framework */; };
+		2B19C009251B383C0086239F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C008251B383C0086239F /* Utilities.swift */; };
+		2B19C00A251B383C0086239F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C008251B383C0086239F /* Utilities.swift */; };
 		2B2882EA2519E69E00D1AB2D /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
 		2B2882EB2519E69E00D1AB2D /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
 		2B32992124FE3D02007C3386 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992024FE3D02007C3386 /* Shader.swift */; };
@@ -207,6 +209,7 @@
 		2B01C89E24FB8C7500E86449 /* MetalStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalStates.swift; sourceTree = "<group>"; };
 		2B09E1E12511A619002DE701 /* Denrim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Denrim.entitlements; sourceTree = "<group>"; };
 		2B09E1E42511A620002DE701 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
+		2B19C008251B383C0086239F /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2B2882E92519E69E00D1AB2D /* MapStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStructures.swift; sourceTree = "<group>"; };
 		2B32992024FE3D02007C3386 /* Shader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shader.swift; sourceTree = "<group>"; };
 		2B32992324FF21EC007C3386 /* ShaderCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderCompiler.swift; sourceTree = "<group>"; };
@@ -336,6 +339,7 @@
 				2B536194251498C400E8A20D /* BehaviorBuilder.swift */,
 				2B71E7182516F5BA00F3317D /* Branches.swift */,
 				2B71E70D2515B21400F3317D /* Leaves.swift */,
+				2B19C008251B383C0086239F /* Utilities.swift */,
 				2BFC028A2505EDA500AB489E /* Map.swift */,
 				2B2882E92519E69E00D1AB2D /* MapStructures.swift */,
 				2B32993F2501B592007C3386 /* Fonts */,
@@ -665,6 +669,7 @@
 				2B6D0BCF250B08080098F244 /* b2ContactManager.swift in Sources */,
 				2B536196251498C400E8A20D /* BehaviorBuilder.swift in Sources */,
 				2B01C89724FB824A00E86449 /* Classes.swift in Sources */,
+				2B19C00A251B383C0086239F /* Utilities.swift in Sources */,
 				2B01C89124FB824A00E86449 /* Asset.swift in Sources */,
 				2B6D0BAD250B08080098F244 /* b2Contact.swift in Sources */,
 				2B6D0BA3250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
@@ -749,6 +754,7 @@
 				2B6D0BCE250B08080098F244 /* b2ContactManager.swift in Sources */,
 				2B536195251498C400E8A20D /* BehaviorBuilder.swift in Sources */,
 				2B01C89824FB824A00E86449 /* Classes.swift in Sources */,
+				2B19C009251B383C0086239F /* Utilities.swift in Sources */,
 				2B01C89224FB824A00E86449 /* Asset.swift in Sources */,
 				2B6D0BAC250B08080098F244 /* b2Contact.swift in Sources */,
 				2B6D0BA2250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
