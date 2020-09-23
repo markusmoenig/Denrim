@@ -122,10 +122,10 @@ class BehaviorBuilder
 
                             if CharacterSet.letters.isSuperset(of: CharacterSet(charactersIn: name)) {
                                 if level == 0 {
-                                    print("new current tree", name)
                                     currentTree = BehaviorTree(name)
                                     asset.behavior!.trees.append(currentTree!)
                                     currentBranch = []
+                                    processed = true
                                 }
                             } else { error.error = "Invalid name for tree '\(name)'" }
                         } else { error.error = "No name given for tree" }
@@ -146,7 +146,6 @@ class BehaviorBuilder
                                         if currentBranch.count == 0 {
                                             currentTree?.leaves.append(newBranch)
                                         }
-                                        print("adding branch to current tree", possbibleCmd)
                                         currentBranch.append(newBranch)
                                         processed = true
                                     }
@@ -184,12 +183,10 @@ class BehaviorBuilder
                                             }
                                             
                                             let nodeOptions = self.parser_processOptions(options, &error)
-                                            print(options, nodeOptions)
                                             if error.error == nil {
                                                 if let branch = currentBranch.last {
                                                     branch.leaves.append(leave.createNode(nodeOptions))
                                                     processed = true
-                                                    print("adding", possbibleCmd)
                                                 } else { createError("Leaf node without active branch") }
                                             }
                                         }
@@ -211,6 +208,7 @@ class BehaviorBuilder
 
                                         let value = Float4(x, y, z, w)
                                         asset.behavior!.addVariable(variableName!, value)
+                                        processed = true
                                     } else { createError() }
                                 } else
                                 if possibleVariableType == "Float2" {
@@ -223,17 +221,23 @@ class BehaviorBuilder
 
                                         let value = Float2(x, y)
                                         asset.behavior!.addVariable(variableName!, value)
+                                        processed = true
                                     } else { createError() }
                                 } else
                                 if possibleVariableType == "Float" {
                                     rightValueArray.removeFirst()
                                     let value : Float; if let v = Float(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
                                     asset.behavior!.addVariable(variableName!, value)
-                                }
+                                    processed = true
+                                } else { error.error = "Unrecognized Variable type '\(possbibleCmd)'" }
                             }
                         }
                     }
                 }
+            }
+            
+            if str.trimmingCharacters(in: .whitespaces).count > 0 && processed == false && error.error == nil {
+                error.error = "Unrecognized statement"
             }
             
             lastLevel = level
