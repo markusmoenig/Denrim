@@ -42,6 +42,7 @@ class BehaviorBuilder
         BehaviorNodeItem("IsKeyDown", { (_ options: [String:Any]) -> BehaviorNode in return IsKeyDown(options) }),
         
         BehaviorNodeItem("Subtract", { (_ options: [String:Any]) -> BehaviorNode in return Subtract(options) }),
+        BehaviorNodeItem("Add", { (_ options: [String:Any]) -> BehaviorNode in return Add(options) }),
 
         BehaviorNodeItem("Clear", { (_ options: [String:Any]) -> BehaviorNode in return Clear(options) }),
         BehaviorNodeItem("DrawDisk", { (_ options: [String:Any]) -> BehaviorNode in return DrawDisk(options) }),
@@ -83,7 +84,7 @@ class BehaviorBuilder
             let level = (str.prefix(while: {$0 == " "}).count) / 4
             if level < lastLevel {
                 // Drop the last branch when indention decreases
-                _ = currentBranch.dropLast()
+                currentBranch = currentBranch.dropLast()
             }
     
             //
@@ -190,6 +191,7 @@ class BehaviorBuilder
                                                     let behaviorNode = leave.createNode(nodeOptions)
                                                     behaviorNode.verifyOptions(context: asset.behavior!, error: &error)
                                                     if error.error == nil {
+                                                        behaviorNode.lineNr = error.line!
                                                         branch.leaves.append(behaviorNode)
                                                         processed = true
                                                     }

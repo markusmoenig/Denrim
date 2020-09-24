@@ -10,6 +10,12 @@ import Foundation
 
 class SequenceBranch: BehaviorNode
 {
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Sequence"
+    }
+    
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         var rc : Result = .Success

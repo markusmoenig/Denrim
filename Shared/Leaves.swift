@@ -10,6 +10,12 @@ import Foundation
 // Sets the current scene and initializes it
 class SetScene: BehaviorNode
 {
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "SetScene"
+    }
+    
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         if let mapName = options["map"] as? String {
@@ -112,6 +118,12 @@ class IsKeyDown: BehaviorNode
         125: "ArrowDown",
     ]
     
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "IsKeyDown"
+    }
+    
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         if let key = options["key"] as? String {
@@ -123,24 +135,66 @@ class IsKeyDown: BehaviorNode
                 }
             }
         }
+        context.addFailure(lineNr: lineNr)
         return .Failure
     }
 }
 
 class Subtract: BehaviorNode
 {
-    var pair    : (UpTo4Data, UpTo4Data)? = nil
+    var pair    : (UpTo4Data, UpTo4Data, [UpTo4Data])? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Subtract"
+    }
     
     override func verifyOptions(context: BehaviorContext, error: inout CompileError) {
-        pair = extractPair(options, variableName: "from", context: context, error: &error)
+        pair = extractPair(options, variableName: "from", context: context, error: &error, optionalVariables: ["minimum"])
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
+    {
+        if let pair = pair {    
+            if pair.0.data2 != nil {
+                pair.1.data2!.x -= pair.0.data2!.x
+                pair.1.data2!.y -= pair.0.data2!.y
+                if let min = pair.2[0].data2 {
+                    pair.1.data2!.x = max(pair.1.data2!.x, min.x)
+                    pair.1.data2!.y = max(pair.1.data2!.y, min.y)
+                }
+                return .Success
+            }
+        }
+        return .Failure
+    }
+}
+
+class Add: BehaviorNode
+{
+    var pair    : (UpTo4Data, UpTo4Data, [UpTo4Data])? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Add"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, error: inout CompileError) {
+        pair = extractPair(options, variableName: "to", context: context, error: &error, optionalVariables: ["maximum"])
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         if let pair = pair {
             if pair.0.data2 != nil {
-                pair.1.data2!.x -= pair.0.data2!.x
-                pair.1.data2!.y -= pair.0.data2!.y
+                pair.1.data2!.x += pair.0.data2!.x
+                pair.1.data2!.y += pair.0.data2!.y
+                if let max = pair.2[0].data2 {
+                    pair.1.data2!.x = min(pair.1.data2!.x, max.x)
+                    pair.1.data2!.y = min(pair.1.data2!.y, max.y)
+                }
                 return .Success
             }
         }

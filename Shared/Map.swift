@@ -66,6 +66,8 @@ class Map
         self.texture = game.texture
         
         aspect = float2(texture.width, texture.height)
+        aspect.x /= 100.0
+        aspect.y /= 100.0
     }
     
     /*

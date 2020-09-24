@@ -148,6 +148,29 @@ class ScriptEditor
          })
     }
     
+    func setFailures(_ lines: [Int32])
+    {
+        var str = "["
+        for line in lines {
+            str +=
+            """
+            {
+                row: \(line),
+                column: 0,
+                text: "Failed",
+                type: "error"
+            },
+            """
+        }
+        str += "]"
+        
+        webView.evaluateJavaScript(
+            """
+            editor.getSession().setAnnotations(\(str));
+            """, completionHandler: { (value, error ) in
+         })
+    }
+    
     func getSessionCursor(_ cb: @escaping (Int32)->() )
     {
         webView.evaluateJavaScript(

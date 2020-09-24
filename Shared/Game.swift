@@ -97,17 +97,21 @@ class Game              : ObservableObject
         for asset in assetFolder.assets {
             if asset.type == .Behavior {
              
-                let error = behaviorBuilder.compile(asset)
-                if error.error != nil {
-                    hasError = true
-                    break
-                } else {
-                    if asset.name == "Game" {
+                if asset.name == "Game" {
+
+                    // Compile and "init" the game behavior (and only the game behavior)
+                    let error = behaviorBuilder.compile(asset)
+                    if error.error != nil {
+                        hasError = true
+                        break
+                    } else {
                         gameContext = asset.behavior
-                    }
-                    
-                    if let context = gameContext {
-                        context.execute(name: "init")
+                        
+                        if let context = gameContext {
+                            context.execute(name: "init")
+                            //print(asset.name)
+                            //context.debug()
+                        }
                     }
                 }
             }
@@ -127,6 +131,10 @@ class Game              : ObservableObject
         gameContext = nil        
         currentScene = nil
         currentMap = nil
+        
+        if let scriptEditor = scriptEditor {
+            scriptEditor.clearAnnotations()
+        }
         
         state = .Idle
         view.isPaused = true
@@ -217,6 +225,7 @@ class Game              : ObservableObject
                         for (_, b) in map.behavior {
                             if let context = b.behavior.behavior {
                                 context.execute(name: "update")
+                                
                                 /*
                                 if let posValue = context.getVariableValue("position") {
                                     if let f2 = posValue as? Float2
@@ -229,6 +238,17 @@ class Game              : ObservableObject
                         if let scene = self.currentScene {
                             map.drawScene(0, 0, scene)
                         }
+                    }
+                }
+            
+                // Display failures when have editor
+                if let asset = assetFolder.current, scriptEditor != nil {
+                    var error = CompileError()
+                    error.error = ""
+                    error.column = 0
+                    if let context = asset.behavior {
+                        scriptEditor?.clearAnnotations()
+                        scriptEditor?.setFailures(context.failedAt)
                     }
                 }
 

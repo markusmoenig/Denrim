@@ -16,6 +16,9 @@ class BehaviorNode {
     // Only applicable for branch nodes like a sequence
     var leaves              : [BehaviorNode] = []
     
+    var name                : String = ""
+    var lineNr              : Int32 = 0
+    
     // Options
     var options             : [String:Any]
     
@@ -37,10 +40,9 @@ class BehaviorNode {
 
 class BehaviorTree  : BehaviorNode
 {
-    var name        : String
-    
     init(_ name: String)
     {
+        super.init()
         self.name = name
     }
     
@@ -69,6 +71,7 @@ class BehaviorContext
 {
     var trees               : [BehaviorTree] = []
     var variables           : [BehaviorVariable] = []
+    var failedAt            : [Int32] = []
     
     let game                : Game
     
@@ -98,8 +101,14 @@ class BehaviorContext
         return nil
     }
     
+    func addFailure(lineNr: Int32)
+    {
+        failedAt.append(lineNr)
+    }
+    
     func execute(name: String)
     {
+        failedAt = []
         for tree in trees {
             if tree.name == name {
                 tree.execute(game: game, context: self, parent: nil)
@@ -111,6 +120,12 @@ class BehaviorContext
     {
         for tree in trees {
             print(tree.name, tree.leaves.count )
+            for l in tree.leaves {
+                print("  \(l.name)", l.leaves.count)
+                for l in tree.leaves {
+                    print("    \(l.name)", l.leaves.count)
+                }
+            }
         }
     }
 }
