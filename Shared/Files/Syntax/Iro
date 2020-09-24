@@ -99,7 +99,7 @@ main : context {
    }
    
    : pattern {
-      regex          \= (^[ ]*[a-zA-Z0-9_]+[ ]*=[ ]*)
+      regex          \= (^[ ]*[a-zA-Z0-9_]+[ ]*(?==)[ ]*)
       styles []       = .numeric;
    }
 
@@ -109,7 +109,7 @@ main : context {
    }
    
    : pattern {
-      regex          \= (\b(Group|Index|Rect|Id|RepeatX|Range|Layers|Platform|Size|Name|Shapes|Position|Float|Shaders|Float2|Float3|Float4|From|To|Minimum|Maximum|Key)\b)
+      regex          \= (\b(Group|Index|Rect|Id|RepeatX|Range|Layers|Platform|Size|Name|Shapes|Position|Float|Shaders|Float2|Float3|Float4|From|To|Minimum|Maximum|Key|SceneOffset)\b)
       styles []       = .comment;
    }
    
