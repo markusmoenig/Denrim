@@ -149,3 +149,8 @@ struct MapCommand {
     var command         : String
     var options         : [String:Any]
 }
+
+struct MapShader {
+    var shader          : Shader? = nil
+    var options         : [String:Any]
+}

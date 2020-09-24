@@ -6,13 +6,8 @@
 //
 
 import MetalKit
-import JavaScriptCore
 
-@objc protocol Shader_JSExports: JSExport {
-    var isValid: Bool { get }
-}
-
-class Shader                : NSObject, Shader_JSExports
+class Shader                : NSObject
 {
     var isValid             : Bool = false
     var pipelineStateDesc   : MTLRenderPipelineDescriptor!

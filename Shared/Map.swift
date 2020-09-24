@@ -20,6 +20,7 @@ class Map
     var physics2D           : [String:MapPhysics2D] = [:]
 
     var shapes2D            : [String:MapShape2D] = [:]
+    var shaders             : [String:MapShader] = [:]
 
     var commands            : [MapCommand] = []
 
@@ -53,6 +54,7 @@ class Map
         fixtures2D = [:]
         physics2D = [:]
         shapes2D = [:]
+        shaders = [:]
         commands = []
         lines = [:]
         if releaseResources {
@@ -339,6 +341,14 @@ class Map
     {
         var xPos = x
         var yPos = y
+        
+        if let shs = layer.options["shaders"] as? [String] {
+            for shaderName in shs {
+                if let sh = shaders[shaderName] {
+                    texture.drawShader(sh.shader!, MMRect(0,0,texture.width, texture.height))
+                }
+            }
+        }
         
         if let shapes = layer.options["shapes"] as? [String] {
             for shape in shapes {

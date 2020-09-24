@@ -30,7 +30,8 @@ class MapBuilder
         case Behavior = "Behavior"  // Behavior Tree
         case Fixture2D = "Fixture2D"// A fixture for an Object2D
 
-        case Shape2D = "Shape2D"    // A 2D Shape
+        case Shape2D = "Shape2D"    // 2D Shape
+        case Shader = "Shader"      // Shader
 
         // Commands
         case ScreenSize = "ScreenSize"
@@ -277,6 +278,18 @@ class MapBuilder
             map.fixtures2D[variable] = MapFixture2D(options: options)
             setLine(variable)
         } else
+        if type == .Shader {
+            if let shaderName = options["name"] as? String {
+                if let asset = game.assetFolder.getAsset(shaderName, .Shader) {
+                    var mapShader = MapShader(options: options)
+                    game.shaderCompiler.compile(asset, { (shader) in
+                        mapShader.shader = shader
+                    })
+                    map.shaders[variable] = mapShader
+                    setLine(variable)
+                } else { error.error = "Could not find shader '\(shaderName)'" }
+            } else { error.error = "Missing shader name" }
+        } else
         if type == .Behavior {
             if let behavior = options["name"] as? String {
                 if let asset = game.assetFolder.getAsset(behavior, .Behavior) {
@@ -358,7 +371,7 @@ class MapBuilder
         let floatOptions = ["round", "radius", "onion"]
         let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size"]
         let boolOptions = ["repeatx"]
-        let stringArrayOptions = ["layers", "shapes"]
+        let stringArrayOptions = ["layers", "shapes", "shaders"]
 
         var res: [String:Any] = [:]
         

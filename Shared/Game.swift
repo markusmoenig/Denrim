@@ -40,6 +40,7 @@ class Game              : ObservableObject
 
     var mapBuilder      : MapBuilder!
     var behaviorBuilder : BehaviorBuilder!
+    var shaderCompiler  : ShaderCompiler!
 
     var textureLoader   : MTKTextureLoader!
         
@@ -72,6 +73,7 @@ class Game              : ObservableObject
         
         mapBuilder = MapBuilder(self)
         behaviorBuilder = BehaviorBuilder(self)
+        shaderCompiler = ShaderCompiler(self)
     }
     
     func setupView(_ view: DMTKView)
@@ -279,12 +281,11 @@ class Game              : ObservableObject
         self.gameCmdBuffer = nil
     }
     
+    
     func createPreview(_ asset: Asset)
     {
         if state == .Idle && asset.type == .Shader {
-            let compiler = ShaderCompiler(asset, self)
-
-            compiler.compile({ (shader) in
+            shaderCompiler.compile(asset, { (shader) in
                 
                 DispatchQueue.main.async {
                     self.startDrawing()

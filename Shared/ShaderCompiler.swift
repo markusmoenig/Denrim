@@ -6,16 +6,13 @@
 //
 
 import MetalKit
-import JavaScriptCore
 
 class ShaderCompiler
 {
-    let asset           : Asset
     let game            : Game
     
-    init(_ asset: Asset,_ game: Game)
+    init(_ game: Game)
     {
-        self.asset = asset
         self.game = game
     }
     /*
@@ -70,7 +67,7 @@ class ShaderCompiler
     }
     */
     
-    func compile(_ cb: @escaping (Shader) -> ())
+    func compile(_ asset: Asset, _ cb: @escaping (Shader) -> ())
     {
         var code = getHeaderCode()
         code += asset.value
