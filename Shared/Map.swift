@@ -35,7 +35,7 @@ class Map
     // Have to be set!
     var game                : Game!
     var texture             : Texture2D!
-    var aspect              : float2!
+    var aspect              : float3!
     
     deinit {
         clear()
@@ -67,9 +67,10 @@ class Map
         self.game = game
         self.texture = game.texture
         
-        aspect = float2(texture.width, texture.height)
+        aspect = float3(texture.width, texture.height, 0)
         aspect.x /= 100.0
         aspect.y /= 100.0
+        aspect.z = min(aspect.x, aspect.y)
     }
     
     /*
@@ -330,7 +331,7 @@ class Map
     func drawShape(_ shape: MapShape2D)
     {
         if shape.shape == .Disk {
-            //map.texture?.drawDisk(shape.options)
+            drawDisk(shape.options, aspect: aspect)
         } else
         if shape.shape == .Box {
             drawBox(shape.options, aspect: aspect)
@@ -423,15 +424,54 @@ class Map
         return size
     }
     
+    /// Draw a Disk
+    func drawDisk(_ options: MapShapeData2D, aspect: float3)
+    {
+        var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
+        let radius : Float = options.radius * aspect.z
+        let border : Float = options.border * aspect.z
+        let onion : Float = options.onion * aspect.z
+        let fillColor : SIMD4<Float> = options.color
+        let borderColor : SIMD4<Float> = options.borderColor
+        
+        position.y = -position.y
+        position.x /= game.scaleFactor
+        position.y /= game.scaleFactor
+        
+        var data = DiscUniform()
+        data.borderSize = border / game.scaleFactor
+        data.radius = radius / game.scaleFactor
+        data.fillColor = fillColor
+        data.borderColor = borderColor
+        data.onion = onion / game.scaleFactor
+
+        let rect = MMRect(position.x - data.borderSize / 2, position.y - data.borderSize / 2, data.radius * 2 + data.borderSize * 2, data.radius * 2 + data.borderSize * 2, scale: game.scaleFactor )
+        let vertexData = game.createVertexData(texture: texture, rect: rect)
+        
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = texture.texture
+        renderPassDescriptor.colorAttachments[0].loadAction = .load
+        
+        let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+                
+        renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+        renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+        
+        renderEncoder.setFragmentBytes(&data, length: MemoryLayout<DiscUniform>.stride, index: 0)
+        renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawDisc))
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+        renderEncoder.endEncoding()
+    }
+    
     /// Draw a Box
-    func drawBox(_ options: MapShapeData2D, aspect: float2)
+    func drawBox(_ options: MapShapeData2D, aspect: float3)
     {
         var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
         let size : SIMD2<Float> = float2(options.size.x * aspect.x, options.size.y * aspect.y)
-        let round : Float = options.round
-        let border : Float = options.border
+        let round : Float = options.round * aspect.z
+        let border : Float = options.border * aspect.z
         let rotation : Float = options.rotation
-        let onion : Float = options.onion
+        let onion : Float = options.onion * aspect.z
         let fillColor : SIMD4<Float> = options.color
         let borderColor : SIMD4<Float> = options.borderColor
 

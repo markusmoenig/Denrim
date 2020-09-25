@@ -41,13 +41,11 @@ class BehaviorBuilder
         BehaviorNodeItem("SetScene", { (_ options: [String:Any]) -> BehaviorNode in return SetScene(options) }),
         BehaviorNodeItem("IsKeyDown", { (_ options: [String:Any]) -> BehaviorNode in return IsKeyDown(options) }),
         
-        BehaviorNodeItem("Subtract", { (_ options: [String:Any]) -> BehaviorNode in return Subtract(options) }),
-        BehaviorNodeItem("Add", { (_ options: [String:Any]) -> BehaviorNode in return Add(options) }),
+        BehaviorNodeItem("IsVariable", { (_ options: [String:Any]) -> BehaviorNode in return IsVariable(options) }),
 
-        BehaviorNodeItem("Clear", { (_ options: [String:Any]) -> BehaviorNode in return Clear(options) }),
-        BehaviorNodeItem("DrawDisk", { (_ options: [String:Any]) -> BehaviorNode in return DrawDisk(options) }),
-        BehaviorNodeItem("DrawBox", { (_ options: [String:Any]) -> BehaviorNode in return DrawBox(options) }),
-        BehaviorNodeItem("DrawText", { (_ options: [String:Any]) -> BehaviorNode in return DrawText(options) })
+        BehaviorNodeItem("Multiply", { (_ options: [String:Any]) -> BehaviorNode in return Multiply(options) }),
+        BehaviorNodeItem("Subtract", { (_ options: [String:Any]) -> BehaviorNode in return Subtract(options) }),
+        BehaviorNodeItem("Add", { (_ options: [String:Any]) -> BehaviorNode in return Add(options) })
     ]
     
     init(_ game: Game)
@@ -148,8 +146,12 @@ class BehaviorBuilder
                                         let newBranch = branch.createNode([:])
                                         if currentBranch.count == 0 {
                                             currentTree?.leaves.append(newBranch)
+                                            currentBranch.append(newBranch)
+                                        } else {
+                                            if let branch = currentBranch.last {
+                                                branch.leaves.append(newBranch)
+                                            }
                                         }
-                                        currentBranch.append(newBranch)
                                         processed = true
                                     }
                                 }
@@ -242,10 +244,9 @@ class BehaviorBuilder
                         }
                     }
                 }
-            }
-            
-            if str.trimmingCharacters(in: .whitespaces).count > 0 && processed == false && error.error == nil {
-                error.error = "Unrecognized statement"
+                if str.trimmingCharacters(in: .whitespaces).count > 0 && processed == false && error.error == nil {
+                    error.error = "Unrecognized statement"
+                }
             }
             
             lastLevel = level

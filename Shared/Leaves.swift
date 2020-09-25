@@ -202,38 +202,87 @@ class Add: BehaviorNode
     }
 }
 
-class Clear: BehaviorNode
+class Multiply: BehaviorNode
 {
+    var pair    : (UpTo4Data, UpTo4Data, [UpTo4Data])? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Multiply"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, error: inout CompileError) {
+        pair = extractPair(options, variableName: "with", context: context, error: &error, optionalVariables: [])
+    }
+    
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
-        game.texture!.clear(options)
-        return .Success
+        if let pair = pair {
+            if pair.0.data2 != nil {
+                pair.1.data2!.x *= pair.0.data2!.x
+                pair.1.data2!.y *= pair.0.data2!.y
+                return .Success
+            }
+        }
+        return .Failure
     }
 }
 
-class DrawDisk: BehaviorNode
+class IsVariable: BehaviorNode
 {
+    enum Mode {
+        case GreaterThan, LessThan, Equal
+    }
+    
+    var mode    : Mode = .Equal
+    var pair    : (UpTo4Data, UpTo4Data, [UpTo4Data])? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "IsVariable"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, error: inout CompileError) {
+        pair = extractPair(options, variableName: "variable", context: context, error: &error, optionalVariables: [])
+        if error.error == nil {
+            if var m = options["mode"] as? String {
+                m = m.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+                if m == "GreaterThan" {
+                    mode = .GreaterThan
+                } else
+                if m == "LessThan" {
+                    mode = .LessThan
+                } else { error.error = "'Mode' needs to be 'Equal', 'GreatherThan' or 'LessThan'" }
+            } else { error.error = "Missing 'Mode' statement" }
+        }
+    }
+    
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
-        game.texture!.drawDisk(options)
-        return .Success
+        if let pair = pair {
+            if pair.0.data2 != nil {
+                if mode == .Equal {
+                    if pair.1.data2!.x == pair.0.data2!.x && pair.1.data2!.y == pair.0.data2!.y {
+                        return .Success
+                    }
+                } else
+                if mode == .GreaterThan {
+                    if pair.1.data2!.x > pair.0.data2!.x && pair.1.data2!.y > pair.0.data2!.y {
+                        return .Success
+                    }
+                } else
+                if mode == .LessThan {
+                    if pair.1.data2!.x < pair.0.data2!.x && pair.1.data2!.y < pair.0.data2!.y {
+                        return .Success
+                    }
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
     }
 }
 
-class DrawBox: BehaviorNode
-{
-    @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
-    {
-        game.texture!.drawBox(options)
-        return .Success
-    }
-}
 
-class DrawText: BehaviorNode
-{
-    @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
-    {
-        game.texture!.drawText(options)
-        return .Success
-    }
-}

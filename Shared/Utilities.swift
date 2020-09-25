@@ -34,7 +34,7 @@ func extractFloat2Value(_ options: [String:Any], context: BehaviorContext, error
             return Float2(x, y)
         } else
         if array.count == 1 {
-            if let v = context.getVariableValue(name) as? Float2 {
+            if let v = context.getVariableValue(String(array[0])) as? Float2 {
                 return v
             }
         } else { if isOptional == false { error.error = "Wrong argument count for Float2" } }

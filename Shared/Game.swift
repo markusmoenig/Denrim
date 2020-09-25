@@ -144,24 +144,23 @@ class Game              : ObservableObject
     
     func checkTexture() -> Bool
     {
-        if texture == nil {
-            texture = Texture2D(self)
-    
-            viewportSize.x = UInt32(texture!.width)
-            viewportSize.y = UInt32(texture!.height)
+        if texture == nil || texture!.texture.width != Int(view.frame.width) || texture!.texture.height != Int(view.frame.height) {
             
-            screenWidth = Float(texture!.width)
-            screenHeight = Float(texture!.height)
-            return true
-        } else
-        if texture!.texture.width != Int(view.frame.width) || texture!.texture.height != Int(view.frame.height) {
-            texture?.allocateTexture(width: Int(view.frame.width), height: Int(view.frame.height))
+            if texture == nil {
+                texture = Texture2D(self)
+            } else {
+                texture?.allocateTexture(width: Int(view.frame.width), height: Int(view.frame.height))
+            }
             
             viewportSize.x = UInt32(texture!.width)
             viewportSize.y = UInt32(texture!.height)
             
             screenWidth = Float(texture!.width)
             screenHeight = Float(texture!.height)
+                        
+            if let map = currentMap?.map {
+                map.setup(game: self)
+            }
             return true
         }
         return false
