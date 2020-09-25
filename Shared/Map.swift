@@ -428,9 +428,9 @@ class Map
     func drawDisk(_ options: MapShapeData2D, aspect: float3)
     {
         var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
-        let radius : Float = options.radius * aspect.z
-        let border : Float = options.border * aspect.z
-        let onion : Float = options.onion * aspect.z
+        let radius : Float = options.radius.x * aspect.z
+        let border : Float = options.border.x * aspect.z
+        let onion : Float = options.onion.x * aspect.z
         let fillColor : SIMD4<Float> = options.color
         let borderColor : SIMD4<Float> = options.borderColor
         
@@ -468,10 +468,10 @@ class Map
     {
         var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
         let size : SIMD2<Float> = float2(options.size.x * aspect.x, options.size.y * aspect.y)
-        let round : Float = options.round * aspect.z
-        let border : Float = options.border * aspect.z
-        let rotation : Float = options.rotation
-        let onion : Float = options.onion * aspect.z
+        let round : Float = options.round.x * aspect.z
+        let border : Float = options.border.x * aspect.z
+        let rotation : Float = options.rotation.x
+        let onion : Float = options.onion.x * aspect.z
         let fillColor : SIMD4<Float> = options.color
         let borderColor : SIMD4<Float> = options.borderColor
 

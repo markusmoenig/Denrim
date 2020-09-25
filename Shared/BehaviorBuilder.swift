@@ -237,7 +237,7 @@ class BehaviorBuilder
                                 if possibleVariableType == "Float" {
                                     rightValueArray.removeFirst()
                                     let value : Float; if let v = Float(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
-                                    asset.behavior!.addVariable(variableName!, value)
+                                    asset.behavior!.addVariable(variableName!, Float1(value))
                                     processed = true
                                 } else { error.error = "Unrecognized Variable type '\(possbibleCmd)'" }
                             }

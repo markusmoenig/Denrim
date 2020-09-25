@@ -156,7 +156,14 @@ class Subtract: BehaviorNode
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
-        if let pair = pair {    
+        if let pair = pair {
+            if pair.0.data1 != nil {
+                pair.1.data1!.x -= pair.0.data1!.x
+                if let min = pair.2[0].data1 {
+                    pair.1.data1!.x = max(pair.1.data1!.x, min.x)
+                }
+                return .Success
+            } else
             if pair.0.data2 != nil {
                 pair.1.data2!.x -= pair.0.data2!.x
                 pair.1.data2!.y -= pair.0.data2!.y
@@ -188,6 +195,13 @@ class Add: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         if let pair = pair {
+            if pair.0.data1 != nil {
+                pair.1.data1!.x += pair.0.data1!.x
+                if let max = pair.2[0].data1 {
+                    pair.1.data1!.x = min(pair.1.data1!.x, max.x)
+                }
+                return .Success
+            }
             if pair.0.data2 != nil {
                 pair.1.data2!.x += pair.0.data2!.x
                 pair.1.data2!.y += pair.0.data2!.y
@@ -219,6 +233,10 @@ class Multiply: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         if let pair = pair {
+            if pair.0.data1 != nil {
+                pair.1.data1!.x *= pair.0.data1!.x
+                return .Success
+            } else
             if pair.0.data2 != nil {
                 pair.1.data2!.x *= pair.0.data2!.x
                 pair.1.data2!.y *= pair.0.data2!.y
@@ -262,6 +280,23 @@ class IsVariable: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         if let pair = pair {
+            if pair.0.data1 != nil {
+                if mode == .Equal {
+                    if pair.1.data1!.x == pair.0.data1!.x {
+                        return .Success
+                    }
+                } else
+                if mode == .GreaterThan {
+                    if pair.1.data1!.x > pair.0.data1!.x {
+                        return .Success
+                    }
+                } else
+                if mode == .LessThan {
+                    if pair.1.data1!.x < pair.0.data1!.x {
+                        return .Success
+                    }
+                }
+            } else
             if pair.0.data2 != nil {
                 if mode == .Equal {
                     if pair.1.data2!.x == pair.0.data2!.x && pair.1.data2!.y == pair.0.data2!.y {

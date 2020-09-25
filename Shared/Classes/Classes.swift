@@ -45,6 +45,21 @@ class Float2
     }
 }
 
+class Float1
+{
+    var x           : Float = 0
+
+    init(_ x: Float = 0)
+    {
+        self.x = x
+    }
+    
+    func toSIMD() -> Float
+    {
+        return x
+    }
+}
+
 class Rect2D
 {
     var x               : Float = 0

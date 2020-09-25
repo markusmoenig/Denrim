@@ -56,12 +56,12 @@ struct MapShapeData2D {
     var position        : Float2
     var size            : Float2
 
-    var rotation        : Float
-    var round           : Float
+    var rotation        : Float1
+    var round           : Float1
 
-    var border          : Float
-    var radius          : Float
-    var onion           : Float
+    var border          : Float1
+    var radius          : Float1
+    var onion           : Float1
     
     var color           : float4
     var borderColor     : float4
@@ -80,34 +80,34 @@ struct MapShapeData2D {
             self.size = Float2(1,1)
         }
         
-        if let rotation = options["rotation"] as? Float {
+        if let rotation = options["rotation"] as? Float1 {
             self.rotation = rotation
         } else {
-            self.rotation = 0
+            self.rotation = Float1(0)
         }
         
-        if let round = options["round"] as? Float {
+        if let round = options["round"] as? Float1 {
             self.round = round
         } else {
-            self.round = 0
+            self.round = Float1(0)
         }
         
-        if let border = options["border"] as? Float {
+        if let border = options["border"] as? Float1 {
             self.border = border
         } else {
-            self.border = 0
+            self.border = Float1(0)
         }
         
-        if let radius = options["radius"] as? Float {
+        if let radius = options["radius"] as? Float1 {
             self.radius = radius
         } else {
-            self.radius = 1
+            self.radius = Float1(1)
         }
         
-        if let onion = options["onion"] as? Float {
+        if let onion = options["onion"] as? Float1 {
             self.onion = onion
         } else {
-            self.onion = 0
+            self.onion = Float1(0)
         }
         
         if let color = options["color"] as? Float4 {
@@ -152,5 +152,11 @@ struct MapCommand {
 
 struct MapShader {
     var shader          : Shader? = nil
+    var options         : [String:Any]
+}
+
+struct MapText {
+    var font            : Font
+    var size            : Float1
     var options         : [String:Any]
 }

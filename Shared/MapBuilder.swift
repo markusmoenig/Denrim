@@ -32,6 +32,7 @@ class MapBuilder
 
         case Shape2D = "Shape2D"    // 2D Shape
         case Shader = "Shader"      // Shader
+        case Text = "Text"          // Text
 
         // Commands
         case ScreenSize = "ScreenSize"
@@ -310,14 +311,16 @@ class MapBuilder
                 var asset: Asset? = nil
 
                 let varArray = name.split(separator: ".")
-                for (name, behavior) in map.behavior {
-                    if name == varArray[0] {
-                        asset = behavior.behavior
-                        break
+                if varArray.count > 0 {
+                    for (name, behavior) in map.behavior {
+                        if name == varArray[0] {
+                            asset = behavior.behavior
+                            break
+                        }
                     }
                 }
-                
-                if let asset = asset {
+                                
+                if let asset = asset, varArray.count == 2 {
                     if let behavior = asset.behavior {
                         for v in behavior.variables {
                             if v.name == varArray[1] {
@@ -331,16 +334,26 @@ class MapBuilder
                         }
                     }
                 } else {
-                    error.error = "No behavior found with name '\(varArray[0])'"
+                    if varArray.count > 0 {
+                        error.error = "No behavior found with name '\(varArray[0])'"
+                    } else {
+                        error.error = "Incorrect behavior"
+                    }
                 }
                 
                 return isValid
             }
 
-            // Check if variable references are valid
-            // TODO Check if type is correct
-            if let varRef = options["position"] as? String {
-                isValid = checkVarRef(varRef, "position")
+            // Iterate over options
+            for (n,v) in options {
+                if n != "shape" {
+                    if let varRef = v as? String {
+                        isValid = checkVarRef(varRef, n)
+                        if isValid == false {
+                            break
+                        }
+                    }
+                }
             }
             
             if isValid {
@@ -389,8 +402,11 @@ class MapBuilder
             if floatOptions.firstIndex(of: name) != nil {
                 // Float
                 if let v = Float(value) {
-                    res[name] = v
-                } else { error.error = "The \(name) option expects a float argument" }
+                    res[name] = Float1(v)
+                } else {
+                    // Variable
+                    res[name] = value
+                }
             } else
             if boolOptions.firstIndex(of: name) != nil {
                 // Boolean

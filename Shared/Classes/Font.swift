@@ -6,7 +6,6 @@
 //
 
 import MetalKit
-import JavaScriptCore
 
 struct BMChar       : Decodable {
     let id          : Int
@@ -33,54 +32,7 @@ struct BMFont       : Decodable {
     let common      : BMCommon
 }
 
-/*
-class CharBuffer
-{
-    let vertexBuffer: MTLBuffer
-    let dataBuffer  : MTLBuffer
-    
-    init(vertexBuffer: MTLBuffer, dataBuffer: MTLBuffer)
-    {
-        self.vertexBuffer = vertexBuffer
-        self.dataBuffer = dataBuffer
-    }
-    
-    deinit {
-        vertexBuffer.setPurgeableState(.empty)
-        dataBuffer.setPurgeableState(.empty)
-    }
-}
-
-@objc protocol TextBuffer_JSExports: JSExport {
-}
-
-class TextBuffer    : NSObject, TextBuffer_JSExports
-{
-    var chars       : [CharBuffer]
-    var x, y        : Float
-    var viewWidth   : Float
-    var viewHeight  : Float
-
-    init(chars: [CharBuffer], x: Float, y: Float, viewWidth: Float, viewHeight: Float)
-    {
-        self.chars = chars
-        self.x = x
-        self.y = y
-        self.viewWidth = viewWidth
-        self.viewHeight = viewHeight
-    }
-}*/
-
-@objc protocol Font_JSExports: JSExport {
-    
-    var name        : String { get }
-
-    static func getAvailableFonts() -> [String]
-    static func create(_ name: String) -> Font?
-    //func createTextBuffer(_ object: [AnyHashable:Any]) -> TextBuffer
-}
-
-class Font          : NSObject, Font_JSExports
+class Font
 {
     var uuid        = UUID()
     
@@ -94,9 +46,7 @@ class Font          : NSObject, Font_JSExports
     {
         self.name = name
         self.game = game
-        
-        super.init()
-        
+                
         atlas = loadTexture( name )
         
         let path = Bundle.main.path(forResource: name, ofType: "json")!
@@ -110,37 +60,11 @@ class Font          : NSObject, Font_JSExports
     }
     
     deinit {
-        clear()
-    }
-    
-    func clear()
-    {
         if let texture = atlas {
             texture.setPurgeableState(.empty)
             atlas = nil
             bmFont = nil
         }
-        print("freeing font", name)
-    }
-    
-    class func getAvailableFonts() -> [String]
-    {
-        let game = getGameObject()
-
-        return game.availableFonts
-    }
-    
-    class func create(_ name: String) -> Font?
-    {
-        let game = getGameObject()
-
-        if game.availableFonts.firstIndex(of: name) != nil {
-            let font = Font(name: name, game: game)
-            game.resources.append(font)
-            return font//JSManagedValue(value: JSValue(object: font, in: game.jsBridge.context))
-        }
-
-        return nil
     }
     
     /*
@@ -221,13 +145,5 @@ class Font          : NSObject, Font_JSExports
         }
         
         return rect;
-    }
-    
-    /// Returns the game object for this context
-    static func getGameObject() -> Game {
-        let context = JSContext.current()
-        let main = context?.objectForKeyedSubscript("_mT")?.toObject() as! Texture2D
-        //let main = (context!["_mT"] as? JSValue)!.toObject() as! Texture2D
-        return main.game!
     }
 }

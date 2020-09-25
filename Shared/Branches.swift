@@ -21,7 +21,6 @@ class SequenceBranch: BehaviorNode
         for l in leaves {
             let rc = l.execute(game: game, context: context, parent: self)
             if rc == .Failure {
-                print(l.name, "failed")
                 return .Failure
             }
         }

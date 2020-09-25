@@ -8,6 +8,7 @@
 import Foundation
 
 struct UpTo4Data {
+    var data1        : Float1? = nil
     var data2        : Float2? = nil
     var data4        : Float4? = nil
 }
@@ -43,6 +44,22 @@ func extractFloat2Value(_ options: [String:Any], context: BehaviorContext, error
     return nil
 }
 
+/// Extract a float1 vale
+func extractFloat1Value(_ options: [String:Any], context: BehaviorContext, error: inout CompileError, name: String = "float", isOptional: Bool = false ) -> Float1?
+{
+    if var value = options[name] as? String {
+        value = value.trimmingCharacters(in: .whitespaces)
+        if let value = Float(value) {
+            return Float1(value)
+        } else
+        if let v = context.getVariableValue(value) as? Float1 {
+            return v
+        }  else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
+    } else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
+    
+    return nil
+}
+
 func extractPair(_ options: [String:Any], variableName: String, context: BehaviorContext, error: inout CompileError, optionalVariables: [String]) -> (UpTo4Data, UpTo4Data,[UpTo4Data])
 {
     var Data         = UpTo4Data()
@@ -60,6 +77,17 @@ func extractPair(_ options: [String:Any], variableName: String, context: Behavio
             for oV in optionalVariables {
                 var data = UpTo4Data()
                 data.data2 = extractFloat2Value(options, context: context, error: &error, name: oV, isOptional: true)
+                optionals.append(data)
+            }
+        } else
+        if let f1 = variableValue as? Float1 {
+            variableData.data1 = f1
+            if let data = extractFloat1Value(options, context: context, error: &error) {
+                Data.data1 = data
+            }
+            for oV in optionalVariables {
+                var data = UpTo4Data()
+                data.data1 = extractFloat1Value(options, context: context, error: &error, name: oV, isOptional: true)
                 optionals.append(data)
             }
         } else

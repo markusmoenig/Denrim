@@ -46,6 +46,7 @@ class Game              : ObservableObject
         
     var resources       : [AnyObject] = []
     var availableFonts  : [String] = ["OpenSans", "Square", "SourceCodePro"]
+    var fonts           : [Font] = []
     
     var gameContext     : BehaviorContext? = nil
     var currentMap      : Asset? = nil
@@ -66,7 +67,6 @@ class Game              : ObservableObject
         #endif
         
         file = File()
-        //jsBridge = JSBridge(self)
         
         assetFolder = AssetFolder()
         assetFolder.setup(self)
@@ -89,6 +89,11 @@ class Game              : ObservableObject
 
         metalStates = MetalStates(self)
         textureLoader = MTKTextureLoader(device: device)
+        
+        for fontName in availableFonts {
+            let font = Font(name: fontName, game: self)
+            fonts.append(font)
+        }
     }
     
     func start()
