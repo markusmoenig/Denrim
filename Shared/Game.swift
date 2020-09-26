@@ -18,8 +18,6 @@ class Game              : ObservableObject
     
     var view            : DMTKView!
     var device          : MTLDevice!
-    var commandQueue    : MTLCommandQueue!
-    var commandBuffer   : MTLCommandBuffer!
 
     var texture         : Texture2D? = nil
     var metalStates     : MetalStates!
@@ -88,8 +86,6 @@ class Game              : ObservableObject
             print("Cannot initialize Metal!")
         }
         
-        commandQueue = device.makeCommandQueue()!
-
         metalStates = MetalStates(self)
         textureLoader = MTKTextureLoader(device: device)
         
@@ -193,17 +189,18 @@ class Game              : ObservableObject
             return
         }
         
+        startDrawing()
+
         // Game Loop
         if state == .Running {
-            startDrawing()
             
-            gameCmdBuffer?.addCompletedHandler { cb in
-                //print("GPU Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
-            }
+            //gameCmdBuffer?.addCompletedHandler { cb in
+            //    print("GPU Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
+            //}
             
-            #if DEBUG
+            //#if DEBUG
             //let startTime = Double(Date().timeIntervalSince1970)
-            #endif
+            //#endif
 
             texture?.clear()
 
@@ -235,28 +232,23 @@ class Game              : ObservableObject
                 }
             }
 
-            #if DEBUG
+            //#if DEBUG
             //print("Behavior Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)
-            #endif
-            
-            stopDrawing(deleteQueue: true)
+            //#endif            
         }
-        
-        commandBuffer = commandQueue.makeCommandBuffer()
-        
+                
         let renderPassDescriptor = view.currentRenderPassDescriptor
         renderPassDescriptor?.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 1)
         renderPassDescriptor?.colorAttachments[0].loadAction = .clear
         renderPassDescriptor?.colorAttachments[0].storeAction = .store
-        let renderEncoder = commandBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor!)
+        let renderEncoder = gameCmdBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor!)
         
         drawTexture(renderEncoder: renderEncoder!)
         
         renderEncoder?.endEncoding()
         
-        commandBuffer?.present(drawable)
-        commandBuffer?.commit()
-        commandBuffer = nil
+        gameCmdBuffer?.present(drawable)
+        stopDrawing()
     }
     
     func startDrawing()
@@ -267,7 +259,7 @@ class Game              : ObservableObject
         gameCmdBuffer = gameCmdQueue!.makeCommandBuffer()
     }
     
-    func stopDrawing(deleteQueue: Bool = true)
+    func stopDrawing(deleteQueue: Bool = false)
     {
         gameCmdBuffer?.commit()
 
