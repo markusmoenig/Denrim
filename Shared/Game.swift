@@ -234,17 +234,14 @@ class Game              : ObservableObject
 
             //#if DEBUG
             //print("Behavior Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)
-            //#endif            
+            //#endif
         }
                 
         let renderPassDescriptor = view.currentRenderPassDescriptor
-        renderPassDescriptor?.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 1)
-        renderPassDescriptor?.colorAttachments[0].loadAction = .clear
-        renderPassDescriptor?.colorAttachments[0].storeAction = .store
+        renderPassDescriptor?.colorAttachments[0].loadAction = .dontCare
         let renderEncoder = gameCmdBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor!)
         
-        drawTexture(renderEncoder: renderEncoder!)
-        
+        drawTexture(renderEncoder: renderEncoder!)        
         renderEncoder?.endEncoding()
         
         gameCmdBuffer?.present(drawable)

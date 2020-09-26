@@ -385,7 +385,6 @@ class MapBuilder
                             textRef.i1 = i1
                         }
                         
-                        print(replacedOptions)
                         if let digits = replacedOptions["digits"] as? Int1 {
                             textRef.digits = digits
                         }
