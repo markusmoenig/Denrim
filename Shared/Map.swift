@@ -530,9 +530,27 @@ class Map
         var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
         let size : Float = options.text.fontSize * aspect.z
         let font : Font? = options.text.font
-        let text : String = options.text.text!
+        var text : String = ""
         let color : SIMD4<Float> = options.color.toSIMD()
 
+        if let t = options.text.text {
+            text = t
+        } else
+        if let f1 = options.text.f1 {
+            if let digits = options.text.digits {
+                text = String(format: "%.0\(digits.x)f", f1.x)
+            } else {
+                text = String(f1.x)
+            }
+        } else
+        if let i1 = options.text.i1 {
+            if let digits = options.text.digits {
+                text = String(format: "%0\(digits.x)d", i1.x)
+            } else {
+                text = String(i1.x)
+            }
+        }
+        
         /*
         var position : SIMD2<Float>; if let v = options["position"] as? Float2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
         let size : Float; if let v = options["size"] as? Float { size = v } else { size = 30 }

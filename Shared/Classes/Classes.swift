@@ -107,6 +107,8 @@ class TextRef
     
     var font        : Font? = nil
     var fontSize    : Float = 10
+    
+    var digits      : Int1? = nil
 
     init(_ text: String? = nil)
     {

@@ -377,6 +377,19 @@ class MapBuilder
                             textRef.fontSize = fontSize.x
                         }
                         
+                        if let f1 = replacedOptions["float"] as? Float1 {
+                            textRef.f1 = f1
+                        }
+                        
+                        if let i1 = replacedOptions["int"] as? Int1 {
+                            textRef.i1 = i1
+                        }
+                        
+                        print(replacedOptions)
+                        if let digits = replacedOptions["digits"] as? Int1 {
+                            textRef.digits = digits
+                        }
+                        
                         if let fontName = replacedOptions["font"] as? String {
                             for (index, fName) in game.availableFonts.enumerated() {
                                 if fontName == fName {
@@ -405,10 +418,10 @@ class MapBuilder
         //print("Processing Options", options)
 
         let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font"]
-        let integerOptions = ["index"]
-        let floatOptions = ["round", "radius", "onion", "fontsize"]
-        let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size"]
-        let float4Options = ["rect", "color", "bordercolor"]
+        let integerOptions = ["index", "int", "digits"]
+        let floatOptions = ["round", "radius", "onion", "fontsize", "float"]
+        let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size", "float2"]
+        let float4Options = ["rect", "color", "bordercolor", "float4"]
         let boolOptions = ["repeatx"]
         let stringArrayOptions = ["layers", "shapes", "shaders"]
 
@@ -422,8 +435,11 @@ class MapBuilder
             if integerOptions.firstIndex(of: name) != nil {
                 // Integer
                 if let v = Int(value) {
-                    res[name] = v
-                } else { error.error = "The \(name) option expects an integer argument" }
+                    res[name] = Int1(v)
+                } else {
+                   // Variable
+                   res[name] = value
+               }
             } else
             if floatOptions.firstIndex(of: name) != nil {
                 // Float

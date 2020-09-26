@@ -193,8 +193,53 @@ class Game              : ObservableObject
             return
         }
         
-        gameCmdBuffer?.addCompletedHandler { cb in
-            //print("GPU Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
+        // Game Loop
+        if state == .Running {
+            startDrawing()
+            
+            gameCmdBuffer?.addCompletedHandler { cb in
+                //print("GPU Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
+            }
+            
+            #if DEBUG
+            //let startTime = Double(Date().timeIntervalSince1970)
+            #endif
+
+            texture?.clear()
+
+            if let context = self.gameContext {
+                context.execute(name: "update")
+            }
+            
+            if let mapAsset = self.currentMap {
+                if let map = mapAsset.map {
+                    for (_, b) in map.behavior {
+                        if let context = b.behavior.behavior {
+                            context.execute(name: "update")
+                        }
+                    }
+                    if let scene = self.currentScene {
+                        map.drawScene(0, 0, scene)
+                    }
+                }
+            }
+        
+            // Display failures when have editor
+            if let asset = assetFolder.current, scriptEditor != nil {
+                var error = CompileError()
+                error.error = ""
+                error.column = 0
+                if let context = asset.behavior {
+                    scriptEditor?.clearAnnotations()
+                    scriptEditor?.setFailures(context.failedAt)
+                }
+            }
+
+            #if DEBUG
+            //print("Behavior Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)
+            #endif
+            
+            stopDrawing(deleteQueue: true)
         }
         
         commandBuffer = commandQueue.makeCommandBuffer()
@@ -205,7 +250,6 @@ class Game              : ObservableObject
         renderPassDescriptor?.colorAttachments[0].storeAction = .store
         let renderEncoder = commandBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor!)
         
-        //drawDisc(renderEncoder: re!, x: 50, y: 0, radius: 100, borderSize: 0, fillColor: SIMD4<Float>(1,1,1,1))
         drawTexture(renderEncoder: renderEncoder!)
         
         renderEncoder?.endEncoding()
@@ -213,61 +257,6 @@ class Game              : ObservableObject
         commandBuffer?.present(drawable)
         commandBuffer?.commit()
         commandBuffer = nil
-
-        if state == .Running {
-            //DispatchQueue.main.async {
-                
-                self.startDrawing()
-
-                //#if DEBUG
-                //let startTime = Double(Date().timeIntervalSince1970)
-                //#endif
-
-                self.texture?.clear()
-
-                if let context = self.gameContext {
-                    context.execute(name: "update")
-                }            
-                
-                if let mapAsset = self.currentMap {
-                    if let map = mapAsset.map {
-                        for (_, b) in map.behavior {
-                            if let context = b.behavior.behavior {
-                                context.execute(name: "update")
-                                
-                                /*
-                                if let posValue = context.getVariableValue("position") {
-                                    if let f2 = posValue as? Float2
-                                    {
-                                        print("pos value", f2.x, f2.y)
-                                    }
-                                }*/
-                            }
-                        }
-                        if let scene = self.currentScene {
-                            map.drawScene(0, 0, scene)
-                        }
-                    }
-                }
-            
-                // Display failures when have editor
-                if let asset = assetFolder.current, scriptEditor != nil {
-                    var error = CompileError()
-                    error.error = ""
-                    error.column = 0
-                    if let context = asset.behavior {
-                        scriptEditor?.clearAnnotations()
-                        scriptEditor?.setFailures(context.failedAt)
-                    }
-                }
-
-                //#if DEBUG
-                //print("JS Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)
-                //#endif
-                
-                stopDrawing(deleteQueue: true)
-            }
-        //}
     }
     
     func startDrawing()
