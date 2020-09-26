@@ -528,8 +528,8 @@ class Map
     func drawText(_ options: MapShapeData2D, aspect: float3)
     {
         var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
-        let size : Float = 20
-        let font : Font? = game.fonts[0]
+        let size : Float = options.text.fontSize * aspect.z
+        let font : Font? = options.text.font
         let text : String = options.text.text!
         let color : SIMD4<Float> = options.color.toSIMD()
 

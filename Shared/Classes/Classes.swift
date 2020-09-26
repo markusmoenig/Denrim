@@ -104,6 +104,9 @@ class TextRef
     var f4          : Float4? = nil
 
     var i1          : Int1? = nil
+    
+    var font        : Font? = nil
+    var fontSize    : Float = 10
 
     init(_ text: String? = nil)
     {

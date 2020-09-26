@@ -346,7 +346,7 @@ class MapBuilder
 
             // Iterate over options
             for (n,v) in options {
-                if n != "type" && n != "text" {
+                if n != "type" && n != "text" && n != "font" {
                     if let varRef = v as? String {
                         isValid = checkVarRef(varRef, n)
                         if isValid == false {
@@ -367,6 +367,27 @@ class MapBuilder
                         setLine(variable)
                     } else
                     if shapeName.lowercased() == "text" {
+                        
+                        let textRef = TextRef()
+                        if let text = replacedOptions["text"] as? String {
+                            textRef.text = text
+                        }
+                        
+                        if let fontSize = replacedOptions["fontsize"] as? Float1 {
+                            textRef.fontSize = fontSize.x
+                        }
+                        
+                        if let fontName = replacedOptions["font"] as? String {
+                            for (index, fName) in game.availableFonts.enumerated() {
+                                if fontName == fName {
+                                    textRef.font = game.fonts[index]
+                                    break
+                                }
+                            }
+                        }
+                        
+                        replacedOptions["text"] = textRef
+
                         map.shapes2D[variable] = MapShape2D(shape: .Text, options: MapShapeData2D(replacedOptions))
                         setLine(variable)
                     }
@@ -383,9 +404,9 @@ class MapBuilder
     {
         //print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform"]
+        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font"]
         let integerOptions = ["index"]
-        let floatOptions = ["round", "radius", "onion"]
+        let floatOptions = ["round", "radius", "onion", "fontsize"]
         let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size"]
         let float4Options = ["rect", "color", "bordercolor"]
         let boolOptions = ["repeatx"]
@@ -393,11 +414,7 @@ class MapBuilder
 
         var res: [String:Any] = [:]
         
-        for(name, value) in options {            
-            if name == "text" {
-                // Text
-                res[name] = TextRef(value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil))
-            }
+        for(name, value) in options {
             if stringOptions.firstIndex(of: name) != nil {
                 // String
                 res[name] = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
