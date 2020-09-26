@@ -349,7 +349,9 @@ class Map
         if let shs = layer.options["shaders"] as? [String] {
             for shaderName in shs {
                 if let sh = shaders[shaderName] {
-                    texture.drawShader(sh.shader!, MMRect(0,0,texture.width, texture.height))
+                    if let shader = sh.shader {
+                        texture.drawShader(shader, MMRect(0,0,texture.width, texture.height))
+                    }
                 }
             }
         }

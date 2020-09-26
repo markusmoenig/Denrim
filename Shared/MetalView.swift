@@ -12,10 +12,10 @@ public class DMTKView       : MTKView
 {
     var game                : Game!
 
-    #if os(OSX)
-    
     var keysDown            : [Float] = []
-    
+
+    #if os(OSX)
+        
     override public var acceptsFirstResponder: Bool { return true }
     
     func createMouseEvent(type: String,_ event: NSEvent)
