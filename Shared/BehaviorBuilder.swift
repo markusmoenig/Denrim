@@ -221,6 +221,20 @@ class BehaviorBuilder
                                         processed = true
                                     } else { createError() }
                                 } else
+                                if possibleVariableType == "Float3" {
+                                    rightValueArray.removeFirst()
+                                    let array = rightValueArray[0].split(separator: ",")
+                                    if array.count == 3 {
+                                        
+                                        let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
+                                        let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
+                                        let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 0 }
+
+                                        let value = Float3(x, y, z)
+                                        asset.behavior!.addVariable(variableName!, value)
+                                        processed = true
+                                    } else { createError() }
+                                } else
                                 if possibleVariableType == "Float2" {
                                     rightValueArray.removeFirst()
                                     let array = rightValueArray[0].split(separator: ",")
@@ -238,6 +252,18 @@ class BehaviorBuilder
                                     rightValueArray.removeFirst()
                                     let value : Float; if let v = Float(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
                                     asset.behavior!.addVariable(variableName!, Float1(value))
+                                    processed = true
+                                } else
+                                if possibleVariableType == "Int" {
+                                    rightValueArray.removeFirst()
+                                    let value : Int; if let v = Int(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
+                                    asset.behavior!.addVariable(variableName!, Int1(value))
+                                    processed = true
+                                } else
+                                if possibleVariableType == "Text" {
+                                    rightValueArray.removeFirst()
+                                    let v = String(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces))
+                                    asset.behavior!.addVariable(variableName!, TextRef(v))
                                     processed = true
                                 } else { error.error = "Unrecognized Variable type '\(possbibleCmd)'" }
                             }

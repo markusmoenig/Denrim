@@ -30,6 +30,8 @@ class MapPreview
         game.startDrawing()
         map.texture?.drawChecker()
         
+        game.helpText = ""
+        
         //let screenSize = map.getScreenSize()
         //let aspect = float2(map.texture!.width, map.texture!.height)
         //let aspectY = Float(map.texture!.height)
@@ -38,6 +40,7 @@ class MapPreview
         if let variable = variable {
 
             if let image = map.images[variable] {
+                game.helpText = "Image"
                 stopTimer()
                 if let texture2D = map.getImageResource(image.resourceName) {
                     drawTexture(texture2D)
@@ -69,12 +72,15 @@ class MapPreview
                 map.drawScene(0, 0, scene, scale: 1)
             } else
             if let shape = map.shapes2D[variable] {
+                game.helpText = "Shape2D<Type: String><Position: Float2> Defines a 2D shape of a given type:\n\n<Type: \"Box\"> : <Size: Float2><Round:Float>. <Type: \"Disk\"> : <Radius: Float>\nCommon: <Color: Float4> "
                 map.drawShape(shape)
             }
         }
         
         game.stopDrawing()
         game.updateOnce()
+        
+        game.helpTextChanged.send()
     }
     
     func drawTexture(_ texture: Texture2D)

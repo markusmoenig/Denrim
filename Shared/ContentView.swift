@@ -35,6 +35,8 @@ struct ContentView: View {
     @State private var showShaderItems: Bool = false
     @State private var showImageItems: Bool = false
 
+    @State private var helpText: String = ""
+
     @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
     
     var body: some View {
@@ -301,8 +303,20 @@ struct ContentView: View {
                         .zIndex(0)
                         .frame(maxWidth: .infinity)
                         .layoutPriority(2)
-                    MetalView(document.game)
+                    Text(helpText)
                         .zIndex(1)
+                        .background(Color.gray)
+                        .opacity(0.8)
+                        .frame(minWidth: 0,
+                               maxWidth: .infinity,
+                               minHeight: 0,
+                               maxHeight: .infinity,
+                               alignment: .bottomLeading)
+                        .onReceive(self.document.game.helpTextChanged) { state in
+                            helpText = self.document.game.helpText
+                        }
+                    MetalView(document.game)
+                        .zIndex(2)
                         .frame(minWidth: 0,
                                maxWidth: geometry.size.width / document.game.previewFactor,
                                minHeight: 0,
@@ -346,10 +360,10 @@ struct ContentView: View {
                             Spacer()
                         }
                     }
-                    .zIndex(scriptIsVisible ? 0 : 1)
+                    .zIndex(scriptIsVisible ? 0 : 2)
                     .background(Color.gray)
                     HelpWebView()
-                        .zIndex(helpIsVisible ? 3 : -1)
+                        .zIndex(helpIsVisible ? 4 : -1)
                         .frame(minWidth: 0,
                                maxWidth: .infinity,
                                minHeight: 0,

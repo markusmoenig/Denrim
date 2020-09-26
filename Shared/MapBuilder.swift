@@ -32,7 +32,6 @@ class MapBuilder
 
         case Shape2D = "Shape2D"    // 2D Shape
         case Shader = "Shader"      // Shader
-        case Text = "Text"          // Text
 
         // Commands
         case ScreenSize = "ScreenSize"
@@ -58,6 +57,7 @@ class MapBuilder
         var lineNumber : Int32 = 0
         
         var error = CompileError()
+        error.asset = asset
         error.column = 0
                 
         func createError(_ errorText: String = "Syntax Error") {
@@ -346,7 +346,7 @@ class MapBuilder
 
             // Iterate over options
             for (n,v) in options {
-                if n != "shape" {
+                if n != "type" && n != "text" {
                     if let varRef = v as? String {
                         isValid = checkVarRef(varRef, n)
                         if isValid == false {
@@ -357,13 +357,17 @@ class MapBuilder
             }
             
             if isValid {
-                if let shapeName = options["shape"] as? String {
+                if let shapeName = options["type"] as? String {
                     if shapeName.lowercased() == "disk" {
                         map.shapes2D[variable] = MapShape2D(shape: .Disk, options: MapShapeData2D(replacedOptions))
                         setLine(variable)
                     } else
                     if shapeName.lowercased() == "box" {
                         map.shapes2D[variable] = MapShape2D(shape: .Box, options: MapShapeData2D(replacedOptions))
+                        setLine(variable)
+                    } else
+                    if shapeName.lowercased() == "text" {
+                        map.shapes2D[variable] = MapShape2D(shape: .Text, options: MapShapeData2D(replacedOptions))
                         setLine(variable)
                     }
                 }
@@ -379,16 +383,21 @@ class MapBuilder
     {
         //print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "shape", "platform"]
+        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform"]
         let integerOptions = ["index"]
         let floatOptions = ["round", "radius", "onion"]
         let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size"]
+        let float4Options = ["rect", "color", "bordercolor"]
         let boolOptions = ["repeatx"]
         let stringArrayOptions = ["layers", "shapes", "shaders"]
 
         var res: [String:Any] = [:]
         
-        for(name, value) in options {
+        for(name, value) in options {            
+            if name == "text" {
+                // Text
+                res[name] = TextRef(value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil))
+            }
             if stringOptions.firstIndex(of: name) != nil {
                 // String
                 res[name] = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
@@ -439,16 +448,23 @@ class MapBuilder
                         res[name] = varRef
                     } else { error.error = "Wrong variable reference (must contain '.')" }
                 } else { error.error = "Wrong argument count for Float2" }
-            }
-            if name == "rect" {
+            } else
+            if float4Options.firstIndex(of: name) != nil {
                 let array = value.split(separator: ",")
                 if array.count == 4 {
                     let x : Float; if let v = Float(array[0]) { x = v } else { x = 0 }
                     let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
-                    let width : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
-                    let height : Float; if let v = Float(array[3].trimmingCharacters(in: .whitespaces)) { height = v } else { height = 1 }
-                    res[name] = Rect2D(x, y, width, height)
-                } else { error.error = "Rect must have 4 arguments" }
+                    let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 1 }
+                    let w : Float; if let v = Float(array[3].trimmingCharacters(in: .whitespaces)) { w = v } else { w = 1 }
+                    res[name] = Float4(x, y, z, w)
+                } else
+                if array.count == 1 {
+                    let varRef = String(array[0]).trimmingCharacters(in: .whitespaces)
+                    let varArray = value.split(separator: ".")
+                    if varArray.count == 2 {
+                        res[name] = varRef
+                    } else { error.error = "Wrong variable reference (must contain '.')" }
+                } else { error.error = "Wrong argument count for Float4" }
             }
         }
         

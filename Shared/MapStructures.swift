@@ -63,8 +63,10 @@ struct MapShapeData2D {
     var radius          : Float1
     var onion           : Float1
     
-    var color           : float4
-    var borderColor     : float4
+    var color           : Float4
+    var borderColor     : Float4
+    
+    var text            : TextRef
     
     init(_ options: [String:Any])
     {
@@ -111,22 +113,28 @@ struct MapShapeData2D {
         }
         
         if let color = options["color"] as? Float4 {
-            self.color = color.toSIMD()
+            self.color = color
         } else {
-            self.color = float4(1,1,1,1)
+            self.color = Float4(1,1,1,1)
         }
         
         if let borderColor = options["bordercolor"] as? Float4 {
-            self.borderColor = borderColor.toSIMD()
+            self.borderColor = borderColor
         } else {
-            self.borderColor = float4(0,0,0,0)
+            self.borderColor = Float4(0,0,0,0)
+        }
+        
+        if let textRef = options["text"] as? TextRef {
+            self.text = textRef
+        } else {
+            self.text = TextRef("")
         }
     }
 }
 
 struct MapShape2D {
     enum Shapes {
-        case Disk, Box
+        case Disk, Box, Text
     }
     var shape           : Shapes
     var options         : MapShapeData2D
@@ -155,8 +163,3 @@ struct MapShader {
     var options         : [String:Any]
 }
 
-struct MapText {
-    var font            : Font
-    var size            : Float1
-    var options         : [String:Any]
-}

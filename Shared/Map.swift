@@ -335,6 +335,9 @@ class Map
         } else
         if shape.shape == .Box {
             drawBox(shape.options, aspect: aspect)
+        } else
+        if shape.shape == .Text {
+            drawText(shape.options, aspect: aspect)
         }
     }
     
@@ -431,8 +434,8 @@ class Map
         let radius : Float = options.radius.x * aspect.z
         let border : Float = options.border.x * aspect.z
         let onion : Float = options.onion.x * aspect.z
-        let fillColor : SIMD4<Float> = options.color
-        let borderColor : SIMD4<Float> = options.borderColor
+        let fillColor : SIMD4<Float> = options.color.toSIMD()
+        let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
         
         position.y = -position.y
         position.x /= game.scaleFactor
@@ -472,8 +475,8 @@ class Map
         let border : Float = options.border.x * aspect.z
         let rotation : Float = options.rotation.x
         let onion : Float = options.onion.x * aspect.z
-        let fillColor : SIMD4<Float> = options.color
-        let borderColor : SIMD4<Float> = options.borderColor
+        let fillColor : SIMD4<Float> = options.color.toSIMD()
+        let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
 
         position.y = -position.y;
         position.x /= game.scaleFactor
@@ -519,5 +522,74 @@ class Map
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         }
         renderEncoder.endEncoding()
+    }
+    
+    /// Draws the given text
+    func drawText(_ options: MapShapeData2D, aspect: float3)
+    {
+        var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
+        let size : Float = 20
+        let font : Font? = game.fonts[0]
+        let text : String = options.text.text!
+        let color : SIMD4<Float> = options.color.toSIMD()
+
+        /*
+        var position : SIMD2<Float>; if let v = options["position"] as? Float2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
+        let size : Float; if let v = options["size"] as? Float { size = v } else { size = 30 }
+        let text : String; if let v = options["text"] as? String { text = v } else { text = "" }
+        let font : Font?; if let v = options["font"] as? Font { font = v } else { font = nil }
+        let color : SIMD4<Float>; if let v = options["color"] as? Float4 { color = v.toSIMD() } else { color = SIMD4<Float>(1,1,1,1) }*/
+
+        position.y = -position.y;
+        let scaleFactor : Float = game.scaleFactor
+        
+        func drawChar(char: BMChar, x: Float, y: Float, adjScale: Float)
+        {
+            var data = TextUniform()
+            
+            data.atlasSize.x = Float(font!.atlas!.width) * scaleFactor
+            data.atlasSize.y = Float(font!.atlas!.height) * scaleFactor
+            data.fontPos.x = char.x * scaleFactor
+            data.fontPos.y = char.y * scaleFactor
+            data.fontSize.x = char.width * scaleFactor
+            data.fontSize.y = char.height * scaleFactor
+            data.color = color
+
+            let rect = MMRect(x, y, char.width * adjScale, char.height * adjScale, scale: scaleFactor)
+            let vertexData = game.createVertexData(texture: texture, rect: rect)
+            
+            let renderPassDescriptor = MTLRenderPassDescriptor()
+            renderPassDescriptor.colorAttachments[0].texture = texture.texture
+            renderPassDescriptor.colorAttachments[0].loadAction = .load
+            
+            let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+
+            renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+            renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+
+            renderEncoder.setFragmentBytes(&data, length: MemoryLayout<TextUniform>.stride, index: 0)
+            renderEncoder.setFragmentTexture(font!.atlas, index: 1)
+
+            renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawTextChar))
+            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+            renderEncoder.endEncoding()
+        }
+        
+        if let font = font {
+         
+            let scale : Float = (1.0 / font.bmFont!.common.lineHeight) * size
+            let adjScale : Float = scale// / 2
+            
+            var posX = position.x / game.scaleFactor
+            let posY = position.y / game.scaleFactor
+
+            for c in text {
+                let bmChar = font.getItemForChar( c )
+                if bmChar != nil {
+                    drawChar(char: bmChar!, x: posX + bmChar!.xoffset * adjScale, y: posY + bmChar!.yoffset * adjScale, adjScale: adjScale)
+                    posX += bmChar!.xadvance * adjScale;
+                }
+            }
+        }
     }
 }

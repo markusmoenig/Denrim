@@ -55,6 +55,9 @@ class Game              : ObservableObject
     // Preview Size, UI only
     var previewFactor   : CGFloat = 4
     var previewOpacity  : Double = 0.5
+    var helpText        : String = ""
+
+    let helpTextChanged = PassthroughSubject<Void, Never>()
 
     init()
     {

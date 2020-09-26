@@ -28,6 +28,25 @@ class Float4
     }
 }
 
+class Float3
+{
+    var x           : Float = 1
+    var y           : Float = 1
+    var z           : Float = 1
+
+    init(_ x: Float = 1,_ y: Float = 1,_ z: Float = 1)
+    {
+        self.x = x
+        self.y = y
+        self.z = z
+    }
+    
+    func toSIMD() -> SIMD3<Float>
+    {
+        return SIMD3<Float>(x, y, z)
+    }
+}
+
 class Float2
 {
     var x           : Float = 0
@@ -57,6 +76,38 @@ class Float1
     func toSIMD() -> Float
     {
         return x
+    }
+}
+
+class Int1
+{
+    var x           : Int = 0
+
+    init(_ x: Int = 0)
+    {
+        self.x = x
+    }
+    
+    func toSIMD() -> Int
+    {
+        return x
+    }
+}
+
+class TextRef
+{
+    var text        : String? = nil
+
+    var f1          : Float1? = nil
+    var f2          : Float2? = nil
+    var f3          : Float3? = nil
+    var f4          : Float4? = nil
+
+    var i1          : Int1? = nil
+
+    init(_ text: String? = nil)
+    {
+        self.text = text
     }
 }
 
