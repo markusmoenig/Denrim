@@ -106,14 +106,16 @@ class BehaviorContext
         failedAt.append(lineNr)
     }
     
-    func execute(name: String)
+    @discardableResult func execute(name: String) -> BehaviorNode.Result
     {
         failedAt = []
         for tree in trees {
             if tree.name == name {
                 tree.execute(game: game, context: self, parent: nil)
+                return .Success
             }
         }
+        return .Failure
     }
     
     func debug()

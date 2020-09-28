@@ -8,6 +8,8 @@
 import Foundation
 
 struct UpTo4Data {
+    var int1         : Int1? = nil
+
     var data1        : Float1? = nil
     var data2        : Float2? = nil
     var data4        : Float4? = nil
@@ -60,6 +62,22 @@ func extractFloat1Value(_ options: [String:Any], context: BehaviorContext, error
     return nil
 }
 
+/// Extract a int1 vale
+func extractInt1Value(_ options: [String:Any], context: BehaviorContext, error: inout CompileError, name: String = "int", isOptional: Bool = false ) -> Int1?
+{
+    if var value = options[name] as? String {
+        value = value.trimmingCharacters(in: .whitespaces)
+        if let value = Int(value) {
+            return Int1(value)
+        } else
+        if let v = context.getVariableValue(value) as? Int1 {
+            return v
+        }  else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
+    } else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
+    
+    return nil
+}
+
 func extractPair(_ options: [String:Any], variableName: String, context: BehaviorContext, error: inout CompileError, optionalVariables: [String]) -> (UpTo4Data, UpTo4Data,[UpTo4Data])
 {
     var Data         = UpTo4Data()
@@ -77,6 +95,17 @@ func extractPair(_ options: [String:Any], variableName: String, context: Behavio
             for oV in optionalVariables {
                 var data = UpTo4Data()
                 data.data2 = extractFloat2Value(options, context: context, error: &error, name: oV, isOptional: true)
+                optionals.append(data)
+            }
+        } else
+        if let i1 = variableValue as? Int1 {
+            variableData.int1 = i1
+            if let data = extractInt1Value(options, context: context, error: &error) {
+                Data.int1 = data
+            }
+            for oV in optionalVariables {
+                var data = UpTo4Data()
+                data.int1 = extractInt1Value(options, context: context, error: &error, name: oV, isOptional: true)
                 optionals.append(data)
             }
         } else

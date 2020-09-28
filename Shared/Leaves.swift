@@ -45,6 +45,58 @@ class SetScene: BehaviorNode
     }
 }
 
+// Calls a given tree
+class Call: BehaviorNode
+{
+    var callContext         : BehaviorContext? = nil
+    var treeName            : String? = nil
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Call"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, error: inout CompileError) {
+        if options["tree"] as? String == nil {
+            error.error = "Call requires a 'Tree' parameter"
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
+    {
+        if callContext == nil {
+            if let treeName = options["tree"] as? String {
+                let treeArray = treeName.split(separator: ".")
+                if treeArray.count == 1 {
+                    // No ., tree has to be in the same context
+                    callContext = context
+                    self.treeName = treeName
+                } else
+                if treeArray.count == 2 {
+                    var asset = game.assetFolder.getAsset(String(treeArray[0]), .Behavior)
+                    if asset == nil && treeArray[0] == "game" {
+                        asset = game.gameAsset
+                    }
+                    if let asset = asset {
+                        if let context = asset.behavior {
+                            callContext = context
+                            self.treeName = String(treeArray[1])
+                        }
+                    }
+                }
+            }
+        }
+        
+        if let context = callContext, treeName != nil {
+            return context.execute(name: treeName!)
+        }
+        
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 class IsKeyDown: BehaviorNode
 {
     var keyCodes    : [Float:String] = [
@@ -160,7 +212,16 @@ class Subtract: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         if let pair = pair {
+            if pair.0.int1 != nil {
+                // Int
+                pair.1.int1!.x -= pair.0.int1!.x
+                if let min = pair.2[0].int1 {
+                    pair.1.int1!.x = max(pair.1.int1!.x, min.x)
+                }
+                return .Success
+            } else
             if pair.0.data1 != nil {
+                // Float
                 pair.1.data1!.x -= pair.0.data1!.x
                 if let min = pair.2[0].data1 {
                     pair.1.data1!.x = max(pair.1.data1!.x, min.x)
@@ -168,6 +229,7 @@ class Subtract: BehaviorNode
                 return .Success
             } else
             if pair.0.data2 != nil {
+                // Float2
                 pair.1.data2!.x -= pair.0.data2!.x
                 pair.1.data2!.y -= pair.0.data2!.y
                 if let min = pair.2[0].data2 {
@@ -198,6 +260,15 @@ class Add: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         if let pair = pair {
+            // Int
+            if pair.0.int1 != nil {
+                pair.1.int1!.x += pair.0.int1!.x
+                if let max = pair.2[0].int1 {
+                    pair.1.int1!.x = min(pair.1.int1!.x, max.x)
+                }
+                return .Success
+            }
+            // Float
             if pair.0.data1 != nil {
                 pair.1.data1!.x += pair.0.data1!.x
                 if let max = pair.2[0].data1 {
@@ -205,6 +276,7 @@ class Add: BehaviorNode
                 }
                 return .Success
             }
+            // Float2
             if pair.0.data2 != nil {
                 pair.1.data2!.x += pair.0.data2!.x
                 pair.1.data2!.y += pair.0.data2!.y
@@ -236,10 +308,17 @@ class Multiply: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         if let pair = pair {
+            // Int
+            if pair.0.int1 != nil {
+                pair.1.int1!.x *= pair.0.int1!.x
+                return .Success
+            } else
+            // Float
             if pair.0.data1 != nil {
                 pair.1.data1!.x *= pair.0.data1!.x
                 return .Success
             } else
+            // Float2
             if pair.0.data2 != nil {
                 pair.1.data2!.x *= pair.0.data2!.x
                 pair.1.data2!.y *= pair.0.data2!.y
@@ -283,6 +362,25 @@ class IsVariable: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
     {
         if let pair = pair {
+            // Int
+            if pair.0.int1 != nil {
+                if mode == .Equal {
+                    if pair.1.int1!.x == pair.0.int1!.x {
+                        return .Success
+                    }
+                } else
+                if mode == .GreaterThan {
+                    if pair.1.int1!.x > pair.0.int1!.x {
+                        return .Success
+                    }
+                } else
+                if mode == .LessThan {
+                    if pair.1.int1!.x < pair.0.int1!.x {
+                        return .Success
+                    }
+                }
+            } else
+            // Float
             if pair.0.data1 != nil {
                 if mode == .Equal {
                     if pair.1.data1!.x == pair.0.data1!.x {
@@ -300,6 +398,7 @@ class IsVariable: BehaviorNode
                     }
                 }
             } else
+            // Float2
             if pair.0.data2 != nil {
                 if mode == .Equal {
                     if pair.1.data2!.x == pair.0.data2!.x && pair.1.data2!.y == pair.0.data2!.y {
