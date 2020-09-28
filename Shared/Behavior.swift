@@ -40,6 +40,8 @@ class BehaviorNode {
 
 class BehaviorTree  : BehaviorNode
 {
+    var parameters  : [String] = []
+
     init(_ name: String)
     {
         super.init()
@@ -72,7 +74,7 @@ class BehaviorContext
     var trees               : [BehaviorTree] = []
     var variables           : [BehaviorVariable] = []
     var failedAt            : [Int32] = []
-    
+        
     let game                : Game
     
     init(_ game: Game)

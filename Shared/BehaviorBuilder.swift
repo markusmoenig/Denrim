@@ -119,7 +119,7 @@ class BehaviorBuilder
                     
                     let cmd = arguments[0].trimmingCharacters(in: .whitespaces)
                     if cmd == "tree" {
-                        if arguments.count == 2 {
+                        if arguments.count >= 2 {
                             let name = arguments[1].trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
 
                             if CharacterSet.letters.isSuperset(of: CharacterSet(charactersIn: name)) {
@@ -128,6 +128,15 @@ class BehaviorBuilder
                                     asset.behavior!.trees.append(currentTree!)
                                     currentBranch = []
                                     processed = true
+                                    
+                                    // Rest of the parameters are incoming variables
+                                    for index in 2..<arguments.count {
+                                        let name = arguments[index].trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+                                        if CharacterSet.letters.isSuperset(of: CharacterSet(charactersIn: name)) {
+                                            // Parameter
+                                            currentTree?.parameters.append(name)
+                                        } else { error.error = "Invalid parameter '\(name)'" }
+                                    }
                                 }
                             } else { error.error = "Invalid name for tree '\(name)'" }
                         } else { error.error = "No name given for tree" }

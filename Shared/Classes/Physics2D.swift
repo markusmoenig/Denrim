@@ -6,13 +6,8 @@
 //
 
 import Foundation
-import JavaScriptCore
 
-@objc protocol Physics2D_JSExports: JSExport {
-    var isValid: Bool { get }
-}
-
-class Physics2D             : NSObject, Physics2D_JSExports
+class Physics2D
 {
     var isValid             : Bool = false
 
@@ -20,8 +15,7 @@ class Physics2D             : NSObject, Physics2D_JSExports
         print("release physics2d")
     }
     
-    override init()
+    init()
     {
-        super.init()
     }
 }

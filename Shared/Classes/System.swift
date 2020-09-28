@@ -6,28 +6,10 @@
 //
 
 import MetalKit
-import JavaScriptCore
-
-// Protocol must be declared with `@objc`
-@objc protocol System_JSExports: JSExport {
-    var width: Float { get }
-    var height: Float { get }
-
-    //static func compileShader(_ object: [AnyHashable:Any]) -> JSPromise?
-
-    static func setTimeout(_ callback : JSValue,_ ms : Double) -> String
-    static func clearTimeout(_ identifier: String)
-    static func setInterval(_ callback : JSValue,_ ms : Double) -> String
-
-    static func log(_ string: String)
-
-    // Imported as `Person.createWithFirstNameLastName(_:_:)`
-    //static func createWith(firstName: String, lastName: String) -> Person
-}
 
 var timers = [String: Timer]()
 
-class System            : NSObject, System_JSExports
+class System
 {
     var width           : Float = 0
     var height          : Float = 0
@@ -74,6 +56,7 @@ class System            : NSObject, System_JSExports
         timer?.invalidate()
     }
 
+    /*
     class func setInterval(_ callback: JSValue,_ ms: Double) -> String {
         return createTimer(callback: callback, ms: ms, repeats: true)
     }
@@ -115,4 +98,5 @@ class System            : NSObject, System_JSExports
         //let main = (context!["_mT"] as? JSValue)!.toObject() as! Texture2D
         return main.game!
     }
+    */
 }

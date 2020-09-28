@@ -50,6 +50,8 @@ class Call: BehaviorNode
 {
     var callContext         : BehaviorContext? = nil
     var treeName            : String? = nil
+    
+    var parameters          : [BehaviorVariable] = []
 
     override init(_ options: [String:Any] = [:])
     {
@@ -60,6 +62,26 @@ class Call: BehaviorNode
     override func verifyOptions(context: BehaviorContext, error: inout CompileError) {
         if options["tree"] as? String == nil {
             error.error = "Call requires a 'Tree' parameter"
+        }
+        
+        if let value = options["variables"] as? String {
+            let array = value.split(separator: ",")
+
+            for v in array {
+                let val = String(v.trimmingCharacters(in: .whitespaces))
+                var foundVar : BehaviorVariable? = nil
+                for variable in context.variables {
+                    if variable.name == val {
+                        foundVar = variable
+                        break
+                    }
+                }
+                if foundVar != nil {
+                    parameters.append(foundVar!)
+                } else {
+                    error.error = "Variable '\(val)' not found"
+                }
+            }
         }
     }
     
@@ -89,7 +111,11 @@ class Call: BehaviorNode
         }
         
         if let context = callContext, treeName != nil {
-            return context.execute(name: treeName!)
+            let storedVars = context.variables
+            context.variables = parameters + context.variables
+            let rc = context.execute(name: treeName!)
+            context.variables = storedVars
+            return rc
         }
         
         context.addFailure(lineNr: lineNr)
