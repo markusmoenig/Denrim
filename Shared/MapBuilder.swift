@@ -318,8 +318,13 @@ class MapBuilder
                             break
                         }
                     }
+
+                    // Game Asset
+                    if asset == nil && varArray[0] == "game" {
+                        asset = game.gameAsset
+                    }
                 }
-                                
+                                                
                 if let asset = asset, varArray.count == 2 {
                     if let behavior = asset.behavior {
                         for v in behavior.variables {
@@ -334,10 +339,12 @@ class MapBuilder
                         }
                     }
                 } else {
-                    if varArray.count > 0 {
-                        error.error = "No behavior found with name '\(varArray[0])'"
-                    } else {
-                        error.error = "Incorrect behavior"
+                    if  varArray[0] != "game" {
+                        if varArray.count > 0 {
+                            error.error = "No behavior found with name '\(varArray[0])'"
+                        } else {
+                            error.error = "Incorrect behavior"
+                        }
                     }
                 }
                 

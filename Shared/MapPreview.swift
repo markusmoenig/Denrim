@@ -66,13 +66,25 @@ class MapPreview
                 map.drawAlias(0, 0, alias, scale: 1)
             } else
             if let layer = map.layers[variable] {
+                game.helpText = "Layer - Defines a layer of visual content in a Scene\n\n"
                 map.drawLayer(0, 0, layer, scale: 1)
             } else
             if let scene = map.scenes[variable] {
+                game.helpText = "Scene - Defines a scene in the game which consists of several layers of visual content\n\n<Layers: Layer,...>"
                 map.drawScene(0, 0, scene, scale: 1)
             } else
             if let shape = map.shapes2D[variable] {
-                game.helpText = "Shape2D<Type: String><Position: Float2> Defines a 2D shape of a given type:\n\n<Type: \"Box\"> : <Size: Float2><Round:Float>. <Type: \"Disk\"> : <Radius: Float>\nCommon: <Color: Float4> "
+                game.helpText = "Shape2D<Type: Text><Position: Float2> - Defines a 2D shape of a given type (Disk, Box, Text)\n\n"
+
+                if shape.shape == .Disk {
+                    game.helpText += "<Type: \"Disk\"> - <Radius: Float><Border: Float><Color: Float4>"
+                } else
+                if shape.shape == .Box {
+                    game.helpText += "<Type: \"Box\"> - <Size: Float2><Round: Float><Border: Float><Color: Float4>"
+                } else
+                if shape.shape == .Text {
+                    game.helpText += "<Type: \"Text\"> - <Font: Text><FontSize: Float><Int|Float|Text: Value><Digits: Int><Color: Float4>"
+                }
                 map.drawShape(shape)
             }
         }

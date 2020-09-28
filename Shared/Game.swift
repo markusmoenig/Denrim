@@ -46,7 +46,8 @@ class Game              : ObservableObject
     var availableFonts  : [String] = ["OpenSans", "Square", "SourceCodePro"]
     var fonts           : [Font] = []
     
-    var gameContext     : BehaviorContext? = nil
+    var gameAsset       : Asset? = nil
+    
     var currentMap      : Asset? = nil
     var currentScene    : MapScene? = nil
 
@@ -104,6 +105,8 @@ class Game              : ObservableObject
             if asset.type == .Behavior {
              
                 if asset.name == "Game" {
+                    
+                    gameAsset = asset
 
                     // Compile and "init" the game behavior (and only the game behavior)
                     let error = behaviorBuilder.compile(asset)
@@ -111,12 +114,9 @@ class Game              : ObservableObject
                         hasError = true
                         break
                     } else {
-                        gameContext = asset.behavior
                         
-                        if let context = gameContext {
+                        if let context = gameAsset?.behavior {
                             context.execute(name: "init")
-                            //print(asset.name)
-                            //context.debug()
                         }
                     }
                 }
@@ -134,7 +134,7 @@ class Game              : ObservableObject
     
     func stop()
     {
-        gameContext = nil        
+        gameAsset = nil
         currentScene = nil
         currentMap = nil
         
@@ -204,7 +204,7 @@ class Game              : ObservableObject
 
             texture?.clear()
 
-            if let context = self.gameContext {
+            if let context = gameAsset?.behavior {
                 context.execute(name: "update")
             }
             
@@ -241,7 +241,7 @@ class Game              : ObservableObject
         renderPassDescriptor?.colorAttachments[0].loadAction = .dontCare
         let renderEncoder = gameCmdBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor!)
         
-        drawTexture(renderEncoder: renderEncoder!)        
+        drawTexture(renderEncoder: renderEncoder!)
         renderEncoder?.endEncoding()
         
         gameCmdBuffer?.present(drawable)

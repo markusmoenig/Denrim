@@ -30,6 +30,9 @@ class SetScene: BehaviorNode
                                 game.currentMap = asset
                                 game.currentScene = scene
                                 map.setup(game: game)
+                                // Add Game Behavior
+                                let gameBehavior = MapBehavior(behavior: game.gameAsset!, name: "game", options: [:])
+                                map.behavior["game"] = gameBehavior
                                 return .Success
                             }
                         }
