@@ -130,12 +130,38 @@ class BehaviorBuilder
                                     processed = true
                                     
                                     // Rest of the parameters are incoming variables
-                                    for index in 2..<arguments.count {
-                                        let name = arguments[index].trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
-                                        if CharacterSet.letters.isSuperset(of: CharacterSet(charactersIn: name)) {
-                                            // Parameter
-                                            currentTree?.parameters.append(name)
-                                        } else { error.error = "Invalid parameter '\(name)'" }
+                                    
+                                    if arguments.count > 2 {
+                                        var variablesString = ""
+                                        
+                                        for index in 2..<arguments.count {
+                                            variablesString += arguments[index].trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+                                        }
+                                        
+                                        var rightValueArray = variablesString.split(separator: "<")
+                                        while rightValueArray.count > 1 {
+                                            let possibleVar = rightValueArray[0].lowercased()
+                                            let varName = String(rightValueArray[1].dropLast())
+                                            if CharacterSet.letters.isSuperset(of: CharacterSet(charactersIn: varName)) {
+                                                if possibleVar == "int" {
+                                                    currentTree?.parameters.append(BehaviorVariable(varName, Int1(0)))
+                                                } else
+                                                if possibleVar == "float" {
+                                                    currentTree?.parameters.append(BehaviorVariable(varName, Float1(0)))
+                                                } else
+                                                if possibleVar == "float2" {
+                                                    currentTree?.parameters.append(BehaviorVariable(varName, Float2(0,0)))
+                                                } else
+                                                if possibleVar == "float3" {
+                                                    currentTree?.parameters.append(BehaviorVariable(varName, Float3(0,0,0)))
+                                                } else
+                                                if possibleVar == "float4" {
+                                                    currentTree?.parameters.append(BehaviorVariable(varName, Float4(0,0,0,0)))
+                                                }
+                                            } else { error.error = "Invalid variable '\(varName)'" }
+                                            
+                                            rightValueArray = Array(rightValueArray.dropFirst(2))
+                                        }
                                     }
                                 }
                             } else { error.error = "Invalid name for tree '\(name)'" }
@@ -201,7 +227,7 @@ class BehaviorBuilder
                                             if error.error == nil {
                                                 if let branch = currentBranch.last {
                                                     let behaviorNode = leave.createNode(nodeOptions)
-                                                    behaviorNode.verifyOptions(context: asset.behavior!, error: &error)
+                                                    behaviorNode.verifyOptions(context: asset.behavior!, tree: currentTree!, error: &error)
                                                     if error.error == nil {
                                                         behaviorNode.lineNr = error.line!
                                                         branch.leaves.append(behaviorNode)

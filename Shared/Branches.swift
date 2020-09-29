@@ -16,10 +16,10 @@ class SequenceBranch: BehaviorNode
         name = "Sequence"
     }
     
-    @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
         for l in leaves {
-            let rc = l.execute(game: game, context: context, parent: self)
+            let rc = l.execute(game: game, context: context, tree: tree)
             if rc == .Failure {
                 return .Failure
             }

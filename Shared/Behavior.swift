@@ -28,11 +28,11 @@ class BehaviorNode {
     }
     
     /// Verify options
-    func verifyOptions(context: BehaviorContext, error: inout CompileError) {
+    func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
     }
     
     /// Executes a node inside a behaviour tree
-    @discardableResult func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
+    @discardableResult func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
         return .Success
     }
@@ -40,7 +40,7 @@ class BehaviorNode {
 
 class BehaviorTree  : BehaviorNode
 {
-    var parameters  : [String] = []
+    var parameters  : [BehaviorVariable] = []
 
     init(_ name: String)
     {
@@ -48,10 +48,10 @@ class BehaviorTree  : BehaviorNode
         self.name = name
     }
     
-    @discardableResult override func execute(game: Game, context: BehaviorContext, parent: BehaviorNode?) -> Result
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
         for leave in leaves {
-            leave.execute(game: game, context: context, parent: self)
+            leave.execute(game: game, context: context, tree: self)
         }
         return .Success
     }
@@ -93,11 +93,31 @@ class BehaviorContext
         variables.append(BehaviorVariable(name, value))
     }
     
-    func getVariableValue(_ name: String) -> Any?
+    func getVariableValue(_ name: String, tree: BehaviorTree? = nil) -> Any?
     {
+        // First check the optional tree parameters (if any) as they overrule the context variables
+        if let tree = tree {
+            for v in tree.parameters {
+                if v.name == name {
+                    return v.value
+                }
+            }
+        }
+        // Check the context variables
         for v in variables {
             if v.name == name {
                 return v.value
+            }
+        }
+        return nil
+    }
+    
+    func getTree(_ name: String) -> BehaviorTree?
+    {
+        // Check the context variables
+        for t in trees {
+            if t.name == name {
+                return t
             }
         }
         return nil
@@ -113,7 +133,7 @@ class BehaviorContext
         failedAt = []
         for tree in trees {
             if tree.name == name {
-                tree.execute(game: game, context: self, parent: nil)
+                tree.execute(game: game, context: self, tree: tree)
                 return .Success
             }
         }
