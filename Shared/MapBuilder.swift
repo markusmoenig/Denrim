@@ -338,7 +338,8 @@ class MapBuilder
                             error.error = "Behavior'\(varArray[0])' does not contain variable '\(varArray[1])'"
                         }
                     }
-                } else {
+                } else
+                if varArray.count > 0 {
                     if  varArray[0] != "game" {
                         if varArray.count > 0 {
                             error.error = "No behavior found with name '\(varArray[0])'"
@@ -386,8 +387,16 @@ class MapBuilder
                         
                         if let f1 = replacedOptions["float"] as? Float1 {
                             textRef.f1 = f1
-                        }
-                        
+                        } else
+                        if let f2 = replacedOptions["float2"] as? Float2 {
+                            textRef.f2 = f2
+                        } else
+                        if let f3 = replacedOptions["float3"] as? Float3 {
+                            textRef.f3 = f3
+                        } else
+                        if let f4 = replacedOptions["float4"] as? Float4 {
+                            textRef.f4 = f4
+                        } else                        
                         if let i1 = replacedOptions["int"] as? Int1 {
                             textRef.i1 = i1
                         }

@@ -439,7 +439,7 @@ class Map
         let fillColor : SIMD4<Float> = options.color.toSIMD()
         let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
         
-        position.y = -position.y
+        //position.y = -position.y
         position.x /= game.scaleFactor
         position.y /= game.scaleFactor
         
@@ -480,7 +480,7 @@ class Map
         let fillColor : SIMD4<Float> = options.color.toSIMD()
         let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
 
-        position.y = -position.y;
+        //position.y = -position.y;
         position.x /= game.scaleFactor
         position.y /= game.scaleFactor
 
@@ -529,7 +529,7 @@ class Map
     /// Draws the given text
     func drawText(_ options: MapShapeData2D, aspect: float3)
     {
-        var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
+        let position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
         let size : Float = options.text.fontSize * aspect.z
         let font : Font? = options.text.font
         var text : String = ""
@@ -551,16 +551,30 @@ class Map
             } else {
                 text = String(i1.x)
             }
+        } else
+        if let f2 = options.text.f2 {
+            if let digits = options.text.digits {
+                text = String(format: "%.0\(digits.x)f", f2.x) + " " + String(format: "%.0\(digits.x)f", f2.y)
+            } else {
+                text = String(f2.x) + " " + String(f2.y)
+            }
+        } else
+        if let f3 = options.text.f3 {
+            if let digits = options.text.digits {
+                text = String(format: "%.0\(digits.x)f", f3.x) + " " + String(format: "%.0\(digits.x)f", f3.y) + " " + String(format: "%.0\(digits.x)f", f3.z)
+            } else {
+                text = String(f3.x) + " " + String(f3.y) + " " + String(f3.z)
+            }
+        } else
+        if let f4 = options.text.f4 {
+            if let digits = options.text.digits {
+                text = String(format: "%.0\(digits.x)f", f4.x) + " " + String(format: "%.0\(digits.x)f", f4.y) + " " + String(format: "%.0\(digits.x)f", f4.z) + " " + String(format: "%.0\(digits.x)f", f4.w)
+            } else {
+                text = String(f4.x) + " " + String(f4.y) + " " + String(f4.z) + " " + String(f4.w)
+            }
         }
-        
-        /*
-        var position : SIMD2<Float>; if let v = options["position"] as? Float2 { position = v.toSIMD() } else { position = SIMD2<Float>(0,0) }
-        let size : Float; if let v = options["size"] as? Float { size = v } else { size = 30 }
-        let text : String; if let v = options["text"] as? String { text = v } else { text = "" }
-        let font : Font?; if let v = options["font"] as? Font { font = v } else { font = nil }
-        let color : SIMD4<Float>; if let v = options["color"] as? Float4 { color = v.toSIMD() } else { color = SIMD4<Float>(1,1,1,1) }*/
 
-        position.y = -position.y;
+        //position.y = -position.y;
         let scaleFactor : Float = game.scaleFactor
         
         func drawChar(char: BMChar, x: Float, y: Float, adjScale: Float)

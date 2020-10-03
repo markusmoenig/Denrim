@@ -13,68 +13,51 @@ public class DMTKView       : MTKView
     var game                : Game!
 
     var keysDown            : [Float] = []
+    
+    var mouseIsDown         : Bool = false
+    var mousePos            = float2(0, 0)
 
     #if os(OSX)
         
     override public var acceptsFirstResponder: Bool { return true }
     
-    func createMouseEvent(type: String,_ event: NSEvent)
+    func setMousePos(_ event: NSEvent)
     {
         var location = event.locationInWindow
-        location.y = CGFloat(frame.height) - location.y
+        location.y = location.y - CGFloat(frame.height)
         location = convert(location, from: nil)
         
-        /*
-        game.jsBridge.execute(
-        """
-        game.touch({
-            type: \(type),
-            x: \(location.x),
-            y: \(location.y)
-        })
-        """)
-        */
+        mousePos.x = Float(location.x)
+        mousePos.y = -Float(location.y)
     }
     
     override public func keyDown(with event: NSEvent)
     {
         keysDown.append(Float(event.keyCode))
-
-        /*
-        keysDown.append(Float(event.keyCode))
-        if focusWidget != nil {
-            let keyEvent = MMKeyEvent(event.characters, event.keyCode)
-            focusWidget!.keyDown(keyEvent)
-        }*/
-        //super.keyDown(with: event)
     }
     
     override public func keyUp(with event: NSEvent)
     {
         keysDown.removeAll{$0 == Float(event.keyCode)}
-        /*
-        if focusWidget != nil {
-            let keyEvent = MMKeyEvent(event.characters, event.keyCode)
-            focusWidget!.keyUp(keyEvent)
-        }
-        //super.keyUp(with: event)*/
     }
         
     override public func mouseDown(with event: NSEvent) {
         if game.state == .Running {
-            createMouseEvent(type: "TouchType.DOWN", event)
+            mouseIsDown = true
+            setMousePos(event)
         }
     }
     
     override public func mouseDragged(with event: NSEvent) {
         if game.state == .Running {
-            createMouseEvent(type: "TouchType.MOVE", event)
+            setMousePos(event)
         }
     }
     
     override public func mouseUp(with event: NSEvent) {
         if game.state == .Running {
-            createMouseEvent(type: "TouchType.UP", event)
+            mouseIsDown = false
+            setMousePos(event)
         }
     }
     #endif

@@ -73,6 +73,9 @@ func extractFloat3Value(_ options: [String:Any], context: BehaviorContext, tree:
 /// Extract a float2 vale
 func extractFloat2Value(_ options: [String:Any], context: BehaviorContext, tree: BehaviorTree, error: inout CompileError, name: String = "float2", isOptional: Bool = false ) -> Float2?
 {
+    if let value = options[name] as? Float2 {
+        return value
+    } else
     if let value = options[name] as? String {
         let array = value.split(separator: ",")
         if array.count == 2 {
@@ -93,6 +96,9 @@ func extractFloat2Value(_ options: [String:Any], context: BehaviorContext, tree:
 /// Extract a float1 vale
 func extractFloat1Value(_ options: [String:Any], context: BehaviorContext, tree: BehaviorTree, error: inout CompileError, name: String = "float", isOptional: Bool = false ) -> Float1?
 {
+    if let value = options[name] as? Float1 {
+        return value
+    } else
     if var value = options[name] as? String {
         value = value.trimmingCharacters(in: .whitespaces)
         if let value = Float(value) {

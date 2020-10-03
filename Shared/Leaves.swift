@@ -164,6 +164,93 @@ class Call: BehaviorNode
     }
 }
 
+class DistanceToShape: BehaviorNode
+{
+    var position2: Float2? = nil
+    var radius1: Float1? = nil
+    var shapeName: String? = nil
+    
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "DistanceToShape"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        position2 = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "position")
+        radius1 = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "radius", isOptional: true)
+        
+        if let shapeN = options["shape"] as? String {
+            shapeName = shapeN
+        } else {
+            error.error = "Missing 'Shape' parameter"
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let position = position2 {
+            var radius : Float = 1
+            if let radius1 = radius1 {
+                radius = radius1.x
+            }
+            
+            if let map = game.currentMap?.map {
+                if let shape = map.shapes2D[shapeName!] {
+                    
+                    let d : float2 = simd_abs( position.toSIMD() ) - shape.options.size.toSIMD()
+                    let dist : Float = simd_length(max(d,float2(repeating: 0))) + min(max(d.x,d.y),0.0);
+                    print(dist)
+                    //uv = center - float2(110,0);
+                    
+                    return .Success
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
+class GetTouchPos: BehaviorNode
+{
+    var data2: Float2? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "GetTouchPos"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        data2 = extractFloat2Value(options, context: context, tree: tree, error: &error)
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if game.view.mouseIsDown {
+            if let data2 = data2 {
+                data2.x = game.view.mousePos.x / game.currentMap!.map!.aspect.x
+                data2.y = game.view.mousePos.y / game.currentMap!.map!.aspect.y
+                return .Success
+            }
+        }
+        /*
+        if let key = options["key"] as? String {
+            for k in game.view.keysDown {
+                for (code, char) in keyCodes {
+                    if code == k && char == key {
+                        return .Success
+                    }
+                }
+            }
+        }*/
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 class IsKeyDown: BehaviorNode
 {
     var keyCodes    : [Float:String] = [

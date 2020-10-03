@@ -41,7 +41,9 @@ class BehaviorBuilder
         BehaviorNodeItem("SetScene", { (_ options: [String:Any]) -> BehaviorNode in return SetScene(options) }),
         BehaviorNodeItem("Call", { (_ options: [String:Any]) -> BehaviorNode in return Call(options) }),
         BehaviorNodeItem("IsKeyDown", { (_ options: [String:Any]) -> BehaviorNode in return IsKeyDown(options) }),
-        
+        BehaviorNodeItem("GetTouchPos", { (_ options: [String:Any]) -> BehaviorNode in return GetTouchPos(options) }),
+        BehaviorNodeItem("DistanceToShape", { (_ options: [String:Any]) -> BehaviorNode in return DistanceToShape(options) }),
+
         BehaviorNodeItem("IsVariable", { (_ options: [String:Any]) -> BehaviorNode in return IsVariable(options) }),
 
         BehaviorNodeItem("Multiply", { (_ options: [String:Any]) -> BehaviorNode in return Multiply(options) }),
@@ -349,13 +351,13 @@ class BehaviorBuilder
             if integerOptions.firstIndex(of: name) != nil {
                 // Integer
                 if let v = Int(value) {
-                    res[name] = v
+                    res[name] = Int1(v)
                 } else { error.error = "The \(name) option expects an integer argument" }
             } else
             if floatOptions.firstIndex(of: name) != nil {
                 // Integer
                 if let v = Float(value) {
-                    res[name] = v
+                    res[name] = Float1(v)
                 } else {
                     let variableName = value.trimmingCharacters(in: .whitespaces)
                     if let v = error.asset!.behavior?.getVariableValue(variableName) as? Float {
@@ -391,7 +393,6 @@ class BehaviorBuilder
                 if array.count == 1 {
                     let variableName = String(array[0]).trimmingCharacters(in: .whitespaces)
                     if let v = error.asset!.behavior?.getVariableValue(variableName) as? Float2 {
-                        print("get", v)
                         res[name] = v
                     } else { error.error = "Variable '\(variableName)' not found" }
                 } else { error.error = "Wrong argument count for Float2" }
