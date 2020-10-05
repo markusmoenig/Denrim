@@ -333,89 +333,10 @@ class BehaviorBuilder
     {
         //print("Processing Options", options)
 
-        let stringOptions = ["text", "font", "map", "scene", "key"]
-        let floatOptions = ["radius", "width", "height", "size", "border", "rotation"]
-        let integerOptions = ["index"]
-        let float2Options = ["position"]
-        let float4Options = ["rect", "color", "bordercolor"]
-        let boolOptions = ["repeatx"]
-        let stringArrayOptions = ["layers"]
-
         var res: [String:Any] = [:]
         
         for(name, value) in options {
-            if stringOptions.firstIndex(of: name) != nil {
-                // String
-                res[name] = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
-            } else
-            if integerOptions.firstIndex(of: name) != nil {
-                // Integer
-                if let v = Int(value) {
-                    res[name] = Int1(v)
-                } else { error.error = "The \(name) option expects an integer argument" }
-            } else
-            if floatOptions.firstIndex(of: name) != nil {
-                // Integer
-                if let v = Float(value) {
-                    res[name] = Float1(v)
-                } else {
-                    let variableName = value.trimmingCharacters(in: .whitespaces)
-                    if let v = error.asset!.behavior?.getVariableValue(variableName) as? Float {
-                        res[name] = v
-                    } else { error.error = "Variable '\(variableName)' not found" }
-                }
-                //{ error.error = "The \(name) option expects an float argument" }
-            } else
-            if boolOptions.firstIndex(of: name) != nil {
-                // Boolean
-                if let v = Bool(value) {
-                    res[name] = v
-                } else { error.error = "The \(name) option expects an boolean argument" }
-            } else
-            if stringArrayOptions.firstIndex(of: name) != nil {
-                // StringArray
-                let array = value.split(separator: ",")
-                
-                var layers : [String] = []
-                for l in array {
-                    layers.append(l.trimmingCharacters(in: .whitespaces))
-                }
-                res[name] = layers
-            } else
-            if float2Options.firstIndex(of: name) != nil {
-                // Float2
-                let array = value.split(separator: ",")
-                if array.count == 2 {
-                    let width : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { width = v } else { width = 1 }
-                    let height : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { height = v } else { height = 1 }
-                    res[name] = Float2(width, height)
-                } else
-                if array.count == 1 {
-                    let variableName = String(array[0]).trimmingCharacters(in: .whitespaces)
-                    if let v = error.asset!.behavior?.getVariableValue(variableName) as? Float2 {
-                        res[name] = v
-                    } else { error.error = "Variable '\(variableName)' not found" }
-                } else { error.error = "Wrong argument count for Float2" }
-            } else
-            if float4Options.firstIndex(of: name) != nil {
-                // Float4
-                let array = value.split(separator: ",")
-                if array.count == 4 {
-                    let x : Float; if let v = Float(array[0]) { x = v } else { x = 0 }
-                    let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
-                    let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 1 }
-                    let w : Float; if let v = Float(array[3].trimmingCharacters(in: .whitespaces)) { w = v } else { w = 1 }
-                    res[name] = Float4(x, y, z, w)
-                } else
-                if array.count == 1 {
-                    let variableName = String(array[0]).trimmingCharacters(in: .whitespaces)
-                    if let v = error.asset!.behavior?.getVariableValue(variableName) as? Float4 {
-                        res[name] = v
-                    } else { error.error = "Variable '\(variableName)' not found" }
-                } else { error.error = "Wrong argument count for Float4" }
-            } else {
-                res[name] = value
-            }//else { error.error = "Unknown option '\(name)'" }
+            res[name] = value
         }
         
         return res

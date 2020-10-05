@@ -10,22 +10,39 @@ import Foundation
 // Sets the current scene and initializes it
 class SetScene: BehaviorNode
 {
+    var mapName: String? = nil
+    var sceneName: String? = nil
+    
     override init(_ options: [String:Any] = [:])
     {
         super.init(options)
         name = "SetScene"
     }
     
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["scene"] as? String {
+            sceneName = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "SetScene requires a 'Scene' parameter"
+        }
+        
+        if let value = options["map"] as? String {
+            mapName = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "SetScene requires a 'Map' parameter"
+        }
+    }
+    
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
-        if let mapName = options["map"] as? String {
+        if let mapName = mapName {
             if let asset = game.assetFolder.getAsset(mapName, .Map) {
                 if asset.map != nil {
                     asset.map?.clear()
                 }
                 if game.mapBuilder.compile(asset).error == nil {
                     if let map = asset.map {
-                        if let sceneName = options["scene"] as? String {
+                        if let sceneName = sceneName {
                             if let scene = map.scenes[sceneName] {
                                 game.currentMap = asset
                                 game.currentScene = scene
@@ -169,7 +186,7 @@ class DistanceToShape: BehaviorNode
     var position2: Float2? = nil
     var radius1: Float1? = nil
     var shapeName: String? = nil
-    
+    var dest: Float1? = nil
 
     override init(_ options: [String:Any] = [:])
     {
@@ -180,7 +197,8 @@ class DistanceToShape: BehaviorNode
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
         position2 = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "position")
         radius1 = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "radius", isOptional: true)
-        
+        dest = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "variable")
+
         if let shapeN = options["shape"] as? String {
             shapeName = shapeN
         } else {
@@ -199,12 +217,18 @@ class DistanceToShape: BehaviorNode
             if let map = game.currentMap?.map {
                 if let shape = map.shapes2D[shapeName!] {
                     
-                    let d : float2 = simd_abs( position.toSIMD() ) - shape.options.size.toSIMD()
-                    let dist : Float = simd_length(max(d,float2(repeating: 0))) + min(max(d.x,d.y),0.0);
-                    print(dist)
-                    //uv = center - float2(110,0);
+                    //let distToDisk : Float = simd_length( position.toSIMD() ) - radius
+                    let uv : float2 = position.toSIMD()// - simd_float2(50, 50)
+
+                    let d : float2 = simd_abs(uv - shape.options.position.toSIMD()) - shape.options.size.toSIMD() / 2.0
+                    let distToBox : Float = simd_length(max(d,float2(0,0))) + min(max(d.x,d.y),0.0);
+                    //print(distToBox, distToDisk - distToBox)
                     
-                    return .Success
+                    if let dest = dest {
+                        dest.x = distToBox - radius
+                        //print(dest.x)
+                        return .Success
+                    }
                 }
             }
         }
@@ -224,7 +248,7 @@ class GetTouchPos: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        data2 = extractFloat2Value(options, context: context, tree: tree, error: &error)
+        data2 = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "variable")
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
@@ -253,6 +277,8 @@ class GetTouchPos: BehaviorNode
 
 class IsKeyDown: BehaviorNode
 {
+    var key: String? = nil
+    
     var keyCodes    : [Float:String] = [
         53: "Escape",
 
@@ -333,9 +359,17 @@ class IsKeyDown: BehaviorNode
         name = "IsKeyDown"
     }
     
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["key"] as? String {
+            key = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "IsKeyDown requires a 'Key' parameter"
+        }
+    }
+    
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
-        if let key = options["key"] as? String {
+        if let key = key {
             for k in game.view.keysDown {
                 for (code, char) in keyCodes {
                     if code == k && char == key {

@@ -21,8 +21,8 @@ func extractVariableValue(_ options: [String:Any], variableName: String, context
     if let varString = options[variableName] as? String {
         if let value = context.getVariableValue(varString) {
             return value
-        } else { error.error = "Cannot find '\(variableName)' variable" }
-    } else { error.error = "Missing required '\(variableName)' variable" }
+        } else { error.error = "Cannot find '\(variableName)' parameter" }
+    } else { error.error = "Missing required '\(variableName)' parameter" }
     
     return nil
 }
@@ -44,7 +44,7 @@ func extractFloat4Value(_ options: [String:Any], context: BehaviorContext, tree:
                 return v
             }
         } else { if isOptional == false { error.error = "Wrong argument count for Float4" } }
-    } else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
+    } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     
     return nil
 }
@@ -65,7 +65,7 @@ func extractFloat3Value(_ options: [String:Any], context: BehaviorContext, tree:
                 return v
             }
         } else { if isOptional == false { error.error = "Wrong argument count for Float3" } }
-    } else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
+    } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     
     return nil
 }
@@ -88,7 +88,7 @@ func extractFloat2Value(_ options: [String:Any], context: BehaviorContext, tree:
                 return v
             }
         } else { if isOptional == false { error.error = "Wrong argument count for Float2" } }
-    } else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
+    } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     
     return nil
 }
@@ -106,8 +106,8 @@ func extractFloat1Value(_ options: [String:Any], context: BehaviorContext, tree:
         } else
         if let v = context.getVariableValue(value, tree: tree) as? Float1 {
             return v
-        }  else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
-    } else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
+        }  else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
+    } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     
     return nil
 }
@@ -122,8 +122,8 @@ func extractInt1Value(_ options: [String:Any], context: BehaviorContext, tree: B
         } else
         if let v = context.getVariableValue(value, tree: tree) as? Int1 {
             return v
-        }  else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
-    } else { if isOptional == false { error.error = "Variable '\(name)' not found" } }
+        }  else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
+    } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     
     return nil
 }
