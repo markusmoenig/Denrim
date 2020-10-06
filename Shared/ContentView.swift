@@ -54,6 +54,7 @@ struct ContentView: View {
                             })
                             {
                                 Text(asset.name)
+                                //Label(asset.name, systemImage: "x.circle.fill")
                             }
                             .buttonStyle(PlainButtonStyle())
                             .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)

@@ -114,10 +114,18 @@ class Call: BehaviorNode
                     self.treeName = treeName
                 } else
                 if treeArray.count == 2 {
-                    var asset = game.assetFolder.getAsset(String(treeArray[0]), .Behavior)
-                    if asset == nil && treeArray[0] == "game" {
+                    //var asset = game.assetFolder.getAsset(String(treeArray[0]).lowercased(), .Behavior)
+                    var asset: Asset? = nil
+                    if treeArray[0] == "game" {
                         asset = game.gameAsset
+                    } else {
+                        if let map = game.currentMap?.map {
+                            if let behavior = map.behavior[String(treeArray[0])] {
+                                asset = behavior.behavior
+                            }
+                        }
                     }
+                    
                     if let asset = asset {
                         if let context = asset.behavior {
                             callContext = context
@@ -181,6 +189,42 @@ class Call: BehaviorNode
     }
 }
 
+class SetNode: BehaviorNode
+{
+    var variable: Any? = nil
+    var value: Any? = nil
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Set"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let variable = extractVariableValue(options, variableName: "variable", context: context, error: &error) {
+            
+            if variable as? Bool1 != nil {
+                if let value = extractBool1Value(options, context: context, tree: tree, error: &error) {
+                    self.variable = variable
+                    self.value = value
+                } else { error.error = "Missing 'Bool' parameter" }
+            }
+        } else { error.error = "Missing 'Variable' parameter" }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let boolVar = variable as? Bool1 {
+            if let boolValue = value as? Bool1 {
+                boolVar.x = boolValue.x
+                return .Success
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 class DistanceToShape: BehaviorNode
 {
     var position2: Float2? = nil
@@ -217,16 +261,13 @@ class DistanceToShape: BehaviorNode
             if let map = game.currentMap?.map {
                 if let shape = map.shapes2D[shapeName!] {
                     
-                    //let distToDisk : Float = simd_length( position.toSIMD() ) - radius
-                    let uv : float2 = position.toSIMD()// - simd_float2(50, 50)
+                    let uv : float2 = position.toSIMD() - shape.options.position.toSIMD() - float2(shape.options.size.x, 0) / 2.0
 
-                    let d : float2 = simd_abs(uv - shape.options.position.toSIMD()) - shape.options.size.toSIMD() / 2.0
+                    let d : float2 = simd_abs(uv) - shape.options.size.toSIMD() / 2.0
                     let distToBox : Float = simd_length(max(d,float2(0,0))) + min(max(d.x,d.y),0.0);
-                    //print(distToBox, distToDisk - distToBox)
                     
                     if let dest = dest {
                         dest.x = distToBox - radius
-                        //print(dest.x)
                         return .Success
                     }
                 }

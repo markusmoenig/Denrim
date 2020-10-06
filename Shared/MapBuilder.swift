@@ -437,7 +437,7 @@ class MapBuilder
         let floatOptions = ["round", "radius", "onion", "fontsize", "float"]
         let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size", "float2"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
-        let boolOptions = ["repeatx"]
+        let boolOptions = ["repeatx", "visible"]
         let stringArrayOptions = ["layers", "shapes", "shaders"]
 
         var res: [String:Any] = [:]
@@ -468,8 +468,11 @@ class MapBuilder
             if boolOptions.firstIndex(of: name) != nil {
                 // Boolean
                 if let v = Bool(value) {
-                    res[name] = v
-                } else { error.error = "The \(name) option expects a boolean argument" }
+                    res[name] = Bool1(v)
+                } else {
+                    // Variable
+                    res[name] = value
+                }
             } else
             if stringArrayOptions.firstIndex(of: name) != nil {
                 // StringArray

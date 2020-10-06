@@ -44,6 +44,7 @@ class BehaviorBuilder
         BehaviorNodeItem("GetTouchPos", { (_ options: [String:Any]) -> BehaviorNode in return GetTouchPos(options) }),
         BehaviorNodeItem("DistanceToShape", { (_ options: [String:Any]) -> BehaviorNode in return DistanceToShape(options) }),
 
+        BehaviorNodeItem("Set", { (_ options: [String:Any]) -> BehaviorNode in return SetNode(options) }),
         BehaviorNodeItem("IsVariable", { (_ options: [String:Any]) -> BehaviorNode in return IsVariable(options) }),
 
         BehaviorNodeItem("Multiply", { (_ options: [String:Any]) -> BehaviorNode in return Multiply(options) }),
@@ -83,11 +84,12 @@ class BehaviorBuilder
             error.line = lineNumber
             
             let level = (str.prefix(while: {$0 == " "}).count) / 4
+            // Drop the last branch when indention decreases
             if level < lastLevel {
-                // Drop the last branch when indention decreases
+                //print("dropped at line", error.line, "\"", str, "\"")
                 currentBranch = currentBranch.dropLast()
             }
-    
+            
             //
             
             var processed = false
@@ -182,6 +184,7 @@ class BehaviorBuilder
                                     if branch.name == possbibleCmd {
 
                                         let newBranch = branch.createNode([:])
+                                        newBranch.name = rightValueArray.count > 1 ? String(rightValueArray[1]) : ""
                                         if currentBranch.count == 0 {
                                             currentTree?.leaves.append(newBranch)
                                             currentBranch.append(newBranch)
@@ -189,6 +192,7 @@ class BehaviorBuilder
                                             if let branch = currentBranch.last {
                                                 branch.leaves.append(newBranch)
                                             }
+                                            currentBranch.append(newBranch)
                                         }
                                         processed = true
                                     }
@@ -296,6 +300,12 @@ class BehaviorBuilder
                                     rightValueArray.removeFirst()
                                     let value : Int; if let v = Int(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
                                     asset.behavior!.addVariable(variableName!, Int1(value))
+                                    processed = true
+                                } else
+                                if possibleVariableType == "Bool" {
+                                    rightValueArray.removeFirst()
+                                    let value : Bool; if let v = Bool(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = false }
+                                    asset.behavior!.addVariable(variableName!, Bool1(value))
                                     processed = true
                                 } else
                                 if possibleVariableType == "Text" {

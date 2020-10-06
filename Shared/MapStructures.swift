@@ -63,6 +63,8 @@ struct MapShapeData2D {
     var radius          : Float1
     var onion           : Float1
     
+    var visible         : Bool1
+    
     var color           : Float4
     var borderColor     : Float4
     
@@ -80,6 +82,12 @@ struct MapShapeData2D {
             self.size = size
         } else {
             self.size = Float2(1,1)
+        }
+        
+        if let visible = options["visible"] as? Bool1 {
+            self.visible = visible
+        } else {
+            self.visible = Bool1(true)
         }
         
         if let rotation = options["rotation"] as? Float1 {

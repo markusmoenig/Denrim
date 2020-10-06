@@ -215,6 +215,9 @@ class Asset         : Codable, Equatable
     
     // If this is a .Behavior asset
     var behavior    : BehaviorContext? = nil
+    
+    // If the asset has an error
+    var hasError    : Bool = false
         
     private enum CodingKeys: String, CodingKey {
         case type

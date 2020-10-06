@@ -330,6 +330,8 @@ class Map
     
     func drawShape(_ shape: MapShape2D)
     {
+        if shape.options.visible.toSIMD() == false { return }
+        
         if shape.shape == .Disk {
             drawDisk(shape.options, aspect: aspect)
         } else

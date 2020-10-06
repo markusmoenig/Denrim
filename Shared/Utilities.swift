@@ -124,7 +124,21 @@ func extractInt1Value(_ options: [String:Any], context: BehaviorContext, tree: B
             return v
         }  else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
-    
+    return nil
+}
+
+/// Extract a Bool1 vale
+func extractBool1Value(_ options: [String:Any], context: BehaviorContext, tree: BehaviorTree, error: inout CompileError, name: String = "bool", isOptional: Bool = false ) -> Bool1?
+{
+    if var value = options[name] as? String {
+        value = value.trimmingCharacters(in: .whitespaces)
+        if let value = Bool(value) {
+            return Bool1(value)
+        } else
+        if let v = context.getVariableValue(value, tree: tree) as? Bool1 {
+            return v
+        }  else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
+    } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     return nil
 }
 

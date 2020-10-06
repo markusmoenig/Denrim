@@ -94,6 +94,21 @@ class Int1
     }
 }
 
+class Bool1
+{
+    var x           : Bool = false
+
+    init(_ x: Bool = false)
+    {
+        self.x = x
+    }
+    
+    func toSIMD() -> Bool
+    {
+        return x
+    }
+}
+
 class TextRef
 {
     var text        : String? = nil

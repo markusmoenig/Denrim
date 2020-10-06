@@ -142,7 +142,7 @@ class ScriptEditor
             type: "error" // also warning and information
             }]);
 
-            editor.scrollToLine(\(error.line!-1), true, true, function () {});
+            //editor.scrollToLine(\(error.line!-1), true, true, function () {});
 
             """, completionHandler: { (value, error ) in
          })
