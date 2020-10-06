@@ -33,6 +33,7 @@ class BehaviorBuilder
     
     var branches        : [BehaviorNodeItem] =
     [
+        BehaviorNodeItem("repeat", { (_ options: [String:Any]) -> BehaviorNode in return RepeatBranch(options) }),
         BehaviorNodeItem("sequence", { (_ options: [String:Any]) -> BehaviorNode in return SequenceBranch(options) })
     ]
     
@@ -171,8 +172,14 @@ class BehaviorBuilder
                             } else { error.error = "Invalid name for tree '\(name)'" }
                         } else { error.error = "No name given for tree" }
                     } else {
-                        var rightValueArray = leftOfComment.split(separator: "<")
-
+                        var rightValueArray : [String.SubSequence]
+                            
+                        if leftOfComment.firstIndex(of: "<") != nil {
+                            rightValueArray = leftOfComment.split(separator: "<")
+                        } else {
+                            rightValueArray = leftOfComment.split(separator: " ")
+                        }
+                        
                         if rightValueArray.count > 0 {
                             
                             let possbibleCmd = String(rightValueArray[0]).trimmingCharacters(in: .whitespaces)
@@ -182,19 +189,31 @@ class BehaviorBuilder
                                 // Looking for branch
                                 for branch in self.branches {
                                     if branch.name == possbibleCmd {
-
-                                        let newBranch = branch.createNode([:])
-                                        newBranch.name = rightValueArray.count > 1 ? String(rightValueArray[1]) : ""
-                                        if currentBranch.count == 0 {
-                                            currentTree?.leaves.append(newBranch)
-                                            currentBranch.append(newBranch)
-                                        } else {
-                                            if let branch = currentBranch.last {
-                                                branch.leaves.append(newBranch)
-                                            }
-                                            currentBranch.append(newBranch)
+                                        
+                                        // Build options
+                                        var nodeOptions : [String:String] = [:]
+                                        var no = leftOfComment.split(separator: " ")
+                                        no.removeFirst()
+                                        
+                                        for s in no {
+                                            let ss = String(s)
+                                            nodeOptions[ss] = ss
                                         }
-                                        processed = true
+
+                                        let newBranch = branch.createNode(nodeOptions)
+                                        newBranch.verifyOptions(context: asset.behavior!, tree: currentTree!, error: &error)
+                                        if error.error == nil {                                            
+                                            if currentBranch.count == 0 {
+                                                currentTree?.leaves.append(newBranch)
+                                                currentBranch.append(newBranch)
+                                            } else {
+                                                if let branch = currentBranch.last {
+                                                    branch.leaves.append(newBranch)
+                                                }
+                                                currentBranch.append(newBranch)
+                                            }
+                                            processed = true
+                                        }
                                     }
                                 }
                                 
