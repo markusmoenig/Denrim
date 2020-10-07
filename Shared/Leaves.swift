@@ -134,45 +134,48 @@ class Call: BehaviorNode
                     }
                 }
             }
-            
-            if let context = callContext, treeName != nil {
-                if let tree = context.getTree(treeName!) {
-                    // Now replace the values in the tree parameters with the variable values which we pass to the tree
-                    
-                    for variable in parameters {
-                        for param in tree.parameters {
-                            if variable.name == param.name {
-                                if let dest = param.value as? Int1 {
-                                    if let source = variable.value as? Int1 {
-                                        dest.x = source.x
-                                    }
-                                } else
-                                if let dest = param.value as? Float1 {
-                                    if let source = variable.value as? Float1 {
-                                        dest.x = source.x
-                                    }
-                                } else
-                                if let dest = param.value as? Float2 {
-                                    if let source = variable.value as? Float2 {
-                                        dest.x = source.x
-                                        dest.y = source.y
-                                    }
-                                } else
-                                if let dest = param.value as? Float3 {
-                                    if let source = variable.value as? Float3 {
-                                        dest.x = source.x
-                                        dest.y = source.y
-                                        dest.z = source.z
-                                    }
-                                } else
-                                if let dest = param.value as? Float4 {
-                                    if let source = variable.value as? Float4 {
-                                        dest.x = source.x
-                                        dest.y = source.y
-                                        dest.z = source.z
-                                        dest.w = source.w
-                                    }
-                                }
+        }
+                        
+        if let context = callContext, treeName != nil {
+            if let tree = context.getTree(treeName!) {
+                // Now replace the values in the tree parameters with the variable values which we pass to the tree
+                for (index, variable) in parameters.enumerated() {
+                    if index < tree.parameters.count {
+                        let param = tree.parameters[index]
+                        if let dest = param.value as? Int1 {
+                            if let source = variable.value as? Int1 {
+                                dest.x = source.x
+                            }
+                        } else
+                        if let dest = param.value as? Bool1 {
+                            if let source = variable.value as? Bool1 {
+                                dest.x = source.x
+                            }
+                        } else
+                        if let dest = param.value as? Float1 {
+                            if let source = variable.value as? Float1 {
+                                dest.x = source.x
+                            }
+                        } else
+                        if let dest = param.value as? Float2 {
+                            if let source = variable.value as? Float2 {
+                                dest.x = source.x
+                                dest.y = source.y
+                            }
+                        } else
+                        if let dest = param.value as? Float3 {
+                            if let source = variable.value as? Float3 {
+                                dest.x = source.x
+                                dest.y = source.y
+                                dest.z = source.z
+                            }
+                        } else
+                        if let dest = param.value as? Float4 {
+                            if let source = variable.value as? Float4 {
+                                dest.x = source.x
+                                dest.y = source.y
+                                dest.z = source.z
+                                dest.w = source.w
                             }
                         }
                     }

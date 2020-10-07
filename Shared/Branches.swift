@@ -7,9 +7,56 @@
 
 import Foundation
 
+class WhileBranch: BehaviorNode
+{
+    var variable: Bool1? = nil
+    var not: Bool = false
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "while"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        for key in options {
+            if key.key == "not" {
+                not = true
+            } else {
+                let opts : [String:String] = ["bool":key.key]
+                variable = extractBool1Value(opts, context: context, tree: tree, error: &error)
+            }
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if variable == nil {
+            return .Failure
+        }
+        var result : Result = .Success
+        for l in leaves {
+            if not == false {
+                if variable!.x == true {
+                    _ = l.execute(game: game, context: context, tree: tree)
+                } else {
+                    result = .Failure
+                }
+            } else {
+                if variable!.x == false {
+                    _ = l.execute(game: game, context: context, tree: tree)
+                } else {
+                    result = .Failure
+                }
+            }
+        }
+        return result
+    }
+}
+
 class RepeatBranch: BehaviorNode
 {
-    var repetitions: Int1? = nil
+    var repetitions: Int1? = Int1(1)
     
     override init(_ options: [String:Any] = [:])
     {
@@ -27,10 +74,12 @@ class RepeatBranch: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
         var result : Result = .Success
-        for l in leaves {
-            let rc = l.execute(game: game, context: context, tree: tree)
-            if rc == .Failure {
-                result = .Failure
+        for _ in 0..<repetitions!.x {
+            for l in leaves {
+                let rc = l.execute(game: game, context: context, tree: tree)
+                if rc == .Failure {
+                    result = .Failure
+                }
             }
         }
         return result

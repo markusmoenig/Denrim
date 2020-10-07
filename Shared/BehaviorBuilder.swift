@@ -34,7 +34,8 @@ class BehaviorBuilder
     var branches        : [BehaviorNodeItem] =
     [
         BehaviorNodeItem("repeat", { (_ options: [String:Any]) -> BehaviorNode in return RepeatBranch(options) }),
-        BehaviorNodeItem("sequence", { (_ options: [String:Any]) -> BehaviorNode in return SequenceBranch(options) })
+        BehaviorNodeItem("sequence", { (_ options: [String:Any]) -> BehaviorNode in return SequenceBranch(options) }),
+        BehaviorNodeItem("while", { (_ options: [String:Any]) -> BehaviorNode in return WhileBranch(options) }),
     ]
     
     var leaves          : [BehaviorNodeItem] =
@@ -84,13 +85,6 @@ class BehaviorBuilder
             if error.error != nil { return }
             error.line = lineNumber
             
-            let level = (str.prefix(while: {$0 == " "}).count) / 4
-            // Drop the last branch when indention decreases
-            if level < lastLevel {
-                //print("dropped at line", error.line, "\"", str, "\"")
-                currentBranch = currentBranch.dropLast()
-            }
-            
             //
             
             var processed = false
@@ -107,7 +101,22 @@ class BehaviorBuilder
                 leftOfComment = str
             }
             
+            // Get the current indention level
+            let level = (str.prefix(while: {$0 == " "}).count) / 4
+
             leftOfComment = leftOfComment.trimmingCharacters(in: .whitespaces)
+            
+            // If empty, bail out, nothing todo
+            if leftOfComment.count == 0 {
+                lineNumber += 1
+                return
+            }
+            
+            // Drop the last branch when indention decreases
+            if level < lastLevel {
+                //print("dropped at line", error.line, "\"", str, "\"")
+                currentBranch = currentBranch.dropLast()
+            }
             
             var variableName : String? = nil
             // --- Check for variable assignment
@@ -140,16 +149,21 @@ class BehaviorBuilder
                                         var variablesString = ""
                                         
                                         for index in 2..<arguments.count {
-                                            variablesString += arguments[index].trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+                                            var string = arguments[index].trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+                                            string = string.replacingOccurrences(of: ">", with: "<")
+                                            variablesString += string
                                         }
                                         
                                         var rightValueArray = variablesString.split(separator: "<")
                                         while rightValueArray.count > 1 {
                                             let possibleVar = rightValueArray[0].lowercased()
-                                            let varName = String(rightValueArray[1].dropLast())
+                                            let varName = String(rightValueArray[1])
                                             if CharacterSet.letters.isSuperset(of: CharacterSet(charactersIn: varName)) {
                                                 if possibleVar == "int" {
                                                     currentTree?.parameters.append(BehaviorVariable(varName, Int1(0)))
+                                                } else
+                                                if possibleVar == "bool" {
+                                                    currentTree?.parameters.append(BehaviorVariable(varName, Bool1()))
                                                 } else
                                                 if possibleVar == "float" {
                                                     currentTree?.parameters.append(BehaviorVariable(varName, Float1(0)))
