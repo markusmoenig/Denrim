@@ -256,21 +256,26 @@ class DistanceToShape: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
         if let position = position2 {
-            var radius : Float = 1
-            if let radius1 = radius1 {
-                radius = radius1.x
-            }
             
             if let map = game.currentMap?.map {
                 if let shape = map.shapes2D[shapeName!] {
                     
-                    let uv : float2 = position.toSIMD() - shape.options.position.toSIMD() - float2(shape.options.size.x, 0) / 2.0
+                    let aspect = map.aspect!
 
-                    let d : float2 = simd_abs(uv) - shape.options.size.toSIMD() / 2.0
+                    var radius : Float = 1
+                    if let radius1 = radius1 {
+                        radius = radius1.x
+                    }
+                    
+                    var uv : float2 = float2(position.x, position.y) + float2(radius, radius) / 2.0 - float2(shape.options.position.x, shape.options.position.y) - float2(shape.options.size.x, shape.options.size.y) / 2.0
+                    uv.x *= aspect.x
+                    uv.y *= aspect.y
+
+                    let d : float2 = simd_abs(uv) - float2(shape.options.size.x * aspect.x, shape.options.size.y * aspect.y) / 2.0
                     let distToBox : Float = simd_length(max(d,float2(0,0))) + min(max(d.x,d.y),0.0);
                     
                     if let dest = dest {
-                        dest.x = distToBox - radius
+                        dest.x = distToBox - radius * aspect.z
                         return .Success
                     }
                 }
