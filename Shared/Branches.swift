@@ -12,6 +12,8 @@ class WhileBranch: BehaviorNode
     var variable: Bool1? = nil
     var not: Bool = false
     
+    var test: String = ""
+    
     override init(_ options: [String:Any] = [:])
     {
         super.init(options)
@@ -24,6 +26,7 @@ class WhileBranch: BehaviorNode
                 not = true
             } else {
                 let opts : [String:String] = ["bool":key.key]
+                test = key.key
                 variable = extractBool1Value(opts, context: context, tree: tree, error: &error)
             }
         }
@@ -35,6 +38,7 @@ class WhileBranch: BehaviorNode
             return .Failure
         }
         var result : Result = .Success
+        
         for l in leaves {
             if not == false {
                 if variable!.x == true {

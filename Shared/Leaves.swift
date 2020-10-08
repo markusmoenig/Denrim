@@ -471,7 +471,7 @@ class Subtract: BehaviorNode
                 return .Success
             } else
             if pair.0.data3 != nil {
-                // Float2
+                // Float3
                 pair.1.data3!.x -= pair.0.data3!.x
                 pair.1.data3!.y -= pair.0.data3!.y
                 pair.1.data3!.z -= pair.0.data3!.z
@@ -483,7 +483,7 @@ class Subtract: BehaviorNode
                 return .Success
             } else
             if pair.0.data4 != nil {
-                // Float2
+                // Float4
                 pair.1.data4!.x -= pair.0.data4!.x
                 pair.1.data4!.y -= pair.0.data4!.y
                 pair.1.data4!.z -= pair.0.data4!.z
@@ -653,6 +653,9 @@ class IsVariable: BehaviorNode
                 } else
                 if m == "LessThan" {
                     mode = .LessThan
+                } else
+                if m == "Equal" {
+                    mode = .Equal
                 } else { error.error = "'Mode' needs to be 'Equal', 'GreatherThan' or 'LessThan'" }
             } else { error.error = "Missing 'Mode' statement" }
         }

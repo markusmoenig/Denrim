@@ -114,8 +114,11 @@ class BehaviorBuilder
             
             // Drop the last branch when indention decreases
             if level < lastLevel {
-                //print("dropped at line", error.line, "\"", str, "\"")
-                currentBranch = currentBranch.dropLast()
+                let levelsToDrop = lastLevel - level
+                //print("dropped at line", error.line, "\"", str, "\"", level, levelsToDrop)
+                for _ in 0..<levelsToDrop {
+                    currentBranch = currentBranch.dropLast()
+                }
             }
             
             var variableName : String? = nil
