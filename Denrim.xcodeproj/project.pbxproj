@@ -200,7 +200,6 @@
 		2B01C87D24FB824900E86449 /* ScriptEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptEditor.swift; sourceTree = "<group>"; };
 		2B01C87E24FB824900E86449 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		2B01C87F24FB824900E86449 /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
-		2B01C88024FB824900E86449 /* JSBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSBridge.swift; sourceTree = "<group>"; };
 		2B01C88124FB824A00E86449 /* Files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Files; sourceTree = "<group>"; };
 		2B01C88224FB824A00E86449 /* Metal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Metal.h; sourceTree = "<group>"; };
 		2B01C88324FB824A00E86449 /* Classes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
@@ -322,7 +321,6 @@
 				2B01C85724FB814900E86449 /* ContentView.swift */,
 				2B01C87F24FB824900E86449 /* Asset.swift */,
 				2B01C87E24FB824900E86449 /* Game.swift */,
-				2B01C88024FB824900E86449 /* JSBridge.swift */,
 				2B01C87924FB824900E86449 /* MathLibrary.swift */,
 				2B01C89B24FB844C00E86449 /* MetalView.swift */,
 				2B01C89E24FB8C7500E86449 /* MetalStates.swift */,

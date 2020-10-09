@@ -33,6 +33,8 @@ class MapBuilder
         case Shape2D = "Shape2D"    // 2D Shape
         case Shader = "Shader"      // Shader
 
+        case GridInstance2D = "GridInstance2D" // GridInstance
+
         // Commands
         case ScreenSize = "ScreenSize"
     }
@@ -296,7 +298,7 @@ class MapBuilder
                 if let asset = game.assetFolder.getAsset(behavior, .Behavior) {
                     let rc = game.behaviorBuilder.compile(asset)
                     if rc.error == nil {
-                        map.behavior[variable] = MapBehavior(behavior: asset, name: variable, options: options)
+                        map.behavior[variable] = MapBehavior(behaviorAsset: asset, name: variable, options: options)
                         setLine(variable)
                     } else { error.error = "Referenced behavior contains errors" }
                 } else { error.error = "Could not find behavior '\(behavior)'" }
@@ -314,7 +316,7 @@ class MapBuilder
                 if varArray.count > 0 {
                     for (name, behavior) in map.behavior {
                         if name == varArray[0] {
-                            asset = behavior.behavior
+                            asset = behavior.behaviorAsset
                             break
                         }
                     }
@@ -422,6 +424,19 @@ class MapBuilder
                 }
             }
         } else
+        if type == .GridInstance2D {
+            let shapeId = options["shapeid"] as? String
+            let behaviorId = options["behaviorid"] as? String
+            if shapeId != nil && behaviorId != nil {
+                if map.shapes2D[shapeId!] != nil {
+                    if map.behavior[behaviorId!] != nil {
+                        
+                        print("jhere")
+                        setLine(variable)
+                    } else { error.error = "Could not find behavior '\(behaviorId!)'" }
+                } else { error.error = "Could not find shape '\(shapeId!)'" }
+            } else { error.error = "Missing 'ShapeId' or 'BehaviorId' parameters" }
+        } else
         if type == .Scene {
             map.scenes[variable] = MapScene(options: options)
             setLine(variable)
@@ -432,7 +447,7 @@ class MapBuilder
     {
         //print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font"]
+        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid"]
         let integerOptions = ["index", "int", "digits"]
         let floatOptions = ["round", "radius", "onion", "fontsize", "float"]
         let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size", "float2"]

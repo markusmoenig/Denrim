@@ -48,7 +48,7 @@ class SetScene: BehaviorNode
                                 game.currentScene = scene
                                 map.setup(game: game)
                                 // Add Game Behavior
-                                let gameBehavior = MapBehavior(behavior: game.gameAsset!, name: "game", options: [:])
+                                let gameBehavior = MapBehavior(behaviorAsset: game.gameAsset!, name: "game", options: [:])
                                 map.behavior["game"] = gameBehavior
                                 return .Success
                             }
@@ -121,7 +121,7 @@ class Call: BehaviorNode
                     } else {
                         if let map = game.currentMap?.map {
                             if let behavior = map.behavior[String(treeArray[0])] {
-                                asset = behavior.behavior
+                                asset = behavior.behaviorAsset
                             }
                         }
                     }

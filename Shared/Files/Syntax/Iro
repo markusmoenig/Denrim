@@ -94,8 +94,8 @@ contexts [] {
 main : context {
    
    : pattern {
-      regex          \= (\b(sequence|tree)\b)
-      styles []       = .comment;
+      regex          \= (\b(sequence|tree|repeat)\b)
+      styles []       = .numeric;
    }
    
    : pattern {
@@ -109,17 +109,17 @@ main : context {
    }
    
    : pattern {
-      regex          \= (\b(Group|Index|Rect|Id|RepeatX|Range|Layers|Platform|Size|Name|Shapes|Position|Float|Shaders|Float2|Float3|Float4|From|To|Minimum|Maximum|Key|SceneOffset)\b)
+      regex          \= (\b(Group|Index|Rect|Id|RepeatX|Range|Layers|Platform|Size|Name|Shapes|Position|Float|Shaders|Float2|Float3|Float4|From|To|Minimum|Maximum|Key|SceneOffset|Mode|Variables|Variable|With|Text|Type|Color|Font|FontSize|Digits|Int|Variable|Variables|Tree|Bool|not|BehaviorId|ShapeId)\b)
       styles []       = .comment;
    }
    
    : pattern {
-      regex          \= (\b(\.|Shape2D)\b)
+      regex          \= (\b(\.|Shape2D|GridInstance2D)\b)
       styles []       = .keyword;
    }
    
    : pattern {
-      regex          \= (\b(Shape|Onion|Round)\b)
+      regex          \= (\b(Onion|Round|Radius|BorderColor|Border)\b)
       styles []       = .comment;
    }
    

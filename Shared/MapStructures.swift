@@ -41,7 +41,7 @@ struct MapBehavior {
 
     var body            : b2Body? = nil
     
-    var behavior        : Asset
+    var behaviorAsset   : Asset
     
     var name            : String = ""
     var options         : [String:Any]

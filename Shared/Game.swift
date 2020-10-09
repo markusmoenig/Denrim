@@ -211,7 +211,7 @@ class Game              : ObservableObject
             if let mapAsset = self.currentMap {
                 if let map = mapAsset.map {
                     for (_, b) in map.behavior {
-                        if let context = b.behavior.behavior {
+                        if let context = b.behaviorAsset.behavior {
                             context.execute(name: "update")
                         }
                     }
