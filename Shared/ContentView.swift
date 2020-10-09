@@ -501,7 +501,7 @@ struct ContentView: View {
                     }
                     label: {
                         //Text("Asset")//.foregroundColor(Color.gray)
-                        Label("Command", systemImage: "command")
+                        Label("Command", systemImage: "contextualmenu.and.cursorarrow")
                     }
                 }
                 ToolbarItemGroup(placement: .automatic) {
