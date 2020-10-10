@@ -305,6 +305,14 @@ class MapBuilder
             } else { error.error = "Missing behavior name" }
         } else
         if type == .Shape2D {
+            
+            //var replacedOptions = options
+
+            createShape2D(map: map, variable: variable, options: options, error: &error)
+            
+            //func replaceShapeReferences(map: Map, variable: String, options: [String:Any], replacedOptions: inout [String:Any], error: inout CompileError) -> Bool
+
+            /*
             var isValid = true
             var replacedOptions = options
             
@@ -423,6 +431,7 @@ class MapBuilder
                     }
                 }
             }
+            */
         } else
         if type == .GridInstance2D {
             let shapeId = options["shapeid"] as? String
@@ -431,8 +440,38 @@ class MapBuilder
                 if map.shapes2D[shapeId!] != nil {
                     if map.behavior[behaviorId!] != nil {
                         
-                        print("jhere")
-                        setLine(variable)
+                        let grid = MapGridInstance2D(shapeName: shapeId!, behaviorName: behaviorId!)
+                        
+                        // Only create when the original behavior was compiled successfully
+                        if map.behavior[behaviorId!]!.behaviorAsset.behavior != nil {
+                        
+                            map.shapes2D[shapeId!]!.grid = grid
+                            map.behavior[behaviorId!]!.grid = grid
+                            
+                            grid.columns = 3
+                            
+                            for r in 1...grid.rows {
+                                for c in 1...grid.columns {
+                                    
+                                    var variableName = variable
+                                    variableName += String(c) + "_" + String(r)
+                                    
+                                    let instanceAsset = Asset(type: .Behavior, name: behaviorId!)
+                                    instanceAsset.value = map.behavior[behaviorId!]!.behaviorAsset.value
+                                    
+                                    game.behaviorBuilder.compile(instanceAsset)
+                                    //print(instanceAsset.behavior, behaviorId)
+                                    createShape2D(map: map, variable: variableName, options: map.shapes2D[shapeId!]!.originalOptions, error: &error, instBehaviorName: behaviorId!, instAsset: instanceAsset)
+                                    if error.error == nil {
+                                        var mapBehavior = MapBehavior(behaviorAsset: instanceAsset, name: variableName, options: options)
+                                        var mapShape2D = map.shapes2D[variableName]!
+                                        grid.addInstance(shape: &mapShape2D, behavior: &mapBehavior)
+                                    }
+                                }
+                            }
+                            setLine(variable)
+                        }
+                        
                     } else { error.error = "Could not find behavior '\(behaviorId!)'" }
                 } else { error.error = "Could not find shape '\(shapeId!)'" }
             } else { error.error = "Missing 'ShapeId' or 'BehaviorId' parameters" }
@@ -535,6 +574,153 @@ class MapBuilder
         }
         
         return res
+    }
+    
+    // Replaces the options of the shape with resolved variable references and creates the shape
+    func createShape2D(map: Map, variable: String, options: [String:Any], error: inout CompileError, instBehaviorName: String? = nil, instAsset: Asset? = nil)
+    {
+        var replacedOptions = options
+        var isValid = true
+
+        func checkVarRef(_ name: String,_ optionName: String) -> Bool {
+            var isValid = false
+            var asset: Asset? = nil
+
+            let varArray = name.split(separator: ".")
+            if varArray.count > 0 {
+                
+                // Instance ?
+                if let instBehaviorName = instBehaviorName {
+                    if instBehaviorName == varArray[0] {
+                        asset = instAsset!
+                    }
+                }
+                
+                if asset == nil {
+                    // Not, normal reference
+                    for (name, behavior) in map.behavior {
+                        if name == varArray[0] {
+                            asset = behavior.behaviorAsset
+                            break
+                        }
+                    }
+
+                    // Game Asset
+                    if asset == nil && varArray[0] == "game" {
+                        asset = game.gameAsset
+                    }
+                }
+            }
+                                            
+            if let asset = asset, varArray.count == 2 {
+                if let behavior = asset.behavior {
+                    for v in behavior.variables {
+                        if v.name == varArray[1] {
+                            isValid = true
+                            replacedOptions[optionName] = v.value
+                            break
+                        }
+                    }
+                    if isValid == false {
+                        error.error = "Behavior'\(varArray[0])' does not contain variable '\(varArray[1])'"
+                    }
+                }
+            } else
+            if varArray.count > 0 {
+                if varArray[0] != "game" {
+                    if varArray.count > 0 {
+                        error.error = "No behavior found with name '\(varArray[0])'"
+                    } else {
+                        error.error = "Incorrect behavior"
+                    }
+                }
+            }
+            
+            return isValid
+        }
+
+        // Iterate over options
+        for (n,v) in options {
+            if n != "type" && n != "text" && n != "font" {
+                if let varRef = v as? String {
+                    isValid = checkVarRef(varRef, n)
+                    if isValid == false {
+                        break
+                    }
+                }
+            }
+        }
+        
+        func setLine(_ variable: String)
+        {
+            if instBehaviorName == nil {
+                // Remove previous lines with the same variable
+                for (l,v) in map.lines {
+                    if v == variable {
+                        map.lines[l] = nil
+                    }
+                }
+                map.lines[error.line!] = variable
+            }
+        }
+        
+        if isValid {
+            if let shapeName = options["type"] as? String {
+                if shapeName.lowercased() == "disk" {
+                    map.shapes2D[variable] = MapShape2D(shape: .Disk, options: MapShapeData2D(replacedOptions), originalOptions: options)
+                    setLine(variable)
+                } else
+                if shapeName.lowercased() == "box" {
+                    map.shapes2D[variable] = MapShape2D(shape: .Box, options: MapShapeData2D(replacedOptions), originalOptions: options)
+                    setLine(variable)
+                } else
+                if shapeName.lowercased() == "text" {
+                    
+                    let textRef = TextRef()
+                    if let text = replacedOptions["text"] as? String {
+                        textRef.text = text
+                    }
+                    
+                    if let fontSize = replacedOptions["fontsize"] as? Float1 {
+                        textRef.fontSize = fontSize.x
+                    }
+                    
+                    if let f1 = replacedOptions["float"] as? Float1 {
+                        textRef.f1 = f1
+                    } else
+                    if let f2 = replacedOptions["float2"] as? Float2 {
+                        textRef.f2 = f2
+                    } else
+                    if let f3 = replacedOptions["float3"] as? Float3 {
+                        textRef.f3 = f3
+                    } else
+                    if let f4 = replacedOptions["float4"] as? Float4 {
+                        textRef.f4 = f4
+                    } else
+                    if let i1 = replacedOptions["int"] as? Int1 {
+                        textRef.i1 = i1
+                    }
+                    
+                    if let digits = replacedOptions["digits"] as? Int1 {
+                        textRef.digits = digits
+                    }
+                    
+                    if let fontName = replacedOptions["font"] as? String {
+                        for (index, fName) in game.availableFonts.enumerated() {
+                            if fontName == fName {
+                                textRef.font = game.fonts[index]
+                                break
+                            }
+                        }
+                    }
+                    
+                    replacedOptions["text"] = textRef
+                    
+                    map.shapes2D[variable] = MapShape2D(shape: .Text, options: MapShapeData2D(replacedOptions), originalOptions: options)
+                    setLine(variable)
+                }
+            }
+        }
     }
     
     func createPreview(_ map: Map)

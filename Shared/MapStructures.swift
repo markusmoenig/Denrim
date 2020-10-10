@@ -45,6 +45,8 @@ struct MapBehavior {
     
     var name            : String = ""
     var options         : [String:Any]
+    
+    var grid            : MapGridInstance2D? = nil
 }
 
 struct MapFixture2D {
@@ -146,6 +148,9 @@ struct MapShape2D {
     }
     var shape           : Shapes
     var options         : MapShapeData2D
+    var originalOptions : [String:Any]
+
+    var grid            : MapGridInstance2D? = nil
 }
 
 struct MapPhysics2D {
@@ -171,3 +176,27 @@ struct MapShader {
     var options         : [String:Any]
 }
 
+class MapGridInstance2D
+{
+    var shapeName       : String
+    var behaviorName    : String
+    
+    var instances       : [(MapShape2D, MapBehavior)] = []
+    
+    var columns         : Int = 1
+    var rows            : Int = 1
+    
+    var offsetX         : Float = 0.1
+    var offSetY         : Float = 0.1
+    
+    init(shapeName: String, behaviorName: String)
+    {
+        self.shapeName = shapeName
+        self.behaviorName = behaviorName
+    }
+    
+    func addInstance(shape: inout MapShape2D, behavior: inout MapBehavior)
+    {
+        instances.append((shape, behavior))
+    }
+}
