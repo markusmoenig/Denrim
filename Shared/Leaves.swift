@@ -58,6 +58,7 @@ class SetScene: BehaviorNode
             }
         }
         
+        context.addFailure(lineNr: lineNr)
         return .Failure
     }
 }
@@ -227,6 +228,36 @@ class SetNode: BehaviorNode
                     self.variable = variable
                     self.value = value
                 } else { error.error = "Missing 'Bool' parameter" }
+            } else
+            if variable as? Int1 != nil {
+                if let value = extractInt1Value(options, context: context, tree: tree, error: &error) {
+                    self.variable = variable
+                    self.value = value
+                } else { error.error = "Missing 'Int' parameter" }
+            } else
+            if variable as? Float1 != nil {
+                if let value = extractFloat1Value(options, context: context, tree: tree, error: &error) {
+                    self.variable = variable
+                    self.value = value
+                } else { error.error = "Missing 'Float' parameter" }
+            } else
+            if variable as? Float2 != nil {
+                if let value = extractFloat2Value(options, context: context, tree: tree, error: &error) {
+                    self.variable = variable
+                    self.value = value
+                } else { error.error = "Missing 'Float2' parameter" }
+            } else
+            if variable as? Float3 != nil {
+                if let value = extractFloat3Value(options, context: context, tree: tree, error: &error) {
+                    self.variable = variable
+                    self.value = value
+                } else { error.error = "Missing 'Float3' parameter" }
+            } else
+            if variable as? Float4 != nil {
+                if let value = extractFloat4Value(options, context: context, tree: tree, error: &error) {
+                    self.variable = variable
+                    self.value = value
+                } else { error.error = "Missing 'Float4' parameter" }
             }
         } else { error.error = "Missing 'Variable' parameter" }
     }
@@ -241,6 +272,7 @@ class SetNode: BehaviorNode
         } else
         if let intVar = variable as? Int1 {
             if let intValue = value as? Int1 {
+                print(options, intValue.x)
                 intVar.x = intValue.x
                 return .Success
             }
@@ -380,6 +412,7 @@ class GetTouchPos: BehaviorNode
             if let data2 = data2 {
                 data2.x = game.view.mousePos.x / game.currentMap!.map!.aspect.x
                 data2.y = game.view.mousePos.y / game.currentMap!.map!.aspect.y
+                print(data2.x, data2.y)
                 return .Success
             }
         }

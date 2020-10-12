@@ -109,3 +109,23 @@ class SequenceBranch: BehaviorNode
         return .Success
     }
 }
+
+class SelectorBranch: BehaviorNode
+{
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "selector"
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        for l in leaves {
+            let rc = l.execute(game: game, context: context, tree: tree)
+            if rc == .Success {
+                return .Success
+            }
+        }
+        return .Failure
+    }
+}

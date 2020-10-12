@@ -808,12 +808,12 @@ class MapBuilder
     @objc func cursorCallback(_ timer: Timer) {
         if game.state == .Idle && game.scriptEditor != nil {
             game.scriptEditor!.getSessionCursor({ (line) in
-                let asset = (timer.userInfo as! Asset)
-
-                let needsUpdate = self.scriptLine != line
-                self.scriptLine = line
-                if needsUpdate && asset.map != nil {
-                    self.createPreview(asset.map!)
+                if let asset = timer.userInfo as? Asset {
+                    let needsUpdate = self.scriptLine != line
+                    self.scriptLine = line
+                    if needsUpdate && asset.map != nil {
+                        self.createPreview(asset.map!)
+                    }
                 }
             })
         }

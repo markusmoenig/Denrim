@@ -35,6 +35,7 @@ class BehaviorBuilder
     [
         BehaviorNodeItem("repeat", { (_ options: [String:Any]) -> BehaviorNode in return RepeatBranch(options) }),
         BehaviorNodeItem("sequence", { (_ options: [String:Any]) -> BehaviorNode in return SequenceBranch(options) }),
+        BehaviorNodeItem("selector", { (_ options: [String:Any]) -> BehaviorNode in return SelectorBranch(options) }),
         BehaviorNodeItem("while", { (_ options: [String:Any]) -> BehaviorNode in return WhileBranch(options) }),
     ]
     
