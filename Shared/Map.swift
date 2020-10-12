@@ -330,16 +330,34 @@ class Map
     
     func drawShape(_ shape: MapShape2D)
     {
-        if shape.options.visible.toSIMD() == false { return }
-        
-        if shape.shape == .Disk {
-            drawDisk(shape.options, aspect: aspect)
-        } else
-        if shape.shape == .Box {
-            drawBox(shape.options, aspect: aspect)
-        } else
-        if shape.shape == .Text {
-            drawText(shape.options, aspect: aspect)
+        if let grid = shape.grid {
+            for s in grid.instances {
+                let instShape = s.0
+                
+                if instShape.options.visible.toSIMD() == false { return }
+                
+                if instShape.shape == .Disk {
+                    drawDisk(instShape.options, aspect: aspect)
+                } else
+                if instShape.shape == .Box {
+                    drawBox(instShape.options, aspect: aspect)
+                } else
+                if instShape.shape == .Text {
+                    drawText(instShape.options, aspect: aspect)
+                }
+            }
+        } else {
+            if shape.options.visible.toSIMD() == false { return }
+            
+            if shape.shape == .Disk {
+                drawDisk(shape.options, aspect: aspect)
+            } else
+            if shape.shape == .Box {
+                drawBox(shape.options, aspect: aspect)
+            } else
+            if shape.shape == .Text {
+                drawText(shape.options, aspect: aspect)
+            }
         }
     }
     

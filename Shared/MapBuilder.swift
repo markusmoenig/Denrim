@@ -436,42 +436,71 @@ class MapBuilder
         if type == .GridInstance2D {
             let shapeId = options["shapeid"] as? String
             let behaviorId = options["behaviorid"] as? String
+            
+            let instances = options["grid"] as? Float2
+            let offsets = options["offset"] as? Float2
+
+            let gridLayout = Float2(1,1)
+            if let instances = instances {
+                gridLayout.x = instances.x
+                gridLayout.y = instances.y
+            }
+            
+            let gridOffset = Float2(10,10)
+            if let offsets = offsets {
+                gridOffset.x = offsets.x
+                gridOffset.y = offsets.y
+            }
+            
             if shapeId != nil && behaviorId != nil {
-                if map.shapes2D[shapeId!] != nil {
-                    if map.behavior[behaviorId!] != nil {
+                if map.shapes2D[shapeId!] != nil && map.behavior[behaviorId!] != nil {
+                    
+                    let grid = MapGridInstance2D(shapeName: shapeId!, behaviorName: behaviorId!)
+                    let origPosition = map.behavior[behaviorId!]!.behaviorAsset.behavior?.getVariableValue("position") as? Float2
+                    
+                    // Only create when the original behavior was compiled successfully
+                    if map.behavior[behaviorId!]!.behaviorAsset.behavior != nil && origPosition != nil {
+                    
+                        map.shapes2D[shapeId!]!.grid = grid
+                        map.behavior[behaviorId!]!.grid = grid
                         
-                        let grid = MapGridInstance2D(shapeName: shapeId!, behaviorName: behaviorId!)
-                        
-                        // Only create when the original behavior was compiled successfully
-                        if map.behavior[behaviorId!]!.behaviorAsset.behavior != nil {
-                        
-                            map.shapes2D[shapeId!]!.grid = grid
-                            map.behavior[behaviorId!]!.grid = grid
+                        grid.columns = Int(gridLayout.x)
+                        grid.rows = Int(gridLayout.y)
+                        grid.offsetX = gridOffset.x
+                        grid.offsetY = gridOffset.y
+
+                        var y: Float = origPosition!.y
+
+                        for r in 1...grid.rows {
+                            var x: Float = origPosition!.x
                             
-                            grid.columns = 3
-                            
-                            for r in 1...grid.rows {
-                                for c in 1...grid.columns {
+                            for c in 1...grid.columns {
+                                
+                                var variableName = variable
+                                variableName += String(c) + "_" + String(r)
+                                
+                                let instanceAsset = Asset(type: .Behavior, name: behaviorId!)
+                                instanceAsset.value = map.behavior[behaviorId!]!.behaviorAsset.value
+                                
+                                game.behaviorBuilder.compile(instanceAsset)
+                                //print(instanceAsset.behavior, behaviorId)
+                                createShape2D(map: map, variable: variableName, options: map.shapes2D[shapeId!]!.originalOptions, error: &error, instBehaviorName: behaviorId!, instAsset: instanceAsset)
+                                if error.error == nil {
+                                    var mapBehavior = MapBehavior(behaviorAsset: instanceAsset, name: variableName, options: options)
+                                    var mapShape2D = map.shapes2D[variableName]!
                                     
-                                    var variableName = variable
-                                    variableName += String(c) + "_" + String(r)
-                                    
-                                    let instanceAsset = Asset(type: .Behavior, name: behaviorId!)
-                                    instanceAsset.value = map.behavior[behaviorId!]!.behaviorAsset.value
-                                    
-                                    game.behaviorBuilder.compile(instanceAsset)
-                                    //print(instanceAsset.behavior, behaviorId)
-                                    createShape2D(map: map, variable: variableName, options: map.shapes2D[shapeId!]!.originalOptions, error: &error, instBehaviorName: behaviorId!, instAsset: instanceAsset)
-                                    if error.error == nil {
-                                        var mapBehavior = MapBehavior(behaviorAsset: instanceAsset, name: variableName, options: options)
-                                        var mapShape2D = map.shapes2D[variableName]!
-                                        grid.addInstance(shape: &mapShape2D, behavior: &mapBehavior)
-                                    }
+                                    let position = mapBehavior.behaviorAsset.behavior?.getVariableValue("position") as? Float2
+                                    position!.x = x
+                                    position!.y = y
+
+                                    grid.addInstance(shape: &mapShape2D, behavior: &mapBehavior)
                                 }
+                                
+                                x += grid.offsetX
                             }
-                            setLine(variable)
+                            y += grid.offsetY
                         }
-                        
+                        setLine(variable)
                     } else { error.error = "Could not find behavior '\(behaviorId!)'" }
                 } else { error.error = "Could not find shape '\(shapeId!)'" }
             } else { error.error = "Missing 'ShapeId' or 'BehaviorId' parameters" }
@@ -489,7 +518,7 @@ class MapBuilder
         let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid"]
         let integerOptions = ["index", "int", "digits"]
         let floatOptions = ["round", "radius", "onion", "fontsize", "float"]
-        let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size", "float2"]
+        let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size", "float2", "offset", "grid"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
         let boolOptions = ["repeatx", "visible"]
         let stringArrayOptions = ["layers", "shapes", "shaders"]

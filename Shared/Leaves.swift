@@ -65,9 +65,11 @@ class SetScene: BehaviorNode
 // Calls a given tree
 class Call: BehaviorNode
 {
-    var callContext         : BehaviorContext? = nil
+    var callContext         : [BehaviorContext] = []
     var callTree            : BehaviorTree? = nil
     var treeName            : String? = nil
+    
+    var firstCall           : Bool = true
     
     var parameters          : [BehaviorVariable] = []
 
@@ -105,77 +107,87 @@ class Call: BehaviorNode
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
-        if callContext == nil {
+        if firstCall == true {
+            firstCall = false
             if let treeName = options["tree"] as? String {
                 let treeArray = treeName.split(separator: ".")
                 if treeArray.count == 1 {
                     // No ., tree has to be in the same context
-                    callContext = context
+                    callContext.append(context)
                     self.treeName = treeName
                 } else
                 if treeArray.count == 2 {
                     //var asset = game.assetFolder.getAsset(String(treeArray[0]).lowercased(), .Behavior)
-                    var asset: Asset? = nil
                     if treeArray[0] == "game" {
-                        asset = game.gameAsset
+                        let asset = game.gameAsset
+                        if let context = asset?.behavior {
+                            callContext.append(context)
+                            self.treeName = String(treeArray[1])
+                        }
                     } else {
                         if let map = game.currentMap?.map {
                             if let behavior = map.behavior[String(treeArray[0])] {
-                                asset = behavior.behaviorAsset
+                                let asset = behavior.behaviorAsset
+                                
+                                self.treeName = String(treeArray[1])
+                                if let context = asset.behavior {
+                                    if let grid = behavior.grid {
+                                        for inst in grid.instances {
+                                            callContext.append(inst.1.behaviorAsset.behavior!)
+                                        }
+                                    } else {
+                                        callContext.append(context)
+                                    }
+                                }
                             }
-                        }
-                    }
-                    
-                    if let asset = asset {
-                        if let context = asset.behavior {
-                            callContext = context
-                            self.treeName = String(treeArray[1])
                         }
                     }
                 }
             }
         }
                         
-        if let context = callContext, treeName != nil {
-            if let tree = context.getTree(treeName!) {
-                // Now replace the values in the tree parameters with the variable values which we pass to the tree
-                for (index, variable) in parameters.enumerated() {
-                    if index < tree.parameters.count {
-                        let param = tree.parameters[index]
-                        if let dest = param.value as? Int1 {
-                            if let source = variable.value as? Int1 {
-                                dest.x = source.x
-                            }
-                        } else
-                        if let dest = param.value as? Bool1 {
-                            if let source = variable.value as? Bool1 {
-                                dest.x = source.x
-                            }
-                        } else
-                        if let dest = param.value as? Float1 {
-                            if let source = variable.value as? Float1 {
-                                dest.x = source.x
-                            }
-                        } else
-                        if let dest = param.value as? Float2 {
-                            if let source = variable.value as? Float2 {
-                                dest.x = source.x
-                                dest.y = source.y
-                            }
-                        } else
-                        if let dest = param.value as? Float3 {
-                            if let source = variable.value as? Float3 {
-                                dest.x = source.x
-                                dest.y = source.y
-                                dest.z = source.z
-                            }
-                        } else
-                        if let dest = param.value as? Float4 {
-                            if let source = variable.value as? Float4 {
-                                dest.x = source.x
-                                dest.y = source.y
-                                dest.z = source.z
-                                dest.w = source.w
+        if treeName != nil {
+            for context in callContext {
+                if let tree = context.getTree(treeName!) {
+                    // Now replace the values in the tree parameters with the variable values which we pass to the tree
+                    for (index, variable) in parameters.enumerated() {
+                        if index < tree.parameters.count {
+                            let param = tree.parameters[index]
+                            if let dest = param.value as? Int1 {
+                                if let source = variable.value as? Int1 {
+                                    dest.x = source.x
+                                }
+                            } else
+                            if let dest = param.value as? Bool1 {
+                                if let source = variable.value as? Bool1 {
+                                    dest.x = source.x
+                                }
+                            } else
+                            if let dest = param.value as? Float1 {
+                                if let source = variable.value as? Float1 {
+                                    dest.x = source.x
+                                }
+                            } else
+                            if let dest = param.value as? Float2 {
+                                if let source = variable.value as? Float2 {
+                                    dest.x = source.x
+                                    dest.y = source.y
+                                }
+                            } else
+                            if let dest = param.value as? Float3 {
+                                if let source = variable.value as? Float3 {
+                                    dest.x = source.x
+                                    dest.y = source.y
+                                    dest.z = source.z
+                                }
+                            } else
+                            if let dest = param.value as? Float4 {
+                                if let source = variable.value as? Float4 {
+                                    dest.x = source.x
+                                    dest.y = source.y
+                                    dest.z = source.z
+                                    dest.w = source.w
+                                }
                             }
                         }
                     }
@@ -183,8 +195,12 @@ class Call: BehaviorNode
             }
         }
         
-        if let context = callContext, treeName != nil {
-            return context.execute(name: treeName!)
+        
+        if treeName != nil {
+            for context in callContext {
+                context.execute(name: treeName!)
+            }
+            return .Success
         }
         
         context.addFailure(lineNr: lineNr)
@@ -256,10 +272,33 @@ class DistanceToShape: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
         if let position = position2 {
-            
             if let map = game.currentMap?.map {
                 if let shape = map.shapes2D[shapeName!] {
                     
+                    if let grid = shape.grid {
+                        
+                        for (index, inst) in grid.instances.enumerated() {
+                            if inst.1.behaviorAsset.behavior === context {
+                                let distance = distanceToRect(position: position, shape: inst.0, map: map)
+                                if let dest = dest {
+                                    dest.x = distance
+                                    print(index)
+                                    return .Success
+                                }
+                                break
+                            }
+                        }
+                        
+                        return .Success
+                    } else {
+                        let distance = distanceToRect(position: position, shape: shape, map: map)
+                        if let dest = dest {
+                            dest.x = distance
+                            return .Success
+                        }
+                    }
+                    
+                    /*
                     let aspect = map.aspect!
 
                     var radius : Float = 1
@@ -277,12 +316,31 @@ class DistanceToShape: BehaviorNode
                     if let dest = dest {
                         dest.x = distToBox - radius * aspect.z
                         return .Success
-                    }
+                    }*/
                 }
             }
         }
         context.addFailure(lineNr: lineNr)
         return .Failure
+    }
+    
+    func distanceToRect(position: Float2, shape: MapShape2D, map: Map) -> Float
+    {
+        let aspect = map.aspect!
+
+        var radius : Float = 1
+        if let radius1 = radius1 {
+            radius = radius1.x
+        }
+        
+        var uv : float2 = float2(position.x, position.y) + float2(radius, radius) / 2.0 - float2(shape.options.position.x, shape.options.position.y) - float2(shape.options.size.x, shape.options.size.y) / 2.0
+        uv.x *= aspect.x
+        uv.y *= aspect.y
+
+        let d : float2 = simd_abs(uv) - float2(shape.options.size.x * aspect.x, shape.options.size.y * aspect.y) / 2.0
+        let distToBox : Float = simd_length(max(d,float2(0,0))) + min(max(d.x,d.y),0.0);
+        
+        return distToBox - radius * aspect.z
     }
 }
 

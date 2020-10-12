@@ -211,8 +211,16 @@ class Game              : ObservableObject
             if let mapAsset = self.currentMap {
                 if let map = mapAsset.map {
                     for (_, b) in map.behavior {
-                        if let context = b.behaviorAsset.behavior {
-                            context.execute(name: "update")
+                        if let grid = b.grid {
+                            for inst in grid.instances {
+                                if let context = inst.1.behaviorAsset.behavior {
+                                    context.execute(name: "update")
+                                }
+                            }
+                        } else {
+                            if let context = b.behaviorAsset.behavior {
+                                context.execute(name: "update")
+                            }
                         }
                     }
                     if let scene = self.currentScene {

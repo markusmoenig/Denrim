@@ -184,10 +184,10 @@ class MapGridInstance2D
     var instances       : [(MapShape2D, MapBehavior)] = []
     
     var columns         : Int = 1
-    var rows            : Int = 1
+    var rows            : Int = 2
     
-    var offsetX         : Float = 0.1
-    var offSetY         : Float = 0.1
+    var offsetX         : Float = 15
+    var offsetY         : Float = 5
     
     init(shapeName: String, behaviorName: String)
     {
