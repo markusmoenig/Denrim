@@ -333,8 +333,8 @@ class Map
         if let grid = shape.grid {
             for s in grid.instances {
                 let instShape = s.0
-                
-                if instShape.options.visible.toSIMD() == false { return }
+                                
+                if instShape.options.visible.toSIMD() == false { continue }
                 
                 if instShape.shape == .Disk {
                     drawDisk(instShape.options, aspect: aspect)

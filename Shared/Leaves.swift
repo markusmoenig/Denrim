@@ -238,6 +238,42 @@ class SetNode: BehaviorNode
                 boolVar.x = boolValue.x
                 return .Success
             }
+        } else
+        if let intVar = variable as? Int1 {
+            if let intValue = value as? Int1 {
+                intVar.x = intValue.x
+                return .Success
+            }
+        } else
+        if let floatVar = variable as? Float1 {
+            if let floatValue = value as? Float1 {
+                floatVar.x = floatValue.x
+                return .Success
+            }
+        } else
+        if let float2Var = variable as? Float2 {
+            if let float2Value = value as? Float2 {
+                float2Var.x = float2Value.x
+                float2Var.y = float2Value.y
+                return .Success
+            }
+        } else
+        if let float3Var = variable as? Float3 {
+            if let float3Value = value as? Float3 {
+                float3Var.x = float3Value.x
+                float3Var.y = float3Value.y
+                float3Var.z = float3Value.z
+                return .Success
+            }
+        } else
+        if let float4Var = variable as? Float4 {
+            if let float4Value = value as? Float4 {
+                float4Var.x = float4Value.x
+                float4Var.y = float4Value.y
+                float4Var.z = float4Value.z
+                float4Var.w = float4Value.w
+                return .Success
+            }
         }
         context.addFailure(lineNr: lineNr)
         return .Failure
@@ -277,15 +313,15 @@ class DistanceToShape: BehaviorNode
                     
                     if let grid = shape.grid {
                         
-                        for (index, inst) in grid.instances.enumerated() {
+                        for inst in grid.instances {
                             if inst.1.behaviorAsset.behavior === context {
                                 let distance = distanceToRect(position: position, shape: inst.0, map: map)
                                 if let dest = dest {
                                     dest.x = distance
-                                    print(index)
                                     return .Success
+                                } else {
+                                    break
                                 }
-                                break
                             }
                         }
                         
@@ -297,26 +333,6 @@ class DistanceToShape: BehaviorNode
                             return .Success
                         }
                     }
-                    
-                    /*
-                    let aspect = map.aspect!
-
-                    var radius : Float = 1
-                    if let radius1 = radius1 {
-                        radius = radius1.x
-                    }
-                    
-                    var uv : float2 = float2(position.x, position.y) + float2(radius, radius) / 2.0 - float2(shape.options.position.x, shape.options.position.y) - float2(shape.options.size.x, shape.options.size.y) / 2.0
-                    uv.x *= aspect.x
-                    uv.y *= aspect.y
-
-                    let d : float2 = simd_abs(uv) - float2(shape.options.size.x * aspect.x, shape.options.size.y * aspect.y) / 2.0
-                    let distToBox : Float = simd_length(max(d,float2(0,0))) + min(max(d.x,d.y),0.0);
-                    
-                    if let dest = dest {
-                        dest.x = distToBox - radius * aspect.z
-                        return .Success
-                    }*/
                 }
             }
         }
