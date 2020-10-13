@@ -13,6 +13,7 @@ struct CompileError
     var line            : Int32? = nil
     var column          : Int32? = 0
     var error           : String? = nil
+    var type            : String = "error"
 }
 
 class BehaviorNodeItem

@@ -278,18 +278,17 @@ class Game              : ObservableObject
     func createPreview(_ asset: Asset)
     {
         if state == .Idle && asset.type == .Shader {
-            shaderCompiler.compile(asset, { (shader) in
                 
-                DispatchQueue.main.async {
-                    self.startDrawing()
-                    
-                    let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: 1 )
-                    self.texture?.drawShader(shader, rect)
-                    
-                    self.stopDrawing()
-                    self.updateOnce()
-                }
-            })
+            if let shader = asset.shader {
+                self.startDrawing()
+                
+                let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: 1 )
+                self.texture?.clear()
+                self.texture?.drawShader(shader, rect)
+                
+                self.stopDrawing()
+                self.updateOnce()
+            }
         }
     }
     

@@ -122,11 +122,8 @@ class AssetFolder   : Codable
                     game.scriptEditor?.setAssetSession(asset)
                     
                     if game.state == .Idle {
-                        if asset.type == .Behavior {
-                            game.behaviorBuilder.compile(asset)
-                        } else
+                        assetCompile(asset)
                         if asset.type == .Map {
-                            game.mapBuilder.compile(asset)
                             if game.mapBuilder.cursorTimer == nil {
                                 game.mapBuilder.startTimer(asset)
                             }
@@ -178,14 +175,46 @@ class AssetFolder   : Codable
             if asset.id == id {
                 asset.value = value
                 if game.state == .Idle {
-                    if asset.type == .Behavior {
-                        game.behaviorBuilder.compile(asset)
-                    } else
-                    if asset.type == .Map {
-                        game.mapBuilder.compile(asset)//, deltaStart: deltaStart, deltaEnd: deltaEnd)
-                    }
+                    assetCompile(asset)
                 }
             }
+        }
+    }
+    
+    // Compile the asset
+    func assetCompile(_ asset: Asset)
+    {
+        if asset.type == .Behavior {
+            game.behaviorBuilder.compile(asset)
+        } else
+        if asset.type == .Map {
+            game.mapBuilder.compile(asset)//, deltaStart: deltaStart, deltaEnd: deltaEnd)
+        } else
+        if asset.type == .Shader {
+            game.shaderCompiler.compile(asset, { (shader, errors) in
+                if shader == nil {
+                    if Thread.isMainThread {
+                        self.game.scriptEditor!.setErrors(errors)
+                    } else {
+                        DispatchQueue.main.sync {
+                            self.game.scriptEditor!.setErrors(errors)
+                        }
+                    }
+                } else {
+                    asset.shader = nil
+                    asset.shader = shader
+                    
+                    if Thread.isMainThread {
+                        self.game.createPreview(asset)
+                        self.game.scriptEditor!.clearAnnotations()
+                    } else {
+                        DispatchQueue.main.sync {
+                            self.game.createPreview(asset)
+                            self.game.scriptEditor!.clearAnnotations()
+                        }
+                    }
+                }
+            })
         }
     }
 }
@@ -215,10 +244,13 @@ class Asset         : Codable, Equatable
     
     // If this is a .Behavior asset
     var behavior    : BehaviorContext? = nil
-    
+
+    // If this is a shader
+    var shader      : Shader? = nil
+
     // If the asset has an error
     var hasError    : Bool = false
-        
+            
     private enum CodingKeys: String, CodingKey {
         case type
         case id

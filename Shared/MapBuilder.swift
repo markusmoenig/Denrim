@@ -285,7 +285,7 @@ class MapBuilder
             if let shaderName = options["name"] as? String {
                 if let asset = game.assetFolder.getAsset(shaderName, .Shader) {
                     var mapShader = MapShader(options: options)
-                    game.shaderCompiler.compile(asset, { (shader) in
+                    game.shaderCompiler.compile(asset, { (shader, errors) in
                         mapShader.shader = shader
                     })
                     map.shaders[variable] = mapShader

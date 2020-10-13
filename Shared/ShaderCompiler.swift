@@ -67,7 +67,7 @@ class ShaderCompiler
     }
     */
     
-    func compile(_ asset: Asset, _ cb: @escaping (Shader) -> ())
+    func compile(_ asset: Asset, _ cb: @escaping (Shader?, [CompileError]) -> ())
     {
         var code = getHeaderCode()
         code += asset.value
@@ -77,7 +77,39 @@ class ShaderCompiler
         code = code.replacingOccurrences(of: "AutoParameters", with: params)
                 
         let compiledCB : MTLNewLibraryCompletionHandler = { (library, error) in
-            if let _ = error, library == nil {
+            if let error = error, library == nil {
+                var errors: [CompileError] = []
+                
+                let ns = self.getHeaderCode() as NSString
+                var lineNumbers  : Int32 = 0
+                
+                ns.enumerateLines { (str, _) in
+                    lineNumbers += 1
+                }
+                
+                let str = error.localizedDescription
+                let arr = str.components(separatedBy: "program_source:")
+                for str in arr {
+                    if str.contains("error:") || str.contains("warning:") {
+                        let arr = str.split(separator: ":")
+                        let errorArr = String(arr[3].trimmingCharacters(in: .whitespaces)).split(separator: "\n")
+                        var errorText = ""
+                        if errorArr.count > 0 {
+                            errorText = String(errorArr[0])
+                        }
+                        if arr.count == 4 {
+                            var er = CompileError()
+                            er.asset = asset
+                            er.line = Int32(arr[0])! - lineNumbers - 1
+                            er.column = Int32(arr[1])
+                            er.type = arr[2].trimmingCharacters(in: .whitespaces)
+                            er.error = errorText
+                            errors.append(er)
+                        }
+                    }
+                }
+                
+                cb(nil, errors)
             } else
             if let library = library {
                 
@@ -99,10 +131,12 @@ class ShaderCompiler
                 do {
                     shader.pipelineState = try self.game.device.makeRenderPipelineState(descriptor: shader.pipelineStateDesc)
                     shader.isValid = true
-                    
-                    cb(shader)
                 } catch {
                     shader.isValid = false
+                }
+
+                if shader.isValid == true {
+                    cb(shader, [])
                 }
             }
         }
