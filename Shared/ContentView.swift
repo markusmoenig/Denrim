@@ -8,7 +8,7 @@
 import SwiftUI
 
 #if os(OSX)
-var toolbarPlacement1 : ToolbarItemPlacement = .navigation
+var toolbarPlacement1 : ToolbarItemPlacement = .automatic
 
 #else
 var toolbarPlacement1 : ToolbarItemPlacement = .navigationBarLeading
@@ -190,7 +190,7 @@ struct ContentView: View {
                 }
                 #endif
             }
-            .frame(minWidth: 140, idealWidth: 200)
+            .frame(minWidth: 160, idealWidth: 200, maxWidth: 200)
             .layoutPriority(0)
             // Asset deletion
             .alert(isPresented: $showDeleteAssetAlert) {
@@ -223,6 +223,140 @@ struct ContentView: View {
                     })
                     .frame(minWidth: 200)
                 }.padding()
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: toolbarPlacement1) {
+                    Menu {
+                        Section(header: Text("Add Asset")) {
+                            Menu("New Behavior") {
+                                Button("Object 2D", action: {
+                                    document.game.assetFolder.addBehaviorTree("New Object 2D")
+                                    updateView.toggle()
+                                })
+                            }
+                            Button("New Map", action: {
+                                document.game.assetFolder.addMap("New Map")
+                                updateView.toggle()
+                            })
+                            Button("New Shader", action: {
+                                document.game.assetFolder.addShader("New Shader")
+                                if let asset = document.game.assetFolder.current {
+                                    //assetName = String(asset.name.split(separator: ".")[0])
+                                    //showAssetNamePopover = true
+                                    document.game.createPreview(asset)
+                                }
+                                updateView.toggle()
+                            })
+                            Button("New Image(s)", action: {
+                                #if os(OSX)
+                                
+                                let openPanel = NSOpenPanel()
+                                openPanel.canChooseFiles = true
+                                openPanel.allowsMultipleSelection = true
+                                openPanel.canChooseDirectories = false
+                                openPanel.canCreateDirectories = false
+                                openPanel.title = "Select Image(s)"
+                                //openPanel.directoryURL =  containerUrl
+                                openPanel.showsHiddenFiles = false
+                                //openPanel.allowedFileTypes = [appExtension]
+                                
+                                openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
+                                    if response == NSApplication.ModalResponse.OK {
+                                        if openPanel.url != nil {
+                                            document.game.assetFolder.addImages(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls)
+                                            
+                                            //if let asset = document.game.assetFolder.current {
+                                                //assetName = String(asset.name.split(separator: ".")[0])
+                                                //showAssetNamePopover = true
+                                            //}
+                                            scriptIsVisible = false
+                                            updateView.toggle()
+                                        }
+                                    }
+                                    openPanel.close()
+                                }
+                                #endif
+                            })
+                        }
+                        Section(header: Text("Edit Asset")) {
+                            // Optional toolbar items depending on asset
+                            if let asset = document.game.assetFolder.current {
+                                
+                                Button(action: {
+                                    assetName = String(asset.name.split(separator: ".")[0])
+                                    showAssetNamePopover = true
+                                })
+                                {
+                                    Label("Rename", systemImage: "pencil")//rectangle.and.pencil.and.ellipsis")
+                                }
+                                .disabled(asset.name == "Game")
+                                
+                                if asset.type == .Behavior || asset.type == .Shader {
+                                    Button(action: {
+                                        showDeleteAssetAlert = true
+                                    })
+                                    {
+                                        Label("Remove", systemImage: "minus")
+                                    }
+                                    .disabled(asset.name == "Game")
+                                } else
+                                if asset.type == .Image {
+                                    Button(action: {
+                                        #if os(OSX)
+                                        
+                                        let openPanel = NSOpenPanel()
+                                        openPanel.canChooseFiles = true
+                                        openPanel.allowsMultipleSelection = true
+                                        openPanel.canChooseDirectories = false
+                                        openPanel.canCreateDirectories = false
+                                        openPanel.title = "Select Image(s)"
+                                        //openPanel.directoryURL =  containerUrl
+                                        openPanel.showsHiddenFiles = false
+                                        //openPanel.allowedFileTypes = [appExtension]
+                                        
+                                        openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
+                                            if response == NSApplication.ModalResponse.OK {
+                                                if openPanel.url != nil {
+                                                    document.game.assetFolder.addImages(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls, existingAsset: document.game.assetFolder.current)
+                                                    scriptIsVisible = false
+                                                    updateView.toggle()
+                                                }
+                                            }
+                                            openPanel.close()
+                                        }
+                                        #endif
+                                    })
+                                    {
+                                        Label("Add to Group", systemImage: "plus")
+                                    }
+                                    
+                                    Button(action: {
+                                        showDeleteAssetAlert = true
+                                    })
+                                    {
+                                        Label("Remove Image Group", systemImage: "minus")
+                                    }
+                                    
+                                    Button(action: {
+                                        if let asset = document.game.assetFolder.current {
+                                            asset.data.remove(at: Int(imageIndex))
+                                        }
+                                        updateView.toggle()
+                                    })
+                                    {
+                                        Label("Remove Image", systemImage: "minus.circle")
+                                    }
+                                    .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
+                                }
+                            }
+                        }
+                    }
+                    label: {
+                        //Text("Asset")//.foregroundColor(Color.gray)
+                        Label("Command", systemImage: "contextualmenu.and.cursorarrow")
+                    }
+                }
+
             }
             /*
             GeometryReader { g in
@@ -372,138 +506,8 @@ struct ContentView: View {
                 }
             }
             .layoutPriority(2)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
             .toolbar {
-                ToolbarItemGroup(placement: toolbarPlacement1) {
-                    Menu {
-                        Section(header: Text("Add Asset")) {
-                            Menu("New Behavior") {
-                                Button("Object 2D", action: {
-                                    document.game.assetFolder.addBehaviorTree("New Object 2D")
-                                    updateView.toggle()
-                                })
-                            }
-                            Button("New Map", action: {
-                                document.game.assetFolder.addMap("New Map")
-                                updateView.toggle()
-                            })
-                            Button("New Shader", action: {
-                                document.game.assetFolder.addShader("New Shader")
-                                if let asset = document.game.assetFolder.current {
-                                    //assetName = String(asset.name.split(separator: ".")[0])
-                                    //showAssetNamePopover = true
-                                    document.game.createPreview(asset)
-                                }
-                                updateView.toggle()
-                            })
-                            Button("New Image(s)", action: {
-                                #if os(OSX)
-                                
-                                let openPanel = NSOpenPanel()
-                                openPanel.canChooseFiles = true
-                                openPanel.allowsMultipleSelection = true
-                                openPanel.canChooseDirectories = false
-                                openPanel.canCreateDirectories = false
-                                openPanel.title = "Select Image(s)"
-                                //openPanel.directoryURL =  containerUrl
-                                openPanel.showsHiddenFiles = false
-                                //openPanel.allowedFileTypes = [appExtension]
-                                
-                                openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
-                                    if response == NSApplication.ModalResponse.OK {
-                                        if openPanel.url != nil {
-                                            document.game.assetFolder.addImages(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls)
-                                            
-                                            //if let asset = document.game.assetFolder.current {
-                                                //assetName = String(asset.name.split(separator: ".")[0])
-                                                //showAssetNamePopover = true
-                                            //}
-                                            scriptIsVisible = false
-                                            updateView.toggle()
-                                        }
-                                    }
-                                    openPanel.close()
-                                }
-                                #endif
-                            })
-                        }
-                        Section(header: Text("Edit Asset")) {
-                            // Optional toolbar items depending on asset
-                            if let asset = document.game.assetFolder.current {
-                                
-                                Button(action: {
-                                    assetName = String(asset.name.split(separator: ".")[0])
-                                    showAssetNamePopover = true
-                                })
-                                {
-                                    Label("Rename", systemImage: "pencil")//rectangle.and.pencil.and.ellipsis")
-                                }
-                                .disabled(asset.name == "Game")
-                                
-                                if asset.type == .Behavior || asset.type == .Shader {
-                                    Button(action: {
-                                        showDeleteAssetAlert = true
-                                    })
-                                    {
-                                        Label("Remove", systemImage: "minus")
-                                    }
-                                    .disabled(asset.name == "Game")
-                                } else
-                                if asset.type == .Image {
-                                    Button(action: {
-                                        #if os(OSX)
-                                        
-                                        let openPanel = NSOpenPanel()
-                                        openPanel.canChooseFiles = true
-                                        openPanel.allowsMultipleSelection = true
-                                        openPanel.canChooseDirectories = false
-                                        openPanel.canCreateDirectories = false
-                                        openPanel.title = "Select Image(s)"
-                                        //openPanel.directoryURL =  containerUrl
-                                        openPanel.showsHiddenFiles = false
-                                        //openPanel.allowedFileTypes = [appExtension]
-                                        
-                                        openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
-                                            if response == NSApplication.ModalResponse.OK {
-                                                if openPanel.url != nil {
-                                                    document.game.assetFolder.addImages(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls, existingAsset: document.game.assetFolder.current)
-                                                    scriptIsVisible = false
-                                                    updateView.toggle()
-                                                }
-                                            }
-                                            openPanel.close()
-                                        }
-                                        #endif
-                                    })
-                                    {
-                                        Label("Add to Group", systemImage: "plus")
-                                    }
-                                    
-                                    Button(action: {
-                                        showDeleteAssetAlert = true
-                                    })
-                                    {
-                                        Label("Remove Image Group", systemImage: "minus")
-                                    }
-                                    
-                                    Button(action: {
-                                        if let asset = document.game.assetFolder.current {
-                                            asset.data.remove(at: Int(imageIndex))
-                                        }
-                                        updateView.toggle()
-                                    })
-                                    {
-                                        Label("Remove Image", systemImage: "minus.circle")
-                                    }
-                                    .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
-                                }
-                            }
-                        }
-                    }
-                    label: {
-                        //Text("Asset")//.foregroundColor(Color.gray)
-                        Label("Command", systemImage: "contextualmenu.and.cursorarrow")
-                    }
-                }
                 ToolbarItemGroup(placement: .automatic) {
                                     
                     // Game Controls
