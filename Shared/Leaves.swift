@@ -272,7 +272,6 @@ class SetNode: BehaviorNode
         } else
         if let intVar = variable as? Int1 {
             if let intValue = value as? Int1 {
-                print(options, intValue.x)
                 intVar.x = intValue.x
                 return .Success
             }
@@ -412,20 +411,9 @@ class GetTouchPos: BehaviorNode
             if let data2 = data2 {
                 data2.x = game.view.mousePos.x / game.currentMap!.map!.aspect.x
                 data2.y = game.view.mousePos.y / game.currentMap!.map!.aspect.y
-                print(data2.x, data2.y)
                 return .Success
             }
         }
-        /*
-        if let key = options["key"] as? String {
-            for k in game.view.keysDown {
-                for (code, char) in keyCodes {
-                    if code == k && char == key {
-                        return .Success
-                    }
-                }
-            }
-        }*/
         context.addFailure(lineNr: lineNr)
         return .Failure
     }

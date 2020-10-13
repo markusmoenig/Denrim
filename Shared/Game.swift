@@ -283,7 +283,7 @@ class Game              : ObservableObject
                 DispatchQueue.main.async {
                     self.startDrawing()
                     
-                    let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: self.scaleFactor )
+                    let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: 1 )
                     self.texture?.drawShader(shader, rect)
                     
                     self.stopDrawing()
