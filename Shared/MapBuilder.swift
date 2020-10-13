@@ -186,6 +186,14 @@ class MapBuilder
                     self.createPreview(asset.map!)
                 }
             }
+        } else
+        if game.state == .Running {
+            if error.error != nil {
+                error.line = error.line! + 1
+                game.stop()
+                game.assetError = error
+                game.gameError.send()
+            }
         }
         
         return error

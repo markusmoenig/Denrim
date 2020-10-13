@@ -131,7 +131,7 @@ class ScriptEditor
 
     }
     
-    func setError(_ error: CompileError )
+    func setError(_ error: CompileError, scrollToError: Bool = false)
     {
         webView.evaluateJavaScript(
             """
@@ -142,7 +142,7 @@ class ScriptEditor
             type: "error" // also warning and information
             }]);
 
-            //editor.scrollToLine(\(error.line!-1), true, true, function () {});
+            \(scrollToError == true ? "editor.scrollToLine(\(error.line!-1), true, true, function () {});" : "")
 
             """, completionHandler: { (value, error ) in
          })

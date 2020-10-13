@@ -40,7 +40,8 @@ class SetScene: BehaviorNode
                 if asset.map != nil {
                     asset.map?.clear()
                 }
-                if game.mapBuilder.compile(asset).error == nil {
+                let error = game.mapBuilder.compile(asset)
+                if error.error == nil {
                     if let map = asset.map {
                         if let sceneName = sceneName {
                             if let scene = map.scenes[sceneName] {

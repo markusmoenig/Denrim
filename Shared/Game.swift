@@ -54,9 +54,12 @@ class Game              : ObservableObject
     // Preview Size, UI only
     var previewFactor   : CGFloat = 4
     var previewOpacity  : Double = 0.5
+    
     var helpText        : String = ""
-
     let helpTextChanged = PassthroughSubject<Void, Never>()
+    
+    var assetError      = CompileError()
+    let gameError       = PassthroughSubject<Void, Never>()
 
     init()
     {
@@ -98,6 +101,7 @@ class Game              : ObservableObject
     
     func start()
     {
+        assetError.error = nil
         state = .Running
 
         var hasError: Bool = false
@@ -123,7 +127,7 @@ class Game              : ObservableObject
             }
         }
 
-        if !hasError {
+        if !hasError && assetError.error == nil {
             state = .Running
             view.enableSetNeedsDisplay = false
             view.isPaused = false
@@ -138,7 +142,7 @@ class Game              : ObservableObject
         currentScene = nil
         currentMap = nil
         
-        if let scriptEditor = scriptEditor {
+        if let scriptEditor = scriptEditor, assetError.error == nil {
             scriptEditor.clearAnnotations()
         }
         
@@ -172,7 +176,7 @@ class Game              : ObservableObject
     
     func draw()
     {
-        if checkTexture() && state == .Idle{
+        if checkTexture() && state == .Idle {
             // We need to update the screen
             if assetFolder.current?.type == .Map && assetFolder.current?.map != nil {
                 if let mapBuilder = mapBuilder {
@@ -295,7 +299,6 @@ class Game              : ObservableObject
     /// Updates the display once
     func updateOnce()
     {
-        
         self.view.enableSetNeedsDisplay = true
         #if os(OSX)
         let nsrect : NSRect = NSRect(x:0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
