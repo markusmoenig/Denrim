@@ -511,7 +511,7 @@ class Map
         data.borderSize = border / game.scaleFactor
         data.fillColor = fillColor
         data.borderColor = borderColor
-        
+                
         let renderPassDescriptor = MTLRenderPassDescriptor()
         renderPassDescriptor.colorAttachments[0].texture = texture.texture
         renderPassDescriptor.colorAttachments[0].loadAction = .load

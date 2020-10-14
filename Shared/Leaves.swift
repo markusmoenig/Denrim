@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import simd
 
 // Sets the current scene and initializes it
 class SetScene: BehaviorNode
@@ -381,7 +382,7 @@ class DistanceToShape: BehaviorNode
             radius = radius1.x
         }
         
-        var uv : float2 = float2(position.x, position.y) + float2(radius, radius) / 2.0 - float2(shape.options.position.x, shape.options.position.y) - float2(shape.options.size.x, shape.options.size.y) / 2.0
+        var uv : float2 = float2(position.x, position.y) + float2(radius, radius) - float2(shape.options.position.x, shape.options.position.y) - float2(shape.options.size.x, shape.options.size.y) / 2.0
         uv.x *= aspect.x
         uv.y *= aspect.y
 
@@ -389,6 +390,58 @@ class DistanceToShape: BehaviorNode
         let distToBox : Float = simd_length(max(d,float2(0,0))) + min(max(d.x,d.y),0.0);
         
         return distToBox - radius * aspect.z
+    }
+}
+
+
+class RandomColorNode: BehaviorNode
+{
+    var a: Float3 = Float3(0.5, 0.5, 0.5)
+    var b: Float3 = Float3(0.5, 0.5, 0.5)
+    var c: Float3 = Float3(1.0, 1.0, 1.0)
+    var d: Float3 = Float3(0.0, 0.33, 0.67)
+
+    var dest: Float4? = nil
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "RandomColor"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let a = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "a", isOptional: true) {
+            self.a = a
+        }
+        if let b = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "b", isOptional: true) {
+            self.b = b
+        }
+        if let c = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "c", isOptional: true) {
+            self.c = c
+        }
+        if let d = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "d", isOptional: true) {
+            self.d = d
+        }
+        dest = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "variable")
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let dest = dest {
+            let t = Float.random(in: 0...1)
+            var res = a.toSIMD()
+            res.x = a.x + b.x * cos( 6.28318 * (c.x * t + d.x) )
+            res.y = a.y + b.y * cos( 6.28318 * (c.y * t + d.y) )
+            res.z = a.z + b.z * cos( 6.28318 * (c.z * t + d.z) )
+            
+            dest.x = res.x
+            dest.y = res.y
+            dest.z = res.z
+            
+            return .Success
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
     }
 }
 

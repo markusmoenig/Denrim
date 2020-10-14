@@ -131,7 +131,7 @@ struct MapShapeData2D {
         if let borderColor = options["bordercolor"] as? Float4 {
             self.borderColor = borderColor
         } else {
-            self.borderColor = Float4(0,0,0,0)
+            self.borderColor = Float4(1,1,1,1)
         }
         
         if let textRef = options["text"] as? TextRef {
