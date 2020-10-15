@@ -25,6 +25,7 @@ struct DenrimApp: App {
         }
         .commands {
             
+            SidebarCommands()
             CommandGroup(replacing: .help) {
                 Button(action: {
                     if appState.currentDocument != nil {
