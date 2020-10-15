@@ -592,11 +592,6 @@ struct ContentView: View {
                 }
             }
             .onReceive(self.document.game.gameError) { state in
-                
-                /*
-                if self.document.game.error.error != nil {
-                    self.document.game.scriptEditor?.setError(self.document.game.error)
-                }*/
                 if let asset = self.document.game.assetError.asset {
                     document.game.assetFolder.select(asset.id)
                     document.game.scriptEditor?.setError(self.document.game.assetError, scrollToError: true)
