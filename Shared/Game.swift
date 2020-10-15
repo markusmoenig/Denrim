@@ -101,6 +101,10 @@ class Game              : ObservableObject
     
     func start()
     {
+        if let scriptEditor = scriptEditor {
+            scriptEditor.setReadOnly(true)
+        }
+        
         assetError.error = nil
         state = .Running
 
@@ -138,6 +142,10 @@ class Game              : ObservableObject
     
     func stop()
     {
+        if let scriptEditor = scriptEditor {
+            scriptEditor.setReadOnly(false)
+        }
+        
         gameAsset = nil
         currentScene = nil
         currentMap = nil

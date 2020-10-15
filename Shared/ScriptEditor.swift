@@ -89,6 +89,15 @@ class ScriptEditor
         }
     }
     
+    func setReadOnly(_ readOnly: Bool = false)
+    {
+        webView.evaluateJavaScript(
+            """
+            editor.setReadOnly(\(readOnly));
+            """, completionHandler: { (value, error) in
+         })
+    }
+    
     func getAssetValue(_ asset: Asset,_ cb: @escaping (String)->() )
     {
         webView.evaluateJavaScript(
