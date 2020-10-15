@@ -462,6 +462,7 @@ struct ContentView: View {
                                alignment: .topTrailing)
                         .opacity(document.game.state == .Running ? 1 : document.game.previewOpacity)
                         .animation(.default)
+                        .allowsHitTesting(document.game.state == .Running)
                 
                     VStack {
                         if document.game.assetFolder.current!.type == .Image {
