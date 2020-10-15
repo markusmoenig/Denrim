@@ -337,26 +337,26 @@ class Map
                 if instShape.options.visible.toSIMD() == false { continue }
                 
                 if instShape.shape == .Disk {
-                    drawDisk(instShape.options, aspect: aspect)
+                    drawDisk(instShape.options)
                 } else
                 if instShape.shape == .Box {
-                    drawBox(instShape.options, aspect: aspect)
+                    drawBox(instShape.options)
                 } else
                 if instShape.shape == .Text {
-                    drawText(instShape.options, aspect: aspect)
+                    drawText(instShape.options)
                 }
             }
         } else {
             if shape.options.visible.toSIMD() == false { return }
             
             if shape.shape == .Disk {
-                drawDisk(shape.options, aspect: aspect)
+                drawDisk(shape.options)
             } else
             if shape.shape == .Box {
-                drawBox(shape.options, aspect: aspect)
+                drawBox(shape.options)
             } else
             if shape.shape == .Text {
-                drawText(shape.options, aspect: aspect)
+                drawText(shape.options)
             }
         }
     }
@@ -450,7 +450,7 @@ class Map
     }
     
     /// Draw a Disk
-    func drawDisk(_ options: MapShapeData2D, aspect: float3)
+    func drawDisk(_ options: MapShapeData2D)
     {
         var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
         let radius : Float = options.radius.x * aspect.z
@@ -489,7 +489,7 @@ class Map
     }
     
     /// Draw a Box
-    func drawBox(_ options: MapShapeData2D, aspect: float3)
+    func drawBox(_ options: MapShapeData2D)
     {
         var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
         let size : SIMD2<Float> = float2(options.size.x * aspect.x, options.size.y * aspect.y)
@@ -518,6 +518,7 @@ class Map
         
         let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
 
+        /*
         if rotation == 0 {
             let rect = MMRect(position.x, position.y, data.size.x, data.size.y, scale: game.scaleFactor)
             let vertexData = game.createVertexData(texture: texture, rect: rect)
@@ -527,7 +528,7 @@ class Map
             renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBox))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
-        } else {
+        } else {*/
             data.pos.x = position.x
             data.pos.y = position.y
             data.rotation = rotation.degreesToRadians
@@ -542,12 +543,12 @@ class Map
             renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBoxExt))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
-        }
+        //}
         renderEncoder.endEncoding()
     }
     
     /// Draws the given text
-    func drawText(_ options: MapShapeData2D, aspect: float3)
+    func drawText(_ options: MapShapeData2D)
     {
         let position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
         let size : Float = options.text.fontSize * aspect.z

@@ -70,8 +70,10 @@ fragment float4 m4mDiscDrawable(RasterizerData in [[stage_in]],
     if (data->onion > 0.0)
         dist = abs(dist) - data->onion;
     
-    float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
-    col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
+    //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
+    float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, smoothstep(0.0, -0.1, dist) * data->fillColor.w );
+    //col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
+    col = mix( col, data->borderColor, 1.0-smoothstep(0.0, data->borderSize, abs(dist)) );
     
     return col;
 }
@@ -89,9 +91,10 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
     if (data->onion > 0.0)
         dist = abs(dist) - data->onion;
     
-    float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
-    col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
-    
+    //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
+    float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, smoothstep(0.0, -0.1, dist) * data->fillColor.w );
+    //col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
+    col = mix( col, data->borderColor, 1.0-smoothstep(0.0, data->borderSize, abs(dist)) );
     return col;
 }
 
@@ -112,8 +115,10 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
     if (data->onion > 0.0)
         dist = abs(dist) - data->onion;
     
-    float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
-    col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
+    //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
+    float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, smoothstep(0.0, -0.1, dist) * data->fillColor.w );
+    //col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
+    col = mix( col, data->borderColor, 1.0-smoothstep(0.0, data->borderSize, abs(dist)) );
     
     return col;
 }

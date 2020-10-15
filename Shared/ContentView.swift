@@ -41,7 +41,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView() {
-            List {
+            List {/*
                 #if os(OSX)
                 Section(header: Text("Behavior")) {
                     ForEach(document.game.assetFolder.assets, id: \.id) { asset in
@@ -115,7 +115,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                #else
+                #else*/
                 //Section(header: Text("Behavior")) {
                 DisclosureGroup("Behavior", isExpanded: $showBehaviorItems) {
                     ForEach(document.game.assetFolder.assets, id: \.id) { asset in
@@ -188,7 +188,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                #endif
+                //#endif
             }
             .frame(minWidth: 160, idealWidth: 200, maxWidth: 200)
             .layoutPriority(0)
@@ -641,6 +641,12 @@ struct ContentView: View {
                     }
             }
             .layoutPriority(2)
+            */
+            /*
+            List {
+            }
+            .frame(minWidth: 160, idealWidth: 200, maxWidth: 200)
+            .layoutPriority(0)
             */
         }
     }

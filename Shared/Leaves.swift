@@ -350,7 +350,7 @@ class DistanceToShape: BehaviorNode
                             if inst.1.behaviorAsset.behavior === context {
                                 let distance = distanceToRect(position: position, shape: inst.0, map: map)
                                 if let dest = dest {
-                                    dest.x = distance
+                                    dest.x = distance - inst.0.options.border.x * map.aspect.z
                                     return .Success
                                 } else {
                                     break
@@ -362,7 +362,7 @@ class DistanceToShape: BehaviorNode
                     } else {
                         let distance = distanceToRect(position: position, shape: shape, map: map)
                         if let dest = dest {
-                            dest.x = distance
+                            dest.x = distance - shape.options.border.x * map.aspect.z
                             return .Success
                         }
                     }
