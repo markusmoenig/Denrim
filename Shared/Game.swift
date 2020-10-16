@@ -258,7 +258,7 @@ class Game              : ObservableObject
         }
                 
         let renderPassDescriptor = view.currentRenderPassDescriptor
-        renderPassDescriptor?.colorAttachments[0].loadAction = .dontCare
+        renderPassDescriptor?.colorAttachments[0].loadAction = .load
         let renderEncoder = gameCmdBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor!)
         
         drawTexture(renderEncoder: renderEncoder!)
@@ -346,11 +346,11 @@ class Game              : ObservableObject
     /// Creates vertex data for the given rectangle
     func createVertexData(texture: Texture2D, rect: MMRect) -> [Float]
     {
-        let left = -texture.width / 2 + rect.x
-        let right = left + rect.width//self.width / 2 - x
+        let left: Float  = -texture.width / 2.0 + rect.x
+        let right: Float = left + rect.width//self.width / 2 - x
         
-        let top = texture.height / 2 - rect.y
-        let bottom = top - rect.height
+        let top: Float = texture.height / 2.0 - rect.y
+        let bottom: Float = top - rect.height
 
         let quadVertices: [Float] = [
             right, bottom, 1.0, 0.0,
