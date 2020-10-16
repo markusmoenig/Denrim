@@ -29,6 +29,7 @@ public class DMTKView       : MTKView
         
         mousePos.x = Float(location.x)
         mousePos.y = -Float(location.y)
+        print(mousePos.x, mousePos.y)
     }
     
     override public func keyDown(with event: NSEvent)
@@ -58,6 +59,42 @@ public class DMTKView       : MTKView
         if game.state == .Running {
             mouseIsDown = false
             setMousePos(event)
+        }
+    }
+    #elseif os(iOS)
+    
+    func setMousePos(_ x: Float, _ y: Float)
+    {
+        mousePos.x = x
+        mousePos.y = y
+        
+        mousePos.x /= Float(bounds.width) / game.texture!.width// / game.scaleFactor
+        mousePos.y /= Float(bounds.height) / game.texture!.height// / game.scaleFactor
+    }
+    
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if game.state == .Running {
+            if let touch = touches.first {
+                let point = touch.location(in: self)
+                
+                mouseIsDown = true
+                setMousePos(Float(point.x), Float(point.y))
+            }
+        }
+    }
+    
+    override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            let point = touch.location(in: self)
+            setMousePos(Float(point.x), Float(point.y))
+        }
+    }
+    
+    override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        mouseIsDown = false
+        if let touch = touches.first {
+            let point = touch.location(in: self)
+                setMousePos(Float(point.x), Float(point.y))
         }
     }
     #endif
@@ -138,6 +175,7 @@ struct MetalView: UIViewRepresentable {
     
     func makeUIView(context: UIViewRepresentableContext<MetalView>) -> MTKView {
         let mtkView = DMTKView()
+        mtkView.game = game
         mtkView.delegate = context.coordinator
         mtkView.preferredFramesPerSecond = 60
         mtkView.enableSetNeedsDisplay = true

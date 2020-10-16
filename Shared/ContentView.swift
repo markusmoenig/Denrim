@@ -532,6 +532,8 @@ struct ContentView: View {
                         Label("Stop", systemImage: "stop.fill")
                     }.keyboardShortcut("t")
                     .disabled(document.game.state == .Idle)
+                    
+                    /*
                     Button(action: {
                         if let asset = document.game.assetFolder.current {
                             document.game.createPreview(asset)
@@ -540,6 +542,10 @@ struct ContentView: View {
                         Label("Update", systemImage: "arrow.counterclockwise")
                     }.keyboardShortcut("u")
                     .disabled(document.game.state == .Running || document.game.assetFolder.current?.type != .Shader )
+                    */
+                    
+                    Divider()
+                        .frame(width:50)
                     
                     Menu {
                         Section(header: Text("Preview")) {
@@ -582,7 +588,9 @@ struct ContentView: View {
                         Label("View", systemImage: "viewfinder")
                     }
                     
-                    // Documentation
+                    Divider()
+                        .frame(width:50)
+
                     Button(action: {
                         helpIsVisible.toggle()
                     }) {

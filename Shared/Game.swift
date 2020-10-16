@@ -46,6 +46,9 @@ class Game              : ObservableObject
     var availableFonts  : [String] = ["OpenSans", "Square", "SourceCodePro"]
     var fonts           : [Font] = []
     
+    var _Time           = Float1(0)
+    var targetFPS       : Float = 60
+    
     var gameAsset       : Asset? = nil
     
     var currentMap      : Asset? = nil
@@ -135,6 +138,9 @@ class Game              : ObservableObject
             state = .Running
             view.enableSetNeedsDisplay = false
             view.isPaused = false
+            
+            _Time.x = 0
+            targetFPS = 60
         } else {
             stop()
         }
@@ -149,7 +155,7 @@ class Game              : ObservableObject
         gameAsset = nil
         currentScene = nil
         currentMap = nil
-        
+                
         if let scriptEditor = scriptEditor, assetError.error == nil {
             scriptEditor.clearAnnotations()
         }
@@ -184,6 +190,8 @@ class Game              : ObservableObject
     
     func draw()
     {
+        _Time.x += 1.0 / targetFPS
+
         if checkTexture() && state == .Idle {
             // We need to update the screen
             if assetFolder.current?.type == .Map && assetFolder.current?.map != nil {
