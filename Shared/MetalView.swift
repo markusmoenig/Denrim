@@ -29,7 +29,6 @@ public class DMTKView       : MTKView
         
         mousePos.x = Float(location.x)
         mousePos.y = -Float(location.y)
-        print(mousePos.x, mousePos.y)
     }
     
     override public func keyDown(with event: NSEvent)
@@ -73,13 +72,10 @@ public class DMTKView       : MTKView
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if game.state == .Running {
-            if let touch = touches.first {
-                let point = touch.location(in: self)
-                
-                mouseIsDown = true
-                setMousePos(Float(point.x), Float(point.y))
-            }
+        mouseIsDown = true
+        if let touch = touches.first {
+            let point = touch.location(in: self)
+            setMousePos(Float(point.x), Float(point.y))
         }
     }
     
