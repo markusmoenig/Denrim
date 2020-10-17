@@ -344,6 +344,9 @@ class Texture2D                 : NSObject
         renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
         renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
 
+        var behaviorData = BehaviorData()
+        renderEncoder.setFragmentBytes(&behaviorData, length: MemoryLayout<BehaviorData>.stride, index: 0)
+
         renderEncoder.setRenderPipelineState(shader.pipelineState)
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         renderEncoder.endEncoding()

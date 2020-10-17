@@ -44,8 +44,6 @@
 		2B19C00A251B383C0086239F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C008251B383C0086239F /* Utilities.swift */; };
 		2B2882EA2519E69E00D1AB2D /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
 		2B2882EB2519E69E00D1AB2D /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
-		2B32992124FE3D02007C3386 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992024FE3D02007C3386 /* Shader.swift */; };
-		2B32992224FE3D02007C3386 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992024FE3D02007C3386 /* Shader.swift */; };
 		2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
 		2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
 		2B32992724FF9344007C3386 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992624FF91E1007C3386 /* HelpView.swift */; };
@@ -210,7 +208,6 @@
 		2B09E1E42511A620002DE701 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		2B19C008251B383C0086239F /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2B2882E92519E69E00D1AB2D /* MapStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStructures.swift; sourceTree = "<group>"; };
-		2B32992024FE3D02007C3386 /* Shader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shader.swift; sourceTree = "<group>"; };
 		2B32992324FF21EC007C3386 /* ShaderCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderCompiler.swift; sourceTree = "<group>"; };
 		2B32992624FF91E1007C3386 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		2B3299402501B5DB007C3386 /* Square.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Square.tiff; sourceTree = "<group>"; };
@@ -379,7 +376,6 @@
 			isa = PBXGroup;
 			children = (
 				2B01C88324FB824A00E86449 /* Classes.swift */,
-				2B32992024FE3D02007C3386 /* Shader.swift */,
 				2B6D0C03250B3BF70098F244 /* Physics2D.swift */,
 				2B01C88424FB824A00E86449 /* System.swift */,
 				2B01C87B24FB824900E86449 /* Texture2D.swift */,
@@ -672,7 +668,6 @@
 				2B6D0BAD250B08080098F244 /* b2Contact.swift in Sources */,
 				2B6D0BA3250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
 				2B6D0BDF250B08080098F244 /* b2Wrappers.swift in Sources */,
-				2B32992224FE3D02007C3386 /* Shader.swift in Sources */,
 				2B6D0BB9250B08080098F244 /* b2FrictionJoint.swift in Sources */,
 				2B01C88D24FB824A00E86449 /* ScriptEditor.swift in Sources */,
 				2B6D0BCB250B08080098F244 /* b2TimeStep.swift in Sources */,
@@ -757,7 +752,6 @@
 				2B6D0BAC250B08080098F244 /* b2Contact.swift in Sources */,
 				2B6D0BA2250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
 				2B6D0BDE250B08080098F244 /* b2Wrappers.swift in Sources */,
-				2B32992124FE3D02007C3386 /* Shader.swift in Sources */,
 				2B6D0BB8250B08080098F244 /* b2FrictionJoint.swift in Sources */,
 				2B01C88E24FB824A00E86449 /* ScriptEditor.swift in Sources */,
 				2B6D0BCA250B08080098F244 /* b2TimeStep.swift in Sources */,

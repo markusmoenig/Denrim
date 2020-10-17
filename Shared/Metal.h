@@ -56,4 +56,14 @@ typedef struct
     vector_float4   color;
 } TextUniform;
 
+typedef struct
+{
+    //vector_bool       boolData[10];
+    int             intData[10];
+    float           floatData[10];
+    simd_float2     float2Data[10];
+    simd_float3     float3Data[10];
+    simd_float4     float4Data[10];
+} BehaviorData;
+
 #endif /* Metal_h */

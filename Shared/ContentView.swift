@@ -35,6 +35,9 @@ struct ContentView: View {
     @State private var showShaderItems: Bool = false
     @State private var showImageItems: Bool = false
 
+    @State private var isImportingImages: Bool = false
+    @State private var isAddingImages: Bool = false
+
     @State private var helpText: String = ""
 
     @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
@@ -248,34 +251,7 @@ struct ContentView: View {
                                 updateView.toggle()
                             })
                             Button("New Image(s)", action: {
-                                #if os(OSX)
-                                
-                                let openPanel = NSOpenPanel()
-                                openPanel.canChooseFiles = true
-                                openPanel.allowsMultipleSelection = true
-                                openPanel.canChooseDirectories = false
-                                openPanel.canCreateDirectories = false
-                                openPanel.title = "Select Image(s)"
-                                //openPanel.directoryURL =  containerUrl
-                                openPanel.showsHiddenFiles = false
-                                //openPanel.allowedFileTypes = [appExtension]
-                                
-                                openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
-                                    if response == NSApplication.ModalResponse.OK {
-                                        if openPanel.url != nil {
-                                            document.game.assetFolder.addImages(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls)
-                                            
-                                            //if let asset = document.game.assetFolder.current {
-                                                //assetName = String(asset.name.split(separator: ".")[0])
-                                                //showAssetNamePopover = true
-                                            //}
-                                            scriptIsVisible = false
-                                            updateView.toggle()
-                                        }
-                                    }
-                                    openPanel.close()
-                                }
-                                #endif
+                                isImportingImages = true
                             })
                         }
                         Section(header: Text("Edit Asset")) {
@@ -302,29 +278,7 @@ struct ContentView: View {
                                 } else
                                 if asset.type == .Image {
                                     Button(action: {
-                                        #if os(OSX)
-                                        
-                                        let openPanel = NSOpenPanel()
-                                        openPanel.canChooseFiles = true
-                                        openPanel.allowsMultipleSelection = true
-                                        openPanel.canChooseDirectories = false
-                                        openPanel.canCreateDirectories = false
-                                        openPanel.title = "Select Image(s)"
-                                        //openPanel.directoryURL =  containerUrl
-                                        openPanel.showsHiddenFiles = false
-                                        //openPanel.allowedFileTypes = [appExtension]
-                                        
-                                        openPanel.beginSheetModal(for:document.game.view.window!) { (response) in
-                                            if response == NSApplication.ModalResponse.OK {
-                                                if openPanel.url != nil {
-                                                    document.game.assetFolder.addImages(openPanel.url!.deletingPathExtension().lastPathComponent, openPanel.urls, existingAsset: document.game.assetFolder.current)
-                                                    scriptIsVisible = false
-                                                    updateView.toggle()
-                                                }
-                                            }
-                                            openPanel.close()
-                                        }
-                                        #endif
+                                        isAddingImages = true
                                     })
                                     {
                                         Label("Add to Group", systemImage: "plus")
@@ -357,6 +311,24 @@ struct ContentView: View {
                     }
                 }
 
+            }
+            // Import Images
+            .fileImporter(
+                isPresented: $isImportingImages,
+                allowedContentTypes: [.item],
+                allowsMultipleSelection: true
+            ) { result in
+                do {
+                    let selectedFiles = try result.get()
+                    if selectedFiles.count > 0 {
+                        document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
+
+                        scriptIsVisible = false
+                        updateView.toggle()
+                    }
+                } catch {
+                    // Handle failure.
+                }
             }
             /*
             GeometryReader { g in
@@ -606,6 +578,24 @@ struct ContentView: View {
                     document.game.scriptEditor?.setError(self.document.game.assetError, scrollToError: true)
                 }
                 self.updateView.toggle()
+            }
+            // Adding Images
+            .fileImporter(
+                isPresented: $isAddingImages,
+                allowedContentTypes: [.item],
+                allowsMultipleSelection: true
+            ) { result in
+                do {
+                    let selectedFiles = try result.get()
+                    if selectedFiles.count > 0 {
+                        document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles, existingAsset: document.game.assetFolder.current)
+
+                        scriptIsVisible = false
+                        updateView.toggle()
+                    }
+                } catch {
+                    // Handle failure.
+                }
             }
             /*
             ZStack() {

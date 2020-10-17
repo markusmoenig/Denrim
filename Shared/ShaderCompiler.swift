@@ -7,6 +7,30 @@
 
 import MetalKit
 
+class Shader                : NSObject
+{
+    var isValid             : Bool = false
+    var pipelineStateDesc   : MTLRenderPipelineDescriptor!
+    var pipelineState       : MTLRenderPipelineState!
+    
+    var intVar              : [String: Int] = [:]
+    var floatVar            : [String: Int] = [:]
+    var float2Var           : [String: Int] = [:]
+    var float3Var           : [String: Int] = [:]
+    var float4Var           : [String: Int] = [:]
+
+    deinit {
+        print("release shader")
+        pipelineStateDesc = nil
+        pipelineState = nil
+    }
+    
+    override init()
+    {
+        super.init()
+    }
+}
+
 class ShaderCompiler
 {
     let game            : Game
@@ -15,66 +39,21 @@ class ShaderCompiler
     {
         self.game = game
     }
-    /*
-    func compile(_ object: [AnyHashable:Any],_ promise: JSPromise)
-    {
-        var code = getHeaderCode()
-        code += asset.value
-        
-        let params = "RasterizerData in [[stage_in]]"
-        
-        code = code.replacingOccurrences(of: "AutoParameters", with: params)
-                
-        let compiledCB : MTLNewLibraryCompletionHandler = { (library, error) in
-            if let error = error, library == nil {
-                promise.fail(error: error.localizedDescription)
-            } else
-            if let library = library {
-                
-                let shader = Shader()
-                
-                shader.pipelineStateDesc = MTLRenderPipelineDescriptor()
-                shader.pipelineStateDesc.vertexFunction = library.makeFunction(name: "procVertex")
-                shader.pipelineStateDesc.fragmentFunction = library.makeFunction(name: "shaderMain")
-                shader.pipelineStateDesc.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
-                
-                shader.pipelineStateDesc.colorAttachments[0].isBlendingEnabled = true
-                shader.pipelineStateDesc.colorAttachments[0].rgbBlendOperation = .add
-                shader.pipelineStateDesc.colorAttachments[0].alphaBlendOperation = .add
-                shader.pipelineStateDesc.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
-                shader.pipelineStateDesc.colorAttachments[0].sourceAlphaBlendFactor = .sourceAlpha
-                shader.pipelineStateDesc.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
-                shader.pipelineStateDesc.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
-                
-                do {
-                    shader.pipelineState = try self.game.device.makeRenderPipelineState(descriptor: shader.pipelineStateDesc)
-                    shader.isValid = true
-                    
-                    promise.success(value: shader)
-
-                    /*
-                    let testBlock : @convention(block) (JSValue?) -> Void = { calledBackValue in
-                        print("calledBackValue:", calledBackValue)
-                    }*/
-
-                } catch {
-                    shader.isValid = false
-                }
-            }
-        }
-        
-        game.device.makeLibrary( source: code, options: nil, completionHandler: compiledCB)
-    }
-    */
     
     func compile(_ asset: Asset, _ cb: @escaping (Shader?, [CompileError]) -> ())
     {
         var code = getHeaderCode()
         code += asset.value
-        
-        let params = "RasterizerData in [[stage_in]]"
-        
-        code = code.replacingOccurrences(of: "AutoParameters", with: params)
+        /*
+        let p1 = " in [[stage_in]])"
+        code = code.replacingOccurrences(of: " in)", with: p1)
+            
+        let p2 = "constant BehaviorData"
+        code = code.replacingOccurrences(of: "BehaviorData", with: p2)
+
+        let p3 = "*behavior [[ buffer(0) ]]"
+        code = code.replacingOccurrences(of: "*behavior", with: p3)
+        */
                 
         let compiledCB : MTLNewLibraryCompletionHandler = { (library, error) in
             if let error = error, library == nil {
@@ -158,6 +137,16 @@ class ShaderCompiler
             float2 textureCoordinate;
             float2 viewportSize;
         } RasterizerData;
+
+        typedef struct
+        {
+            //vector_bool       boolData[10];
+            int             intData[10];
+            float           floatData[10];
+            simd_float2     float2Data[10];
+            simd_float3     float3Data[10];
+            simd_float4     float4Data[10];
+        } BehaviorData;
 
         typedef struct
         {
