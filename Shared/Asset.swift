@@ -191,7 +191,7 @@ class AssetFolder   : Codable
             game.mapBuilder.compile(asset)//, deltaStart: deltaStart, deltaEnd: deltaEnd)
         } else
         if asset.type == .Shader {
-            game.shaderCompiler.compile(asset, { (shader, errors) in
+            game.shaderCompiler.compile(asset: asset, cb: { (shader, errors) in
                 if shader == nil {
                     if Thread.isMainThread {
                         self.game.scriptEditor!.setErrors(errors)

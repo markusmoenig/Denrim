@@ -293,8 +293,20 @@ class MapBuilder
             if let shaderName = options["name"] as? String {
                 if let asset = game.assetFolder.getAsset(shaderName, .Shader) {
                     var mapShader = MapShader(options: options)
-                    game.shaderCompiler.compile(asset, { (shader, errors) in
+                    var behaviorContext : BehaviorContext? = nil
+                    
+                    if let behaviorId = options["behaviorid"] as? String {
+                        if let behavior = map.behavior[behaviorId] {
+                            behaviorContext = behavior.behaviorAsset.behavior
+                        } else { error.error = "Could not find behavior '\(behaviorId)'" }
+                    }
+                    
+                    game.shaderCompiler.compile(asset: asset, behavior: behaviorContext, cb: { (shader, errors) in
                         mapShader.shader = shader
+                        if errors.count != 0 {
+                            print("Shader failed", errors[0].error!)
+                            //error.error = "Referenced behavior contains errors"
+                        }
                     })
                     map.shaders[variable] = mapShader
                     setLine(variable)

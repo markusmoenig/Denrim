@@ -13,11 +13,13 @@ class Shader                : NSObject
     var pipelineStateDesc   : MTLRenderPipelineDescriptor!
     var pipelineState       : MTLRenderPipelineState!
     
-    var intVar              : [String: Int] = [:]
-    var floatVar            : [String: Int] = [:]
-    var float2Var           : [String: Int] = [:]
-    var float3Var           : [String: Int] = [:]
-    var float4Var           : [String: Int] = [:]
+    var hasBindings         : Bool = false
+    
+    var intVar              : [String: (Int, Any)] = [:]
+    var floatVar            : [String: (Int, Any)] = [:]
+    var float2Var           : [String: (Int, Any)] = [:]
+    var float3Var           : [String: (Int, Any)] = [:]
+    var float4Var           : [String: (Int, Any)] = [:]
 
     deinit {
         print("release shader")
@@ -40,10 +42,17 @@ class ShaderCompiler
         self.game = game
     }
     
-    func compile(_ asset: Asset, _ cb: @escaping (Shader?, [CompileError]) -> ())
+    func compile(asset: Asset, behavior: BehaviorContext? = nil, cb: @escaping (Shader?, [CompileError]) -> ())
     {
         var code = getHeaderCode()
         code += asset.value
+        
+        var ns = self.getHeaderCode() as NSString
+        var lineNumbers  : Int32 = 0
+        
+        ns.enumerateLines { (str, _) in
+            lineNumbers += 1
+        }
         /*
         let p1 = " in [[stage_in]])"
         code = code.replacingOccurrences(of: " in)", with: p1)
@@ -55,16 +64,85 @@ class ShaderCompiler
         code = code.replacingOccurrences(of: "*behavior", with: p3)
         */
                 
+        var parseErrors: [CompileError] = []
+        let shader = Shader()
+
+        func createError(_ errorText: String = "Syntax Error", line: Int32) {
+            var error = CompileError()
+            error.asset = asset
+            error.line = line - lineNumbers
+            error.column = 0
+            error.error = errorText
+            error.type = "error"
+            parseErrors.append(error)
+        }
+        
+        var parsedCode = ""
+        ns = code as NSString
+        var lineNr : Int32 = 0
+        
+        ns.enumerateLines { (str, _) in
+            if str.contains("behavior.") {
+                let array = str.split(separator: " ")
+                if array.count == 6 && array[2] == "=>" {
+                    var out = array[0] + " " + array[1] + " = "
+                    
+                    if let behavior = behavior {
+                        shader.hasBindings = true
+                        let nameArray = String(array[3]).split(separator: ".")
+                        if nameArray.count == 2 {
+                            let varName = String(nameArray[1])
+                            if let value = behavior.getVariableValue(varName) {
+                                // Bind the value of the referenced varName
+                                let varType = String(array[0])
+                                
+                                if varType == "float" && value as? Float1 != nil {
+                                    let index : Int = shader.floatVar.count
+                                    shader.floatVar[varName] = (index, value)
+                                    out += "behavior.floatData[\(index)];"
+                                }
+                                
+                                else {
+                                    createError("Variable type '\(varType)' does not much type of variable in behavior", line: lineNr)
+                                    parsedCode += str + "\n"
+                                }
+                            } else {
+                                createError("Could not find variable '\(varName)' in behavior", line: lineNr)
+                                parsedCode += str + "\n"
+                            }
+                        } else {
+                            createError(line: lineNr)
+                            parsedCode += str + "\n"
+                        }
+                    } else {
+                        // No behavior, just use default value
+                        out += array[5]
+                    }
+                    
+                    print(out)
+
+                    parsedCode += out + "\n"
+                } else {
+                    createError(line: lineNr)
+                    parsedCode += str + "\n"
+                }
+            } else {
+                parsedCode += str + "\n"
+            }
+            
+            lineNr += 1
+        }
+        
+        if parseErrors.count > 0 {            
+            //DispatchQueue.main.async(execute: {
+                cb(nil, parseErrors)
+            //} )
+            return
+        }
+                
         let compiledCB : MTLNewLibraryCompletionHandler = { (library, error) in
             if let error = error, library == nil {
                 var errors: [CompileError] = []
-                
-                let ns = self.getHeaderCode() as NSString
-                var lineNumbers  : Int32 = 0
-                
-                ns.enumerateLines { (str, _) in
-                    lineNumbers += 1
-                }
                 
                 let str = error.localizedDescription
                 let arr = str.components(separatedBy: "program_source:")
@@ -91,9 +169,7 @@ class ShaderCompiler
                 cb(nil, errors)
             } else
             if let library = library {
-                
-                let shader = Shader()
-                
+                                
                 shader.pipelineStateDesc = MTLRenderPipelineDescriptor()
                 shader.pipelineStateDesc.vertexFunction = library.makeFunction(name: "procVertex")
                 shader.pipelineStateDesc.fragmentFunction = library.makeFunction(name: "shaderMain")
@@ -120,7 +196,7 @@ class ShaderCompiler
             }
         }
         
-        game.device.makeLibrary(source: code, options: nil, completionHandler: compiledCB)
+        game.device.makeLibrary(source: parsedCode, options: nil, completionHandler: compiledCB)
     }
     
     func getHeaderCode() -> String

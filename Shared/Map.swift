@@ -370,7 +370,7 @@ class Map
             for shaderName in shs {
                 if let sh = shaders[shaderName] {
                     if let shader = sh.shader {
-                        texture.drawShader(shader, MMRect(0,0,texture.width, texture.height))
+                        drawShader(shader, MMRect(0,0,texture.width, texture.height))
                     }
                 }
             }
@@ -646,5 +646,37 @@ class Map
                 }
             }
         }
+    }
+    
+    /// Draws the given shader
+    func drawShader(_ shader: Shader, _ rect: MMRect)
+    {
+        let vertexData = game.createVertexData(texture: texture, rect: rect)
+        
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = texture.texture!
+        renderPassDescriptor.colorAttachments[0].loadAction = .load
+        
+        let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+
+        renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+        renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+
+        var behaviorData = BehaviorData()
+        
+        if shader.hasBindings {
+            
+            for (_, binding) in shader.floatVar {
+                if let value = binding.1 as? Float1 {
+                    behaviorData.floatData.0 = value.x
+                }
+            }
+        }
+        
+        renderEncoder.setFragmentBytes(&behaviorData, length: MemoryLayout<BehaviorData>.stride, index: 0)
+
+        renderEncoder.setRenderPipelineState(shader.pipelineState)
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+        renderEncoder.endEncoding()
     }
 }
