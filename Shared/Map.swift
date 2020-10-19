@@ -35,7 +35,7 @@ class Map
     // Have to be set!
     var game                : Game!
     var texture             : Texture2D!
-    var aspect              : float3!
+    var aspect              : Float3!
     
     deinit {
         clear()
@@ -67,10 +67,13 @@ class Map
         self.game = game
         self.texture = game.texture
         
-        aspect = float3(texture.width, texture.height, 0)
+        aspect = Float3(texture.width, texture.height, 0)
         aspect.x /= 100.0
         aspect.y /= 100.0
         aspect.z = min(aspect.x, aspect.y)
+        
+        game._Aspect.x = aspect.x
+        game._Aspect.y = aspect.y        
     }
     
     /*
@@ -664,11 +667,76 @@ class Map
 
         var behaviorData = BehaviorData()
         
-        if shader.hasBindings {
-            
+        if shader.hasBindings {            
+            for (_, binding) in shader.intVar {
+                if let value = binding.1 as? Int1 {
+                    if binding.0 == 0 { behaviorData.intData.0 = Int32(value.x) }
+                    else if binding.0 == 1 { behaviorData.intData.1 = Int32(value.x) }
+                    else if binding.0 == 2 { behaviorData.intData.2 = Int32(value.x) }
+                    else if binding.0 == 3 { behaviorData.intData.3 = Int32(value.x) }
+                    else if binding.0 == 4 { behaviorData.intData.4 = Int32(value.x) }
+                    else if binding.0 == 5 { behaviorData.intData.5 = Int32(value.x) }
+                    else if binding.0 == 6 { behaviorData.intData.6 = Int32(value.x) }
+                    else if binding.0 == 7 { behaviorData.intData.7 = Int32(value.x) }
+                    else if binding.0 == 8 { behaviorData.intData.8 = Int32(value.x) }
+                    else if binding.0 == 9 { behaviorData.intData.9 = Int32(value.x) }
+                }
+            }
             for (_, binding) in shader.floatVar {
                 if let value = binding.1 as? Float1 {
-                    behaviorData.floatData.0 = value.x
+                    if binding.0 == 0 { behaviorData.floatData.0 = value.x }
+                    else if binding.0 == 1 { behaviorData.floatData.1 = value.x }
+                    else if binding.0 == 2 { behaviorData.floatData.2 = value.x }
+                    else if binding.0 == 3 { behaviorData.floatData.3 = value.x }
+                    else if binding.0 == 4 { behaviorData.floatData.4 = value.x }
+                    else if binding.0 == 5 { behaviorData.floatData.5 = value.x }
+                    else if binding.0 == 6 { behaviorData.floatData.6 = value.x }
+                    else if binding.0 == 7 { behaviorData.floatData.7 = value.x }
+                    else if binding.0 == 8 { behaviorData.floatData.8 = value.x }
+                    else if binding.0 == 9 { behaviorData.floatData.9 = value.x }
+                }
+            }
+            for (_, binding) in shader.float2Var {
+                if let value = binding.1 as? Float2 {
+                    if binding.0 == 0 { behaviorData.float2Data.0 = value.toSIMD() }
+                    else if binding.0 == 1 { behaviorData.float2Data.1 = value.toSIMD() }
+                    else if binding.0 == 2 { behaviorData.float2Data.2 = value.toSIMD() }
+                    else if binding.0 == 3 { behaviorData.float2Data.3 = value.toSIMD() }
+                    else if binding.0 == 4 { behaviorData.float2Data.4 = value.toSIMD() }
+                    else if binding.0 == 5 { behaviorData.float2Data.5 = value.toSIMD() }
+                    else if binding.0 == 6 { behaviorData.float2Data.6 = value.toSIMD() }
+                    else if binding.0 == 7 { behaviorData.float2Data.7 = value.toSIMD() }
+                    else if binding.0 == 8 { behaviorData.float2Data.8 = value.toSIMD() }
+                    else if binding.0 == 9 { behaviorData.float2Data.9 = value.toSIMD() }
+                }
+            }
+            for (_, binding) in shader.float3Var {
+                if let value = binding.1 as? Float3 {
+                    print(value.x, value.y, value.z)
+                    if binding.0 == 0 { behaviorData.float3Data.0 = value.toSIMD() }
+                    else if binding.0 == 1 { behaviorData.float3Data.1 = value.toSIMD() }
+                    else if binding.0 == 2 { behaviorData.float3Data.2 = value.toSIMD() }
+                    else if binding.0 == 3 { behaviorData.float3Data.3 = value.toSIMD() }
+                    else if binding.0 == 4 { behaviorData.float3Data.4 = value.toSIMD() }
+                    else if binding.0 == 5 { behaviorData.float3Data.5 = value.toSIMD() }
+                    else if binding.0 == 6 { behaviorData.float3Data.6 = value.toSIMD() }
+                    else if binding.0 == 7 { behaviorData.float3Data.7 = value.toSIMD() }
+                    else if binding.0 == 8 { behaviorData.float3Data.8 = value.toSIMD() }
+                    else if binding.0 == 9 { behaviorData.float3Data.9 = value.toSIMD() }
+                }
+            }
+            for (_, binding) in shader.float4Var {
+                if let value = binding.1 as? Float4 {
+                    if binding.0 == 0 { behaviorData.float4Data.0 = value.toSIMD() }
+                    else if binding.0 == 1 { behaviorData.float4Data.1 = value.toSIMD() }
+                    else if binding.0 == 2 { behaviorData.float4Data.2 = value.toSIMD() }
+                    else if binding.0 == 3 { behaviorData.float4Data.3 = value.toSIMD() }
+                    else if binding.0 == 4 { behaviorData.float4Data.4 = value.toSIMD() }
+                    else if binding.0 == 5 { behaviorData.float4Data.5 = value.toSIMD() }
+                    else if binding.0 == 6 { behaviorData.float4Data.6 = value.toSIMD() }
+                    else if binding.0 == 7 { behaviorData.float4Data.7 = value.toSIMD() }
+                    else if binding.0 == 8 { behaviorData.float4Data.8 = value.toSIMD() }
+                    else if binding.0 == 9 { behaviorData.float4Data.9 = value.toSIMD() }
                 }
             }
         }

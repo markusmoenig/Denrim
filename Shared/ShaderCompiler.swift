@@ -96,31 +96,45 @@ class ShaderCompiler
                                 // Bind the value of the referenced varName
                                 let varType = String(array[0])
                                 
+                                if varType == "int" && value as? Int1 != nil {
+                                    let index : Int = shader.intVar.count
+                                    shader.intVar[varName] = (index, value)
+                                    out += "behavior.intData[\(index)];"
+                                } else
                                 if varType == "float" && value as? Float1 != nil {
                                     let index : Int = shader.floatVar.count
                                     shader.floatVar[varName] = (index, value)
                                     out += "behavior.floatData[\(index)];"
+                                } else
+                                if varType == "float2" && value as? Float2 != nil {
+                                    let index : Int = shader.float2Var.count
+                                    shader.float2Var[varName] = (index, value)
+                                    out += "behavior.float2Data[\(index)];"
+                                } else
+                                if varType == "float3" && value as? Float3 != nil {
+                                    let index : Int = shader.float3Var.count
+                                    shader.float3Var[varName] = (index, value)
+                                    out += "behavior.float3Data[\(index)];"
+                                } else
+                                if varType == "float4" && value as? Float4 != nil {
+                                    let index : Int = shader.float4Var.count
+                                    shader.float4Var[varName] = (index, value)
+                                    out += "behavior.float4Data[\(index)];"
                                 }
-                                
                                 else {
                                     createError("Variable type '\(varType)' does not much type of variable in behavior", line: lineNr)
-                                    parsedCode += str + "\n"
                                 }
                             } else {
                                 createError("Could not find variable '\(varName)' in behavior", line: lineNr)
-                                parsedCode += str + "\n"
                             }
                         } else {
                             createError(line: lineNr)
-                            parsedCode += str + "\n"
                         }
                     } else {
                         // No behavior, just use default value
                         out += array[5]
                     }
                     
-                    print(out)
-
                     parsedCode += out + "\n"
                 } else {
                     createError(line: lineNr)

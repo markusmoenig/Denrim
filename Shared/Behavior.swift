@@ -96,8 +96,11 @@ class BehaviorContext
     func getVariableValue(_ name: String, tree: BehaviorTree? = nil) -> Any?
     {
         // Globals
-        if name == "_Time" {
+        if name == "Time" {
             return game._Time
+        } else
+        if name == "Aspect" {
+            return game._Aspect
         }
         
         // First check the optional tree parameters (if any) as they overrule the context variables

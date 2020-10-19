@@ -47,6 +47,7 @@ class Game              : ObservableObject
     var fonts           : [Font] = []
     
     var _Time           = Float1(0)
+    var _Aspect          = Float2(1,1)
     var targetFPS       : Float = 60
     
     var gameAsset       : Asset? = nil
@@ -63,7 +64,7 @@ class Game              : ObservableObject
     
     var assetError      = CompileError()
     let gameError       = PassthroughSubject<Void, Never>()
-
+    
     init()
     {
         viewportSize = vector_uint2( 0, 0 )
@@ -140,6 +141,8 @@ class Game              : ObservableObject
             view.isPaused = false
             
             _Time.x = 0
+            _Aspect.x = 1
+            _Aspect.y = 1
             targetFPS = 60
         } else {
             stop()
