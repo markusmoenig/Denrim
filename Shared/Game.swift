@@ -111,6 +111,9 @@ class Game              : ObservableObject
         
         assetError.error = nil
         state = .Running
+        
+        _Aspect.x = 1
+        _Aspect.y = 1
 
         var hasError: Bool = false
         for asset in assetFolder.assets {
@@ -141,8 +144,6 @@ class Game              : ObservableObject
             view.isPaused = false
             
             _Time.x = 0
-            _Aspect.x = 1
-            _Aspect.y = 1
             targetFPS = 60
         } else {
             stop()

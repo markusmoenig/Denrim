@@ -73,7 +73,7 @@ class Map
         aspect.z = min(aspect.x, aspect.y)
         
         game._Aspect.x = aspect.x
-        game._Aspect.y = aspect.y        
+        game._Aspect.y = aspect.y
     }
     
     /*
