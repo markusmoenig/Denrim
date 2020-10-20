@@ -49,6 +49,7 @@ class SetScene: BehaviorNode
                                 game.currentMap = asset
                                 game.currentScene = scene
                                 map.setup(game: game)
+                                map.createPhysics()
                                 // Add Game Behavior
                                 let gameBehavior = MapBehavior(behaviorAsset: game.gameAsset!, name: "game", options: [:])
                                 map.behavior["game"] = gameBehavior

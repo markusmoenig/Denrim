@@ -565,7 +565,7 @@ class MapBuilder
 
         // Iterate over options
         for (n,v) in options {
-            if n != "type" && n != "text" && n != "font" {
+            if n != "type" && n != "text" && n != "font" && n != "physics" {
                 if let varRef = v as? String {
                     isValid = checkVarRef(varRef, n)
                     if isValid == false {

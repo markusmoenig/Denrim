@@ -36,7 +36,8 @@ class Map
     var game                : Game!
     var texture             : Texture2D!
     var aspect              : Float3!
-    
+    var viewBorder          : Float2!
+
     deinit {
         clear()
         resources = [:]
@@ -67,13 +68,70 @@ class Map
         self.game = game
         self.texture = game.texture
         
-        aspect = Float3(texture.width, texture.height, 0)
-        aspect.x /= 100.0
-        aspect.y /= 100.0
-        aspect.z = min(aspect.x, aspect.y)
+        let screenSize = getScreenSize()
         
+        let scale: Float = min(texture.width / screenSize.x, texture.height / screenSize.y)
+        let scaledWidth: Float = screenSize.x * scale
+        let scaledHeight: Float = screenSize.y * scale
+
+        viewBorder = Float2((texture.width - scaledWidth) / 2.0, (texture.height - scaledHeight) / 2.0)
+
+        aspect = Float3(texture.width, texture.height, 0)
+        aspect.x = (scaledWidth / 100.0)
+        aspect.y = (scaledHeight / 100.0)
+        aspect.z = min(aspect.x, aspect.y)
+                
         game._Aspect.x = aspect.x
         game._Aspect.y = aspect.y
+    }
+    
+    func createPhysics()
+    {
+        // Create the Physics2D instances
+        for (physicsName, physics) in physics2D {
+            var gravity = b2Vec2(0.0, -10.0)
+            if let gravityOption = physics.options["gravity"] as? Float2 {
+                gravity.x = gravityOption.x
+                gravity.y = gravityOption.y
+            }
+            gravity.y = -gravity.y
+            physics2D[physicsName]!.world = b2World(gravity: gravity)
+        }
+        
+        // Parse the 2D shapes and add them to the right physics world
+        for (shapeName, shape) in shapes2D {
+            if let physicsName = shape.originalOptions["physics"] as? String {
+                if let physics2D = physics2D[physicsName] {
+                    
+                    let ppm = physics2D.ppm
+                    // Define the dynamic body. We set its position and call the body factory.
+                    let bodyDef = b2BodyDef()
+
+                    let polyShape = b2PolygonShape()
+                    polyShape.setAsBox(halfWidth: shape.options.size.x / ppm, halfHeight: shape.options.size.y / ppm)
+
+                    let fixtureDef = b2FixtureDef()
+                    fixtureDef.shape = polyShape
+                    
+                    if shapeName == "floorShape" {
+                        
+                        bodyDef.type = b2BodyType.staticBody
+                        //polyShape.setAsBox(halfWidth: shape.options.size.x / ppm, halfHeight: shape.options.size.y / ppm)
+                    } else {
+                        bodyDef.type = b2BodyType.dynamicBody
+                        fixtureDef.density = 1.0
+                        //fixtureDef.restitution = 1.0
+                    }
+                    
+                    bodyDef.position.set(shape.options.position.x / ppm, shape.options.position.y / ppm)
+
+                    print("found 2d physcs for shape", shapeName)
+                    
+                    shapes2D[shapeName]?.body = physics2D.world!.createBody(bodyDef)
+                    shapes2D[shapeName]?.body!.createFixture(fixtureDef)
+                }
+            }
+        }
     }
     
     /*
@@ -412,6 +470,30 @@ class Map
     
     func drawScene(_ x: Float,_ y: Float,_ scene: MapScene, scale: Float = 1)
     {
+        for (_, physics2D) in physics2D {
+        
+            let timeStep: b2Float = 1.0 / 60.0
+            let velocityIterations = 6
+            let positionIterations = 2
+        
+            physics2D.world!.step(timeStep: timeStep, velocityIterations: velocityIterations, positionIterations: positionIterations)
+            
+            let ppm = physics2D.ppm
+
+            for (shapeName, shape) in shapes2D {
+                if let body = shape.body {
+                    //print(shapeName, body.position.x, body.position.y)
+                    shape.options.position.x = body.position.x * ppm// * game._Aspect.x
+                    shape.options.position.y = body.position.y * ppm// * game._Aspect.y
+                    if shapeName == "floorShape" {
+                        //shape.options.position.y += shape.options.size.y / ppm
+                    }
+                    //object.positionValue?.value.setValue(body.position.x * ppm, forProperty: "x")
+                    //object.positionValue?.value.setValue(body.position.y * ppm, forProperty: "y")
+                }
+            }
+        }
+        
         if let sceneLayers = scene.options["layers"] as? [String] {
             for l in sceneLayers {
                 if let layer = layers[l] {
@@ -430,7 +512,7 @@ class Map
     }
     
     func getScreenSize() -> Float2 {
-        var size = Float2(640, 480)
+        var size = Float2(texture.width, texture.height)
 
         var name = "Desktop"
         #if os(iOS)
@@ -463,6 +545,9 @@ class Map
         let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
         
         //position.y = -position.y
+        position.x += viewBorder.x
+        position.y += viewBorder.y
+
         position.x /= game.scaleFactor
         position.y /= game.scaleFactor
         
@@ -504,6 +589,10 @@ class Map
         let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
 
         //position.y = -position.y;
+        
+        position.x += viewBorder.x
+        position.y += viewBorder.y
+        
         position.x /= game.scaleFactor
         position.y /= game.scaleFactor
 
@@ -553,12 +642,15 @@ class Map
     /// Draws the given text
     func drawText(_ options: MapShapeData2D)
     {
-        let position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
+        var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
         let size : Float = options.text.fontSize * aspect.z
         let font : Font? = options.text.font
         var text : String = ""
         let color : SIMD4<Float> = options.color.toSIMD()
 
+        position.x += viewBorder.x
+        position.y += viewBorder.y
+        
         if let t = options.text.text {
             text = t
         } else
@@ -712,7 +804,6 @@ class Map
             }
             for (_, binding) in shader.float3Var {
                 if let value = binding.1 as? Float3 {
-                    print(value.x, value.y, value.z)
                     if binding.0 == 0 { behaviorData.float3Data.0 = value.toSIMD() }
                     else if binding.0 == 1 { behaviorData.float3Data.1 = value.toSIMD() }
                     else if binding.0 == 2 { behaviorData.float3Data.2 = value.toSIMD() }

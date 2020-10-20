@@ -38,9 +38,6 @@ struct MapLayer {
 }
 
 struct MapBehavior {
-
-    var body            : b2Body? = nil
-    
     var behaviorAsset   : Asset
     
     var name            : String = ""
@@ -143,12 +140,16 @@ struct MapShapeData2D {
 }
 
 struct MapShape2D {
+    
     enum Shapes {
         case Disk, Box, Text
     }
+    
     var shape           : Shapes
     var options         : MapShapeData2D
     var originalOptions : [String:Any]
+
+    var body            : b2Body? = nil
 
     var grid            : MapGridInstance2D? = nil
 }
