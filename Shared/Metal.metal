@@ -115,6 +115,8 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
     if (data->onion > 0.0)
         dist = abs(dist) - data->onion;
     
+    //float pixelSize = 1.0 / data->screenSize.y;
+    
     //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
     float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, smoothstep(0.0, -0.1, dist) * data->fillColor.w );
     //col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );

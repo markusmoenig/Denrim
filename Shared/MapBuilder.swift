@@ -36,7 +36,8 @@ class MapBuilder
         case GridInstance2D = "GridInstance2D" // GridInstance
 
         // Commands
-        case ScreenSize = "ScreenSize"
+        case CanvasSize = "CanvasSize"
+        case ApplyPhysics2D = "ApplyPhysics2D"
     }
     
     init(_ game: Game)
@@ -410,9 +411,9 @@ class MapBuilder
     {
         //print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid"]
+        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body"]
         let integerOptions = ["index", "int", "digits"]
-        let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border"]
+        let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density"]
         let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size", "float2", "offset", "grid"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
         let boolOptions = ["repeatx", "visible"]
