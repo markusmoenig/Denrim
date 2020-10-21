@@ -125,18 +125,18 @@ class Map
                                 
                                 if  fixtureDef.shape == nil {
                                     let polyShape = b2PolygonShape()
-                                    //polyShape.setAsBox(halfWidth: shape2D.options.size.x / 2.0 / ppm, halfHeight: shape2D.options.size.y / 2.0 / ppm, center: b2Vec2(0, shape2D.options.size.y / 4.0 / ppm), angle: 0)
                                     
-                                    polyShape.setAsBox(halfWidth: shape2D.options.size.x / 2.0 / ppm, halfHeight: shape2D.options.size.y / 2.0 / ppm, center: b2Vec2(shape2D.options.size.x / 2.0 / ppm, shape2D.options.size.y / 2.0 / ppm), angle: 0)
-
-                                    //if bodyDef.type == b2BodyType.staticBody {
-                                        //let chainShape = b2ChainShape()
-                                        //chainShape.createChain(vertices: [b2Vec2(0, (-50.0 + 60.0) / ppm), b2Vec2(100 / ppm, (-50.0 + 60.0) / ppm)])
-                                        //fixtureDef.shape = chainShape
-                                        //polyShape.setAsBox(halfWidth: shape2D.options.size.x / 2.0 / ppm, halfHeight: shape2D.options.size.y / 2.0 / ppm, center: b2Vec2(shape2D.options.size.x / 2.0 / ppm, shape2D.options.size.y / 2.0 / ppm /* -shape2D.options.size.y  / ppm)*/), angle: 0)
-                                    //}
-                                    
+                                    polyShape.setAsBox(halfWidth: (shape2D.options.size.x / 2.0) / ppm, halfHeight: (shape2D.options.size.y / 2.0) / ppm, center: b2Vec2((shape2D.options.size.x / 2.0) / ppm, (shape2D.options.size.y / 2.0) / ppm), angle: 0)
                                     fixtureDef.shape = polyShape
+
+                                    /*
+                                    if bodyDef.type == b2BodyType.staticBody {
+                                        let chainShape = b2ChainShape()
+                                        chainShape.createChain(vertices: [b2Vec2(0, (-50.0 + 60.0) / ppm), b2Vec2(100 / ppm, (-50.0 + 60.0) / ppm)])
+                                        fixtureDef.shape = chainShape
+                                        //polyShape.setAsBox(halfWidth: shape2D.options.size.x / 2.0 / ppm, halfHeight: shape2D.options.size.y / 2.0 / ppm, center: b2Vec2(shape2D.options.size.x / 2.0 / ppm, shape2D.options.size.y / 2.0 / ppm /* -shape2D.options.size.y  / ppm)*/), angle: 0)
+                                    }*/
+                                    
                                 }
                                 
                                 if let body = cmd.options["body"] as? String {
@@ -165,11 +165,7 @@ class Map
                                     }
                                 }
                                 
-                                //if bodyDef.type != b2BodyType.staticBody {
-                                bodyDef.position.set((shape2D.options.position.x) / ppm, (-50.0 + shape2D.options.position.y) / ppm)
-                                //}
-                                
-                                print(shapeName, bodyDef.position.x, bodyDef.position.y)
+                                bodyDef.position.set((shape2D.options.position.x) / ppm, (shape2D.options.position.y) / ppm)
                                 
                                 shapes2D[shapeName]?.body = physics2D.world!.createBody(bodyDef)
                                 shapes2D[shapeName]?.body!.createFixture(fixtureDef)
@@ -348,12 +344,9 @@ class Map
 
             for (shapeName, shape) in shapes2D {
                 if let body = shape.body {
-                    print(shapeName, body.position.x, body.position.y)
-                    shape.options.position.x = body.position.x * ppm// - shape.options.size.x / 2.0 * ppm// * game._Aspect.x
-                    shape.options.position.y = body.position.y * ppm + 50.0// - shape.options.size.y / 2.0 * ppm// * game._Aspect.y
+                    shape.options.position.x = body.position.x * ppm
+                    shape.options.position.y = body.position.y * ppm
                     shape.options.rotation.x = body.angle.radiansToDegrees
-                    //object.positionValue?.value.setValue(body.position.x * ppm, forProperty: "x")
-                    //object.positionValue?.value.setValue(body.position.y * ppm, forProperty: "y")
                 }
             }
         }
