@@ -86,6 +86,17 @@ class Map
     
     func createPhysics()
     {
+        class contactListener : b2ContactListener {
+          func beginContact(_ contact : b2Contact) {
+            print("begin")
+          }
+          func endContact(_ contact: b2Contact) {
+            print("end")
+          }
+          func preSolve(_ contact: b2Contact, oldManifold: b2Manifold) {}
+          func postSolve(_ contact: b2Contact, impulse: b2ContactImpulse) {}
+       }
+        
         // Create the Physics2D instances
         for (physicsName, physics) in physics2D {
             var gravity = b2Vec2(0.0, -10.0)
@@ -95,6 +106,7 @@ class Map
             }
             gravity.y = -gravity.y
             physics2D[physicsName]!.world = b2World(gravity: gravity)
+            physics2D[physicsName]!.world?.setContactListener(contactListener())
         }
         
         // Parse the 2D shapes and add them to the right physics world
@@ -118,7 +130,7 @@ class Map
                                     type = type.lowercased()
                                     if type == "disk" {
                                         let circleShape = b2CircleShape()
-                                        circleShape.radius = shape2D.options.radius.x * 2.0 / ppm
+                                        circleShape.radius = shape2D.options.radius.x / ppm - circleShape.m_radius
                                         fixtureDef.shape = circleShape
                                     }
                                 }

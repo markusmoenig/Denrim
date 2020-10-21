@@ -109,6 +109,8 @@ struct MapShapeData2D {
         
         if let radius = options["radius"] as? Float1 {
             self.radius = radius
+            self.size.x = radius.x * 2.0
+            self.size.y = radius.x * 2.0
         } else {
             self.radius = Float1(1)
         }
