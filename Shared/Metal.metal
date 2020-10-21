@@ -120,7 +120,7 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
     //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
     float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, smoothstep(0.0, -0.1, dist) * data->fillColor.w );
     //col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
-    col = mix( col, data->borderColor, 1.0-smoothstep(0.0, data->borderSize, abs(dist)) );
+    col = mix( col, data->borderColor, smoothstep(data->borderSize, 0.0, abs(dist)) );
     
     return col;
 }

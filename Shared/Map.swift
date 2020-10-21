@@ -112,7 +112,7 @@ class Map
                                 bodyDef.type = b2BodyType.staticBody
 
                                 let fixtureDef = b2FixtureDef()
-                                fixtureDef.shape = nil//polyShape
+                                fixtureDef.shape = nil
 
                                 if var type = shape2D.originalOptions["type"] as? String {
                                     type = type.lowercased()
@@ -126,17 +126,8 @@ class Map
                                 if  fixtureDef.shape == nil {
                                     let polyShape = b2PolygonShape()
                                     
-                                    polyShape.setAsBox(halfWidth: (shape2D.options.size.x / 2.0) / ppm, halfHeight: (shape2D.options.size.y / 2.0) / ppm, center: b2Vec2((shape2D.options.size.x / 2.0) / ppm, (shape2D.options.size.y / 2.0) / ppm), angle: 0)
+                                    polyShape.setAsBox(halfWidth: (shape2D.options.size.x / 2.0) / ppm - polyShape.m_radius, halfHeight: (shape2D.options.size.y / 2.0) / ppm - polyShape.m_radius)
                                     fixtureDef.shape = polyShape
-
-                                    /*
-                                    if bodyDef.type == b2BodyType.staticBody {
-                                        let chainShape = b2ChainShape()
-                                        chainShape.createChain(vertices: [b2Vec2(0, (-50.0 + 60.0) / ppm), b2Vec2(100 / ppm, (-50.0 + 60.0) / ppm)])
-                                        fixtureDef.shape = chainShape
-                                        //polyShape.setAsBox(halfWidth: shape2D.options.size.x / 2.0 / ppm, halfHeight: shape2D.options.size.y / 2.0 / ppm, center: b2Vec2(shape2D.options.size.x / 2.0 / ppm, shape2D.options.size.y / 2.0 / ppm /* -shape2D.options.size.y  / ppm)*/), angle: 0)
-                                    }*/
-                                    
                                 }
                                 
                                 if let body = cmd.options["body"] as? String {
@@ -165,7 +156,7 @@ class Map
                                     }
                                 }
                                 
-                                bodyDef.position.set((shape2D.options.position.x) / ppm, (shape2D.options.position.y) / ppm)
+                                bodyDef.position.set((shape2D.options.position.x + shape2D.options.size.x / 2.0) / ppm, (shape2D.options.position.y + shape2D.options.size.y / 2.0) / ppm)
                                 
                                 shapes2D[shapeName]?.body = physics2D.world!.createBody(bodyDef)
                                 shapes2D[shapeName]?.body!.createFixture(fixtureDef)
@@ -342,10 +333,10 @@ class Map
             
             let ppm = physics2D.ppm
 
-            for (shapeName, shape) in shapes2D {
+            for (_, shape) in shapes2D {
                 if let body = shape.body {
-                    shape.options.position.x = body.position.x * ppm
-                    shape.options.position.y = body.position.y * ppm
+                    shape.options.position.x = body.position.x * ppm - shape.options.size.x / 2.0
+                    shape.options.position.y = body.position.y * ppm - shape.options.size.y / 2.0
                     shape.options.rotation.x = body.angle.radiansToDegrees
                 }
             }
