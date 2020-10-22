@@ -159,7 +159,6 @@ class Map
                 if let shapeNameA = getShapeNameOfFixture(fixtureA) {
                     if let shapeNameB = getShapeNameOfFixture(fixtureB) {
                 
-                        print(shapeNameA, shapeNameB)
                         getShapeOfFixture(fixtureA, { (shape) in
                             if let index = shape.contactList.firstIndex(of: shapeNameB) {
                                 shape.contactList.remove(at: index)
