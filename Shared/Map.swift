@@ -99,8 +99,8 @@ class Map
             func getShapeNameOfFixture(_ fixture: b2Fixture) -> String?
             {
                 for (shapeName, shape) in map.shapes2D {
-                    if let grid = shape.grid {
-                        for inst in grid.instances {
+                    if let instances = shape.instances {
+                        for inst in instances.pairs {
                             if let body = inst.0.body {
                                 if body.m_fixtureList === fixture {
                                     return shapeName
@@ -121,11 +121,11 @@ class Map
             func getShapeOfFixture(_ fixture: b2Fixture, _ cb: (inout MapShape2D) -> Void)
             {
                 for (shapeName, shape) in map.shapes2D {
-                    if let grid = shape.grid {
-                        for (index, inst) in grid.instances.enumerated() {
+                    if let instances = shape.instances {
+                        for (index, inst) in instances.pairs.enumerated() {
                             if let body = inst.0.body {
                                 if body.m_fixtureList === fixture {
-                                    cb(&map.shapes2D[shapeName]!.grid!.instances[index].0)
+                                    cb(&map.shapes2D[shapeName]!.instances!.pairs[index].0)
                                 }
                             }
                         }
@@ -269,9 +269,9 @@ class Map
                         if let shapeName = cmd.options["shapeid"] as? String {
                             if let shape2D = shapes2D[shapeName] {
                                 
-                                if let grid = shape2D.grid {
-                                    for (index, _) in grid.instances.enumerated() {
-                                        addShapeToWorld(shapeName, &shape2D.grid!.instances[index].0)
+                                if let instances = shape2D.instances {
+                                    for (index, _) in instances.pairs.enumerated() {
+                                        addShapeToWorld(shapeName, &shape2D.instances!.pairs[index].0)
                                     }
                                 } else {
                                     addShapeToWorld(shapeName, &shapes2D[shapeName]!)
@@ -360,8 +360,8 @@ class Map
     
     func drawShape(_ shape: MapShape2D)
     {
-        if let grid = shape.grid {
-            for s in grid.instances {
+        if let instances = shape.instances {
+            for s in instances.pairs {
                 let instShape = s.0
                                 
                 if instShape.options.visible.toSIMD() == false { continue }
@@ -452,12 +452,12 @@ class Map
             let ppm = physics2D.ppm
 
             for (shapeName, shape2D) in shapes2D {
-                if let grid = shape2D.grid {
-                    for (index, inst) in grid.instances.enumerated() {
+                if let instances = shape2D.instances {
+                    for (index, inst) in instances.pairs.enumerated() {
                         if let body = inst.0.body {
-                            shapes2D[shapeName]!.grid!.instances[index].0.options.position.x = body.position.x * ppm - shapes2D[shapeName]!.grid!.instances[index].0.options.size.x / 2.0
-                            shapes2D[shapeName]!.grid!.instances[index].0.options.position.y = body.position.y * ppm - shapes2D[shapeName]!.grid!.instances[index].0.options.size.y / 2.0
-                            shapes2D[shapeName]!.grid!.instances[index].0.options.rotation.x = body.angle.radiansToDegrees
+                            shapes2D[shapeName]!.instances!.pairs[index].0.options.position.x = body.position.x * ppm - shapes2D[shapeName]!.instances!.pairs[index].0.options.size.x / 2.0
+                            shapes2D[shapeName]!.instances!.pairs[index].0.options.position.y = body.position.y * ppm - shapes2D[shapeName]!.instances!.pairs[index].0.options.size.y / 2.0
+                            shapes2D[shapeName]!.instances!.pairs[index].0.options.rotation.x = body.angle.radiansToDegrees
                         }
                     }
                 } else {

@@ -235,8 +235,8 @@ class Game              : ObservableObject
             if let mapAsset = self.currentMap {
                 if let map = mapAsset.map {
                     for (_, b) in map.behavior {
-                        if let grid = b.grid {
-                            for inst in grid.instances {
+                        if let instances = b.instances {
+                            for inst in instances.pairs {
                                 if let context = inst.1.behaviorAsset.behavior {
                                     context.execute(name: "update")
                                 }

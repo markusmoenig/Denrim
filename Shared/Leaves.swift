@@ -135,8 +135,8 @@ class Call: BehaviorNode
                                 
                                 self.treeName = String(treeArray[1])
                                 if let context = asset.behavior {
-                                    if let grid = behavior.grid {
-                                        for inst in grid.instances {
+                                    if let instances = behavior.instances {
+                                        for inst in instances.pairs {
                                             callContext.append(inst.1.behaviorAsset.behavior!)
                                         }
                                     } else {
@@ -345,9 +345,8 @@ class DistanceToShape: BehaviorNode
             if let map = game.currentMap?.map {
                 if let shape = map.shapes2D[shapeName!] {
                     
-                    if let grid = shape.grid {
-                        
-                        for inst in grid.instances {
+                    if let instances = shape.instances {
+                        for inst in instances.pairs {
                             if inst.1.behaviorAsset.behavior === context {
                                 let distance = distanceToRect(position: position, shape: inst.0, map: map)
                                 if let dest = dest {
@@ -421,9 +420,9 @@ class ShapeContactCount: BehaviorNode
     {
         if let map = game.currentMap?.map {
             if let shape = map.shapes2D[shapeName!] {
-                if let grid = shape.grid {
+                if let instances = shape.instances {
                     
-                    for inst in grid.instances {
+                    for inst in instances.pairs {
                         if inst.1.behaviorAsset.behavior === context {
                             if let dest = dest {
                                 dest.x = inst.0.contactList.count

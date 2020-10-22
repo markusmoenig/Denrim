@@ -357,8 +357,8 @@ class MapBuilder
                     // Only create when the original behavior was compiled successfully
                     if map.behavior[behaviorId!]!.behaviorAsset.behavior != nil && origPosition != nil {
                     
-                        map.shapes2D[shapeId!]!.grid = grid
-                        map.behavior[behaviorId!]!.grid = grid
+                        map.shapes2D[shapeId!]!.instances = grid
+                        map.behavior[behaviorId!]!.instances = grid
                         
                         grid.columns = Int(gridLayout.x)
                         grid.rows = Int(gridLayout.y)
@@ -389,7 +389,7 @@ class MapBuilder
                                     position!.y = y
 
                                     instanceAsset.behavior!.execute(name: "init")
-                                    grid.addInstance(shape: &mapShape2D, behavior: &mapBehavior)
+                                    grid.addPair(shape: &mapShape2D, behavior: &mapBehavior)
                                 }
                                 
                                 x += grid.offsetX
