@@ -143,7 +143,6 @@ class Map
                 if let shapeNameA = getShapeNameOfFixture(fixtureA) {
                     if let shapeNameB = getShapeNameOfFixture(fixtureB) {
                 
-                        print(shapeNameA, shapeNameB)
                         getShapeOfFixture(fixtureA, { (shape) in
                             shape.contactList.append(shapeNameB)
                         })
