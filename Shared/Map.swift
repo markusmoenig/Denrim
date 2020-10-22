@@ -125,7 +125,6 @@ class Map
                         for (index, inst) in grid.instances.enumerated() {
                             if let body = inst.0.body {
                                 if body.m_fixtureList === fixture {
-                                    print("found", index)
                                     cb(&map.shapes2D[shapeName]!.grid!.instances[index].0)
                                 }
                             }
