@@ -44,6 +44,7 @@ float m4mFillMask(float dist)
 
 float m4mBorderMask(float dist, float width)
 {
+    dist += 1.0;
     return clamp(dist + width, 0.0, 1.0) - clamp(dist, 0.0, 1.0);
 }
 
@@ -70,11 +71,14 @@ fragment float4 m4mDiscDrawable(RasterizerData in [[stage_in]],
     if (data->onion > 0.0)
         dist = abs(dist) - data->onion;
     
-    //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
-    float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, smoothstep(0.0, -0.1, dist) * data->fillColor.w );
-    //col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
-    col = mix( col, data->borderColor, 1.0-smoothstep(0.0, data->borderSize, abs(dist)) );
+    const float mask = m4mFillMask( dist );
+    float4 col = float4( data->fillColor.xyz, data->fillColor.w * mask);
     
+    float borderMask = m4mBorderMask(dist, data->borderSize);
+    float4 borderColor = data->borderColor;
+    borderColor.w *= borderMask;
+    col = mix( col, borderColor, borderMask );
+
     return col;
 }
 
@@ -91,10 +95,18 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
     if (data->onion > 0.0)
         dist = abs(dist) - data->onion;
     
+    const float mask = m4mFillMask( dist );
+    float4 col = float4( data->fillColor.xyz, data->fillColor.w * mask);
+    
+    float borderMask = m4mBorderMask(dist, data->borderSize);
+    float4 borderColor = data->borderColor;
+    borderColor.w *= borderMask;
+    col = mix( col, borderColor, borderMask );
+
     //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
-    float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, smoothstep(0.0, -0.1, dist) * data->fillColor.w );
+    //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, smoothstep(0.0, -0.1, dist) * data->fillColor.w );
     //col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
-    col = mix( col, data->borderColor, 1.0-smoothstep(0.0, data->borderSize, abs(dist)) );
+    //col = mix( col, data->borderColor, 1.0-smoothstep(0.0, data->borderSize, abs(dist)) );
     return col;
 }
 
@@ -109,19 +121,20 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
 
     uv = m4mRotateCCW(uv, data->rotation);
     
-    float2 d = abs( uv ) - data->size / 2.0 + data->onion + data->round;
+    float2 d = abs( uv ) - data->size / 2.0 + data->onion + data->round;// - data->borderSize;
     float dist = length(max(d,float2(0))) + min(max(d.x,d.y),0.0) - data->round;
     
     if (data->onion > 0.0)
         dist = abs(dist) - data->onion;
+
+    const float mask = m4mFillMask( dist );//smoothstep(0.0, pixelSize, -dist);
+    float4 col = float4( data->fillColor.xyz, data->fillColor.w * mask);
     
-    //float pixelSize = 1.0 / data->screenSize.y;
-    
-    //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
-    float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, smoothstep(0.0, -0.1, dist) * data->fillColor.w );
-    //col = mix( col, data->borderColor, m4mBorderMask( dist, data->borderSize ) );
-    col = mix( col, data->borderColor, smoothstep(data->borderSize, 0.0, abs(dist)) );
-    
+    const float borderMask = m4mBorderMask(dist, data->borderSize);
+    float4 borderColor = data->borderColor;
+    borderColor.w *= borderMask;
+    col = mix( col, borderColor, borderMask );
+
     return col;
 }
 

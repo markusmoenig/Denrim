@@ -404,7 +404,6 @@ class Map
         let fillColor : SIMD4<Float> = options.color.toSIMD()
         let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
         
-        //position.y = -position.y
         position.x += viewBorder.x
         position.y += viewBorder.y
 
@@ -417,7 +416,7 @@ class Map
         data.fillColor = fillColor
         data.borderColor = borderColor
         data.onion = onion / game.scaleFactor
-
+        
         let rect = MMRect(position.x - data.borderSize / 2, position.y - data.borderSize / 2, data.radius * 2 + data.borderSize * 2, data.radius * 2 + data.borderSize * 2, scale: game.scaleFactor )
         let vertexData = game.createVertexData(texture: texture, rect: rect)
         
@@ -461,14 +460,13 @@ class Map
         data.borderSize = border / game.scaleFactor
         data.fillColor = fillColor
         data.borderColor = borderColor
-                
+
         let renderPassDescriptor = MTLRenderPassDescriptor()
         renderPassDescriptor.colorAttachments[0].texture = texture.texture
         renderPassDescriptor.colorAttachments[0].loadAction = .load
         
         let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
 
-        /*
         if rotation == 0 {
             let rect = MMRect(position.x, position.y, data.size.x, data.size.y, scale: game.scaleFactor)
             let vertexData = game.createVertexData(texture: texture, rect: rect)
@@ -478,7 +476,7 @@ class Map
             renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBox))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
-        } else {*/
+        } else {
             data.pos.x = position.x
             data.pos.y = position.y
             data.rotation = rotation.degreesToRadians
@@ -493,7 +491,7 @@ class Map
             renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBoxExt))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
-        //}
+        }
         renderEncoder.endEncoding()
     }
     
