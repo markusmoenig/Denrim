@@ -86,15 +86,107 @@ class Map
     
     func createPhysics()
     {
+        // Contact Listener
         class contactListener : b2ContactListener {
-          func beginContact(_ contact : b2Contact) {
-            print("begin")
-          }
-          func endContact(_ contact: b2Contact) {
-            print("end")
-          }
-          func preSolve(_ contact: b2Contact, oldManifold: b2Manifold) {}
-          func postSolve(_ contact: b2Contact, impulse: b2ContactImpulse) {}
+        
+            var map: Map
+            
+            init(_ map: Map)
+            {
+                self.map = map
+            }
+            
+            func getShapeNameOfFixture(_ fixture: b2Fixture) -> String?
+            {
+                for (shapeName, shape) in map.shapes2D {
+                    if let grid = shape.grid {
+                        for inst in grid.instances {
+                            if let body = inst.0.body {
+                                if body.m_fixtureList === fixture {
+                                    return shapeName
+                                }
+                            }
+                        }
+                    } else
+                    if let body = shape.body {
+                        if body.m_fixtureList === fixture {
+                            return shapeName
+                        }
+                    }
+                }
+                
+                return nil
+            }
+            
+            func getShapeOfFixture(_ fixture: b2Fixture, _ cb: (inout MapShape2D) -> Void)
+            {
+                for (shapeName, shape) in map.shapes2D {
+                    if let grid = shape.grid {
+                        for (index, inst) in grid.instances.enumerated() {
+                            if let body = inst.0.body {
+                                if body.m_fixtureList === fixture {
+                                    print("found", index)
+                                    cb(&map.shapes2D[shapeName]!.grid!.instances[index].0)
+                                }
+                            }
+                        }
+                    } else
+                    if let body = shape.body {
+                        if body.m_fixtureList === fixture {
+                            cb(&map.shapes2D[shapeName]!)
+                        }
+                    }
+                }
+            }
+            
+            func addContactsToEachOther(_ fixtureA: b2Fixture, _ fixtureB: b2Fixture)
+            {
+                if let shapeNameA = getShapeNameOfFixture(fixtureA) {
+                    if let shapeNameB = getShapeNameOfFixture(fixtureB) {
+                
+                        print(shapeNameA, shapeNameB)
+                        getShapeOfFixture(fixtureA, { (shape) in
+                            shape.contactList.append(shapeNameB)
+                        })
+                        
+                        getShapeOfFixture(fixtureB, { (shape) in
+                            shape.contactList.append(shapeNameA)
+                        })
+                    }
+                }
+            }
+            
+            func removeContactsFromEachOther(_ fixtureA: b2Fixture, _ fixtureB: b2Fixture)
+            {
+                if let shapeNameA = getShapeNameOfFixture(fixtureA) {
+                    if let shapeNameB = getShapeNameOfFixture(fixtureB) {
+                
+                        print(shapeNameA, shapeNameB)
+                        getShapeOfFixture(fixtureA, { (shape) in
+                            if let index = shape.contactList.firstIndex(of: shapeNameB) {
+                                shape.contactList.remove(at: index)
+                            }
+                        })
+                        
+                        getShapeOfFixture(fixtureB, { (shape) in
+                            if let index = shape.contactList.firstIndex(of: shapeNameA) {
+                                shape.contactList.remove(at: index)
+                            }
+                        })
+                    }
+                }
+            }
+            
+            func beginContact(_ contact : b2Contact) {
+                //print("hit", getShapeNameOfFixture(contact.fixtureA), getShapeNameOfFixture(contact.fixtureB))
+                addContactsToEachOther(contact.fixtureA, contact.fixtureB)
+            }
+            func endContact(_ contact: b2Contact) {
+                //print("end", getShapeNameOfFixture(contact.fixtureA), getShapeNameOfFixture(contact.fixtureB))
+                removeContactsFromEachOther(contact.fixtureA, contact.fixtureB)
+            }
+            func preSolve(_ contact: b2Contact, oldManifold: b2Manifold) {}
+            func postSolve(_ contact: b2Contact, impulse: b2ContactImpulse) {}
        }
         
         // Create the Physics2D instances
@@ -106,7 +198,7 @@ class Map
             }
             gravity.y = -gravity.y
             physics2D[physicsName]!.world = b2World(gravity: gravity)
-            physics2D[physicsName]!.world?.setContactListener(contactListener())
+            physics2D[physicsName]!.world?.setContactListener(contactListener(self))
         }
         
         // Parse the 2D shapes and add them to the right physics world
@@ -114,64 +206,79 @@ class Map
             if cmd.command == "ApplyPhysics2D" {
                 if let physicsName = cmd.options["physicsid"] as? String {
                     if let physics2D = physics2D[physicsName] {
-                        if let shapeName = cmd.options["shapeid"] as? String {
-                            if let shape2D = shapes2D[shapeName] {
+                        let ppm = physics2D.ppm
+                        
+                        func addShapeToWorld(_ shapeName: String,_ shape2D: inout MapShape2D)
+                        {
+                            // Define the dynamic body. We set its position and call the body factory.
+                            let bodyDef = b2BodyDef()
+                            bodyDef.angle = shape2D.options.rotation.x.degreesToRadians
+                            bodyDef.type = b2BodyType.staticBody
 
-                                let ppm = physics2D.ppm
-                                // Define the dynamic body. We set its position and call the body factory.
-                                let bodyDef = b2BodyDef()
-                                bodyDef.angle = shape2D.options.rotation.x.degreesToRadians
-                                bodyDef.type = b2BodyType.staticBody
+                            let fixtureDef = b2FixtureDef()
+                            fixtureDef.shape = nil
 
-                                let fixtureDef = b2FixtureDef()
-                                fixtureDef.shape = nil
-
-                                if var type = shape2D.originalOptions["type"] as? String {
-                                    type = type.lowercased()
-                                    if type == "disk" {
-                                        let circleShape = b2CircleShape()
-                                        circleShape.radius = shape2D.options.radius.x / ppm - circleShape.m_radius
-                                        fixtureDef.shape = circleShape
-                                    }
+                            if var type = shape2D.originalOptions["type"] as? String {
+                                type = type.lowercased()
+                                if type == "disk" {
+                                    let circleShape = b2CircleShape()
+                                    circleShape.radius = shape2D.options.radius.x / ppm - circleShape.m_radius
+                                    fixtureDef.shape = circleShape
                                 }
+                            }
+                            
+                            if  fixtureDef.shape == nil {
+                                let polyShape = b2PolygonShape()
                                 
-                                if  fixtureDef.shape == nil {
-                                    let polyShape = b2PolygonShape()
-                                    
-                                    polyShape.setAsBox(halfWidth: (shape2D.options.size.x / 2.0) / ppm - polyShape.m_radius, halfHeight: (shape2D.options.size.y / 2.0) / ppm - polyShape.m_radius)
-                                    fixtureDef.shape = polyShape
-                                }
-                                
-                                if let body = cmd.options["body"] as? String {
-                                    if body.lowercased() == "dynamic" {
-                                        bodyDef.type = b2BodyType.dynamicBody
-                                        fixtureDef.density = 1.0
-                                        fixtureDef.restitution = 0.0
-                                    }
-                                }
-                                
-                                
-                                if let restitution = cmd.options["restitution"] as? Float1 {
-                                    fixtureDef.restitution = restitution.x
-                                } else {
+                                polyShape.setAsBox(halfWidth: (shape2D.options.size.x / 2.0) / ppm - polyShape.m_radius, halfHeight: (shape2D.options.size.y / 2.0) / ppm - polyShape.m_radius)
+                                fixtureDef.shape = polyShape
+                            }
+                            
+                            if let body = cmd.options["body"] as? String {
+                                if body.lowercased() == "dynamic" {
+                                    bodyDef.type = b2BodyType.dynamicBody
+                                    fixtureDef.density = 1.0
                                     fixtureDef.restitution = 0.0
                                 }
-                                if let friction = cmd.options["friction"] as? Float1 {
-                                    fixtureDef.friction = friction.x
-                                } else {
-                                    fixtureDef.friction = 0.3
+                            }
+                            
+                            
+                            if let restitution = cmd.options["restitution"] as? Float1 {
+                                fixtureDef.restitution = restitution.x
+                            } else {
+                                fixtureDef.restitution = 0.0
+                            }
+                            if let friction = cmd.options["friction"] as? Float1 {
+                                fixtureDef.friction = friction.x
+                            } else {
+                                fixtureDef.friction = 0.3
+                            }
+                            if let density = cmd.options["density"] as? Float1 {
+                                fixtureDef.density = density.x
+                                if density.x == 0 {
+                                    bodyDef.type = b2BodyType.staticBody
                                 }
-                                if let density = cmd.options["density"] as? Float1 {
-                                    fixtureDef.density = density.x
-                                    if density.x == 0 {
-                                        bodyDef.type = b2BodyType.staticBody
+                            }
+                            
+                            bodyDef.position.set((shape2D.options.position.x + shape2D.options.size.x / 2.0) / ppm, (shape2D.options.position.y + shape2D.options.size.y / 2.0) / ppm)
+                            
+                            shape2D.body = physics2D.world!.createBody(bodyDef)
+                            shape2D.body!.createFixture(fixtureDef)
+                                                        
+                            //shapes2D[shapeName]?.body = physics2D.world!.createBody(bodyDef)
+                            //shapes2D[shapeName]?.body!.createFixture(fixtureDef)
+                        }
+                        
+                        if let shapeName = cmd.options["shapeid"] as? String {
+                            if let shape2D = shapes2D[shapeName] {
+                                
+                                if let grid = shape2D.grid {
+                                    for (index, _) in grid.instances.enumerated() {
+                                        addShapeToWorld(shapeName, &shape2D.grid!.instances[index].0)
                                     }
+                                } else {
+                                    addShapeToWorld(shapeName, &shapes2D[shapeName]!)
                                 }
-                                
-                                bodyDef.position.set((shape2D.options.position.x + shape2D.options.size.x / 2.0) / ppm, (shape2D.options.position.y + shape2D.options.size.y / 2.0) / ppm)
-                                
-                                shapes2D[shapeName]?.body = physics2D.world!.createBody(bodyDef)
-                                shapes2D[shapeName]?.body!.createFixture(fixtureDef)
                             }
                         }
                     }
@@ -341,15 +448,27 @@ class Map
             let velocityIterations = 6
             let positionIterations = 2
         
-            physics2D.world!.step(timeStep: timeStep, velocityIterations: velocityIterations, positionIterations: positionIterations)
+            if let world = physics2D.world {
+                world.step(timeStep: timeStep, velocityIterations: velocityIterations, positionIterations: positionIterations)
+            }
             
             let ppm = physics2D.ppm
 
-            for (_, shape) in shapes2D {
-                if let body = shape.body {
-                    shape.options.position.x = body.position.x * ppm - shape.options.size.x / 2.0
-                    shape.options.position.y = body.position.y * ppm - shape.options.size.y / 2.0
-                    shape.options.rotation.x = body.angle.radiansToDegrees
+            for (shapeName, shape2D) in shapes2D {
+                if let grid = shape2D.grid {
+                    for (index, inst) in grid.instances.enumerated() {
+                        if let body = inst.0.body {
+                            shapes2D[shapeName]!.grid!.instances[index].0.options.position.x = body.position.x * ppm - shapes2D[shapeName]!.grid!.instances[index].0.options.size.x / 2.0
+                            shapes2D[shapeName]!.grid!.instances[index].0.options.position.y = body.position.y * ppm - shapes2D[shapeName]!.grid!.instances[index].0.options.size.y / 2.0
+                            shapes2D[shapeName]!.grid!.instances[index].0.options.rotation.x = body.angle.radiansToDegrees
+                        }
+                    }
+                } else {
+                    if let body = shape2D.body {
+                        shape2D.options.position.x = body.position.x * ppm - shape2D.options.size.x / 2.0
+                        shape2D.options.position.y = body.position.y * ppm - shape2D.options.size.y / 2.0
+                        shape2D.options.rotation.x = body.angle.radiansToDegrees
+                    }
                 }
             }
         }

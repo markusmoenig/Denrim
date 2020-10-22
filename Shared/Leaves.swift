@@ -332,10 +332,10 @@ class DistanceToShape: BehaviorNode
         radius1 = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "radius", isOptional: true)
         dest = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "variable")
 
-        if let shapeN = options["shape"] as? String {
+        if let shapeN = options["shapeid"] as? String {
             shapeName = shapeN
         } else {
-            error.error = "Missing 'Shape' parameter"
+            error.error = "Missing 'ShapeId' parameter"
         }
     }
     
@@ -394,6 +394,55 @@ class DistanceToShape: BehaviorNode
     }
 }
 
+class ShapeContactCount: BehaviorNode
+{
+    var position2: Float2? = nil
+    var radius1: Float1? = nil
+    var shapeName: String? = nil
+    var dest: Int1? = nil
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "ShapeContactCount"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        dest = extractInt1Value(options, context: context, tree: tree, error: &error, name: "variable")
+
+        if let shapeN = options["shapeid"] as? String {
+            shapeName = shapeN
+        } else {
+            error.error = "Missing 'ShapeId' parameter"
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if let shape = map.shapes2D[shapeName!] {
+                if let grid = shape.grid {
+                    
+                    for inst in grid.instances {
+                        if inst.1.behaviorAsset.behavior === context {
+                            if let dest = dest {
+                                dest.x = inst.0.contactList.count
+                            }
+                            break
+                        }
+                    }
+                    
+                    return .Success
+                } else {
+                    if let dest = dest {
+                        dest.x = shape.contactList.count
+                    }
+                }
+            }
+        }        
+        return .Success
+    }
+}
 
 class RandomColorNode: BehaviorNode
 {

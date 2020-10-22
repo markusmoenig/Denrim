@@ -47,6 +47,7 @@ class BehaviorBuilder
         BehaviorNodeItem("IsKeyDown", { (_ options: [String:Any]) -> BehaviorNode in return IsKeyDown(options) }),
         BehaviorNodeItem("GetTouchPos", { (_ options: [String:Any]) -> BehaviorNode in return GetTouchPos(options) }),
         BehaviorNodeItem("DistanceToShape", { (_ options: [String:Any]) -> BehaviorNode in return DistanceToShape(options) }),
+        BehaviorNodeItem("ShapeContactCount", { (_ options: [String:Any]) -> BehaviorNode in return ShapeContactCount(options) }),
         BehaviorNodeItem("RandomColor", { (_ options: [String:Any]) -> BehaviorNode in return RandomColorNode(options) }),
 
         BehaviorNodeItem("Set", { (_ options: [String:Any]) -> BehaviorNode in return SetNode(options) }),

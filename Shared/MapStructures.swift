@@ -154,6 +154,7 @@ struct MapShape2D {
     var body            : b2Body? = nil
 
     var grid            : MapGridInstance2D? = nil
+    var contactList     : [String] = []
 }
 
 struct MapPhysics2D {
