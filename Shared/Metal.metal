@@ -102,7 +102,7 @@ fragment float4 m4mDiscDrawable(RasterizerData in [[stage_in]],
 
         float4 sample = float4(inTexture.sample(textureSampler, uv));
         
-        col.xyz = mix(col.xyz, sample.xyz, mask - borderMask);
+        col.xyz = sample.xyz;
         col.w = col.w * sample.w;
     }
     
@@ -141,7 +141,7 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
 
         float4 sample = float4(inTexture.sample(textureSampler, uv));
         
-        col.xyz = mix(col.xyz, sample.xyz, mask - borderMask);
+        col.xyz = sample.xyz;
         col.w = col.w * sample.w;
     }
 
@@ -192,7 +192,7 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
         
         float4 sample = float4(inTexture.sample(textureSampler, uv));
         
-        col.xyz = mix(col.xyz, sample.xyz, mask - borderMask);
+        col.xyz = sample.xyz;
         col.w = col.w * sample.w;
     }
 
