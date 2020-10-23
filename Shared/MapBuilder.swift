@@ -38,6 +38,7 @@ class MapBuilder
         // Commands
         case CanvasSize = "CanvasSize"
         case ApplyPhysics2D = "ApplyPhysics2D"
+        case ApplyTexture2D = "ApplyTexture2D"
     }
     
     init(_ game: Game)

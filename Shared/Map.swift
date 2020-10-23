@@ -84,7 +84,8 @@ class Map
         game._Aspect.y = aspect.y
     }
     
-    func createPhysics()
+    /// Creates physics, textures etc
+    func createDependencies()
     {
         // Contact Listener
         class contactListener : b2ContactListener {
@@ -198,8 +199,8 @@ class Map
             physics2D[physicsName]!.world?.setContactListener(contactListener(self))
         }
         
-        // Parse the 2D shapes and add them to the right physics world
         for cmd in commands {
+            // Parse the 2D shapes and add them to the right physics world
             if cmd.command == "ApplyPhysics2D" {
                 if let physicsName = cmd.options["physicsid"] as? String {
                     if let physics2D = physics2D[physicsName] {
@@ -280,6 +281,24 @@ class Map
                         }
                     }
                 }
+            } else
+            // Apply a texture (any visual) to a shape
+            if cmd.command == "ApplyTexture2D" {
+                if let shapeName = cmd.options["shapeid"] as? String {
+                    if let textureName = cmd.options["id"] as? String {
+                        applyTextureToShape(shapeName, textureName)
+                    }
+                }
+            }
+        }
+    }
+    
+    func applyTextureToShape(_ shapeId: String,_ id: String)
+    {
+        if shapes2D[shapeId] != nil {
+            shapes2D[shapeId]!.texture = nil
+            if images[id] != nil {
+                shapes2D[shapeId]!.texture = images[id]
             }
         }
     }
@@ -367,10 +386,10 @@ class Map
                 if instShape.options.visible.toSIMD() == false { continue }
                 
                 if instShape.shape == .Disk {
-                    drawDisk(instShape.options)
+                    drawDisk(instShape.options, shape.texture)
                 } else
                 if instShape.shape == .Box {
-                    drawBox(instShape.options)
+                    drawBox(instShape.options, shape.texture)
                 } else
                 if instShape.shape == .Text {
                     drawText(instShape.options)
@@ -380,10 +399,10 @@ class Map
             if shape.options.visible.toSIMD() == false { return }
             
             if shape.shape == .Disk {
-                drawDisk(shape.options)
+                drawDisk(shape.options, shape.texture)
             } else
             if shape.shape == .Box {
-                drawBox(shape.options)
+                drawBox(shape.options, shape.texture)
             } else
             if shape.shape == .Text {
                 drawText(shape.options)
@@ -511,7 +530,7 @@ class Map
     }
     
     /// Draw a Disk
-    func drawDisk(_ options: MapShapeData2D)
+    func drawDisk(_ options: MapShapeData2D,_ texture2D: Any? = nil)
     {
         var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
         let radius : Float = options.radius.x * aspect.z
@@ -519,7 +538,8 @@ class Map
         let onion : Float = options.onion.x * aspect.z
         let fillColor : SIMD4<Float> = options.color.toSIMD()
         let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
-        
+        let rotation : Float = options.rotation.x
+
         position.x += viewBorder.x
         position.y += viewBorder.y
 
@@ -532,7 +552,8 @@ class Map
         data.fillColor = fillColor
         data.borderColor = borderColor
         data.onion = onion / game.scaleFactor
-        
+        data.rotation = rotation.degreesToRadians
+
         let rect = MMRect(position.x - data.borderSize / 2, position.y - data.borderSize / 2, data.radius * 2 + data.borderSize * 2, data.radius * 2 + data.borderSize * 2, scale: game.scaleFactor )
         let vertexData = game.createVertexData(texture: texture, rect: rect)
         
@@ -541,6 +562,17 @@ class Map
         renderPassDescriptor.colorAttachments[0].loadAction = .load
         
         let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+        
+        if texture2D != nil {
+            if let image = texture2D as? MapImage {
+                if let texture = getImageResource(image.resourceName) {
+                    data.hasTexture = 1
+                    data.textureSize = float2(texture.width, texture.height);
+                    renderEncoder.setFragmentTexture(texture.texture, index: 1)
+                    print("disc texture")
+                }
+            }
+        }
                 
         renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
         renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
@@ -552,7 +584,7 @@ class Map
     }
     
     /// Draw a Box
-    func drawBox(_ options: MapShapeData2D)
+    func drawBox(_ options: MapShapeData2D,_ texture2D: Any? = nil)
     {
         var position : SIMD2<Float> = float2(options.position.x * aspect.x, options.position.y * aspect.y)
         let size : SIMD2<Float> = float2(options.size.x * aspect.x, options.size.y * aspect.y)
@@ -583,6 +615,17 @@ class Map
         
         let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
 
+        data.hasTexture = 0
+        if texture2D != nil {
+            if let image = texture2D as? MapImage {
+                if let texture = getImageResource(image.resourceName) {
+                    data.hasTexture = 1
+                    data.textureSize = float2(texture.width, texture.height);
+                    renderEncoder.setFragmentTexture(texture.texture, index: 1)
+                }
+            }
+        }
+        
         if rotation == 0 {
             let rect = MMRect(position.x, position.y, data.size.x, data.size.y, scale: game.scaleFactor)
             let vertexData = game.createVertexData(texture: texture, rect: rect)
@@ -600,7 +643,7 @@ class Map
 
             let rect = MMRect(0, 0, texture.width / game.scaleFactor, texture.height / game.scaleFactor, scale: game.scaleFactor)
             let vertexData = game.createVertexData(texture: texture, rect: rect)
-                                    
+            
             renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
             renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
 

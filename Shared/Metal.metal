@@ -54,15 +54,28 @@ float2 m4mRotateCCW(float2 pos, float angle)
     return pos * float2x2(ca, sa, -sa, ca);
 }
 
+float2 m4mRotateCCWPivot(float2 pos, float angle, float2 pivot)
+{
+    float ca = cos(angle), sa = sin(angle);
+    return pivot + (pos-pivot) * float2x2(ca, sa, -sa, ca);
+}
+
 float2 m4mRotateCW(float2 pos, float angle)
 {
     float ca = cos(angle), sa = sin(angle);
     return pos * float2x2(ca, -sa, sa, ca);
 }
 
+float2 m4mRotateCWPivot(float2 pos, float angle, float2 pivot)
+{
+    float ca = cos(angle), sa = sin(angle);
+    return pivot + (pos-pivot) * float2x2(ca, -sa, sa, ca);
+}
+
 // Disc
 fragment float4 m4mDiscDrawable(RasterizerData in [[stage_in]],
-                               constant DiscUniform *data [[ buffer(0) ]] )
+                               constant DiscUniform *data [[ buffer(0) ]],
+                               texture2d<float> inTexture [[ texture(1) ]] )
 {
     float2 uv = in.textureCoordinate * float2( data->radius * 2 + data->borderSize, data->radius * 2 + data->borderSize);
     uv -= float2( data->radius + data->borderSize / 2 );
@@ -79,12 +92,27 @@ fragment float4 m4mDiscDrawable(RasterizerData in [[stage_in]],
     borderColor.w *= borderMask;
     col = mix( col, borderColor, borderMask );
 
+    if (data->hasTexture == 1 && col.w > 0.0) {
+        constexpr sampler textureSampler (mag_filter::linear,
+                                          min_filter::linear);
+        
+        float2 uv = in.textureCoordinate;
+        uv.y = 1 - uv.y;
+        uv = m4mRotateCCWPivot(uv, data->rotation, 0.5);
+
+        float4 sample = float4(inTexture.sample(textureSampler, uv));
+        
+        col.xyz = sample.xyz;
+        col.w = col.w * sample.w;
+    }
+    
     return col;
 }
 
 // Box
 fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
-                               constant BoxUniform *data [[ buffer(0) ]] )
+                               constant BoxUniform *data [[ buffer(0) ]],
+                               texture2d<float> inTexture [[ texture(1) ]] )
 {
     float2 uv = in.textureCoordinate * ( data->size );
     uv -= float2( data->size / 2.0 );
@@ -102,6 +130,20 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
     float4 borderColor = data->borderColor;
     borderColor.w *= borderMask;
     col = mix( col, borderColor, borderMask );
+    
+    if (data->hasTexture == 1 && col.w > 0.0) {
+        constexpr sampler textureSampler (mag_filter::linear,
+                                          min_filter::linear);
+        
+        float2 uv = in.textureCoordinate;
+        uv.y = 1 - uv.y;
+        uv = m4mRotateCCWPivot(uv, data->rotation, 0.5);
+
+        float4 sample = float4(inTexture.sample(textureSampler, uv));
+        
+        col.xyz = sample.xyz;
+        col.w = col.w * sample.w;
+    }
 
     //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, m4mFillMask( dist ) * data->fillColor.w );
     //float4 col = float4( data->fillColor.x, data->fillColor.y, data->fillColor.z, smoothstep(0.0, -0.1, dist) * data->fillColor.w );
@@ -112,7 +154,8 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
 
 // Rotated Box
 fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
-                               constant BoxUniform *data [[ buffer(0) ]] )
+                               constant BoxUniform *data [[ buffer(0) ]],
+                               texture2d<float> inTexture [[ texture(1) ]] )
 {
     float2 uv = in.textureCoordinate * data->screenSize;
     uv.y = data->screenSize.y - uv.y;
@@ -134,6 +177,24 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
     float4 borderColor = data->borderColor;
     borderColor.w *= borderMask;
     col = mix( col, borderColor, borderMask );
+    
+    if (data->hasTexture == 1 && col.w > 0.0) {
+        constexpr sampler textureSampler (mag_filter::linear,
+                                          min_filter::linear);
+        
+        float2 uv = in.textureCoordinate;
+        uv.y = 1 - uv.y;
+        
+        uv -= data->pos / data->screenSize;
+        uv *= data->screenSize / data->size;
+        
+        uv = m4mRotateCCWPivot(uv, data->rotation, (data->size / 2.0) / data->screenSize * (data->screenSize / data->size));
+        
+        float4 sample = float4(inTexture.sample(textureSampler, uv));
+        
+        col.xyz = sample.xyz;
+        col.w = col.w * sample.w;
+    }
 
     return col;
 }
@@ -225,7 +286,7 @@ fragment float4 m4mTextDrawable(RasterizerData in [[stage_in]],
     uv /= data->atlasSize / data->fontSize;
     uv += data->fontPos / data->atlasSize;
 
-    float4 sample = inTexture.sample (textureSampler, uv );
+    float4 sample = inTexture.sample(textureSampler, uv );
         
     float d = m4mMedian(sample.r, sample.g, sample.b) - 0.5;
     float w = clamp(d/fwidth(d) + 0.5, 0.0, 1.0);

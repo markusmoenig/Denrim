@@ -155,6 +155,8 @@ struct MapShape2D {
 
     var instances       : MapInstance2D? = nil
     var contactList     : [String] = []
+    
+    var texture         : Any? = nil
 }
 
 struct MapPhysics2D {

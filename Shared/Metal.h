@@ -31,7 +31,11 @@ typedef struct
     vector_float4   borderColor;
     float           radius;
     float           borderSize;
+    float           rotation;
     float           onion;
+    
+    int             hasTexture;
+    vector_float2   textureSize;
 } DiscUniform;
 
 typedef struct
@@ -45,6 +49,9 @@ typedef struct
     vector_float4   borderColor;
     float           rotation;
     float           onion;
+    
+    int             hasTexture;
+    vector_float2   textureSize;
 
 } BoxUniform;
 
