@@ -563,13 +563,13 @@ class Map
         
         let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         
+        data.hasTexture = 0
         if texture2D != nil {
             if let image = texture2D as? MapImage {
                 if let texture = getImageResource(image.resourceName) {
                     data.hasTexture = 1
                     data.textureSize = float2(texture.width, texture.height);
                     renderEncoder.setFragmentTexture(texture.texture, index: 1)
-                    print("disc texture")
                 }
             }
         }
