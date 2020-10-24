@@ -523,7 +523,8 @@ struct ContentView: View {
                     */
                     
                     Divider()
-                        .frame(width:50)
+                        .padding(.horizontal, 20)
+                        .opacity(0)
                     
                     Menu {
                         Section(header: Text("Preview")) {
@@ -567,7 +568,8 @@ struct ContentView: View {
                     }
                     
                     Divider()
-                        .frame(width:50)
+                        .padding(.horizontal, 20)
+                        .opacity(0)
 
                     Button(action: {
                         helpIsVisible.toggle()
@@ -653,25 +655,7 @@ struct ContentView: View {
             */
         }
         if rightSideBarIsVisible == true {
-            /*
-            GeometryReader { geometry in
-                ZStack(alignment: .topTrailing) {
-                    ScrollView {
-
-                        ContextWebView(document.game, deviceColorScheme).tabItem {
-                        }
-                            .frame(height: geometry.size.height)
-                            .tag(1)
-                            .onChange(of: deviceColorScheme) { newValue in
-                                document.game.scriptEditor?.setTheme(newValue)
-                            }
-                            //.background(Color.gray.opacity(0))
-                    }
-                }
-            }*/
             Text(helpText)
-                //.background(Color.gray)
-                //.opacity(0.8)
                 .frame(minWidth: 0,
                        maxWidth: .infinity,
                        minHeight: 0,
@@ -681,6 +665,8 @@ struct ContentView: View {
                 .onReceive(self.document.game.helpTextChanged) { state in
                     helpText = self.document.game.helpText
                 }
+                .foregroundColor(Color.gray)
+                .font(.system(size: 12))
             .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
             .layoutPriority(0)
         }
