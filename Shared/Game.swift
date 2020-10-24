@@ -168,7 +168,7 @@ class Game              : ObservableObject
         view.isPaused = true
     }
     
-    func checkTexture() -> Bool
+    @discardableResult func checkTexture() -> Bool
     {
         if texture == nil || texture!.texture.width != Int(view.frame.width) || texture!.texture.height != Int(view.frame.height) {
             

@@ -217,6 +217,22 @@ class AssetFolder   : Codable
             })
         }
     }
+    
+    // Create a preview for the current asset
+    func createPreview()
+    {
+        if let asset = current {
+            //if asset.type == .Behavior {
+            //    game.behaviorBuilder.compile(asset)
+            //} else
+            if asset.type == .Map, asset.map != nil {
+                game.mapBuilder.createPreview(asset.map!, true)
+            } else
+            if asset.type == .Shader {
+                self.game.createPreview(asset)
+            }
+        }
+    }
 }
 
 class Asset         : Codable, Equatable

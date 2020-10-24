@@ -650,13 +650,14 @@ class MapBuilder
         }
     }
     
-    func createPreview(_ map: Map)
+    func createPreview(_ map: Map,_ forcePreview: Bool = false )
     {
         var name : String? = nil
         if let line = scriptLine {
-            if line != previewLine {
+            if line != previewLine || forcePreview {
+                previewLine = line                
+                game.checkTexture()
                 
-                previewLine = line
                 if let n = map.lines[line] {
                     name = n
                 } else {
