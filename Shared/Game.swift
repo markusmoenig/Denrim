@@ -34,6 +34,7 @@ class Game              : ObservableObject
     var gameCmdBuffer   : MTLCommandBuffer? = nil
     
     var scriptEditor    : ScriptEditor? = nil
+    //var contextEditor   : ContextEditor? = nil
     var file            : File? = nil
 
     var mapBuilder      : MapBuilder!

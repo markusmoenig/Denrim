@@ -91,7 +91,7 @@ class MapPreview
         
         game.stopDrawing()
         game.updateOnce()
-        
+                
         game.helpTextChanged.send()
     }
     

@@ -220,6 +220,7 @@
 		2B53617D25147B3300E8A20D /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		2B53618D2514952800E8A20D /* Behavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Behavior.swift; sourceTree = "<group>"; };
 		2B536194251498C400E8A20D /* BehaviorBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorBuilder.swift; sourceTree = "<group>"; };
+		2B636A732543CA0B00B687C7 /* ContextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextEditor.swift; sourceTree = "<group>"; };
 		2B6D0B592509EEE80098F244 /* MapPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPreview.swift; sourceTree = "<group>"; };
 		2B6D0B61250B08080098F244 /* b2Body.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Body.swift; sourceTree = "<group>"; };
 		2B6D0B63250B08080098F244 /* b2CircleContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CircleContact.swift; sourceTree = "<group>"; };
@@ -324,6 +325,7 @@
 				2B01C87A24FB824900E86449 /* Metal.metal */,
 				2B01C88224FB824A00E86449 /* Metal.h */,
 				2B01C87D24FB824900E86449 /* ScriptEditor.swift */,
+				2B636A732543CA0B00B687C7 /* ContextEditor.swift */,
 				2B32992624FF91E1007C3386 /* HelpView.swift */,
 				2B01C87C24FB824900E86449 /* Utils.swift */,
 				2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */,

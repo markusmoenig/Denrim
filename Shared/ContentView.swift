@@ -35,6 +35,8 @@ struct ContentView: View {
     @State private var showShaderItems: Bool = false
     @State private var showImageItems: Bool = false
 
+    @State private var rightSideBarIsVisible: Bool = true
+
     @State private var isImportingImages: Bool = false
     @State private var isAddingImages: Bool = false
 
@@ -43,6 +45,7 @@ struct ContentView: View {
     @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
     
     var body: some View {
+        HStack {
         NavigationView() {
             List {/*
                 #if os(OSX)
@@ -413,6 +416,7 @@ struct ContentView: View {
                         .zIndex(0)
                         .frame(maxWidth: .infinity)
                         .layoutPriority(2)
+                    /*
                     Text(helpText)
                         .zIndex(1)
                         .background(Color.gray)
@@ -424,7 +428,7 @@ struct ContentView: View {
                                alignment: .bottomLeading)
                         .onReceive(self.document.game.helpTextChanged) { state in
                             helpText = self.document.game.helpText
-                        }
+                        }*/
                     MetalView(document.game)
                         .zIndex(2)
                         .frame(minWidth: 0,
@@ -479,6 +483,8 @@ struct ContentView: View {
                                maxWidth: .infinity,
                                minHeight: 0,
                                maxHeight: .infinity)
+                        .opacity(helpIsVisible ? 1 : 0)
+                        .animation(.default)
                 }
             }
             .layoutPriority(2)
@@ -570,6 +576,10 @@ struct ContentView: View {
                         Label("Help", systemImage: "questionmark")
                     }
                     .keyboardShortcut("h")
+                    
+                    Button(action: { rightSideBarIsVisible.toggle() }, label: {
+                        Image(systemName: "sidebar.right")
+                    })
                 }
             }
             .onReceive(self.document.game.gameError) { state in
@@ -641,12 +651,39 @@ struct ContentView: View {
             }
             .layoutPriority(2)
             */
+        }
+        if rightSideBarIsVisible == true {
             /*
-            List {
-            }
-            .frame(minWidth: 160, idealWidth: 200, maxWidth: 200)
+            GeometryReader { geometry in
+                ZStack(alignment: .topTrailing) {
+                    ScrollView {
+
+                        ContextWebView(document.game, deviceColorScheme).tabItem {
+                        }
+                            .frame(height: geometry.size.height)
+                            .tag(1)
+                            .onChange(of: deviceColorScheme) { newValue in
+                                document.game.scriptEditor?.setTheme(newValue)
+                            }
+                            //.background(Color.gray.opacity(0))
+                    }
+                }
+            }*/
+            Text(helpText)
+                //.background(Color.gray)
+                //.opacity(0.8)
+                .frame(minWidth: 0,
+                       maxWidth: .infinity,
+                       minHeight: 0,
+                       maxHeight: .infinity,
+                       alignment: .bottomLeading)
+                .padding(4)
+                .onReceive(self.document.game.helpTextChanged) { state in
+                    helpText = self.document.game.helpText
+                }
+            .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
             .layoutPriority(0)
-            */
+        }
         }
     }
 }

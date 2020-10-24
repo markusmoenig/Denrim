@@ -14,7 +14,8 @@ class MapBuilder
     
     var cursorTimer     : Timer? = nil
     var scriptLine      : Int32? = nil
-    
+    var previewLine     : Int32? = nil
+
     let mapPreview      : MapPreview
     
     var currentLayer    : String? = nil
@@ -653,31 +654,35 @@ class MapBuilder
     {
         var name : String? = nil
         if let line = scriptLine {
-            if let n = map.lines[line] {
-                name = n
-            } else {
+            if line != previewLine {
+                
+                previewLine = line
+                if let n = map.lines[line] {
+                    name = n
+                } else {
+                        
+                    // Check if the last line was a layer
+                    var lastLine : Int32 = -1
+                    var lastVar  : String = ""
+                    for (l, variable) in map.lines {
+                        if l > lastLine && l < line {
+                            lastLine = l
+                            lastVar = variable
+                        }
+                    }
                     
-                // Check if the last line was a layer
-                var lastLine : Int32 = -1
-                var lastVar  : String = ""
-                for (l, variable) in map.lines {
-                    if l > lastLine && l < line {
-                        lastLine = l
-                        lastVar = variable
+                    // If yes, check if the line is inside the layer range
+                    if map.layers[lastVar] != nil {
+                            if line < map.layers[lastVar]!.endLine {
+                            name = lastVar
+                        }
                     }
                 }
                 
-                // If yes, check if the line is inside the layer range
-                if map.layers[lastVar] != nil {
-                        if line < map.layers[lastVar]!.endLine {
-                        name = lastVar
-                    }
-                }
+                map.setup(game: game)
+                mapPreview.preview(map, name)
             }
         }
-        
-        map.setup(game: game)
-        mapPreview.preview(map, name)
     }
     
     func startTimer(_ asset: Asset)
