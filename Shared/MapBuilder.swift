@@ -271,9 +271,8 @@ class MapBuilder
         if type == .Alias {
             if variable.count == 2 {
                 if let id = options["id"] as? String {
-                    
                     if map.images[id] != nil {
-                        map.aliases[variable] = MapAlias(type: .Image, pointsTo: id, options: options)
+                        map.aliases[variable] = MapAlias(type: .Image, pointsTo: id, originalOptions: options, options: MapAliasData2D(options))
                         setLine(variable)
                     }
                 }

@@ -19,6 +19,31 @@ struct MapSequence {
     var options         : [String:Any]
 }
 
+struct MapAliasData2D {
+
+    var position        : Float2
+    var width           = Float1(0)
+    var height          = Float1(0)
+
+    var rect            : Rect2D? = nil
+    var texture         : Texture2D? = nil
+
+    init(_ options: [String:Any])
+    {
+        if let position = options["position"] as? Float2 {
+            self.position = position
+        } else {
+            self.position = Float2(0,0)
+        }
+        
+        if let rect = options["rect"] as? Rect2D {
+            self.rect = rect
+        } else {
+            self.rect = nil
+        }
+    }
+}
+
 struct MapAlias {
     
     enum AliasType {
@@ -27,7 +52,9 @@ struct MapAlias {
     
     var type            : AliasType
     var pointsTo        : String
-    var options         : [String:Any]
+    var originalOptions : [String:Any]
+    
+    var options         : MapAliasData2D
 }
 
 struct MapLayer {

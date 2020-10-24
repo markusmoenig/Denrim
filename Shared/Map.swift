@@ -328,11 +328,44 @@ class Map
         return nil
     }
 
-    @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: MapAlias) -> (Float, Float)
+    @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: inout MapAlias) -> (Float, Float)
     {
-        var object : [String:Any] = [:]
         var rc     : (Float, Float) = (0,0)
 
+        if alias.options.texture == nil {
+            if alias.type == .Image {
+                if let image = images[alias.pointsTo] {
+                    if let texture2D = getImageResource(image.resourceName) {
+                        alias.options.texture = texture2D
+                    }
+                }
+            }
+        }
+        
+        if let texture2D = alias.options.texture {
+            
+            var width = texture2D.width
+            var height = texture2D.height
+            
+            alias.options.width.x = width
+            alias.options.height.x = height
+            
+            // Subrect ?
+            if let v = alias.options.rect {
+                width = v.width
+                height = v.height
+                
+                alias.options.width.x = width
+                alias.options.height.x = height
+            }
+            
+            drawTexture(alias.options)
+            
+            rc.0 = width
+            rc.1 = height
+        }
+        
+        /*
         if alias.type == .Image {
             if let image = images[alias.pointsTo] {
                 
@@ -340,6 +373,7 @@ class Map
                     var width = texture2D.width
                     var height = texture2D.height
 
+                    
                     object["x"] = x
                     object["y"] = y
                     object["width"] = width
@@ -379,9 +413,10 @@ class Map
                     rc.1 = height
                 }
             }
-        }
+        }*/
         
         return rc
+ 
     }
     
     func drawShape(_ shape: MapShape2D)
@@ -448,8 +483,8 @@ class Map
             while index < line.count - 1 {
                 
                 let a = String(line[line.index(line.startIndex, offsetBy: index)]) + String(line[line.index(line.startIndex, offsetBy: index+1)])
-                if let alias = aliases[a] {
-                    let advance = drawAlias(xPos, yPos, alias)
+                if aliases[a] != nil {
+                    let advance = drawAlias(xPos, yPos, &aliases[a]!)
                     xPos += advance.0
                     if advance.1 > maxHeight {
                         maxHeight = advance.1
@@ -861,5 +896,59 @@ class Map
         renderEncoder.setRenderPipelineState(shader.pipelineState)
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         renderEncoder.endEncoding()
+    }
+    
+    func drawTexture(_ options: MapAliasData2D)
+    {
+        if let sourceTexture = options.texture {
+                        
+            var position : SIMD2<Float> = options.position.toSIMD()
+            var width : Float = options.width.toSIMD()
+            var height : Float = options.height.toSIMD()
+            let alpha : Float = 1
+            
+            let subRect : Rect2D? = options.rect
+
+            position.y = -position.y;
+            position.x /= game.scaleFactor
+            position.y /= game.scaleFactor
+            
+            width /= game.scaleFactor
+            height /= game.scaleFactor
+            
+            var data = TextureUniform()
+            data.globalAlpha = alpha
+            
+            if let subRect = subRect {
+                data.pos.x = subRect.x / sourceTexture.width
+                data.pos.y = subRect.y / sourceTexture.height
+                data.size.x = subRect.width / sourceTexture.width// / game.scaleFactor
+                data.size.y = subRect.height / sourceTexture.height// / game.scaleFactor
+            } else {
+                data.pos.x = 0
+                data.pos.y = 0
+                data.size.x = 1
+                data.size.y = 1
+            }
+                    
+            let rect = MMRect( position.x, position.y, width, height, scale: game.scaleFactor )
+            let vertexData = game.createVertexData(texture: sourceTexture, rect: rect)
+            
+            let renderPassDescriptor = MTLRenderPassDescriptor()
+            renderPassDescriptor.colorAttachments[0].texture = texture.texture
+            renderPassDescriptor.colorAttachments[0].loadAction = .load
+            
+            let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+
+            renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+            renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+            
+            renderEncoder.setFragmentBytes(&data, length: MemoryLayout<TextureUniform>.stride, index: 0)
+            renderEncoder.setFragmentTexture(sourceTexture.texture, index: 1)
+
+            renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawTexture))
+            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+            renderEncoder.endEncoding()
+        }
     }
 }

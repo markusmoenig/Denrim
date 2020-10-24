@@ -62,8 +62,8 @@ class MapPreview
                     startTimer()
                 }
             } else
-            if let alias = map.aliases[variable] {
-                map.drawAlias(0, 0, alias)
+            if map.aliases[variable] != nil {
+                map.drawAlias(0, 0, &map.aliases[variable]!)
             } else
             if let layer = map.layers[variable] {
                 game.helpText = "Layer - Defines a layer of visual content in a Scene\n\n"
