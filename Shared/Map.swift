@@ -328,7 +328,7 @@ class Map
         return nil
     }
 
-    @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: MapAlias, scale: Float = 1) -> (Float, Float)
+    @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: MapAlias) -> (Float, Float)
     {
         var object : [String:Any] = [:]
         var rc     : (Float, Float) = (0,0)
@@ -337,8 +337,8 @@ class Map
             if let image = images[alias.pointsTo] {
                 
                 if let texture2D = getImageResource(image.resourceName) {
-                    var width = texture2D.width * scale
-                    var height = texture2D.height * scale
+                    var width = texture2D.width
+                    var height = texture2D.height
 
                     object["x"] = x
                     object["y"] = y
@@ -348,11 +348,18 @@ class Map
                     
                     if let v = alias.options["rect"] as? Rect2D {
                         object["rect"] = v
-                        width = v.width * scale
-                        height = v.height * scale
+                        width = v.width
+                        height = v.height
                         
                         object["width"] = width
                         object["height"] = height
+                    }
+                    
+                    if let scale = alias.options["scale"] as? String {
+                        if scale.lowercased() == "full" {
+                            object["width"] = texture!.width
+                            object["height"] = texture!.height
+                        }
                     }
                 
                     game?.texture?.drawTexture(object)
@@ -410,7 +417,7 @@ class Map
         }
     }
     
-    func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer, scale: Float = 1)
+    func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer)
     {
         var xPos = x
         var yPos = y
@@ -442,7 +449,7 @@ class Map
                 
                 let a = String(line[line.index(line.startIndex, offsetBy: index)]) + String(line[line.index(line.startIndex, offsetBy: index+1)])
                 if let alias = aliases[a] {
-                    let advance = drawAlias(xPos, yPos, alias, scale: scale)
+                    let advance = drawAlias(xPos, yPos, alias)
                     xPos += advance.0
                     if advance.1 > maxHeight {
                         maxHeight = advance.1
@@ -456,8 +463,10 @@ class Map
         }
     }
     
-    func drawScene(_ x: Float,_ y: Float,_ scene: MapScene, scale: Float = 1)
+    func drawScene(_ x: Float,_ y: Float,_ scene: MapScene)
     {
+        texture.clear(scene.backColor)
+        
         for (_, physics2D) in physics2D {
         
             let timeStep: b2Float = 1.0 / 60.0
@@ -500,7 +509,7 @@ class Map
                         layerOffX = sOff.x
                         layerOffY = sOff.y
                     }
-                    drawLayer(x + layerOffX, y + layerOffY, layer, scale: scale)
+                    drawLayer(x + layerOffX, y + layerOffY, layer)
                 }
             }
         }

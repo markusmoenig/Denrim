@@ -121,9 +121,9 @@ class Texture2D                 : NSObject
         return promise
     }*/
     
-    func clear(_ options: [String:Any] = [:])
+    func clear(_ clearColor: Float4? = nil)
     {
-        let color : SIMD4<Float>; if let v = options["color"] as? Float4 { color = v.toSIMD() } else { color = SIMD4<Float>(0,0,0,1) }
+        let color : SIMD4<Float>; if let v = clearColor { color = v.toSIMD() } else { color = SIMD4<Float>(0,0,0,1) }
 
         let renderPassDescriptor = MTLRenderPassDescriptor()
 

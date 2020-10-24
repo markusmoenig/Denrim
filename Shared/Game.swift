@@ -226,7 +226,7 @@ class Game              : ObservableObject
             //let startTime = Double(Date().timeIntervalSince1970)
             //#endif
 
-            texture?.clear()
+            //texture?.clear()
 
             if let context = gameAsset?.behavior {
                 context.execute(name: "update")

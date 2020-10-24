@@ -63,15 +63,15 @@ class MapPreview
                 }
             } else
             if let alias = map.aliases[variable] {
-                map.drawAlias(0, 0, alias, scale: 1)
+                map.drawAlias(0, 0, alias)
             } else
             if let layer = map.layers[variable] {
                 game.helpText = "Layer - Defines a layer of visual content in a Scene\n\n"
-                map.drawLayer(0, 0, layer, scale: 1)
+                map.drawLayer(0, 0, layer)
             } else
             if let scene = map.scenes[variable] {
                 game.helpText = "Scene - Defines a scene in the game which consists of several layers of visual content\n\n<Layers: Layer,...>"
-                map.drawScene(0, 0, scene, scale: 1)
+                map.drawScene(0, 0, scene)
             } else
             if let shape = map.shapes2D[variable] {
                 game.helpText = "Shape2D<Type: Text><Position: Float2> - Defines a 2D shape of a given type (Disk, Box, Text)\n\n"

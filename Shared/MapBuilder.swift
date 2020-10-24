@@ -405,6 +405,9 @@ class MapBuilder
         } else
         if type == .Scene {
             map.scenes[variable] = MapScene(options: options)
+            if options["color"] != nil {
+                map.scenes[variable]!.backColor = options["color"] as? Float4
+            }
             setLine(variable)
         } else { error.error = "Unknown type '\(type.rawValue)'" }
     }
@@ -413,7 +416,7 @@ class MapBuilder
     {
         //print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body"]
+        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale"]
         let integerOptions = ["index", "int", "digits"]
         let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density"]
         let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size", "float2", "offset", "grid"]
