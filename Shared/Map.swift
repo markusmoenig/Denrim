@@ -493,8 +493,8 @@ class Map
     
     func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer)
     {
-        var xPos = x
-        var yPos = y
+        var xPos = x + layer.options.offset.x * aspect.x
+        var yPos = y + layer.options.offset.y * aspect.y
         
         if let shs = layer.originalOptions["shaders"] as? [String] {
             for shaderName in shs {
@@ -536,7 +536,7 @@ class Map
             }
             
             yPos -= maxHeight
-            xPos = x
+            xPos = x + layer.options.offset.x * aspect.x
         }
         
         layer.options.accumScroll.x += layer.options.scroll.x * aspect.x
