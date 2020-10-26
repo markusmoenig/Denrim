@@ -227,16 +227,16 @@ class MapBuilder
         if type == .Image {
             if let group = options["group"] as? String {
                 if let asset = game.assetFolder.getAsset(group, .Image) {
-                    var index : Int = 0
-                    if let ind = options["index"] as? Int {
+                    var index : Int1 = Int1(0)
+                    if let ind = options["index"] as? Int1 {
                         index = ind
                     }
-                    if index >= 0 && index < asset.data.count {
+                    if index.x >= 0 && index.x < asset.data.count {
                         if map.images[variable] != nil {
                             map.images[variable] = nil
                         }
                         if map.images[variable] == nil {
-                            let resourceName : String = asset.id.uuidString + ":" + String(index)
+                            let resourceName : String = asset.id.uuidString + ":" + String(index.x)
                             map.images[variable] = MapImage(resourceName: resourceName, options: options)
                             setLine(variable)
                         }
@@ -279,7 +279,7 @@ class MapBuilder
             } else { error.error = "Alias '\(variable)' must contain of two characters" }
         } else
         if type == .Layer {
-            map.layers[variable] = MapLayer(data: [], options: options)
+            map.layers[variable] = MapLayer(data: [], originalOptions: options, options: MapLayerData2D(options))
             setLine(variable)
             currentLayer = variable
         } else
@@ -418,9 +418,9 @@ class MapBuilder
         let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale"]
         let integerOptions = ["index", "int", "digits"]
         let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density"]
-        let float2Options = ["sceneoffset", "range", "gravity", "position", "box", "size", "float2", "offset", "grid"]
+        let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "grid", "scroll"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
-        let boolOptions = ["repeatx", "visible"]
+        let boolOptions = ["repeatx", "repeaty", "visible"]
         let stringArrayOptions = ["layers", "shapes", "shaders"]
 
         var res: [String:Any] = [:]

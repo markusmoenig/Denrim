@@ -36,7 +36,9 @@ class Map
     var game                : Game!
     var texture             : Texture2D!
     var aspect              : Float3!
-    var viewBorder          : Float2!
+    
+    var canvasSize          = Float2(0,0)
+    var viewBorder          = Float2(0,0)
 
     deinit {
         clear()
@@ -67,7 +69,7 @@ class Map
         self.game = game
         self.texture = game.texture
         
-        let canvasSize = getCanvasSize()
+        canvasSize = getCanvasSize()
         
         let scale: Float = min(texture.width / canvasSize.x, texture.height / canvasSize.y)
         let scaledWidth: Float = canvasSize.x * scale
@@ -293,14 +295,28 @@ class Map
         }
     }
     
-    func applyTextureToShape(_ shapeId: String,_ id: String)
+    // Applies a texture id to a given shape id
+    @discardableResult func applyTextureToShape(_ shapeId: String,_ id: String) -> Bool
     {
         if shapes2D[shapeId] != nil {
             shapes2D[shapeId]!.texture = nil
             if images[id] != nil {
                 shapes2D[shapeId]!.texture = images[id]
+                                
+                // If size is 0, apply texture size
+                if shapes2D[shapeId]!.options.size.x == 0 {
+                    if let image = images[id] {
+                        if let texture2D = getImageResource(image.resourceName) {
+                            shapes2D[shapeId]!.options.size.x = texture2D.width / canvasSize.x * 100.0
+                            shapes2D[shapeId]!.options.size.y = texture2D.height / canvasSize.y * 100.0
+                        }
+                    }
+                }
+                
+                return true
             }
         }
+        return false
     }
     
     func getImageResource(_ name: String) -> Texture2D?
@@ -347,9 +363,12 @@ class Map
             var width = texture2D.width
             var height = texture2D.height
             
+            alias.options.position.x = x
+            alias.options.position.y = y
+
             alias.options.width.x = width
             alias.options.height.x = height
-            
+                        
             // Subrect ?
             if let v = alias.options.rect {
                 width = v.width
@@ -359,8 +378,28 @@ class Map
                 alias.options.height.x = height
             }
             
+            if alias.options.scale == .Full {
+                width = texture!.width - viewBorder.x * 2.0//canvasSize.x / texture2D.width//texture!.width - viewBorder.x * 2.0
+                height = texture!.height - viewBorder.y * 2.0//canvasSize.y / texture2D.height//aspect.z//texture!.height - viewBorder.y * 2.0
+                
+                //width = texture2D.width * canvasSize.x / texture2D.width //canvasSize.x / texture2D.width//texture!.width - viewBorder.x * 2.0
+                //height = texture2D.height * canvasSize.y / texture2D.height //canvasSize.y / texture2D.height//aspect.z//texture!.height - viewBorder.y * 2.0
+                
+                alias.options.width.x = width
+                alias.options.height.x = height
+            }
+            
             drawTexture(alias.options)
             
+            if alias.options.repeatX == true {
+                var posX : Float = x + width
+                while posX < game!.texture!.width {
+                    alias.options.position.x = posX
+                    drawTexture(alias.options)
+                    posX += width
+                }
+            }
+        
             rc.0 = width
             rc.1 = height
         }
@@ -457,7 +496,7 @@ class Map
         var xPos = x
         var yPos = y
         
-        if let shs = layer.options["shaders"] as? [String] {
+        if let shs = layer.originalOptions["shaders"] as? [String] {
             for shaderName in shs {
                 if let sh = shaders[shaderName] {
                     if let shader = sh.shader {
@@ -467,7 +506,7 @@ class Map
             }
         }
         
-        if let shapes = layer.options["shapes"] as? [String] {
+        if let shapes = layer.originalOptions["shapes"] as? [String] {
             for shape in shapes {
                 if let sh = shapes2D[shape] {
                     drawShape(sh)
@@ -475,6 +514,9 @@ class Map
             }
         }
         
+        xPos += layer.options.accumScroll.x
+        yPos += layer.options.accumScroll.y
+
         for line in layer.data {
             
             var index     : Int = 0
@@ -496,6 +538,9 @@ class Map
             yPos -= maxHeight
             xPos = x
         }
+        
+        layer.options.accumScroll.x += layer.options.scroll.x
+        layer.options.accumScroll.y += layer.options.scroll.y
     }
     
     func drawScene(_ x: Float,_ y: Float,_ scene: MapScene)
@@ -540,10 +585,9 @@ class Map
                     var layerOffX : Float = 0
                     var layerOffY : Float = 0
                     
-                    if let sOff = layer.options["sceneoffset"] as? Float2 {
-                        layerOffX = sOff.x
-                        layerOffY = sOff.y
-                    }
+                    layerOffX = layer.options.offset.x
+                    layerOffY = layer.options.offset.y
+
                     drawLayer(x + layerOffX, y + layerOffY, layer)
                 }
             }
@@ -909,7 +953,9 @@ class Map
             
             let subRect : Rect2D? = options.rect
 
-            position.y = -position.y;
+            position.x += viewBorder.x
+            position.y += viewBorder.y
+
             position.x /= game.scaleFactor
             position.y /= game.scaleFactor
             
@@ -932,7 +978,7 @@ class Map
             }
                     
             let rect = MMRect( position.x, position.y, width, height, scale: game.scaleFactor )
-            let vertexData = game.createVertexData(texture: sourceTexture, rect: rect)
+            let vertexData = game.createVertexData(texture: texture, rect: rect)
             
             let renderPassDescriptor = MTLRenderPassDescriptor()
             renderPassDescriptor.colorAttachments[0].texture = texture.texture

@@ -667,8 +667,9 @@ struct ContentView: View {
                 }
                 .foregroundColor(Color.gray)
                 .font(.system(size: 12))
-            .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
-            .layoutPriority(0)
+                .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
+                .layoutPriority(0)
+                .animation(.easeInOut)
         }
         }
     }

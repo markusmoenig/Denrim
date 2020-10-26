@@ -212,6 +212,46 @@ class Call: BehaviorNode
     }
 }
 
+// Applies a texture to the given shape
+class ApplyTexture2D: BehaviorNode
+{
+    var shapeId: String? = nil
+    var id: String? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "ApplyTexture2D"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["shapeid"] as? String {
+            shapeId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "ApplyTexture2D requires a 'ShapeId' parameter"
+        }
+        
+        if let value = options["id"] as? String {
+            id = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "SetScene requires a 'Id' parameter"
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if shapeId != nil && id != nil {
+                if map.applyTextureToShape(shapeId!, id!) {
+                    return .Success
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 class SetNode: BehaviorNode
 {
     var variable: Any? = nil

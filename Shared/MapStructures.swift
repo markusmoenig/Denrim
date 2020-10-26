@@ -21,12 +21,21 @@ struct MapSequence {
 
 struct MapAliasData2D {
 
+    enum Scale {
+        case Original, Full
+    }
+    
+    var scale           : Scale = .Original
+    
     var position        : Float2
     var width           = Float1(0)
     var height          = Float1(0)
 
     var rect            : Rect2D? = nil
     var texture         : Texture2D? = nil
+    
+    var repeatX         : Bool = false
+    var repeatY         : Bool = false
 
     init(_ options: [String:Any])
     {
@@ -40,6 +49,20 @@ struct MapAliasData2D {
             self.rect = rect
         } else {
             self.rect = nil
+        }
+        
+        if let scale = options["scale"] as? String {
+            if scale.lowercased() == "full" {
+                self.scale = .Full
+            }
+        }
+        
+        if let repeatX = options["repeatx"] as? Bool1 {
+            self.repeatX = repeatX.x
+        }
+        
+        if let repeatY = options["repeaty"] as? Bool1 {
+            self.repeatY = repeatY.x
         }
     }
 }
@@ -57,10 +80,35 @@ struct MapAlias {
     var options         : MapAliasData2D
 }
 
+struct MapLayerData2D {
+    
+    var offset          : Float2
+    var scroll          : Float2
+
+    var accumScroll     = Float2(0,0)
+
+    init(_ options: [String:Any])
+    {
+        if let offset = options["offset"] as? Float2 {
+            self.offset = offset
+        } else {
+            self.offset = Float2(0,0)
+        }
+        
+        if let scroll = options["scroll"] as? Float2 {
+            self.scroll = scroll
+        } else {
+            self.scroll = Float2(0,0)
+        }
+    }
+}
+
 struct MapLayer {
 
     var data            : [String] = []
-    var options         : [String:Any]
+    
+    var originalOptions : [String:Any]
+    var options         : MapLayerData2D
     var endLine         : Int32 = 0
 }
 
@@ -107,7 +155,7 @@ struct MapShapeData2D {
         if let size = options["size"] as? Float2 {
             self.size = size
         } else {
-            self.size = Float2(1,1)
+            self.size = Float2(0,0)
         }
         
         if let visible = options["visible"] as? Bool1 {

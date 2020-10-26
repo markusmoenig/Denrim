@@ -53,6 +53,8 @@ class BehaviorBuilder
         BehaviorNodeItem("Set", { (_ options: [String:Any]) -> BehaviorNode in return SetNode(options) }),
         BehaviorNodeItem("IsVariable", { (_ options: [String:Any]) -> BehaviorNode in return IsVariable(options) }),
 
+        BehaviorNodeItem("ApplyTexture2D", { (_ options: [String:Any]) -> BehaviorNode in return ApplyTexture2D(options) }),
+
         BehaviorNodeItem("Multiply", { (_ options: [String:Any]) -> BehaviorNode in return Multiply(options) }),
         BehaviorNodeItem("Subtract", { (_ options: [String:Any]) -> BehaviorNode in return Subtract(options) }),
         BehaviorNodeItem("Add", { (_ options: [String:Any]) -> BehaviorNode in return Add(options) })
