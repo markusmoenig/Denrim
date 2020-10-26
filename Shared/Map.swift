@@ -539,8 +539,8 @@ class Map
             xPos = x
         }
         
-        layer.options.accumScroll.x += layer.options.scroll.x
-        layer.options.accumScroll.y += layer.options.scroll.y
+        layer.options.accumScroll.x += layer.options.scroll.x * aspect.x
+        layer.options.accumScroll.y += layer.options.scroll.y * aspect.y
     }
     
     func drawScene(_ x: Float,_ y: Float,_ scene: MapScene)
