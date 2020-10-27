@@ -699,9 +699,11 @@ class GetTouchPos: BehaviorNode
     {
         if game.view.mouseIsDown {
             if let data2 = data2 {
-                data2.x = game.view.mousePos.x / game.currentMap!.map!.aspect.x
-                data2.y = game.view.mousePos.y / game.currentMap!.map!.aspect.y
-                return .Success
+                if let map = game.currentMap?.map {
+                    data2.x = (game.view.mousePos.x - map.viewBorder.x) / map.aspect.x
+                    data2.y = (game.view.mousePos.y - map.viewBorder.y) / map.aspect.y
+                    return .Success
+                }
             }
         }
         context.addFailure(lineNr: lineNr)
