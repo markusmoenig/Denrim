@@ -351,8 +351,7 @@ class Map
                 mapShape2D.options.size.y = shapes2D[instancer.shapeName]!.options.size.y
                 
                 if shapes2D[instancer.shapeName]!.physicsWorld != nil {
-                    addShapeToPhysicsWorld(shapes2D[instancer.shapeName]!.physicsWorld!, variableName, &shapes2D[variableName]!, shapes2D[instancer.shapeName]!.physicsCmd!)
-                    shapes2D[variableName]?.body?.setLinearVelocity(b2Vec2(1,0))
+                    addShapeToPhysicsWorld(shapes2D[instancer.shapeName]!.physicsWorld!, variableName, &mapShape2D, shapes2D[instancer.shapeName]!.physicsCmd!)
                 }
 
                 instanceAsset.behavior!.execute(name: "init")

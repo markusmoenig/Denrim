@@ -222,6 +222,7 @@ struct MapShape2D {
         case Disk, Box, Text
     }
     
+    var shapeName       : String
     var shape           : Shapes
     var options         : MapShapeData2D
     var originalOptions : [String:Any]

@@ -610,11 +610,11 @@ class MapBuilder
         if isValid {
             if let shapeName = options["type"] as? String {
                 if shapeName.lowercased() == "disk" {
-                    map.shapes2D[variable] = MapShape2D(shape: .Disk, options: MapShapeData2D(replacedOptions), originalOptions: options)
+                    map.shapes2D[variable] = MapShape2D(shapeName: variable, shape: .Disk, options: MapShapeData2D(replacedOptions), originalOptions: options)
                     setLine(variable)
                 } else
                 if shapeName.lowercased() == "box" {
-                    map.shapes2D[variable] = MapShape2D(shape: .Box, options: MapShapeData2D(replacedOptions), originalOptions: options)
+                    map.shapes2D[variable] = MapShape2D(shapeName: variable, shape: .Box, options: MapShapeData2D(replacedOptions), originalOptions: options)
                     setLine(variable)
                 } else
                 if shapeName.lowercased() == "text" {
@@ -659,7 +659,7 @@ class MapBuilder
                     
                     replacedOptions["text"] = textRef
                     
-                    map.shapes2D[variable] = MapShape2D(shape: .Text, options: MapShapeData2D(replacedOptions), originalOptions: options)
+                    map.shapes2D[variable] = MapShape2D(shapeName: variable, shape: .Text, options: MapShapeData2D(replacedOptions), originalOptions: options)
                     setLine(variable)
                 }
             }

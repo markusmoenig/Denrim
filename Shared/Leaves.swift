@@ -261,14 +261,14 @@ class SetLinearVelocity2D: BehaviorNode
     override init(_ options: [String:Any] = [:])
     {
         super.init(options)
-        name = "ApplyTexture2D"
+        name = "SetLinearVelocity2D"
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
         if let value = options["shapeid"] as? String {
             shapeId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
         } else {
-            error.error = "ApplyTexture2D requires a 'ShapeId' parameter"
+            error.error = "SetLinearVelocity2D requires a 'ShapeId' parameter"
         }
         
         if let value = extractFloat2Value(options, context: context, tree: tree, error: &error) {
@@ -281,6 +281,16 @@ class SetLinearVelocity2D: BehaviorNode
         if let map = game.currentMap?.map {
             if shapeId != nil && f2 != nil {
                 if let shape = map.shapes2D[shapeId!] {
+                    if let instances = shape.instances {
+                        for inst in instances.pairs {
+                            if inst.1.behaviorAsset.behavior === context {
+                                if let body = inst.0.body {
+                                    body.setLinearVelocity(b2Vec2(f2!.x, f2!.y))
+                                    return .Success
+                                }
+                            }
+                        }
+                    } else
                     if let body = shape.body {
                         body.setLinearVelocity(b2Vec2(f2!.x, f2!.y))
                         return .Success
@@ -323,6 +333,52 @@ class CreateInstance2D: BehaviorNode
             if instancerId != nil && position2 != nil {
                 if map.createOnDemandInstance(instancerId!, position2!) {
                     return .Success
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
+// Destroy an on demand instance
+class DestroyInstance2D: BehaviorNode
+{
+    var instancerId: String? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "DestroyInstance2D"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["id"] as? String {
+            instancerId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "DestroyInstance2D requires an 'Id' parameter for the OnDemandInstance2D reference"
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map, instancerId != nil {
+            if let instancer = map.onDemandInstancers[instancerId!] {
+                for (index, inst) in instancer.pairs.enumerated() {
+                    if inst.1.behaviorAsset.behavior === context {
+                        if let body = inst.0.body {
+                            if let oshape = map.shapes2D[instancer.shapeName] {
+                                if let world = oshape.physicsWorld?.world {
+                                    world.destroyBody(body)
+                                }
+                            }
+                        }
+                        
+                        instancer.pairs.remove(at: index)
+                        map.shapes2D[inst.0.shapeName] = nil
+                        
+                        return .Success
+                    }
                 }
             }
         }
