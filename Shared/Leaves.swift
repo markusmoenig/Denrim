@@ -252,6 +252,85 @@ class ApplyTexture2D: BehaviorNode
     }
 }
 
+// Sets the linear velocity for a given shape
+class SetLinearVelocity2D: BehaviorNode
+{
+    var shapeId: String? = nil
+    var f2: Float2? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "ApplyTexture2D"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["shapeid"] as? String {
+            shapeId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "ApplyTexture2D requires a 'ShapeId' parameter"
+        }
+        
+        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error) {
+            f2 = value
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if shapeId != nil && f2 != nil {
+                if let shape = map.shapes2D[shapeId!] {
+                    if let body = shape.body {
+                        body.setLinearVelocity(b2Vec2(f2!.x, f2!.y))
+                        return .Success
+                    }
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
+// Creates an on demand instance
+class CreateInstance2D: BehaviorNode
+{
+    var instancerId: String? = nil
+    var position2: Float2? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "CreateInstance2D"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["id"] as? String {
+            instancerId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "CreateInstance2D requires an 'Id' parameter for the OnDemandInstance2D reference"
+        }
+        
+        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "position") {
+            position2 = value
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if instancerId != nil && position2 != nil {
+                if map.createOnDemandInstance(instancerId!, position2!) {
+                    return .Success
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 class SetNode: BehaviorNode
 {
     var variable: Any? = nil

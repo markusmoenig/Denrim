@@ -35,6 +35,7 @@ class MapBuilder
         case Shader = "Shader"      // Shader
 
         case GridInstance2D = "GridInstance2D" // GridInstance
+        case OnDemandInstance2D = "OnDemandInstance2D" // OnDemandInstance
 
         // Commands
         case CanvasSize = "CanvasSize"
@@ -330,6 +331,19 @@ class MapBuilder
         if type == .Shape2D {
             createShape2D(map: map, variable: variable, options: options, error: &error)
         } else
+        if type == .OnDemandInstance2D {
+            let shapeId = options["shapeid"] as? String
+            let behaviorId = options["behaviorid"] as? String
+            if shapeId != nil && behaviorId != nil {
+                if map.shapes2D[shapeId!] != nil && map.behavior[behaviorId!] != nil {
+                    let instancer = MapOnDemandInstance2D(shapeName: shapeId!, behaviorName: behaviorId!, variableName: variable)
+                    map.shapes2D[shapeId!]!.instances = instancer
+                    map.behavior[behaviorId!]!.instances = instancer
+                    map.onDemandInstancers[variable] = instancer
+                    setLine(variable)
+                }
+            }
+        } else
         if type == .GridInstance2D {
             let shapeId = options["shapeid"] as? String
             let behaviorId = options["behaviorid"] as? String
@@ -352,7 +366,7 @@ class MapBuilder
             if shapeId != nil && behaviorId != nil {
                 if map.shapes2D[shapeId!] != nil && map.behavior[behaviorId!] != nil {
                     
-                    let grid = MapGridInstance2D(shapeName: shapeId!, behaviorName: behaviorId!)
+                    let grid = MapGridInstance2D(shapeName: shapeId!, behaviorName: behaviorId!, variableName: variable)
                     let origPosition = map.behavior[behaviorId!]!.behaviorAsset.behavior?.getVariableValue("position") as? Float2
                     
                     // Only create when the original behavior was compiled successfully

@@ -21,6 +21,8 @@ class Map
 
     var shapes2D            : [String:MapShape2D] = [:]
     var shaders             : [String:MapShader] = [:]
+    
+    var onDemandInstancers  : [String:MapOnDemandInstance2D] = [:]
 
     var commands            : [MapCommand] = []
 
@@ -59,6 +61,7 @@ class Map
         shaders = [:]
         commands = []
         lines = [:]
+        onDemandInstancers = [:]
         if releaseResources {
             resources = [:]
         }
@@ -202,97 +205,98 @@ class Map
         }
         
         for cmd in commands {
-            // Parse the 2D shapes and add them to the right physics world
-            if cmd.command == "ApplyPhysics2D" {
-                if let physicsName = cmd.options["physicsid"] as? String {
-                    if let physics2D = physics2D[physicsName] {
-                        let ppm = physics2D.ppm
-                        
-                        func addShapeToWorld(_ shapeName: String,_ shape2D: inout MapShape2D)
-                        {
-                            // Define the dynamic body. We set its position and call the body factory.
-                            let bodyDef = b2BodyDef()
-                            bodyDef.angle = shape2D.options.rotation.x.degreesToRadians
-                            bodyDef.type = b2BodyType.staticBody
-
-                            let fixtureDef = b2FixtureDef()
-                            fixtureDef.shape = nil
-
-                            if var type = shape2D.originalOptions["type"] as? String {
-                                type = type.lowercased()
-                                if type == "disk" {
-                                    let circleShape = b2CircleShape()
-                                    circleShape.radius = shape2D.options.radius.x / ppm - circleShape.m_radius
-                                    fixtureDef.shape = circleShape
-                                }
-                            }
-                            
-                            if  fixtureDef.shape == nil {
-                                let polyShape = b2PolygonShape()
-                                
-                                polyShape.setAsBox(halfWidth: (shape2D.options.size.x / 2.0) / ppm - polyShape.m_radius, halfHeight: (shape2D.options.size.y / 2.0) / ppm - polyShape.m_radius)
-                                fixtureDef.shape = polyShape
-                            }
-                            
-                            if let body = cmd.options["body"] as? String {
-                                if body.lowercased() == "dynamic" {
-                                    bodyDef.type = b2BodyType.dynamicBody
-                                    fixtureDef.density = 1.0
-                                    fixtureDef.restitution = 0.0
-                                }
-                            }
-                            
-                            
-                            if let restitution = cmd.options["restitution"] as? Float1 {
-                                fixtureDef.restitution = restitution.x
-                            } else {
-                                fixtureDef.restitution = 0.0
-                            }
-                            if let friction = cmd.options["friction"] as? Float1 {
-                                fixtureDef.friction = friction.x
-                            } else {
-                                fixtureDef.friction = 0.3
-                            }
-                            if let density = cmd.options["density"] as? Float1 {
-                                fixtureDef.density = density.x
-                                if density.x == 0 {
-                                    bodyDef.type = b2BodyType.staticBody
-                                }
-                            }
-                            
-                            bodyDef.position.set((shape2D.options.position.x + shape2D.options.size.x / 2.0) / ppm, (shape2D.options.position.y + shape2D.options.size.y / 2.0) / ppm)
-                            
-                            shape2D.body = physics2D.world!.createBody(bodyDef)
-                            shape2D.body!.createFixture(fixtureDef)
-                                                        
-                            //shapes2D[shapeName]?.body = physics2D.world!.createBody(bodyDef)
-                            //shapes2D[shapeName]?.body!.createFixture(fixtureDef)
-                        }
-                        
-                        if let shapeName = cmd.options["shapeid"] as? String {
-                            if let shape2D = shapes2D[shapeName] {
-                                
-                                if let instances = shape2D.instances {
-                                    for (index, _) in instances.pairs.enumerated() {
-                                        addShapeToWorld(shapeName, &shape2D.instances!.pairs[index].0)
-                                    }
-                                } else {
-                                    addShapeToWorld(shapeName, &shapes2D[shapeName]!)
-                                }
-                            }
-                        }
-                    }
-                }
-            } else
-            // Apply a texture (any visual) to a shape
+            // Set a texture (any visual) to a shape
             if cmd.command == "ApplyTexture2D" {
                 if let shapeName = cmd.options["shapeid"] as? String {
                     if let textureName = cmd.options["id"] as? String {
                         applyTextureToShape(shapeName, textureName)
                     }
                 }
+            } else
+            // Parse the 2D shapes and add them to the right physics world
+            if cmd.command == "ApplyPhysics2D" {
+                if let physicsName = cmd.options["physicsid"] as? String {
+                    if let physics2D = physics2D[physicsName] {
+                        if let shapeName = cmd.options["shapeid"] as? String {
+                            if let shape2D = shapes2D[shapeName] {
+                                
+                                shapes2D[shapeName]?.physicsWorld = physics2D
+                                shapes2D[shapeName]?.physicsCmd = cmd
+
+                                if let instances = shape2D.instances {
+                                    for (index, _) in instances.pairs.enumerated() {
+                                        addShapeToPhysicsWorld(physics2D, shapeName, &shape2D.instances!.pairs[index].0, cmd)
+                                    }
+                                } else {
+                                    addShapeToPhysicsWorld(physics2D, shapeName, &shapes2D[shapeName]!, cmd)
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
+    
+    // Adds the given shape to the physics world
+    func addShapeToPhysicsWorld(_ physics2D: MapPhysics2D,_ shapeName: String,_ shape2D: inout MapShape2D,_ cmd: MapCommand)
+    {
+        let ppm = physics2D.ppm
+
+        // Define the dynamic body. We set its position and call the body factory.
+        let bodyDef = b2BodyDef()
+        bodyDef.angle = shape2D.options.rotation.x.degreesToRadians
+        bodyDef.type = b2BodyType.staticBody
+
+        let fixtureDef = b2FixtureDef()
+        fixtureDef.shape = nil
+
+        if var type = shape2D.originalOptions["type"] as? String {
+            type = type.lowercased()
+            if type == "disk" {
+                let circleShape = b2CircleShape()
+                circleShape.radius = shape2D.options.radius.x / ppm - circleShape.m_radius
+                fixtureDef.shape = circleShape
+            }
+        }
+        
+        if  fixtureDef.shape == nil {
+            let polyShape = b2PolygonShape()
+            
+            polyShape.setAsBox(halfWidth: (shape2D.options.size.x / 2.0) / ppm - polyShape.m_radius, halfHeight: (shape2D.options.size.y / 2.0) / ppm - polyShape.m_radius)
+            fixtureDef.shape = polyShape
+        }
+        
+        if let body = cmd.options["body"] as? String {
+            if body.lowercased() == "dynamic" {
+                bodyDef.type = b2BodyType.dynamicBody
+                fixtureDef.density = 1.0
+                fixtureDef.restitution = 0.0
+            }
+        }
+        
+        
+        if let restitution = cmd.options["restitution"] as? Float1 {
+            fixtureDef.restitution = restitution.x
+        } else {
+            fixtureDef.restitution = 0.0
+        }
+        if let friction = cmd.options["friction"] as? Float1 {
+            fixtureDef.friction = friction.x
+        } else {
+            fixtureDef.friction = 0.3
+        }
+        if let density = cmd.options["density"] as? Float1 {
+            fixtureDef.density = density.x
+            if density.x == 0 {
+                bodyDef.type = b2BodyType.staticBody
+            }
+        }
+        
+        bodyDef.position.set((shape2D.options.position.x + shape2D.options.size.x / 2.0) / ppm, (shape2D.options.position.y + shape2D.options.size.y / 2.0) / ppm)
+        
+        shape2D.body = physics2D.world!.createBody(bodyDef)
+        shape2D.body!.createFixture(fixtureDef)
     }
     
     // Applies a texture id to a given shape id
@@ -313,6 +317,47 @@ class Map
                     }
                 }
                 
+                return true
+            }
+        }
+        return false
+    }
+    
+    // Creates an instance of an OnDemandInstance2D object
+    @discardableResult func createOnDemandInstance(_ instancerId: String,_ position: Float2) -> Bool
+    {
+        if let instancer = onDemandInstancers[instancerId] {
+            let instanceAsset = Asset(type: .Behavior, name: instancer.behaviorName)
+            instanceAsset.value = behavior[instancer.behaviorName]!.behaviorAsset.value
+            
+            var variableName = instancer.variableName
+            variableName += String(instancer.pairs.count)
+                
+            var error = CompileError()
+            game.behaviorBuilder.compile(instanceAsset)
+            game.mapBuilder.createShape2D(map: self, variable: variableName, options: shapes2D[instancer.shapeName]!.originalOptions, error: &error, instBehaviorName: instancer.behaviorName, instAsset: instanceAsset)
+            
+            if error.error == nil {
+                var mapBehavior = MapBehavior(behaviorAsset: instanceAsset, name: variableName, options: [:])
+                var mapShape2D = shapes2D[variableName]!
+                
+                if let pos = mapBehavior.behaviorAsset.behavior?.getVariableValue("position") as? Float2 {
+                    pos.x = position.x
+                    pos.y = position.y                    
+                }
+                
+                // In case the shape has zero size by default copy the base shape size
+                mapShape2D.options.size.x = shapes2D[instancer.shapeName]!.options.size.x
+                mapShape2D.options.size.y = shapes2D[instancer.shapeName]!.options.size.y
+                
+                if shapes2D[instancer.shapeName]!.physicsWorld != nil {
+                    addShapeToPhysicsWorld(shapes2D[instancer.shapeName]!.physicsWorld!, variableName, &shapes2D[variableName]!, shapes2D[instancer.shapeName]!.physicsCmd!)
+                    shapes2D[variableName]?.body?.setLinearVelocity(b2Vec2(1,0))
+                }
+
+                instanceAsset.behavior!.execute(name: "init")
+                instancer.addPair(shape: &mapShape2D, behavior: &mapBehavior)
+                                
                 return true
             }
         }

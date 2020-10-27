@@ -232,6 +232,8 @@ struct MapShape2D {
     var contactList     : [String] = []
     
     var texture         : Any? = nil
+    var physicsCmd      : MapCommand? = nil
+    var physicsWorld    : MapPhysics2D? = nil
 }
 
 struct MapPhysics2D {
@@ -261,13 +263,16 @@ class MapInstance2D
 {
     var shapeName       : String
     var behaviorName    : String
-    
+
+    var variableName    : String
+
     var pairs           : [(MapShape2D, MapBehavior)] = []
     
-    init(shapeName: String, behaviorName: String)
+    init(shapeName: String, behaviorName: String, variableName: String)
     {
         self.shapeName = shapeName
         self.behaviorName = behaviorName
+        self.variableName = variableName
     }
     
     func addPair(shape: inout MapShape2D, behavior: inout MapBehavior)
@@ -283,4 +288,8 @@ class MapGridInstance2D : MapInstance2D
     
     var offsetX         : Float = 15
     var offsetY         : Float = 5
+}
+
+class MapOnDemandInstance2D : MapInstance2D
+{
 }

@@ -53,6 +53,9 @@ class BehaviorBuilder
         BehaviorNodeItem("Set", { (_ options: [String:Any]) -> BehaviorNode in return SetNode(options) }),
         BehaviorNodeItem("IsVariable", { (_ options: [String:Any]) -> BehaviorNode in return IsVariable(options) }),
 
+        BehaviorNodeItem("CreateInstance2D", { (_ options: [String:Any]) -> BehaviorNode in return CreateInstance2D(options) }),
+        BehaviorNodeItem("SetLinearVelocity2D", { (_ options: [String:Any]) -> BehaviorNode in return SetLinearVelocity2D(options) }),
+
         BehaviorNodeItem("ApplyTexture2D", { (_ options: [String:Any]) -> BehaviorNode in return ApplyTexture2D(options) }),
 
         BehaviorNodeItem("Multiply", { (_ options: [String:Any]) -> BehaviorNode in return Multiply(options) }),
