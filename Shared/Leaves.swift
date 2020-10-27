@@ -330,8 +330,20 @@ class CreateInstance2D: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
         if let map = game.currentMap?.map {
-            if instancerId != nil && position2 != nil {
-                if map.createOnDemandInstance(instancerId!, position2!) {
+            if let instancer = map.onDemandInstancers[instancerId!], position2 != nil {
+                let currentTime = NSDate().timeIntervalSince1970
+
+                var canInvoke: Bool = true
+                if instancer.lastInvocation > 0 {
+                    if currentTime - instancer.lastInvocation < instancer.delay {
+                        canInvoke = false
+                    }
+                }
+                
+                if canInvoke {
+                    if map.createOnDemandInstance(instancerId!, position2!) {                        
+                        instancer.lastInvocation = currentTime
+                    }
                     return .Success
                 }
             }

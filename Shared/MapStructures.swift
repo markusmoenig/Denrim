@@ -293,4 +293,6 @@ class MapGridInstance2D : MapInstance2D
 
 class MapOnDemandInstance2D : MapInstance2D
 {
+    var delay           : Double = 0
+    var lastInvocation  : Double = 0
 }

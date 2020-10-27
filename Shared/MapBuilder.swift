@@ -337,6 +337,10 @@ class MapBuilder
             if shapeId != nil && behaviorId != nil {
                 if map.shapes2D[shapeId!] != nil && map.behavior[behaviorId!] != nil {
                     let instancer = MapOnDemandInstance2D(shapeName: shapeId!, behaviorName: behaviorId!, variableName: variable)
+                    if let delay = options["delay"] as? Float1 {
+                        print("ff", delay)
+                        instancer.delay = Double(delay.x)
+                    }
                     map.shapes2D[shapeId!]!.instances = instancer
                     map.behavior[behaviorId!]!.instances = instancer
                     map.onDemandInstancers[variable] = instancer
@@ -431,7 +435,7 @@ class MapBuilder
 
         let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale"]
         let integerOptions = ["index", "int", "digits"]
-        let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density"]
+        let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay"]
         let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "grid", "scroll"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
         let boolOptions = ["repeatx", "repeaty", "visible"]
