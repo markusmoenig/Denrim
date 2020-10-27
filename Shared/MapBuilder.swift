@@ -338,7 +338,6 @@ class MapBuilder
                 if map.shapes2D[shapeId!] != nil && map.behavior[behaviorId!] != nil {
                     let instancer = MapOnDemandInstance2D(shapeName: shapeId!, behaviorName: behaviorId!, variableName: variable)
                     if let delay = options["delay"] as? Float1 {
-                        print("ff", delay)
                         instancer.delay = Double(delay.x)
                     }
                     map.shapes2D[shapeId!]!.instances = instancer
