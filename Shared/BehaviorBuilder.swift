@@ -50,6 +50,7 @@ class BehaviorBuilder
         BehaviorNodeItem("DistanceToShape", { (_ options: [String:Any]) -> BehaviorNode in return DistanceToShape(options) }),
         BehaviorNodeItem("ShapeContactCount", { (_ options: [String:Any]) -> BehaviorNode in return ShapeContactCount(options) }),
         BehaviorNodeItem("RandomColor", { (_ options: [String:Any]) -> BehaviorNode in return RandomColorNode(options) }),
+        BehaviorNodeItem("Random", { (_ options: [String:Any]) -> BehaviorNode in return RandomNode(options) }),
 
         BehaviorNodeItem("Set", { (_ options: [String:Any]) -> BehaviorNode in return SetNode(options) }),
         BehaviorNodeItem("IsVariable", { (_ options: [String:Any]) -> BehaviorNode in return IsVariable(options) }),

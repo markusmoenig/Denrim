@@ -846,6 +846,100 @@ class RandomColorNode: BehaviorNode
     }
 }
 
+class RandomNode: BehaviorNode
+{
+    var from: Any? = nil
+    var to: Any? = nil
+
+    var dest: Any? = nil
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Random"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let from = extractInt1Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+            self.from = from
+            self.to = extractInt1Value(options, context: context, tree: tree, error: &error, name: "to")
+            dest = extractInt1Value(options, context: context, tree: tree, error: &error, name: "variable")
+        } else
+        if let from = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+            self.from = from
+            self.to = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "to")
+            dest = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "variable")
+        } else
+        if let from = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+            self.from = from
+            self.to = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "to")
+            dest = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "variable")
+        } else
+        if let from = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+            self.from = from
+            self.to = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "to")
+            dest = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "variable")
+        } else
+        if let from = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+            self.from = from
+            self.to = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "to")
+            dest = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "variable")
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let dest = dest as? Int1 {
+            if let from = from as? Int1 {
+                if let to = to as? Int1 {
+                    dest.x = Int.random(in: from.x...to.x)
+                }
+            }
+            return .Success
+        } else
+        if let dest = dest as? Float1 {
+            if let from = from as? Float1 {
+                if let to = to as? Float1 {
+                    dest.x = Float.random(in: from.x...to.x)
+                }
+            }
+            return .Success
+        } else
+        if let dest = dest as? Float2 {
+            if let from = from as? Float2 {
+                if let to = to as? Float2 {
+                    dest.x = Float.random(in: from.x...to.x)
+                    dest.y = Float.random(in: from.y...to.y)
+                }
+            }
+            return .Success
+        } else
+        if let dest = dest as? Float3 {
+            if let from = from as? Float3 {
+                if let to = to as? Float3 {
+                    dest.x = Float.random(in: from.x...to.x)
+                    dest.y = Float.random(in: from.y...to.y)
+                    dest.z = Float.random(in: from.z...to.z)
+                }
+            }
+            return .Success
+        } else
+        if let dest = dest as? Float4 {
+            if let from = from as? Float4 {
+                if let to = to as? Float4 {
+                    dest.x = Float.random(in: from.x...to.x)
+                    dest.y = Float.random(in: from.y...to.y)
+                    dest.z = Float.random(in: from.z...to.z)
+                    dest.w = Float.random(in: from.w...to.w)
+                }
+            }
+            return .Success
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 class GetTouchPos: BehaviorNode
 {
     var data2: Float2? = nil
