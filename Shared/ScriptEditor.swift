@@ -16,6 +16,10 @@ class ScriptEditor
     var sessions        : Int = 0
     var colorScheme     : ColorScheme
     
+    var mapHelpIndex    : [String] = []
+    var mapHelp         : [String:String] = [:]
+    var mapHelpText     : String = "Available:\n\n"
+    
     init(_ view: WKWebView, _ game: Game,_ colorScheme: ColorScheme)
     {
         self.webView = view
@@ -27,6 +31,38 @@ class ScriptEditor
             createSession(asset)
             setTheme(colorScheme)
         }
+        
+        // Read out the map context help
+        let docsPath = Bundle.main.resourcePath! + "/Files/MapHelp"
+        let fileManager = FileManager.default
+
+        do {
+            mapHelpIndex = try fileManager.contentsOfDirectory(atPath: docsPath).sorted()
+            for h in mapHelpIndex {
+                mapHelpText += h + "\n"
+            }
+        } catch {
+        }
+    }
+    
+    // Get help for a map keyword
+    func getMapHelpForKey(_ key: String) -> String?
+    {
+        if let help = mapHelp[key] {
+            return help
+        }
+
+        if mapHelpIndex.contains(key) {
+            guard let path = Bundle.main.path(forResource: key, ofType: "", inDirectory: "Files/MapHelp") else {
+                return nil
+            }
+            
+            if let help = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
+                mapHelp[key] = help
+                return help
+            }
+        }
+        return nil
     }
     
     func setTheme(_ colorScheme: ColorScheme)

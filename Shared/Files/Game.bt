@@ -1,10 +1,4 @@
 tree "init"
-    position = Float2<100, -100>
-    radius = Float<100>
 
 tree "update"
 
-tree "draw"
-    sequence
-        Clear
-        DrawDisk<Position: position><Radius: radius><Color: 1,0,0,1>

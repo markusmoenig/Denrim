@@ -30,6 +30,7 @@ class MapPreview
         game.startDrawing()
         map.texture?.drawChecker()
         
+        var helpKey = ""
         game.helpText = ""
         
         //let screenSize = map.getScreenSize()
@@ -66,7 +67,7 @@ class MapPreview
                 map.drawAlias(0, 0, &map.aliases[variable]!)
             } else
             if let layer = map.layers[variable] {
-                game.helpText = "Layer - Defines a layer of visual content in a Scene\n\n"
+                helpKey = "Layer"
                 map.drawLayer(0, 0, layer)
             } else
             if let scene = map.scenes[variable] {
@@ -87,6 +88,14 @@ class MapPreview
                 }
                 map.drawShape(shape)
             }
+        }
+        
+        if helpKey.isEmpty == false {
+            if let helpText = game.scriptEditor!.getMapHelpForKey(helpKey) {
+                game.helpText = helpText
+            }
+        } else {
+            game.helpText = game.scriptEditor!.mapHelpText
         }
         
         game.stopDrawing()
