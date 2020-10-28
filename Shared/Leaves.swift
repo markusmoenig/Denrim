@@ -8,6 +8,35 @@
 import Foundation
 import simd
 
+// Logs the given variables
+class LogNode: BehaviorNode
+{
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Log"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        var text: String = ""
+        for (name, exp) in options {
+            if let string = exp as? String {
+                if let value = context.getVariableValue(string) {
+                    if let v = value as? Float1 {
+                        text += name + " " + String(v.x)
+                    }
+                }
+            }
+        }
+        print(text)
+        return .Success
+    }
+}
+
 // Sets the current scene and initializes it
 class SetScene: BehaviorNode
 {

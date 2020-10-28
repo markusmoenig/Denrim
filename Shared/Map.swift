@@ -254,7 +254,7 @@ class Map
         let bodyDef = b2BodyDef()
         bodyDef.angle = shape2D.options.rotation.x.degreesToRadians
         bodyDef.type = b2BodyType.staticBody
-
+        
         let fixtureDef = b2FixtureDef()
         fixtureDef.shape = nil
 
@@ -298,6 +298,10 @@ class Map
             if density.x == 0 {
                 bodyDef.type = b2BodyType.staticBody
             }
+        }
+        
+        if let groupIndex = cmd.options["groupindex"] as? Int1 {
+            fixtureDef.filter.groupIndex = Int16(groupIndex.x)
         }
         
         bodyDef.position.set((shape2D.options.position.x + shape2D.options.size.x / 2.0) / ppm, (shape2D.options.position.y + shape2D.options.size.y / 2.0) / ppm)
