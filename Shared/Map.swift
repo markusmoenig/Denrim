@@ -23,6 +23,8 @@ class Map
     var shaders             : [String:MapShader] = [:]
     
     var onDemandInstancers  : [String:MapOnDemandInstance2D] = [:]
+    
+    var timer               : [Timer] = []
 
     var commands            : [MapCommand] = []
 
@@ -61,6 +63,11 @@ class Map
         shaders = [:]
         commands = []
         lines = [:]
+        
+        for t in timer {
+            t.invalidate()
+        }
+        timer = []
         onDemandInstancers = [:]
         if releaseResources {
             resources = [:]
@@ -331,7 +338,7 @@ class Map
             instanceAsset.value = behavior[instancer.behaviorName]!.behaviorAsset.value
             
             var variableName = instancer.variableName
-            variableName += String(instancer.pairs.count)
+            variableName += String(Int.random(in: 0...99999999))
                 
             var error = CompileError()
             game.behaviorBuilder.compile(instanceAsset)

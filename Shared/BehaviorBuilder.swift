@@ -44,6 +44,7 @@ class BehaviorBuilder
     [
         BehaviorNodeItem("SetScene", { (_ options: [String:Any]) -> BehaviorNode in return SetScene(options) }),
         BehaviorNodeItem("Call", { (_ options: [String:Any]) -> BehaviorNode in return Call(options) }),
+        BehaviorNodeItem("StartTimer", { (_ options: [String:Any]) -> BehaviorNode in return StartTimer(options) }),
         BehaviorNodeItem("IsKeyDown", { (_ options: [String:Any]) -> BehaviorNode in return IsKeyDown(options) }),
         BehaviorNodeItem("GetTouchPos", { (_ options: [String:Any]) -> BehaviorNode in return GetTouchPos(options) }),
         BehaviorNodeItem("DistanceToShape", { (_ options: [String:Any]) -> BehaviorNode in return DistanceToShape(options) }),

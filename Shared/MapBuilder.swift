@@ -58,6 +58,8 @@ class MapBuilder
         } else {
             asset.map!.clear()
         }
+        
+        game.currentMap = asset
                 
         let ns = asset.value as NSString
         var lineNumber : Int32 = 0

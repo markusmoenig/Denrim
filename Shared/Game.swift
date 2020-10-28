@@ -152,6 +152,10 @@ class Game              : ObservableObject
     
     func stop()
     {
+        if let map = currentMap?.map {
+            map.clear()
+        }
+        
         if let scriptEditor = scriptEditor {
             scriptEditor.setReadOnly(false)
         }
