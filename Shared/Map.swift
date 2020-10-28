@@ -325,6 +325,17 @@ class Map
                 }
                 
                 return true
+            } else
+            if var sequence = sequences[id] {
+                sequence.data = MapSequenceData2D()
+                shapes2D[shapeId]!.texture = sequence
+
+                if shapes2D[shapeId]!.options.size.x == 0 && sequences[id]!.resourceNames.count > 0 {
+                    if let texture2D = getImageResource(sequence.resourceNames[0]) {
+                        shapes2D[shapeId]!.options.size.x = texture2D.width / canvasSize.x * 100.0
+                        shapes2D[shapeId]!.options.size.y = texture2D.height / canvasSize.y * 100.0
+                    }
+                }
             }
         }
         return false
@@ -668,6 +679,37 @@ class Map
         return size
     }
     
+    /// Returns the texture associated for a given shape, if necessary handles animation etc.
+    func getTextureForShape(_ texture2D: Any?) -> Texture2D?
+    {
+        if let image = texture2D as? MapImage {
+            if let texture = getImageResource(image.resourceName) {
+                return texture
+            }
+        } else
+        if let sequence = texture2D as? MapSequence {
+            let sequenceData = sequence.data!
+            let currentTime = NSDate().timeIntervalSince1970
+
+            if sequenceData.lastTime > 0 {
+                if currentTime - sequenceData.lastTime > sequence.interval {
+                    sequenceData.animIndex += 1
+                    if sequenceData.animIndex >= sequence.resourceNames.count {
+                        sequenceData.animIndex = 0
+                    }
+                    sequenceData.lastTime = currentTime
+                }
+            } else {
+                sequenceData.lastTime = currentTime
+            }
+                                            
+            if let texture = getImageResource(sequence.resourceNames[sequenceData.animIndex]) {
+                return texture
+            }
+        }
+        return nil
+    }
+    
     /// Draw a Disk
     func drawDisk(_ options: MapShapeData2D,_ texture2D: Any? = nil)
     {
@@ -704,12 +746,10 @@ class Map
         
         data.hasTexture = 0
         if texture2D != nil {
-            if let image = texture2D as? MapImage {
-                if let texture = getImageResource(image.resourceName) {
-                    data.hasTexture = 1
-                    data.textureSize = float2(texture.width, texture.height);
-                    renderEncoder.setFragmentTexture(texture.texture, index: 1)
-                }
+            if let texture = getTextureForShape(texture2D) {
+                data.hasTexture = 1
+                data.textureSize = float2(texture.width, texture.height);
+                renderEncoder.setFragmentTexture(texture.texture, index: 1)
             }
         }
                 
@@ -756,12 +796,10 @@ class Map
 
         data.hasTexture = 0
         if texture2D != nil {
-            if let image = texture2D as? MapImage {
-                if let texture = getImageResource(image.resourceName) {
-                    data.hasTexture = 1
-                    data.textureSize = float2(texture.width, texture.height);
-                    renderEncoder.setFragmentTexture(texture.texture, index: 1)
-                }
+            if let texture = getTextureForShape(texture2D) {
+                data.hasTexture = 1
+                data.textureSize = float2(texture.width, texture.height);
+                renderEncoder.setFragmentTexture(texture.texture, index: 1)
             }
         }
         

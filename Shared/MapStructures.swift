@@ -13,10 +13,18 @@ struct MapImage {
     var options         : [String:Any]
 }
 
+class MapSequenceData2D {
+    var animIndex       : Int = 0
+    var lastTime        : Double = 0
+}
+
 struct MapSequence {
     
     var resourceNames   : [String] = []
     var options         : [String:Any]
+    
+    var data            : MapSequenceData2D? = nil
+    var interval        : Double = 0.1
 }
 
 struct MapAliasData2D {

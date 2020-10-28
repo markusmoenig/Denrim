@@ -267,6 +267,9 @@ class MapBuilder
                         map.sequences[variable] = nil
                     }
                     map.sequences[variable] = MapSequence(resourceNames: array, options: options)
+                    if let interval = options["interval"] as? Float1 {
+                        map.sequences[variable]!.interval = Double(interval.x)
+                    }
                     setLine(variable)
                 } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
             } else { error.error = "Sequence type for '\(variable)' expects a 'Group' option" }
@@ -436,7 +439,7 @@ class MapBuilder
 
         let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale"]
         let integerOptions = ["index", "int", "digits"]
-        let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay"]
+        let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval"]
         let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "grid", "scroll"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
         let boolOptions = ["repeatx", "repeaty", "visible"]

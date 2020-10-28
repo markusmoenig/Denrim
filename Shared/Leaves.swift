@@ -552,7 +552,8 @@ class DestroyInstance2D: BehaviorNode
                         
                         instancer.pairs.remove(at: index)
                         map.shapes2D[inst.0.shapeName] = nil
-                        
+                        map.sequences[inst.0.shapeName] = nil
+
                         return .Success
                     }
                 }
