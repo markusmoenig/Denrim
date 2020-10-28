@@ -655,21 +655,24 @@ struct ContentView: View {
             */
         }
         if rightSideBarIsVisible == true {
-            Text(helpText)
-                .frame(minWidth: 0,
-                       maxWidth: .infinity,
-                       minHeight: 0,
-                       maxHeight: .infinity,
-                       alignment: .bottomLeading)
-                .padding(4)
-                .onReceive(self.document.game.helpTextChanged) { state in
-                    helpText = self.document.game.helpText
-                }
-                .foregroundColor(Color.gray)
-                .font(.system(size: 12))
-                .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
-                .layoutPriority(0)
-                .animation(.easeInOut)
+            ScrollView {
+                Text(helpText)
+                    .frame(minWidth: 0,
+                           maxWidth: .infinity,
+                           minHeight: 0,
+                           maxHeight: .infinity,
+                           alignment: .bottomLeading)
+                    .padding(4)
+                    .onReceive(self.document.game.helpTextChanged) { state in
+                        helpText = self.document.game.helpText
+                    }
+                    .foregroundColor(Color.gray)
+                    .font(.system(size: 12))
+                    .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
+                    .layoutPriority(0)
+                    .animation(.easeInOut)
+            }
+            .animation(.easeInOut)
         }
         }
     }
