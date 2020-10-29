@@ -34,10 +34,12 @@ struct ContentView: View {
     @State private var showMapItems: Bool = false
     @State private var showShaderItems: Bool = false
     @State private var showImageItems: Bool = false
+    @State private var showAudioItems: Bool = false
 
     @State private var rightSideBarIsVisible: Bool = true
 
     @State private var isImportingImages: Bool = false
+    @State private var isImportingAudio: Bool = false
     @State private var isAddingImages: Bool = false
 
     @State private var helpText: String = ""
@@ -194,6 +196,24 @@ struct ContentView: View {
                         }
                     }
                 }
+                DisclosureGroup("Audio", isExpanded: $showAudioItems) {
+                    ForEach(document.game.assetFolder.assets, id: \.id) { asset in
+                        if asset.type == .Audio {
+                            Button(action: {
+                                document.game.assetFolder.select(asset.id)
+                                document.game.createPreview(asset)
+                                scriptIsVisible = false
+                                updateView.toggle()
+                            })
+                            {
+                                Text(asset.name)
+
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
+                        }
+                    }
+                }
                 //#endif
             }
             .frame(minWidth: 160, idealWidth: 200, maxWidth: 200)
@@ -201,7 +221,7 @@ struct ContentView: View {
             // Asset deletion
             .alert(isPresented: $showDeleteAssetAlert) {
                 Alert(
-                    title: Text("Do you want to delete the asset?"),
+                    title: Text("Do you want to remove the asset '\(document.game.assetFolder.current!.name)' ?"),
                     message: Text("This action cannot be undone!"),
                     primaryButton: .destructive(Text("Yes"), action: {
                         if let asset = document.game.assetFolder.current {
@@ -237,24 +257,31 @@ struct ContentView: View {
                             Menu("New Behavior") {
                                 Button("Object 2D", action: {
                                     document.game.assetFolder.addBehaviorTree("New Object 2D")
+                                    assetName = document.game.assetFolder.current!.name
+                                    showAssetNamePopover = true
                                     updateView.toggle()
                                 })
                             }
                             Button("New Map", action: {
                                 document.game.assetFolder.addMap("New Map")
+                                assetName = document.game.assetFolder.current!.name
+                                showAssetNamePopover = true
                                 updateView.toggle()
                             })
                             Button("New Shader", action: {
                                 document.game.assetFolder.addShader("New Shader")
                                 if let asset = document.game.assetFolder.current {
-                                    //assetName = String(asset.name.split(separator: ".")[0])
-                                    //showAssetNamePopover = true
+                                    assetName = document.game.assetFolder.current!.name
+                                    showAssetNamePopover = true
                                     document.game.createPreview(asset)
                                 }
                                 updateView.toggle()
                             })
                             Button("New Image(s)", action: {
                                 isImportingImages = true
+                            })
+                            Button("New Audio", action: {
+                                isImportingAudio = true
                             })
                         }
                         Section(header: Text("Edit Asset")) {
@@ -673,6 +700,24 @@ struct ContentView: View {
                     .animation(.easeInOut)
             }
             .animation(.easeInOut)
+            // Import Audio
+            .fileImporter(
+                isPresented: $isImportingAudio,
+                allowedContentTypes: [.item],
+                allowsMultipleSelection: false
+            ) { result in
+                do {
+                    let selectedFiles = try result.get()
+                    if selectedFiles.count > 0 {
+                        document.game.assetFolder.addAudio(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
+
+                        scriptIsVisible = false
+                        updateView.toggle()
+                    }
+                } catch {
+                    // Handle failure.
+                }
+            }
         }
         }
     }

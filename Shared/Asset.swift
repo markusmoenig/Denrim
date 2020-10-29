@@ -105,6 +105,26 @@ class AssetFolder   : Codable
         select(asset.id)
     }
     
+    func addAudio(_ name: String, _ urls: [URL], existingAsset: Asset? = nil)
+    {
+        let asset: Asset
+            
+        if existingAsset != nil {
+            asset = existingAsset!
+        } else {
+            asset = Asset(type: .Audio, name: name)
+            assets.append(asset)
+        }
+
+        for url in urls {
+            if let audioData: Data = try? Data(contentsOf: url) {
+                asset.data.append(audioData)
+            }
+        }
+        
+        select(asset.id)
+    }
+    
     func select(_ id: UUID)
     {
         if let current = current {
@@ -238,7 +258,7 @@ class AssetFolder   : Codable
 class Asset         : Codable, Equatable
 {
     enum AssetType  : Int, Codable {
-        case Behavior, Image, Shader, Map
+        case Behavior, Image, Shader, Map, Audio
     }
     
     var type        : AssetType = .Behavior

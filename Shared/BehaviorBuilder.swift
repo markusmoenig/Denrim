@@ -53,6 +53,8 @@ class BehaviorBuilder
         BehaviorNodeItem("Random", { (_ options: [String:Any]) -> BehaviorNode in return RandomNode(options) }),
         BehaviorNodeItem("Log", { (_ options: [String:Any]) -> BehaviorNode in return LogNode(options) }),
 
+        BehaviorNodeItem("PlayAudio", { (_ options: [String:Any]) -> BehaviorNode in return PlayAudioNode(options) }),
+
         BehaviorNodeItem("Set", { (_ options: [String:Any]) -> BehaviorNode in return SetNode(options) }),
         BehaviorNodeItem("IsVariable", { (_ options: [String:Any]) -> BehaviorNode in return IsVariable(options) }),
 

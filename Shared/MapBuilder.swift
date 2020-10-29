@@ -23,6 +23,7 @@ class MapBuilder
     enum Types : String, CaseIterable
     {
         case Image = "Image"        // Points to a single image
+        case Audio = "Audio"        // Points to an audio file
         case Sequence = "Sequence"  // Points to a range of images in a group or a range of tiles in an image
         case Alias = "Alias"        // An alias of or into one of the above assets
         case Layer = "Layer"        // Contains alias data of a layer
@@ -246,6 +247,15 @@ class MapBuilder
                     } else { error.error = "Image group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
                 } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
             } else { error.error = "Image type for '\(variable)' expects a 'Group' option" }
+        } else
+        if type == .Audio {
+            if let name = options["name"] as? String {
+                if let asset = game.assetFolder.getAsset(name, .Audio) {                    
+                    let resourceName : String = asset.id.uuidString
+                    map.audio[variable] = MapAudio(resourceName: resourceName, options: options)
+                    setLine(variable)
+                } else { error.error = "Image '\(name)' for '\(variable)' not found" }
+            } else { error.error = "Audio type for '\(variable)' expects a 'Name' option" }
         } else
         if type == .Sequence {
             if let group = options["group"] as? String {

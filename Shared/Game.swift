@@ -7,6 +7,7 @@
 
 import MetalKit
 import Combine
+import AVFoundation
 
 class Game              : ObservableObject
 {
@@ -65,6 +66,9 @@ class Game              : ObservableObject
     var assetError      = CompileError()
     let gameError       = PassthroughSubject<Void, Never>()
     
+    var localAudioPlayers: [String:AVAudioPlayer] = [:]
+    var globalAudioPlayers: [String:AVAudioPlayer] = [:]
+
     init()
     {
         viewportSize = vector_uint2( 0, 0 )
@@ -83,6 +87,15 @@ class Game              : ObservableObject
         mapBuilder = MapBuilder(self)
         behaviorBuilder = BehaviorBuilder(self)
         shaderCompiler = ShaderCompiler(self)
+        
+        #if os(iOS)
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        #endif
     }
     
     func setupView(_ view: DMTKView)
@@ -108,6 +121,9 @@ class Game              : ObservableObject
         if let scriptEditor = scriptEditor {
             scriptEditor.setReadOnly(true)
         }
+        
+        clearLocalAudio()
+        clearGlobalAudio()
         
         assetError.error = nil
         state = .Running
@@ -152,6 +168,9 @@ class Game              : ObservableObject
     
     func stop()
     {
+        clearLocalAudio()
+        clearGlobalAudio()
+        
         if let map = currentMap?.map {
             map.clear()
         }
@@ -302,22 +321,52 @@ class Game              : ObservableObject
         self.gameCmdBuffer = nil
     }
     
-    
+    /// Create a preview for the current asset
     func createPreview(_ asset: Asset)
     {
-        if state == .Idle && asset.type == .Shader {
+        clearLocalAudio()
+        if state == .Idle {
+            if asset.type == .Shader {
+                if let shader = asset.shader {
+                    self.startDrawing()
+                    
+                    let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: 1 )
+                    self.texture?.clear()
+                    self.texture?.drawShader(shader, rect)
+                    
+                    self.stopDrawing()
+                    self.updateOnce()
+                }
+            } else
+            if asset.type == .Audio {
                 
-            if let shader = asset.shader {
-                self.startDrawing()
-                
-                let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: 1 )
-                self.texture?.clear()
-                self.texture?.drawShader(shader, rect)
-                
-                self.stopDrawing()
-                self.updateOnce()
+                do {
+                    let player = try AVAudioPlayer(data: asset.data[0])
+                    localAudioPlayers[asset.name] = player
+                    player.play()
+                } catch let error {
+                    print(error.localizedDescription)
+                }
             }
         }
+    }
+    
+    /// Clears all local audio
+    func clearLocalAudio()
+    {
+        for (_, a) in localAudioPlayers {
+            a.stop()
+        }
+        localAudioPlayers = [:]
+    }
+    
+    /// Clears all global audio
+    func clearGlobalAudio()
+    {
+        for (_, a) in globalAudioPlayers {
+            a.stop()
+        }
+        globalAudioPlayers = [:]
     }
     
     /// Updates the display once

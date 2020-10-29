@@ -37,6 +37,45 @@ class LogNode: BehaviorNode
     }
 }
 
+// Plays audio
+class PlayAudioNode: BehaviorNode
+{
+    var audioId: String? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "PlayAudio"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["id"] as? String {
+            audioId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "PlayAudio requires an 'id' parameter"
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let audioId = audioId {
+            if let player = game.localAudioPlayers[audioId] {
+                player.currentTime = 0
+                player.play()
+                return .Success
+            } else
+            if let player = game.globalAudioPlayers[audioId] {
+                player.currentTime = 0
+                player.play()
+                return .Success
+            }
+        }
+        
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 // Sets the current scene and initializes it
 class SetScene: BehaviorNode
 {
@@ -50,10 +89,10 @@ class SetScene: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        if let value = options["scene"] as? String {
+        if let value = options["sceneid"] as? String {
             sceneName = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
         } else {
-            error.error = "SetScene requires a 'Scene' parameter"
+            error.error = "SetScene requires a 'SceneId' parameter"
         }
         
         if let value = options["map"] as? String {

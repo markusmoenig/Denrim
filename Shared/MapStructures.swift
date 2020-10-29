@@ -8,9 +8,15 @@
 import Foundation
 
 struct MapImage {
-    
     var resourceName    : String
     var options         : [String:Any]
+}
+
+struct MapAudio {
+    var resourceName    : String
+    var options         : [String:Any]
+    
+    var isLocal         : Bool = true
 }
 
 class MapSequenceData2D {

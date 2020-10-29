@@ -6,11 +6,13 @@
 //
 
 import MetalKit
+import AVFoundation
 
 class Map
 {
     // Resources
     var images              : [String:MapImage] = [:]
+    var audio               : [String:MapAudio] = [:]
     var aliases             : [String:MapAlias] = [:]
     var sequences           : [String:MapSequence] = [:]
     var layers              : [String:MapLayer] = [:]
@@ -52,6 +54,7 @@ class Map
     func clear(_ releaseResources: Bool = false)
     {
         images = [:]
+        audio = [:]
         aliases = [:]
         sequences = [:]
         layers = [:]
@@ -241,6 +244,25 @@ class Map
                         }
                     }
                 }
+            }
+        }
+        
+        game.clearLocalAudio()
+        for (id, mapAudio) in audio {
+            do {
+                if let asset = game.assetFolder.getAssetById(UUID(uuidString: mapAudio.resourceName)!, .Audio) {
+                    let player = try AVAudioPlayer(data: asset.data[0])
+                    if mapAudio.isLocal {
+                        game.localAudioPlayers[id] = player
+                    } else {
+                        if game.globalAudioPlayers[id] == nil {
+                            game.globalAudioPlayers[id] = player
+                        }
+                    }
+                    player.prepareToPlay()
+                }
+            } catch let error {
+                print(error.localizedDescription)
             }
         }
     }
