@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -44,6 +44,7 @@
 		2B19C00A251B383C0086239F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C008251B383C0086239F /* Utilities.swift */; };
 		2B2882EA2519E69E00D1AB2D /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
 		2B2882EB2519E69E00D1AB2D /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
+		2B2C2143254A900800399171 /* Parma in Frameworks */ = {isa = PBXBuildFile; productRef = 2B2C2142254A900800399171 /* Parma */; };
 		2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
 		2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
 		2B32992724FF9344007C3386 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992624FF91E1007C3386 /* HelpView.swift */; };
@@ -179,6 +180,9 @@
 		2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
 		2BFC028B2505EDA500AB489E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
 		2BFC028C2505EDA500AB489E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
+		2BFDAF9A254A73200096A0FF /* Parma in Frameworks */ = {isa = PBXBuildFile; productRef = 2BFDAF99254A73200096A0FF /* Parma */; };
+		2BFDAF9E254A8A4E0096A0FF /* Parma.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDAF9D254A8A4E0096A0FF /* Parma.swift */; };
+		2BFDAF9F254A8A4F0096A0FF /* Parma.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDAF9D254A8A4E0096A0FF /* Parma.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -276,6 +280,7 @@
 		2B71E7182516F5BA00F3317D /* Branches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branches.swift; sourceTree = "<group>"; };
 		2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBuilder.swift; sourceTree = "<group>"; };
 		2BFC028A2505EDA500AB489E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
+		2BFDAF9D254A8A4E0096A0FF /* Parma.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parma.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -283,6 +288,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B2C2143254A900800399171 /* Parma in Frameworks */,
 				2B09E1E52511A620002DE701 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -291,6 +297,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BFDAF9A254A73200096A0FF /* Parma in Frameworks */,
 				2B6D0C02250B16C00098F244 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,6 +323,7 @@
 				2B01C85524FB814900E86449 /* DenrimApp.swift */,
 				2B01C85624FB814900E86449 /* DenrimDocument.swift */,
 				2B01C85724FB814900E86449 /* ContentView.swift */,
+				2BFDAF9D254A8A4E0096A0FF /* Parma.swift */,
 				2B01C87F24FB824900E86449 /* Asset.swift */,
 				2B01C87E24FB824900E86449 /* Game.swift */,
 				2B01C87924FB824900E86449 /* MathLibrary.swift */,
@@ -534,6 +542,9 @@
 			dependencies = (
 			);
 			name = "Denrim (iOS)";
+			packageProductDependencies = (
+				2B2C2142254A900800399171 /* Parma */,
+			);
 			productName = "Denrim (iOS)";
 			productReference = 2B01C85D24FB814C00E86449 /* Denrim.app */;
 			productType = "com.apple.product-type.application";
@@ -552,6 +563,7 @@
 			);
 			name = "Denrim (macOS)";
 			packageProductDependencies = (
+				2BFDAF99254A73200096A0FF /* Parma */,
 			);
 			productName = "Denrim (macOS)";
 			productReference = 2B01C86524FB814C00E86449 /* Denrim.app */;
@@ -584,6 +596,7 @@
 			);
 			mainGroup = 2B01C84F24FB814900E86449;
 			packageReferences = (
+				2BFDAF98254A73200096A0FF /* XCRemoteSwiftPackageReference "Parma" */,
 			);
 			productRefGroup = 2B01C85E24FB814C00E86449 /* Products */;
 			projectDirPath = "";
@@ -638,6 +651,7 @@
 				2B6D0BE5250B08080098F244 /* b2BroadPhase.swift in Sources */,
 				2B71E71A2516F5BA00F3317D /* Branches.swift in Sources */,
 				2B6D0BF3250B08080098F244 /* b2CollideEdge.swift in Sources */,
+				2BFDAF9F254A8A4F0096A0FF /* Parma.swift in Sources */,
 				2B01C88F24FB824A00E86449 /* Game.swift in Sources */,
 				2B6D0BA1250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */,
 				2B6D0BEF250B08080098F244 /* b2CircleShape.swift in Sources */,
@@ -722,6 +736,7 @@
 				2B6D0BE4250B08080098F244 /* b2BroadPhase.swift in Sources */,
 				2B71E7192516F5BA00F3317D /* Branches.swift in Sources */,
 				2B6D0BF2250B08080098F244 /* b2CollideEdge.swift in Sources */,
+				2BFDAF9E254A8A4E0096A0FF /* Parma.swift in Sources */,
 				2B01C89024FB824A00E86449 /* Game.swift in Sources */,
 				2B6D0BA0250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */,
 				2B6D0BEE250B08080098F244 /* b2CircleShape.swift in Sources */,
@@ -851,6 +866,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -904,6 +921,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -919,6 +938,7 @@
 				CODE_SIGN_ENTITLEMENTS = Denrim.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G6R6L3VH62;
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -928,6 +948,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1;
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
@@ -947,6 +968,7 @@
 				CODE_SIGN_ENTITLEMENTS = Denrim.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G6R6L3VH62;
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -956,6 +978,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1;
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
@@ -977,6 +1000,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G6R6L3VH62;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -986,6 +1010,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
@@ -1003,6 +1028,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G6R6L3VH62;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1012,6 +1038,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
@@ -1051,6 +1078,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2BFDAF98254A73200096A0FF /* XCRemoteSwiftPackageReference "Parma" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dasautoooo/Parma";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2B2C2142254A900800399171 /* Parma */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BFDAF98254A73200096A0FF /* XCRemoteSwiftPackageReference "Parma" */;
+			productName = Parma;
+		};
+		2BFDAF99254A73200096A0FF /* Parma */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BFDAF98254A73200096A0FF /* XCRemoteSwiftPackageReference "Parma" */;
+			productName = Parma;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2B01C85024FB814900E86449 /* Project object */;
 }

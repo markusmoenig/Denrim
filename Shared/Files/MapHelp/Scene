@@ -1,0 +1,7 @@
+## Scene
+
+A **Scene** consists of a comma seperated list of layers.
+
+`scene = Scene<Layers: ..>`
+
+The first layer has the lowest priority, layers to the right are displayed on top of those on the left.

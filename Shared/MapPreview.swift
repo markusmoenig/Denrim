@@ -71,7 +71,7 @@ class MapPreview
                 map.drawLayer(0, 0, layer)
             } else
             if let scene = map.scenes[variable] {
-                game.helpText = "Scene - Defines a scene in the game which consists of several layers of visual content\n\n<Layers: Layer,...>"
+                helpKey = "Scene"
                 map.drawScene(0, 0, scene)
             } else
             if let shape = map.shapes2D[variable] {

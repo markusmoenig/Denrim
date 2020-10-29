@@ -41,6 +41,8 @@ struct ContentView: View {
     @State private var isImportingImages: Bool = false
     @State private var isImportingAudio: Bool = false
     @State private var isAddingImages: Bool = false
+    
+    @State private var showTemplates: Bool = true
 
     @State private var helpText: String = ""
 
@@ -352,7 +354,8 @@ struct ContentView: View {
                     let selectedFiles = try result.get()
                     if selectedFiles.count > 0 {
                         document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
-
+                        assetName = document.game.assetFolder.current!.name
+                        showAssetNamePopover = true
                         scriptIsVisible = false
                         updateView.toggle()
                     }
@@ -683,7 +686,8 @@ struct ContentView: View {
         }
         if rightSideBarIsVisible == true {
             ScrollView {
-                Text(helpText)
+                ParmaView(text: $helpText)
+
                     .frame(minWidth: 0,
                            maxWidth: .infinity,
                            minHeight: 0,
@@ -710,8 +714,8 @@ struct ContentView: View {
                     let selectedFiles = try result.get()
                     if selectedFiles.count > 0 {
                         document.game.assetFolder.addAudio(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
-
-                        scriptIsVisible = false
+                        assetName = document.game.assetFolder.current!.name
+                        showAssetNamePopover = true
                         updateView.toggle()
                     }
                 } catch {
