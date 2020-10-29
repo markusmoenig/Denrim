@@ -253,6 +253,8 @@ class StartTimer: BehaviorNode
     
     var firstCall           : Bool = true
     var parameters          : [BehaviorVariable] = []
+    
+    var repeating           : Bool = true
 
     override init(_ options: [String:Any] = [:])
     {
@@ -267,6 +269,12 @@ class StartTimer: BehaviorNode
         
         if let value = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "interval") {
             interval = value
+        }
+        
+        if let value = options["repeat"] as? String {
+            if value.lowercased() == "false" {
+                repeating = false
+            }
         }
         
         if let value = options["variables"] as? String {
@@ -335,7 +343,7 @@ class StartTimer: BehaviorNode
         if treeName != nil {
             if game.state == .Running {
                 if let map = game.currentMap?.map {
-                    let timer = Timer.scheduledTimer(timeInterval: Double(interval!.x), target: self, selector: #selector(callTreeTimer), userInfo: nil, repeats: true)
+                    let timer = Timer.scheduledTimer(timeInterval: Double(interval!.x), target: self, selector: #selector(callTreeTimer), userInfo: nil, repeats: repeating)
                     map.timer.append(timer)
                 }
             }
