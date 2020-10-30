@@ -7,14 +7,48 @@
 
 import MetalKit
 
-class AssetFolder   : Codable
+class AssetGroup        : Codable, Equatable
 {
-    var assets      : [Asset] = []
-    var game        : Game!
-    var current     : Asset? = nil
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case name
+    }
+    
+    var id              = UUID()
+    var name            : String = ""
+    
+    init()
+    {
+    }
+    
+    required init(from decoder: Decoder) throws
+    {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+    }
+    
+    func encode(to encoder: Encoder) throws
+    {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+    }
+    
+    static func ==(lhs:AssetGroup, rhs:AssetGroup) -> Bool { // Implement Equatable
+        return lhs.id == rhs.id
+    }
+}
+
+class AssetFolder       : Codable
+{
+    var assets          : [Asset] = []
+    var game            : Game!
+    var current         : Asset? = nil
+    
+    var behaviorGroups  : [AssetGroup] = []
     
     private enum CodingKeys: String, CodingKey {
         case assets
+        case behaviorGroups
     }
     
     init()
@@ -39,12 +73,17 @@ class AssetFolder   : Codable
     {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         assets = try container.decode([Asset].self, forKey: .assets)
+        if let bGroups = try container.decodeIfPresent([AssetGroup].self, forKey: .behaviorGroups)
+        {
+            behaviorGroups = bGroups
+        }
     }
     
     func encode(to encoder: Encoder) throws
     {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(assets, forKey: .assets)
+        try container.encode(behaviorGroups, forKey: .behaviorGroups)
     }
     
     func addBehaviorTree(_ name: String, value: String = "")

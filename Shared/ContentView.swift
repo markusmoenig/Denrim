@@ -14,6 +14,92 @@ var toolbarPlacement1 : ToolbarItemPlacement = .automatic
 var toolbarPlacement1 : ToolbarItemPlacement = .navigationBarLeading
 #endif
 
+/*
+struct BehaviorView: View {
+    @State var document: DenrimDocument
+
+    @State private var showBehaviorItems: Bool = true
+
+    @State private var showGroups: Bool = true
+
+    var body: some View {
+        DisclosureGroup("Behavior", isExpanded: $showBehaviorItems) {
+            
+            ForEach(document.game.assetFolder.behaviorGroups, id: \.id) { group in
+                DisclosureGroup(group.name, isExpanded: $showGroups) {
+                    ForEach(document.game.assetFolder.assets, id: \.id) { asset in
+                        if asset.type == .Behavior && asset.group == group.name {
+                            Button(action: {
+                                document.game.assetFolder.select(asset.id)
+                                document.game.createPreview(asset)
+                                //scriptIsVisible = true
+                                //updateView.toggle()
+                                document.game.updateView.send()
+                            })
+                            {
+                                Text(asset.name)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .foregroundColor(document.game.assetFolder.current!.id == asset.id ? Color.accentColor : Color.primary)
+                        }
+                    }
+                }
+            }
+            
+            ForEach(document.game.assetFolder.assets, id: \.id) { asset in
+                
+                if asset.type == .Behavior && asset.group.isEmpty {
+                    Button(action: {
+                        document.game.assetFolder.select(asset.id)
+                        document.game.createPreview(asset)
+                        //scriptIsVisible = true
+                        document.game.updateView.send()
+                    })
+                    {
+                        Text(asset.name)
+                    }
+                    .contextMenu {
+                        Button(action: {
+                            // change country setting
+                            asset.group = ""
+                            document.game.updateView.send()
+                        }) {
+                            Text("None")
+                        }
+                        ForEach(document.game.assetFolder.behaviorGroups, id: \.id) { group in
+                            Button(action: {
+                                asset.group = group.name
+                                print("jer", group.name)
+                                document.game.updateView.send()
+                            }) {
+                                Text(group.name)
+                                if asset.group == group.name {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .foregroundColor(document.game.assetFolder.current!.id == asset.id ? Color.accentColor : Color.primary)
+                }
+            }
+            // delete action
+            .onDelete { indexSet in
+                for index in indexSet {
+                    if document.game.assetFolder.assets[index].name != "Game" {
+                        document.game.assetFolder.assets.remove(at: index)
+                    }
+                }
+            }
+            // move action
+            .onMove { indexSet, newOffset in
+                document.game.assetFolder.assets.move(fromOffsets: indexSet, toOffset: newOffset)
+                //updateView.toggle()
+            }
+        }
+    }
+}*/
+
 struct ContentView: View {
     @Binding var document: DenrimDocument
     
@@ -51,82 +137,7 @@ struct ContentView: View {
     var body: some View {
         HStack {
         NavigationView() {
-            List {/*
-                #if os(OSX)
-                Section(header: Text("Behavior")) {
-                    ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                        if asset.type == .Behavior {
-                            Button(action: {
-                                document.game.assetFolder.select(asset.id)
-                                document.game.createPreview(asset)
-                                scriptIsVisible = true
-                                updateView.toggle()
-                            })
-                            {
-                                Text(asset.name)
-                                //Label(asset.name, systemImage: "x.circle.fill")
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
-                        }
-                    }
-                }
-                Section(header: Text("Map Files")) {
-                    ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                        if asset.type == .Map {
-                            Button(action: {
-                                document.game.assetFolder.select(asset.id)
-                                document.game.createPreview(asset)
-                                scriptIsVisible = false
-                                updateView.toggle()
-                            })
-                            {
-                                Text(asset.name)
-
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
-                        }
-                    }
-                }
-                Section(header: Text("Shaders")) {
-                    ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                        if asset.type == .Shader {
-                            Button(action: {
-                                document.game.assetFolder.select(asset.id)
-                                document.game.createPreview(asset)
-                                scriptIsVisible = true
-                                updateView.toggle()
-                            })
-                            {
-                                Text(asset.name)
-
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
-                        }
-                    }
-                }
-                Section(header: Text("Image Groups")) {
-                    ForEach(document.game.assetFolder.assets, id: \.id) { asset in
-                        if asset.type == .Image {
-                            Button(action: {
-                                document.game.assetFolder.select(asset.id)
-                                document.game.createPreview(asset)
-                                scriptIsVisible = false
-                                updateView.toggle()
-                            })
-                            {
-                                Text(asset.name)
-
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
-                        }
-                    }
-                }
-                #else*/
-                //Section(header: Text("Behavior")) {
+            List {
                 DisclosureGroup("Behavior", isExpanded: $showBehaviorItems) {
                     ForEach(document.game.assetFolder.assets, id: \.id) { asset in
                         if asset.type == .Behavior {
