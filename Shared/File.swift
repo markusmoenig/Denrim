@@ -10,7 +10,7 @@ import Foundation
 class File : NSObject
 {
     var containerUrl: URL? {
-        return FileManager.default.url(forUbiquityContainerIdentifier: "<G6R6L3VH62>.<iCloud.com.moenig.Denrim>")?.appendingPathComponent("Documents")
+        return FileManager.default.url(forUbiquityContainerIdentifier: /*"<G6R6L3VH62>.<iCloud.com.moenig.Denrim>"*/ nil)?.appendingPathComponent("Documents")
     }
     
     override init()

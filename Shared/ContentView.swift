@@ -143,6 +143,19 @@ struct ContentView: View {
                             .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
                         }
                     }
+                    // delete action
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            if document.game.assetFolder.assets[index].name != "Game" {
+                                document.game.assetFolder.assets.remove(at: index)
+                            }
+                        }
+                    }
+                    // move action
+                    .onMove { indexSet, newOffset in
+                        document.game.assetFolder.assets.move(fromOffsets: indexSet, toOffset: newOffset)
+                        updateView.toggle()
+                    }
                 }
                 DisclosureGroup("Map Files", isExpanded: $showMapItems) {
                     ForEach(document.game.assetFolder.assets, id: \.id) { asset in
