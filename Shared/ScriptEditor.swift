@@ -43,6 +43,8 @@ class ScriptEditor
             }
         } catch {
         }
+        
+        createDebugSession()
     }
     
     // Get help for a map keyword
@@ -78,6 +80,40 @@ class ScriptEditor
             editor.setTheme("ace/theme/\(theme)");
             """, completionHandler: { (value, error ) in
          })
+    }
+    
+    func createDebugSession()
+    {
+        webView.evaluateJavaScript(
+            """
+            var debugSession = ace.createEditSession(``)
+            debugSession.setMode("ace/mode/text");
+            """, completionHandler: { (value, error ) in
+         })
+    }
+    
+    func activateDebugSession()
+    {
+        game.showingDebugInfo = true
+        let text =
+        """
+        The game engine will display debug information during runtime here.
+        """
+        webView.evaluateJavaScript(
+            """
+            debugSession.setValue(`\(text)`)
+            editor.setSession(debugSession)
+            """, completionHandler: { (value, error ) in
+         })
+    }
+    
+    func setDebugText(text: String)
+    {
+        let cmd = """
+        debugSession.setValue(`\(text)`)
+        """
+        webView.evaluateJavaScript(cmd, completionHandler: { (value, error ) in
+        })
     }
     
     func createSession(_ asset: Asset,_ cb: (()->())? = nil)
@@ -157,6 +193,7 @@ class ScriptEditor
     
     func setAssetSession(_ asset: Asset)
     {
+        game.showingDebugInfo = false
         func setSession()
         {
             let cmd = """

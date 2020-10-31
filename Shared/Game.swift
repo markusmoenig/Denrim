@@ -68,6 +68,8 @@ class Game              : ObservableObject
     
     var localAudioPlayers: [String:AVAudioPlayer] = [:]
     var globalAudioPlayers: [String:AVAudioPlayer] = [:]
+    
+    var showingDebugInfo: Bool = false
 
     init()
     {
@@ -180,6 +182,7 @@ class Game              : ObservableObject
         
         if let scriptEditor = scriptEditor {
             scriptEditor.setReadOnly(false)
+            scriptEditor.setDebugText(text: "The game engine will display debug information during runtime here.")
         }
         
         gameAsset = nil
@@ -304,6 +307,30 @@ class Game              : ObservableObject
         
         gameCmdBuffer?.present(drawable)
         stopDrawing()
+        
+        // Debug ?
+        if showingDebugInfo && state == .Running {
+            var debugText = ""
+            
+            if let map = currentMap?.map {
+            
+                debugText += "Current Map: \(currentMap!.name)\n"
+                
+                if let scene = currentScene {
+                    debugText += "Current Scene: \(scene.name)\n\n"
+                }
+
+                for (physicsName, physics2D) in map.physics2D {
+                    debugText += physicsName + "\n"
+                    if let world = physics2D.world {
+                        debugText += "  Bodies in world: \(world.bodyCount)\n"
+                        debugText += "  Current contacts: \(world.contactCount)\n"
+                    }
+                }
+            }
+            
+            scriptEditor!.setDebugText(text: debugText)
+        }
     }
     
     func startDrawing()
@@ -327,8 +354,8 @@ class Game              : ObservableObject
     /// Create a preview for the current asset
     func createPreview(_ asset: Asset)
     {
-        clearLocalAudio()
         if state == .Idle {
+            clearLocalAudio()
             if asset.type == .Shader {
                 if let shader = asset.shader {
                     self.startDrawing()

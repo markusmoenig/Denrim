@@ -573,6 +573,7 @@ struct ContentView: View {
                         Label("Run", systemImage: "play.fill")
                     }
                     .keyboardShortcut("r")
+                    
                     Button(action: {
                         document.game.stop()
                         updateView.toggle()
@@ -580,6 +581,14 @@ struct ContentView: View {
                         Label("Stop", systemImage: "stop.fill")
                     }.keyboardShortcut("t")
                     .disabled(document.game.state == .Idle)
+                    
+                    Button(action: {
+                        if let scriptEditor = document.game.scriptEditor {
+                            scriptEditor.activateDebugSession()
+                        }
+                    }) {
+                        Label("Bug", systemImage: "ant.fill")
+                    }.keyboardShortcut("b")
                     
                     /*
                     Button(action: {

@@ -436,6 +436,7 @@ class MapBuilder
         } else
         if type == .Scene {
             map.scenes[variable] = MapScene(options: options)
+            map.scenes[variable]!.name = variable
             if options["color"] != nil {
                 map.scenes[variable]!.backColor = options["color"] as? Float4
             }

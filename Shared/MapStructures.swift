@@ -261,6 +261,7 @@ struct MapPhysics2D {
 struct MapScene {
     var options         : [String:Any]
     var backColor       : Float4? = nil
+    var name            : String = ""
 }
 
 struct MapCommand {
