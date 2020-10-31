@@ -130,13 +130,29 @@ struct ContentView: View {
     
     @State private var showTemplates: Bool = true
 
-    @State private var helpText: String = ""
+    @State private var contextText: String = ""
 
     @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
-    
+
     var body: some View {
         HStack {
         NavigationView() {
+            /*
+            List(document.game.assetFolder.assets, id: \.id, children: \.children) { asset in
+                //Image(systemName: row.icon)
+                
+                Button(action: {
+                    document.game.assetFolder.select(asset.id)
+                    document.game.createPreview(asset)
+                    scriptIsVisible = true
+                    updateView.toggle()
+                })
+                {
+                    Text(asset.name)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
+            }*/
             List {
                 DisclosureGroup("Behavior", isExpanded: $showBehaviorItems) {
                     ForEach(document.game.assetFolder.assets, id: \.id) { asset in
@@ -710,16 +726,15 @@ struct ContentView: View {
         }
         if rightSideBarIsVisible == true {
             ScrollView {
-                ParmaView(text: $helpText)
-
+                ParmaView(text: $contextText)
                     .frame(minWidth: 0,
                            maxWidth: .infinity,
                            minHeight: 0,
                            maxHeight: .infinity,
                            alignment: .bottomLeading)
                     .padding(4)
-                    .onReceive(self.document.game.helpTextChanged) { state in
-                        helpText = self.document.game.helpText
+                    .onReceive(self.document.game.contextTextChanged) { state in
+                        contextText = self.document.game.contextText
                     }
                     .foregroundColor(Color.gray)
                     .font(.system(size: 12))

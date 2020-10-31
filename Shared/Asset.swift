@@ -301,8 +301,9 @@ class Asset         : Codable, Equatable
     }
     
     var type        : AssetType = .Behavior
-    
     var id          = UUID()
+    
+    var children    : [Asset]? = nil
     
     var group       = ""
     

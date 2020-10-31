@@ -276,7 +276,7 @@ class Map
         let bodyDef = b2BodyDef()
         bodyDef.angle = shape2D.options.rotation.x.degreesToRadians
         bodyDef.type = b2BodyType.staticBody
-        
+                
         let fixtureDef = b2FixtureDef()
         fixtureDef.shape = nil
 
@@ -289,7 +289,7 @@ class Map
             }
         }
         
-        if  fixtureDef.shape == nil {
+        if fixtureDef.shape == nil {
             let polyShape = b2PolygonShape()
             
             polyShape.setAsBox(halfWidth: (shape2D.options.size.x / 2.0) / ppm - polyShape.m_radius, halfHeight: (shape2D.options.size.y / 2.0) / ppm - polyShape.m_radius)
@@ -304,6 +304,9 @@ class Map
             }
         }
         
+        if let bullet = cmd.options["bullet"] as? Bool1 {
+            bodyDef.bullet = bullet.x
+        }
         
         if let restitution = cmd.options["restitution"] as? Float1 {
             fixtureDef.restitution = restitution.x

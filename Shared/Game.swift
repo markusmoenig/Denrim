@@ -60,8 +60,8 @@ class Game              : ObservableObject
     var previewFactor   : CGFloat = 4
     var previewOpacity  : Double = 0.5
     
-    var helpText        : String = ""
-    let helpTextChanged = PassthroughSubject<Void, Never>()
+    var contextText     : String = ""
+    let contextTextChanged = PassthroughSubject<Void, Never>()
     
     var assetError      = CompileError()
     let gameError       = PassthroughSubject<Void, Never>()
@@ -120,6 +120,9 @@ class Game              : ObservableObject
     {
         if let scriptEditor = scriptEditor {
             scriptEditor.setReadOnly(true)
+            
+            contextText = ""
+            contextTextChanged.send()
         }
         
         clearLocalAudio()

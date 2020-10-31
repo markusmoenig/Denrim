@@ -61,7 +61,11 @@ class BehaviorBuilder
         BehaviorNodeItem("CreateInstance2D", { (_ options: [String:Any]) -> BehaviorNode in return CreateInstance2D(options) }),
         BehaviorNodeItem("DestroyInstance2D", { (_ options: [String:Any]) -> BehaviorNode in return DestroyInstance2D(options) }),
         
+        BehaviorNodeItem("SetVisible", { (_ options: [String:Any]) -> BehaviorNode in return SetVisible(options) }),
+        BehaviorNodeItem("SetActive", { (_ options: [String:Any]) -> BehaviorNode in return SetActive(options) }),
         BehaviorNodeItem("SetLinearVelocity2D", { (_ options: [String:Any]) -> BehaviorNode in return SetLinearVelocity2D(options) }),
+
+        BehaviorNodeItem("IsVisible", { (_ options: [String:Any]) -> BehaviorNode in return IsVisible(options) }),
 
         BehaviorNodeItem("ApplyTexture2D", { (_ options: [String:Any]) -> BehaviorNode in return ApplyTexture2D(options) }),
 

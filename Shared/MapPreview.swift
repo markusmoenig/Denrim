@@ -31,7 +31,7 @@ class MapPreview
         map.texture?.drawChecker()
         
         var helpKey = ""
-        game.helpText = ""
+        game.contextText = ""
         
         //let screenSize = map.getScreenSize()
         //let aspect = float2(map.texture!.width, map.texture!.height)
@@ -41,7 +41,7 @@ class MapPreview
         if let variable = variable {
 
             if let image = map.images[variable] {
-                game.helpText = "Image"
+                game.contextText = "Image"
                 stopTimer()
                 if let texture2D = map.getImageResource(image.resourceName) {
                     drawTexture(texture2D)
@@ -75,16 +75,16 @@ class MapPreview
                 map.drawScene(0, 0, scene)
             } else
             if let shape = map.shapes2D[variable] {
-                game.helpText = "Shape2D<Type: Text><Position: Float2> - Defines a 2D shape of a given type (Disk, Box, Text)\n\n"
+                game.contextText = "Shape2D<Type: Text><Position: Float2> - Defines a 2D shape of a given type (Disk, Box, Text)\n\n"
 
                 if shape.shape == .Disk {
-                    game.helpText += "<Type: \"Disk\"> - <Radius: Float><Border: Float><Color: Float4>"
+                    game.contextText += "<Type: \"Disk\"> - <Radius: Float><Border: Float><Color: Float4>"
                 } else
                 if shape.shape == .Box {
-                    game.helpText += "<Type: \"Box\"> - <Size: Float2><Round: Float><Border: Float><Color: Float4>"
+                    game.contextText += "<Type: \"Box\"> - <Size: Float2><Round: Float><Border: Float><Color: Float4>"
                 } else
                 if shape.shape == .Text {
-                    game.helpText += "<Type: \"Text\"> - <Font: Text><FontSize: Float><Int|Float|Text: Value><Digits: Int><Color: Float4>"
+                    game.contextText += "<Type: \"Text\"> - <Font: Text><FontSize: Float><Int|Float|Text: Value><Digits: Int><Color: Float4>"
                 }
                 map.drawShape(shape)
             }
@@ -92,16 +92,16 @@ class MapPreview
         
         if helpKey.isEmpty == false {
             if let helpText = game.scriptEditor!.getMapHelpForKey(helpKey) {
-                game.helpText = helpText
+                game.contextText = helpText
             }
         } else {
-            game.helpText = game.scriptEditor!.mapHelpText
+            game.contextText = game.scriptEditor!.mapHelpText
         }
         
         game.stopDrawing()
         game.updateOnce()
                 
-        game.helpTextChanged.send()
+        game.contextTextChanged.send()
     }
     
     func drawTexture(_ texture: Texture2D)

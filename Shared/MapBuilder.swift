@@ -452,7 +452,7 @@ class MapBuilder
         let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval"]
         let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "grid", "scroll"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
-        let boolOptions = ["repeatx", "repeaty", "visible"]
+        let boolOptions = ["repeatx", "repeaty", "visible", "bullet"]
         let stringArrayOptions = ["layers", "shapes", "shaders"]
 
         var res: [String:Any] = [:]

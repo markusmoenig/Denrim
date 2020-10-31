@@ -26,13 +26,17 @@ class LogNode: BehaviorNode
         for (name, exp) in options {
             if let string = exp as? String {
                 if let value = context.getVariableValue(string) {
+                    if let v = value as? Int1 {
+                        text += name + " " + String(v.x)
+                    } else
                     if let v = value as? Float1 {
                         text += name + " " + String(v.x)
                     }
                 }
             }
         }
-        print(text)
+        game.contextText.append(text)
+        game.contextTextChanged.send()
         return .Success
     }
 }
@@ -543,6 +547,148 @@ class SetLinearVelocity2D: BehaviorNode
     }
 }
 
+// Sets the active physics state of a shape
+class SetActive: BehaviorNode
+{
+    var shapeId: String? = nil
+    var b1: Bool1? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "SetActive"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["shapeid"] as? String {
+            shapeId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "SetActive requires a 'ShapeId' parameter"
+        }
+        
+        if let value = extractBool1Value(options, context: context, tree: tree, error: &error) {
+            b1 = value
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if shapeId != nil && b1 != nil {
+                if let shape = map.shapes2D[shapeId!] {
+                    if let instances = shape.instances {
+                        for inst in instances.pairs {
+                            if inst.1.behaviorAsset.behavior === context {
+                                if let body = inst.0.body {
+                                    body.setActive(b1!.x)
+                                    return .Success
+                                }
+                            }
+                        }
+                    } else
+                    if let body = shape.body {
+                        body.setActive(b1!.x)
+                        return .Success
+                    }
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
+// Sets the visible state of a shape
+class SetVisible: BehaviorNode
+{
+    var shapeId: String? = nil
+    var b1: Bool1? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "SetVisible"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["shapeid"] as? String {
+            shapeId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "SetActive requires a 'ShapeId' parameter"
+        }
+        
+        if let value = extractBool1Value(options, context: context, tree: tree, error: &error) {
+            b1 = value
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if shapeId != nil && b1 != nil {
+                if let shape = map.shapes2D[shapeId!] {
+                    if let instances = shape.instances {
+                        for inst in instances.pairs {
+                            if inst.1.behaviorAsset.behavior === context {
+                                inst.0.options.visible.x = b1!.x
+                            }
+                        }
+                    } else {
+                        shape.options.visible.x = b1!.x
+                    }
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
+// Is the shape visible ?
+class IsVisible: BehaviorNode
+{
+    var shapeId: String? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "IsVisible"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["shapeid"] as? String {
+            shapeId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "SetActive requires a 'ShapeId' parameter"
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if shapeId != nil {
+                if let shape = map.shapes2D[shapeId!] {
+                    if let instances = shape.instances {
+                        for inst in instances.pairs {
+                            if inst.1.behaviorAsset.behavior === context {
+                                if inst.0.options.visible.x == true {
+                                    return .Success
+                                }
+                            }
+                        }
+                    } else {
+                        if shape.options.visible.x == true {
+                            return .Success
+                        }
+                    }
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 // Creates an on demand instance
 class CreateInstance2D: BehaviorNode
 {
@@ -621,7 +767,9 @@ class DestroyInstance2D: BehaviorNode
                         if let body = inst.0.body {
                             if let oshape = map.shapes2D[instancer.shapeName] {
                                 if let world = oshape.physicsWorld?.world {
-                                    world.destroyBody(body)
+                                    DispatchQueue.main.async {
+                                        world.destroyBody(body)
+                                    }
                                 }
                             }
                         }
