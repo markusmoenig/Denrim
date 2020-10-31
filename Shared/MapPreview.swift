@@ -22,7 +22,7 @@ class MapPreview
         self.game = game
     }
     
-    func preview(_ map: Map,_ variable: String?)
+    func preview(_ map: Map,_ variable: String?, _ command: String? = nil)
     {
         self.map = map
         currentVariable = variable
@@ -33,19 +33,41 @@ class MapPreview
         var helpKey = ""
         game.contextText = ""
         
-        //let screenSize = map.getScreenSize()
-        //let aspect = float2(map.texture!.width, map.texture!.height)
-        //let aspectY = Float(map.texture!.height)
-        //let aspectRatio = min(aspect.x, aspect.y)
-
+        if let command = command {
+            helpKey = command
+        }
+        
         if let variable = variable {
-
             if let image = map.images[variable] {
-                game.contextText = "Image"
                 stopTimer()
                 if let texture2D = map.getImageResource(image.resourceName) {
                     drawTexture(texture2D)
                 }
+                helpKey = "Image"
+            } else
+            if let _ = map.audio[variable] {
+                stopTimer()
+                helpKey = "Audio"
+            } else
+            if let _ = map.behavior[variable] {
+                stopTimer()
+                helpKey = "Behavior"
+            } else
+            if let _ = map.physics2D[variable] {
+                stopTimer()
+                helpKey = "Physics2D"
+            } else
+            if let _ = map.shaders[variable] {
+                stopTimer()
+                helpKey = "Shader"
+            } else
+            if let _ = map.gridInstancers[variable] {
+                stopTimer()
+                helpKey = "GridInstance2D"
+            } else
+            if let _ = map.onDemandInstancers[variable] {
+                stopTimer()
+                helpKey = "OnDemandInstance2D"
             } else
             if let seq = map.sequences[variable] {
                 if let range = seq.options["range"] as? Float2 {
@@ -62,9 +84,11 @@ class MapPreview
                 if animationTimer == nil {
                     startTimer()
                 }
+                helpKey = "Sequence"
             } else
             if map.aliases[variable] != nil {
                 map.drawAlias(0, 0, &map.aliases[variable]!)
+                helpKey = "Alias"
             } else
             if let layer = map.layers[variable] {
                 helpKey = "Layer"
@@ -75,17 +99,7 @@ class MapPreview
                 map.drawScene(0, 0, scene)
             } else
             if let shape = map.shapes2D[variable] {
-                game.contextText = "Shape2D<Type: Text><Position: Float2> - Defines a 2D shape of a given type (Disk, Box, Text)\n\n"
-
-                if shape.shape == .Disk {
-                    game.contextText += "<Type: \"Disk\"> - <Radius: Float><Border: Float><Color: Float4>"
-                } else
-                if shape.shape == .Box {
-                    game.contextText += "<Type: \"Box\"> - <Size: Float2><Round: Float><Border: Float><Color: Float4>"
-                } else
-                if shape.shape == .Text {
-                    game.contextText += "<Type: \"Text\"> - <Font: Text><FontSize: Float><Int|Float|Text: Value><Digits: Int><Color: Float4>"
-                }
+                helpKey = "Shape2D"
                 map.drawShape(shape)
             }
         }

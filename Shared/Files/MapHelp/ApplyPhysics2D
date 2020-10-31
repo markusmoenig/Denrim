@@ -1,0 +1,19 @@
+## ApplyPhysics2D
+
+This command associates a given shape with a 2D physics engine, i.e. the shape's position and rotation will be controlled by the physics engine. Optional parameters can be passed to describe various physical attributes of the shape.
+
+Basic Syntax:
+
+`ApplyPhysics2D<ShapeId: ImageId><PhysicsId: physicsId>`
+
+Optional Parameters:
+
+* **Body** ("Dynamic"/"Static"), defines if the shape is dynamic (i.e. can move, like a ball) or is an immovable static shape. By default a shape is static.
+
+* **Friction** (Float), defines the friction of the shape. A friction of 0 behaves like ice, higher values produce more and more friction. This value is typicall between 0..1 and by default 0.3.
+
+* **Restitution** (Float), defines the restitution of the shape, by default 0.0.
+
+* **Density** (Float), defines the density of the shape, by default 0. Shapes with a density of 0 are automatically static (immovable).
+
+* **Bullet** (true/false), enables bullet mode for this shape. Bullets have continuous collision detection as they usually travel with high speed. By default bullet mode is turned off (false).

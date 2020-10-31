@@ -18,12 +18,12 @@ class Map
     var layers              : [String:MapLayer] = [:]
     var scenes              : [String:MapScene] = [:]
     var behavior            : [String:MapBehavior] = [:]
-    var fixtures2D          : [String:MapFixture2D] = [:]
     var physics2D           : [String:MapPhysics2D] = [:]
 
     var shapes2D            : [String:MapShape2D] = [:]
     var shaders             : [String:MapShader] = [:]
     
+    var gridInstancers      : [String:MapGridInstance2D] = [:]
     var onDemandInstancers  : [String:MapOnDemandInstance2D] = [:]
     
     var timer               : [Timer] = []
@@ -31,7 +31,8 @@ class Map
     var commands            : [MapCommand] = []
 
     var lines               : [Int32:String] = [:]
-    
+    var commandLines        : [Int32:String] = [:]
+
     var resources           : [String:Any] = [:]
 
     // Rendering
@@ -60,12 +61,12 @@ class Map
         layers = [:]
         scenes = [:]
         behavior = [:]
-        fixtures2D = [:]
         physics2D = [:]
         shapes2D = [:]
         shaders = [:]
         commands = []
         lines = [:]
+        commandLines = [:]
         
         for t in timer {
             t.invalidate()
@@ -323,6 +324,8 @@ class Map
             if density.x == 0 {
                 bodyDef.type = b2BodyType.staticBody
             }
+        } else {
+            fixtureDef.density = 0.0
         }
         
         if let groupIndex = cmd.options["groupindex"] as? Int1 {

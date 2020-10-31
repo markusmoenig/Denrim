@@ -30,7 +30,6 @@ class MapBuilder
         case Scene = "Scene"        // List of layers
         case Physics2D = "Physics2D"// 2D Physics
         case Behavior = "Behavior"  // Behavior Tree
-        case Fixture2D = "Fixture2D"// A fixture for an Object2D
 
         case Shape2D = "Shape2D"    // 2D Shape
         case Shader = "Shader"      // Shader
@@ -210,7 +209,13 @@ class MapBuilder
     {
         //print("Processing Command", type, options, error.line!)
         
+        func setLine(_ command: String)
+        {
+            map.commandLines[error.line!] = command
+        }
+        
         map.commands.append(MapCommand(command: type.rawValue, options: options))
+        setLine(type.rawValue)
     }
     
     func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout CompileError, map: Map)
@@ -301,10 +306,6 @@ class MapBuilder
         } else
         if type == .Physics2D {
             map.physics2D[variable] = MapPhysics2D(options: options)
-            setLine(variable)
-        } else
-        if type == .Fixture2D {
-            map.fixtures2D[variable] = MapFixture2D(options: options)
             setLine(variable)
         } else
         if type == .Shader {
@@ -429,6 +430,7 @@ class MapBuilder
                             }
                             y += grid.offsetY
                         }
+                        map.gridInstancers[variable] = grid
                         setLine(variable)
                     } else { error.error = "Could not find behavior '\(behaviorId!)'" }
                 } else { error.error = "Could not find shape '\(shapeId!)'" }
@@ -688,10 +690,13 @@ class MapBuilder
     func createPreview(_ map: Map,_ forcePreview: Bool = false )
     {
         var name : String? = nil
+        var command : String? = nil
         if let line = scriptLine {
             if line != previewLine || forcePreview {
                 previewLine = line                
                 game.checkTexture()
+                
+                command = map.commandLines[line]
                 
                 if let n = map.lines[line] {
                     name = n
@@ -716,7 +721,7 @@ class MapBuilder
                 }
                 
                 map.setup(game: game)
-                mapPreview.preview(map, name)
+                mapPreview.preview(map, name, command)
             }
         }
     }

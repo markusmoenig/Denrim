@@ -1,0 +1,11 @@
+## Behavior
+
+**Behavior** references a behavior file inside Denrim by name.
+
+Behavior files contain behavior trees (functions) and variables which can be bound to shape properties.
+
+When initializing a new **Scene** the "init" tree of every behavior is called. The "update" tree is called for every refresh (every frame) during execution.
+
+Syntax:
+
+`behavior = Behavior<Name: "BehaviorName">`

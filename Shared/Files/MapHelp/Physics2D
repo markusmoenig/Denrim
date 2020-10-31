@@ -1,0 +1,9 @@
+## Physics2D
+
+**Physics2D** creates a new 2D physics engine. You can add add shapes to the engine by using **ApplyPhysics2D**.
+
+Syntax:
+
+`physics = Physics2D<Gravity: 0, -10>`
+
+The gravity parameter sets the gravity in the engine. (0, -10) is the default value, (0,0) means there is no gravity.

@@ -1,0 +1,38 @@
+## Shape2D
+
+A **Shape2D** defines a shape of a given type.
+
+Basic Syntax:
+
+`shapeId = ShapeD2<Type: "Box|Disk|Text"><Position: 0, 0>`
+
+Note shape positions and sizes are often bound to behavior tree variables. For example if you created a *diskBehavior* behavior and created a Float2 variable called position in its "init" tree, you can simply do <Position: diskBehavior.position>.
+
+Now the shape position can be seamlessly changed or queried by the behavior (or optionally the physics engine).
+
+All paramaters can be bound to behavior variables, not only the position, making it possible to change any aspect of a shape on the fly.
+
+Optional Parameters:
+
+* **Rotation** (Float), defines the rotation of the shape in degrees, by default 0.
+* **Color** (Float4), defines the color of the shape, by default 1,1,1,1.
+* **Border** (Float), defines the size of the border of the shape, default is 0.
+* **BorderColor** (Float4), defines the color of the border of the shape, by default 1,1,1,1.
+
+Parameters for Shapes of type "Disk":
+
+* **Radius** (Float), defines the radius of the disk. In relative coordinates.
+
+Parameters for Shapes of type "Box":
+
+* **Size** (Float2), defines the size of the box (relative coordinates).
+* **Round** (Float), defines the rounding of the box, by default 0 (no rounding) in relative coordinates.
+
+Parameters for Shapes of type "Text":
+
+* **Font** ("FontName"), defines the font for the text.
+* **FontSize** (Float), defines the size for the text.
+* **Bool|Int|Float|Float2|Float3|Float4|Text** (Value), defines the text itself, can be a binding to a variable.
+* **Digits** (Int), defines the digits to show for a numerical value, for example a value of 5 with 3 digits would be shown as 005.
+* **Precision** (Int), defines the precision for floating point values. A value of 1.3222 with a precision of 1 would be shown as 1.3.
+

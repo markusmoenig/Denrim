@@ -135,10 +135,6 @@ struct MapBehavior {
     var instances       : MapInstance2D? = nil
 }
 
-struct MapFixture2D {
-    var options         : [String:Any]
-}
-
 struct MapShapeData2D {
 
     var position        : Float2

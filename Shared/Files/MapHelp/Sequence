@@ -1,0 +1,13 @@
+## Sequence
+
+A **Sequence** is similar to an **Image** references, however it does not describe a single image but a range of images in the image group. Sequences are just to create animations in Denrim.
+
+Syntax:
+
+`sequence = Sequence<Group: "GroupName"><Range: 0, 2>`
+
+The range parameter defines the start and end index of images in the given animation group.
+
+Optional Parameters:
+
+* **Interval** (Float) defines the time interval between images in the sequence in seconds. The default value is 0.1. Increasing the interval will play the animation slower, smaller values will play it faster.

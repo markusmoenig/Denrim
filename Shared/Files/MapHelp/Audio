@@ -1,0 +1,9 @@
+## Audio
+
+**Audio** references an audio file you imported into Denrim by name.
+
+Syntax:
+
+`audio = Audio<Name: "AudioName">`
+
+You can play audio references via the **PlayAudio** instruction in behavior files.

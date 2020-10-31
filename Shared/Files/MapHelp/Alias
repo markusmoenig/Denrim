@@ -1,0 +1,17 @@
+## Alias
+
+An **Alias** is a reference to an image or to a given sub-brect of an image (a tile). Aliases are used to describe tile sets in layers and are very powerful as you can specify attributes like repetition for an alias.
+
+Basic Syntax:
+
+`ID = Alias<Id: ImageId>`
+
+Note that aliases IDs have to be two digits, like FS.
+
+Aliases can have various options:
+
+* **RepeatX** (true/false), repeats the alias horizontally.
+
+* **RepeatY** (true/false), repeats the alias vertically.
+
+* **Scale** ("Full"), scales the image up to the full canvas size, useful for background images.

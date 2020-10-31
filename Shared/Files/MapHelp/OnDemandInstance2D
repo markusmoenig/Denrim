@@ -1,0 +1,21 @@
+## OnDemandInstance2D
+
+**OnDemandInstance2D** creates instances of the given shape and behavior on demand via the **CreateInstance2D** behavior tree command. Instances can be destroyed by **DestroyInstance2D**.
+
+**OnDemandInstance2D** is used for missile shapes or explosion sequences, i.e. shapes with a temporary lifetime.
+
+Syntax:
+
+`instancerId = OnDemandInstance2D<ShapeId: ShapeId><BehaviorId: BehaviorId>
+
+This example would set up an instancer for the given ShapeId and BehaviorId pair.
+
+Optional Parameters:
+
+* **Delay** (Float), defines the minimum amount of time between possible instantiations in seconds. The default value of 0 allows unlimited creation of instances, however you may not want to shoot douzens of missiles per second. A value of 0.1 would only allow one instance in 0.1 seconds.
+
+For each instance a new pair of shape and behavior are created. In the behavior references to the ShapeId are automatically resolved to the right shape instance.
+
+You can add the original ShapeId to a layer or to the physics engine as usual. The original pair of ShapeId / BehaviorId you created are used as a template only and are not visible in the scene.
+
+Created instances which are not destroyed are a potential memory leak and performance drag, make sure to destroy instances when for example a missile leaves the screen.

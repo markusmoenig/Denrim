@@ -1,0 +1,13 @@
+## GridInstance2D
+
+**GridInstance2D** creates instances of the given shape and behavior in a grid.
+
+Syntax:
+
+` gridId = GridInstance2D<ShapeId: ShapeId><BehaviorId: BehaviorId><Grid: 3, 3><Offset: 12, 12>`
+
+This example would create 9 instances (3x3) of ShapeId with the associated instances of BehaviorId. Each shape would have an offset to each other of 12, 12 (in relative coordinates).
+
+For each instance a new pair of shape and behavior are created. In the behavior references to the ShapeId are automatically resolved to the right shape instance.
+
+You can add the ShapeId to a layer or to the physics engine as usual. The original pair of ShapeId / BehaviorId you created are used as a template only and are not visible in the scene.
