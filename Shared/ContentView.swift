@@ -109,11 +109,11 @@ struct ContentView: View {
     @State private var helpIsShowing: Bool = false
     @State private var updateView: Bool = false
 
-    @State private var scriptIsVisible: Bool = true
     @State private var helpIsVisible: Bool = false
 
     @State private var imageIndex: Double = 0
-    
+    @State private var imageScale: Double = 1
+
     @State private var showDeleteAssetAlert: Bool = false
 
     @State private var showBehaviorItems: Bool = true
@@ -160,7 +160,6 @@ struct ContentView: View {
                             Button(action: {
                                 document.game.assetFolder.select(asset.id)
                                 document.game.createPreview(asset)
-                                scriptIsVisible = true
                                 updateView.toggle()
                             })
                             {
@@ -190,7 +189,6 @@ struct ContentView: View {
                             Button(action: {
                                 document.game.assetFolder.select(asset.id)
                                 document.game.createPreview(asset)
-                                scriptIsVisible = false
                                 updateView.toggle()
                             })
                             {
@@ -208,7 +206,6 @@ struct ContentView: View {
                             Button(action: {
                                 document.game.assetFolder.select(asset.id)
                                 document.game.createPreview(asset)
-                                scriptIsVisible = true
                                 updateView.toggle()
                             })
                             {
@@ -226,7 +223,8 @@ struct ContentView: View {
                             Button(action: {
                                 document.game.assetFolder.select(asset.id)
                                 document.game.createPreview(asset)
-                                scriptIsVisible = false
+                                imageIndex = Double(asset.dataIndex)
+                                imageScale = asset.dataScale
                                 updateView.toggle()
                             })
                             {
@@ -244,7 +242,6 @@ struct ContentView: View {
                             Button(action: {
                                 document.game.assetFolder.select(asset.id)
                                 document.game.createPreview(asset)
-                                scriptIsVisible = false
                                 updateView.toggle()
                             })
                             {
@@ -396,81 +393,12 @@ struct ContentView: View {
                         document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
                         assetName = document.game.assetFolder.current!.name
                         showAssetNamePopover = true
-                        scriptIsVisible = false
                         updateView.toggle()
                     }
                 } catch {
                     // Handle failure.
                 }
-            }
-            /*
-            GeometryReader { g in
-                ScrollView {
-                    if let current = document.game.assetFolder.current {
-                        ZStack {
-                            WebView(document.game, deviceColorScheme).tabItem {
-                            }
-                            .zIndex(scriptIsVisible ? 1 : 0)
-                            .frame(height: g.size.height)
-                            .tag(1)
-                            /*
-                            .onReceive(self.document.game.compileErrorOccured) { state in
-                                
-                                if let asset = self.document.game.error.asset {
-                                    document.game.assetFolder.select(asset.id)
-                                }
-                                
-                                if self.document.game.error.error != nil {
-                                    self.document.game.scriptEditor?.setError(self.document.game.error)
-                                }
-                                self.updateView.toggle()
-                            }*/
-                            .onChange(of: deviceColorScheme) { newValue in
-                                document.game.scriptEditor?.setTheme(newValue)
-                            }
-                            VStack {
-                                if current.type == .Image {
-                                    HStack {
-                                        if current.data.count >= 2 {
-                                            Text("Index " + String(Int(imageIndex)))
-                                            Slider(value: $imageIndex, in: 0...Double(current.data.count-1), step: 1)
-                                            .padding()
-                                        }
-                                    }
-                                    .padding()
-                                    #if os(OSX)
-                                    let image = NSImage(data: current.data[Int(imageIndex)])!
-                                    #else
-                                    let image = UIImage(data: current.data[Int(imageIndex)])!
-                                    #endif
-                                    #if os(OSX)
-                                    Image(nsImage: image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                    #else
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                    #endif
-                                    HStack {
-                                        Spacer()
-                                        Text("Width: \(Int(image.size.width))")
-                                        Spacer()
-                                        Text("Height: \(Int(image.size.height))")
-                                        Spacer()
-                                    }.padding()
-
-                                    Spacer()
-                                }
-                            }
-                            .zIndex(scriptIsVisible ? 0 : 1)
-                            .background(Color.gray)
-                        }
-                    }
-                }.frame(height: g.size.height)
-            }
-            .frame(minWidth: 300, maxWidth: .infinity)*/
-            
+            }            
             GeometryReader { geometry in
                 ZStack(alignment: .topTrailing) {
                     ScrollView {
@@ -486,19 +414,6 @@ struct ContentView: View {
                         .zIndex(0)
                         .frame(maxWidth: .infinity)
                         .layoutPriority(2)
-                    /*
-                    Text(helpText)
-                        .zIndex(1)
-                        .background(Color.gray)
-                        .opacity(0.8)
-                        .frame(minWidth: 0,
-                               maxWidth: .infinity,
-                               minHeight: 0,
-                               maxHeight: .infinity,
-                               alignment: .bottomLeading)
-                        .onReceive(self.document.game.helpTextChanged) { state in
-                            helpText = self.document.game.helpText
-                        }*/
                     MetalView(document.game)
                         .zIndex(2)
                         .frame(minWidth: 0,
@@ -509,44 +424,6 @@ struct ContentView: View {
                         .opacity(document.game.state == .Running ? 1 : document.game.previewOpacity)
                         .animation(.default)
                         .allowsHitTesting(document.game.state == .Running)
-                
-                    VStack {
-                        if document.game.assetFolder.current!.type == .Image {
-                            HStack {
-                                if document.game.assetFolder.current!.data.count >= 2 {
-                                    Text("Index " + String(Int(imageIndex)))
-                                    Slider(value: $imageIndex, in: 0...Double(document.game.assetFolder.current!.data.count-1), step: 1)
-                                    .padding()
-                                }
-                            }
-                            .padding()
-                            #if os(OSX)
-                            let image = NSImage(data: document.game.assetFolder.current!.data[Int(imageIndex)])!
-                            #else
-                            let image = UIImage(data: document.game.assetFolder.current!.data[Int(imageIndex)])!
-                            #endif
-                            #if os(OSX)
-                            Image(nsImage: image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                            #else
-                            Image(uiImage: image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                            #endif
-                            HStack {
-                                Spacer()
-                                Text("Width: \(Int(image.size.width))")
-                                Spacer()
-                                Text("Height: \(Int(image.size.height))")
-                                Spacer()
-                            }.padding()
-
-                            Spacer()
-                        }
-                    }
-                    .zIndex(scriptIsVisible ? 0 : 2)
-                    .background(Color.gray)
                     HelpWebView()
                         .zIndex(helpIsVisible ? 4 : -1)
                         .frame(minWidth: 0,
@@ -589,17 +466,6 @@ struct ContentView: View {
                     }) {
                         Label("Bug", systemImage: "ant.fill")
                     }.keyboardShortcut("b")
-                    
-                    /*
-                    Button(action: {
-                        if let asset = document.game.assetFolder.current {
-                            document.game.createPreview(asset)
-                        }
-                    }) {
-                        Label("Update", systemImage: "arrow.counterclockwise")
-                    }.keyboardShortcut("u")
-                    .disabled(document.game.state == .Running || document.game.assetFolder.current?.type != .Shader )
-                    */
                     
                     Divider()
                         .padding(.horizontal, 20)
@@ -681,75 +547,53 @@ struct ContentView: View {
                     if selectedFiles.count > 0 {
                         document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles, existingAsset: document.game.assetFolder.current)
 
-                        scriptIsVisible = false
                         updateView.toggle()
                     }
                 } catch {
                     // Handle failure.
                 }
             }
-            /*
-            ZStack() {
-                HelpWebView()
-                    .zIndex(helpIsVisible ? 1 : 0)
-                MetalView(document.game)
-                    .zIndex(helpIsVisible ? 0 : 1)
-                    .frame(minWidth: 200)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .automatic) {
-                            Button(action: {
-                                document.game.stop()
-                                document.game.start()
-                                helpIsVisible = false
-                                updateView.toggle()
-                            })
-                            {
-                                Label("Run", systemImage: "play.fill")
-                            }
-                            .keyboardShortcut("r")
-                            Button(action: {
-                                document.game.stop()
-                                updateView.toggle()
-                            }) {
-                                Label("Stop", systemImage: "stop.fill")
-                            }.keyboardShortcut("t")
-                            .disabled(document.game.state == .Idle)
-                            Button(action: {
-                                if let asset = document.game.assetFolder.current {
-                                    document.game.createPreview(asset)
-                                }
-                            }) {
-                                Label("Update", systemImage: "arrow.counterclockwise")
-                            }.keyboardShortcut("u")
-                            .disabled(document.game.state == .Running || document.game.assetFolder.current?.type != .Shader )
-                            Spacer()
-                            Button(!helpIsVisible ? "Help" : "Hide", action: {
-                                helpIsVisible.toggle()
-                            })
-                            .keyboardShortcut("h")
-                        }
-                    }
-            }
-            .layoutPriority(2)
-            */
         }
         if rightSideBarIsVisible == true {
             ScrollView {
-                ParmaView(text: $contextText)
-                    .frame(minWidth: 0,
-                           maxWidth: .infinity,
-                           minHeight: 0,
-                           maxHeight: .infinity,
-                           alignment: .bottomLeading)
-                    .padding(4)
-                    .onReceive(self.document.game.contextTextChanged) { state in
-                        contextText = self.document.game.contextText
+                
+                if let asset = document.game.assetFolder.current {
+                    if asset.type == .Image {
+                        VStack {
+                            Text("Index \(Int(imageIndex))")
+                            Slider(value: $imageIndex, in: 0...Double(document.game.assetFolder.current!.data.count-1), step: 1) { pressed in
+                                asset.dataIndex = Int(imageIndex)
+                                document.game.assetFolder.createPreview()
+                            }
+                            .padding(.horizontal)
+                            Text("Scale \(String(format: "%.02f", imageScale))")
+                            Slider(value: $imageScale, in: 0.25...4, step: 0.25) { pressed in
+                                asset.dataScale = imageScale
+                                document.game.assetFolder.createPreview()
+                            }
+                            .padding(.horizontal)
+                        }
+                        .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
+                        .layoutPriority(0)
+                        .animation(.easeInOut)
+                    } else {
+                        ParmaView(text: $contextText)
+                            .frame(minWidth: 0,
+                                   maxWidth: .infinity,
+                                   minHeight: 0,
+                                   maxHeight: .infinity,
+                                   alignment: .bottomLeading)
+                            .padding(4)
+                            .onReceive(self.document.game.contextTextChanged) { state in
+                                contextText = self.document.game.contextText
+                            }
+                            .foregroundColor(Color.gray)
+                            .font(.system(size: 12))
+                            .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
+                            .layoutPriority(0)
+                            .animation(.easeInOut)
                     }
-                    .foregroundColor(Color.gray)
-                    .font(.system(size: 12))
-                    .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
-                    .layoutPriority(0)
-                    .animation(.easeInOut)
+                }
             }
             .animation(.easeInOut)
             // Import Audio

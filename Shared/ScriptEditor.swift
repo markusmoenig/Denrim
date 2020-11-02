@@ -193,6 +193,18 @@ class ScriptEditor
                         cb()
                     }
              })
+        } else
+        if asset.type == .Image || asset.type == .Audio {
+            webView.evaluateJavaScript(
+                """
+                var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
+                editor.setSession(\(asset.scriptName))
+                editor.session.setMode("ace/mode/text");
+                """, completionHandler: { (value, error ) in
+                    if let cb = cb {
+                        cb()
+                    }
+             })
         }
     }
     

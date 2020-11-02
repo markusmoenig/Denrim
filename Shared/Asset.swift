@@ -111,17 +111,10 @@ class AssetFolder       : Codable
     
     func addMap(_ name: String)
     {
-        //guard let path = Bundle.main.path(forResource: "Shader", ofType: "txt", inDirectory: "Files") else {
-        //    return
-        //}
-        
-        //if let mapTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
-                
-            let asset = Asset(type: .Map, name: name, value: "")
-            assets.append(asset)
-            select(asset.id)
-            game.scriptEditor?.createSession(asset)
-        //}
+        let asset = Asset(type: .Map, name: name, value: "")
+        assets.append(asset)
+        select(asset.id)
+        game.scriptEditor?.createSession(asset)
     }
     
     func addImages(_ name: String, _ urls: [URL], existingAsset: Asset? = nil)
@@ -141,6 +134,7 @@ class AssetFolder       : Codable
             }
         }
         
+        game.scriptEditor?.createSession(asset)
         select(asset.id)
     }
     
@@ -161,6 +155,7 @@ class AssetFolder       : Codable
             }
         }
         
+        game.scriptEditor?.createSession(asset)
         select(asset.id)
     }
     
@@ -183,23 +178,25 @@ class AssetFolder       : Codable
 
         for asset in assets {
             if asset.id == id {
-                if asset.type == .Behavior || asset.type == .Shader || asset.type == .Map {
-                    game.scriptEditor?.setAssetSession(asset)
-                    
-                    if game.state == .Idle {
-                        assetCompile(asset)
-                        if asset.type == .Map {
-                            if game.mapBuilder.cursorTimer == nil {
-                                game.mapBuilder.startTimer(asset)
-                            }
-                        } else
-                        if asset.type == .Behavior {
-                            if game.behaviorBuilder.cursorTimer == nil {
-                                game.behaviorBuilder.startTimer(asset)
-                            }
+                if asset.scriptName.isEmpty {
+                    game.scriptEditor?.createSession(asset)
+                }
+                game.scriptEditor?.setAssetSession(asset)
+                
+                if game.state == .Idle {
+                    assetCompile(asset)
+                    if asset.type == .Map {
+                        if game.mapBuilder.cursorTimer == nil {
+                            game.mapBuilder.startTimer(asset)
+                        }
+                    } else
+                    if asset.type == .Behavior {
+                        if game.behaviorBuilder.cursorTimer == nil {
+                            game.behaviorBuilder.startTimer(asset)
                         }
                     }
                 }
+                
                 current = asset
                 break
             }
@@ -300,6 +297,9 @@ class AssetFolder       : Codable
             } else
             if asset.type == .Shader {
                 self.game.createPreview(asset)
+            } else
+            if asset.type == .Image {
+                self.game.createPreview(asset)
             }
         }
     }
@@ -322,6 +322,8 @@ class Asset         : Codable, Equatable
     var value       = ""
     
     var data        : [Data] = []
+    var dataIndex   : Int = 0
+    var dataScale   : Double = 1
 
     // For the script based assets
     var scriptName  = ""

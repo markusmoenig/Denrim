@@ -236,6 +236,9 @@ class Game              : ObservableObject
                 startDrawing()
                 texture?.clear()
                 stopDrawing()
+                if let asset = assetFolder.current {
+                    createPreview(asset)
+                }
             }
         }
         
@@ -377,6 +380,46 @@ class Game              : ObservableObject
                     player.play()
                 } catch let error {
                     print(error.localizedDescription)
+                }
+            } else if asset.type == .Image {
+                if asset.dataIndex < asset.data.count {
+                
+                    let data = asset.data[asset.dataIndex]
+                    
+                    let texOptions: [MTKTextureLoader.Option : Any] = [.generateMipmaps: false, .SRGB: false]
+                    if let texture  = try? textureLoader.newTexture(data: data, options: texOptions) {
+                        let texture2D = Texture2D(self, texture: texture)
+                        
+                        self.startDrawing()
+                        var options : [String:Any] = [:]
+                        options["texture"] = texture2D
+                        
+                        let width : Float = texture2D.width * Float(asset.dataScale)
+                        let height : Float = texture2D.height * Float(asset.dataScale)
+
+                        options["width"] = width
+                        options["height"] = height
+
+                        self.texture?.clear()
+                        self.texture?.drawTexture(options)
+                        self.stopDrawing()
+                        self.updateOnce()
+                                                                        
+                        if let scriptEditor = self.scriptEditor {
+                            let text = """
+
+                            Displaying image group \(asset.name) index \(asset.dataIndex) of \(asset.data.count)
+                            
+                            Image resolution \(Int(texture2D.width))x\(Int(texture2D.height))
+
+                            Preview resolution \(Int(width))x\(Int(height))
+
+                            Scale \(String(format: "%.02f", asset.dataScale))
+
+                            """
+                            scriptEditor.setAssetValue(asset, value: text)
+                        }
+                    }
                 }
             }
         }
