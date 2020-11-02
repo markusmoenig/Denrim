@@ -172,6 +172,12 @@ class AssetFolder       : Codable
                     game.mapBuilder.stopTimer(current)
                 }
                 current.map = nil
+            } else
+            if current.type == .Behavior {
+                if game.behaviorBuilder.cursorTimer != nil {
+                    game.behaviorBuilder.stopTimer(current)
+                }
+                current.map = nil
             }
         }
 
@@ -185,6 +191,11 @@ class AssetFolder       : Codable
                         if asset.type == .Map {
                             if game.mapBuilder.cursorTimer == nil {
                                 game.mapBuilder.startTimer(asset)
+                            }
+                        } else
+                        if asset.type == .Behavior {
+                            if game.behaviorBuilder.cursorTimer == nil {
+                                game.behaviorBuilder.startTimer(asset)
                             }
                         }
                     }

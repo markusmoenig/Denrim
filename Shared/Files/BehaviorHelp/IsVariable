@@ -1,0 +1,13 @@
+## IsVariable
+
+Checks if the given variable is **Equal**, **SmallerThan** or **GreaterThan** the test value. If yes it returns *Success* otherwise *Failure*.
+
+Syntax:
+
+`IsVariable<Variable: Name><Mode: "Equal|SmallerThan|GreaterThan"><Int|FloatX: value>`
+
+Example:
+
+`IsVariable<Variable: contacts><Mode: "GreaterThan"><Int: 0>`
+
+would return Success if the Int variable contacts has a value 1 or more.

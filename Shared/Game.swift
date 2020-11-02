@@ -61,6 +61,7 @@ class Game              : ObservableObject
     var previewOpacity  : Double = 0.5
     
     var contextText     : String = ""
+    var contextKey      : String = ""
     let contextTextChanged = PassthroughSubject<Void, Never>()
     
     var assetError      = CompileError()

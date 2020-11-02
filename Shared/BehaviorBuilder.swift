@@ -30,6 +30,7 @@ class BehaviorNodeItem
 
 class BehaviorBuilder
 {
+    var cursorTimer     : Timer? = nil
     let game            : Game
     
     var branches        : [BehaviorNodeItem] =
@@ -243,9 +244,11 @@ class BehaviorBuilder
                                             if currentBranch.count == 0 {
                                                 currentTree?.leaves.append(newBranch)
                                                 currentBranch.append(newBranch)
+                                                asset.behavior!.lines[error.line!] = newBranch.name
                                             } else {
                                                 if let branch = currentBranch.last {
                                                     branch.leaves.append(newBranch)
+                                                    asset.behavior!.lines[error.line!] = branch.name
                                                 }
                                                 currentBranch.append(newBranch)
                                             }
@@ -293,6 +296,7 @@ class BehaviorBuilder
                                                     if error.error == nil {
                                                         behaviorNode.lineNr = error.line!
                                                         branch.leaves.append(behaviorNode)
+                                                        asset.behavior!.lines[error.line!] = behaviorNode.name
                                                         processed = true
                                                     }
                                                 } else { createError("Leaf node without active branch") }
@@ -406,5 +410,52 @@ class BehaviorBuilder
         }
         
         return res
+    }
+    
+    func startTimer(_ asset: Asset)
+    {
+        DispatchQueue.main.async(execute: {
+            let timer = Timer.scheduledTimer(timeInterval: 0.2,
+                                             target: self,
+                                             selector: #selector(self.cursorCallback),
+                                             userInfo: asset,
+                                             repeats: true)
+            self.cursorTimer = timer
+        })
+    }
+    
+    func stopTimer(_ asset: Asset)
+    {
+        if cursorTimer != nil {
+            cursorTimer?.invalidate()
+            cursorTimer = nil
+        }
+    }
+    
+    @objc func cursorCallback(_ timer: Timer) {
+        if game.state == .Idle && game.scriptEditor != nil {
+            game.scriptEditor!.getSessionCursor({ (line) in
+                if let asset = timer.userInfo as? Asset {
+                    if let context = asset.behavior {
+                        if let name = context.lines[line] {
+                            if name != self.game.contextKey {
+                                if let helpText = self.game.scriptEditor!.getBehaviorHelpForKey(name) {
+                                    self.game.contextText = helpText
+                                    self.game.contextKey = name
+                                    self.game.contextTextChanged.send()
+
+                                }
+                            }
+                        } else {
+                            if self.game.contextKey != "BehaviorHelp" {
+                                self.game.contextText = self.game.scriptEditor!.behaviorHelpText
+                                self.game.contextKey = "BehaviorHelp"
+                                self.game.contextTextChanged.send()
+                            }
+                        }
+                    }
+                }
+            })
+        }
     }
 }

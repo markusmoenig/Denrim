@@ -18,7 +18,11 @@ class ScriptEditor
     
     var mapHelpIndex    : [String] = []
     var mapHelp         : [String:String] = [:]
-    var mapHelpText     : String = "Available:\n\n"
+    var mapHelpText     : String = "## Available:\n\n"
+    
+    var behaviorHelpIndex: [String] = []
+    var behaviorHelp    : [String:String] = [:]
+    var behaviorHelpText: String = "## Available:\n\n"
     
     init(_ view: WKWebView, _ game: Game,_ colorScheme: ColorScheme)
     {
@@ -33,13 +37,24 @@ class ScriptEditor
         }
         
         // Read out the map context help
-        let docsPath = Bundle.main.resourcePath! + "/Files/MapHelp"
+        var docsPath = Bundle.main.resourcePath! + "/Files/MapHelp"
         let fileManager = FileManager.default
 
         do {
             mapHelpIndex = try fileManager.contentsOfDirectory(atPath: docsPath).sorted()
             for h in mapHelpIndex {
                 mapHelpText += h + "\n"
+            }
+        } catch {
+        }
+        
+        // Read out the behavior context help
+        docsPath = Bundle.main.resourcePath! + "/Files/BehaviorHelp"
+
+        do {
+            behaviorHelpIndex = try fileManager.contentsOfDirectory(atPath: docsPath).sorted()
+            for h in behaviorHelpIndex {
+                behaviorHelpText += h + "\n"
             }
         } catch {
         }
@@ -61,6 +76,26 @@ class ScriptEditor
             
             if let help = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
                 mapHelp[key] = help
+                return help
+            }
+        }
+        return nil
+    }
+    
+    // Get help for a behavior keyword
+    func getBehaviorHelpForKey(_ key: String) -> String?
+    {
+        if let help = behaviorHelp[key] {
+            return help
+        }
+
+        if behaviorHelpIndex.contains(key) {
+            guard let path = Bundle.main.path(forResource: key, ofType: "", inDirectory: "Files/BehaviorHelp") else {
+                return nil
+            }
+            
+            if let help = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
+                behaviorHelp[key] = help
                 return help
             }
         }

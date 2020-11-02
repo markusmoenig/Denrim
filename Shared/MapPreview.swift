@@ -30,7 +30,7 @@ class MapPreview
         game.startDrawing()
         map.texture?.drawChecker()
         
-        var helpKey = ""
+        var helpKey = "MapHelp"
         game.contextText = ""
         
         if let command = command {
@@ -104,18 +104,21 @@ class MapPreview
             }
         }
         
-        if helpKey.isEmpty == false {
-            if let helpText = game.scriptEditor!.getMapHelpForKey(helpKey) {
-                game.contextText = helpText
+        if helpKey != game.contextKey {
+            if helpKey != "MapHelp" {
+                if let helpText = game.scriptEditor!.getMapHelpForKey(helpKey) {
+                    game.contextText = helpText
+                    game.contextKey = helpKey
+                }
+            } else {
+                game.contextText = game.scriptEditor!.mapHelpText
+                game.contextKey = "MapHelp"
             }
-        } else {
-            game.contextText = game.scriptEditor!.mapHelpText
+            game.contextTextChanged.send()
         }
         
         game.stopDrawing()
         game.updateOnce()
-                
-        game.contextTextChanged.send()
     }
     
     func drawTexture(_ texture: Texture2D)

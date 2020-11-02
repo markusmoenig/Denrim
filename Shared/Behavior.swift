@@ -74,6 +74,8 @@ class BehaviorContext
     var trees               : [BehaviorTree] = []
     var variables           : [BehaviorVariable] = []
     var failedAt            : [Int32] = []
+    
+    var lines               : [Int32:String] = [:]
         
     let game                : Game
     
@@ -86,6 +88,7 @@ class BehaviorContext
     {
         trees = []
         variables = []
+        lines = [:]
     }
     
     func addVariable(_ name: String,_ value: Any)
