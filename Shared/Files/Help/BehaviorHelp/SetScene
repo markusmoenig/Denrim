@@ -1,0 +1,10 @@
+## SetScene
+
+*SetScene* invokes / starts a scene in a given map file. A scene can be anything, a menu or a level inside a game. There can only be one scene active at once.
+
+Normally the "init" tree in the *Game* behavior file would invoke the first scene in a game.
+
+Syntax:
+
+`SetScene<Map: "MapName"><SceneId: SceneId>`
+

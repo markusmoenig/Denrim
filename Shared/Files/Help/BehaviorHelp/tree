@@ -1,0 +1,15 @@
+## tree
+
+A **tree** is a behavior tree with a given name.
+
+Syntax:
+
+`tree "name"`
+
+The "init" tree will be invoked for every behavior file when the *Scene* containing it is invoked (via *SetScene*). The "update" tree is called for every frame update.
+
+You can invoke tree's manually via the *Call* command. In this case you can also pass variables to the receiving tree which you have to declare in the invoked tree like this:
+
+`tree "checkForHit" Float2<ballPos>Float<ballRadius>`
+
+The *Call* command has to pass the variables in the same order than the *tree*.

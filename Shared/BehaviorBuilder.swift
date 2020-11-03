@@ -166,7 +166,8 @@ class BehaviorBuilder
                                     asset.behavior!.trees.append(currentTree!)
                                     currentBranch = []
                                     processed = true
-                                    
+                                    asset.behavior!.lines[error.line!] = "tree"
+
                                     // Rest of the parameters are incoming variables
                                     
                                     if arguments.count > 2 {
@@ -248,7 +249,7 @@ class BehaviorBuilder
                                             } else {
                                                 if let branch = currentBranch.last {
                                                     branch.leaves.append(newBranch)
-                                                    asset.behavior!.lines[error.line!] = branch.name
+                                                    asset.behavior!.lines[error.line!] = newBranch.name
                                                 }
                                                 currentBranch.append(newBranch)
                                             }

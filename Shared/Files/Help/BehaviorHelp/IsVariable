@@ -10,4 +10,4 @@ Example:
 
 `IsVariable<Variable: contacts><Mode: "GreaterThan"><Int: 0>`
 
-would return Success if the Int variable contacts has a value 1 or more.
+would return *Success* if the Int variable contacts has a value 1 or more.

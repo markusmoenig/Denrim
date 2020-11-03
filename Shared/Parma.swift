@@ -17,15 +17,6 @@ struct HelpItem: Identifiable {
     var md          : String = ""
 }
 
-let _helpItems = [ HelpItem(name: "Introduction", children:
-                                [
-                                    HelpItem(name: "Here we go")
-                                ]),
-                       HelpItem(name: "Espresso EP"),
-                       HelpItem(name: "Pour Over"),
-                       HelpItem(name: "Steam")
-                    ]
-
 struct HelpIndexView: View {
     
     let game        : Game

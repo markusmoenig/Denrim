@@ -1,0 +1,8 @@
+## PlayAudio
+
+*PlayAudio* plays an audio id (reference to an audio file) defined in the current map file.
+
+Syntax:
+
+`PlayAudio<Id: AudioId>`
+

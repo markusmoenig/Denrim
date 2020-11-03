@@ -1,0 +1,5 @@
+## sequence
+
+sequence is a classic behavior tree control node. It executes the controlled nodes until the first node returns *Failure* (in which case the sequence would fail itself). If no node fails the sequence returns *Success*.
+
+This is the most basic form of controling behavior, for example you may want to check if a certain key is pressed via *IsKeyDown*, *IsKeyDown* would return *Failure* if the key is not pressed, so any following nodes would not be executed if the key is currently not pressed.

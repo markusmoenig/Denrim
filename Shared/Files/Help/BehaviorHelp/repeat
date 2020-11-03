@@ -1,0 +1,7 @@
+## repeat
+
+Unconditionally repeats the controlled nodes a certain amount of time. Useful if you want to execute a batch of nodes without bothering if the nodes succeed or not. By default repeat executes the embedded commands one (1) time. You can change the default behaviour by passing the amount manually:
+
+`repeat 10`
+
+would execute the controlled nodes 10 times.

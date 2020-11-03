@@ -1,3 +1,44 @@
 # Behavior Files
 
+Behavior for AI (artifial intelligence) for enemies or the control code for the player is implemented via behavior trees in Denrim. Behavior trees contain two kind of text based nodes, control nodes which control the conditional flow of instructions inside the tree and decorative nodes which are singular instructions like *IsKeyDown* which checks if a certain key is currently pressed. We will call decorative nodes simply nodes.
 
+Control nodes in Denrim are lowercase, like *tree*, *sequence* etc. Nodes use an uppercase notation like *IsKeyDown*.
+
+Every line in behavior files is a node, a variable declaration or empty. A *tree* control node creates a new behavior tree, each control node introduces new indention in the following lines, these are the lines which are controlled by the control node.
+
+## Node return values
+
+Nodes can return three possible states:
+
+* **Success**, the node was executed successfully.
+* **Failure**, the node failed. For example if a certain key we want to check via **IsKeyDown** was not pressed, the node would return **Failure**.
+* **Running**, the node is currently executing.
+
+Some of the control nodes, like *sequence* and *selector* work explicitly on the nodes return values. *sequence* for example executes all of its' controlled nodes until a node fails.
+
+## Visual Feedback
+
+When you run a game in Denrim, the editor will display a red icon on the nodes which fail during execution. This gives you realtime feedback on what is going on in the behavior file.
+
+## The Game behavior file
+
+The behavior file which controls the overall game logic is called *Game* and is the first behavior file to be executed. Normally it would invoke a scene in a map file via *SetScene* which in itself would than invoke the behavior files definied in the map file.
+
+## Variable Definitions
+
+An example for a variable definition:
+
+`position = Float2<2,2>`
+
+Supported Variable types right now are:
+
+* **Bool**, which can be true or false.
+* **Int**, an integer value.
+* **Float**, a float value.
+* **Float2**, a two dimensional float value.
+* **Float3**, a three dimensional float value.
+* **Float4**, a four dimensional float value mostly used for RGBA color.
+
+You can bind variables in behavior trees to shape parameters in the scene's map file (for example the above position variable). This way a behavior trees can represent a shape or shapes of a character in a scene and should implement it's overall behavior.
+
+To understand behavior trees better please have a loot at the examples and the context help for each (control) node.

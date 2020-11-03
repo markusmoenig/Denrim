@@ -90,7 +90,7 @@ class ScriptEditor
         }
 
         if behaviorHelpIndex.contains(key) {
-            guard let path = Bundle.main.path(forResource: key, ofType: "", inDirectory: "Files/BehaviorHelp") else {
+            guard let path = Bundle.main.path(forResource: key, ofType: "", inDirectory: "Files/Help/BehaviorHelp") else {
                 return nil
             }
             

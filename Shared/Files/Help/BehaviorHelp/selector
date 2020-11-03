@@ -1,0 +1,6 @@
+## selector
+
+selector is similar to *sequence*, sequences executes it's controlled nodes until the first one fails. *selector* executes it's controlled nodes until the first one succeeds. 
+
+This is useful for example if you want to check if the user pressed a key OR touched the display to control a ship. The *selector* node would stop execution and return success on the first node which succeeds or if no node succeeds it would fail. If you embedd a *selector* node inside a *sequence* node the sequence node would continue if the selector node succeeds which succeeds if one of it's nodes succeeds.
+
