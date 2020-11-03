@@ -106,10 +106,10 @@ struct ContentView: View {
     @State private var showAssetNamePopover: Bool = false
     @State private var assetName: String = ""
 
-    @State private var helpIsShowing: Bool = false
     @State private var updateView: Bool = false
 
     @State private var helpIsVisible: Bool = false
+    @State private var helpText: String = ""
 
     @State private var imageIndex: Double = 0
     @State private var imageScale: Double = 1
@@ -398,7 +398,7 @@ struct ContentView: View {
                 } catch {
                     // Handle failure.
                 }
-            }            
+            }
             GeometryReader { geometry in
                 ZStack(alignment: .topTrailing) {
                     ScrollView {
@@ -410,6 +410,7 @@ struct ContentView: View {
                             .onChange(of: deviceColorScheme) { newValue in
                                 document.game.scriptEditor?.setTheme(newValue)
                             }
+                            .opacity(helpIsVisible ? 0 : 1)
                     }
                         .zIndex(0)
                         .frame(maxWidth: .infinity)
@@ -421,17 +422,27 @@ struct ContentView: View {
                                minHeight: 0,
                                maxHeight: geometry.size.height / document.game.previewFactor,
                                alignment: .topTrailing)
-                        .opacity(document.game.state == .Running ? 1 : document.game.previewOpacity)
+                        //.opacity(document.game.state == .Running ? 1 : document.game.previewOpacity)
+                        .opacity(helpIsVisible ? 0 : 1)
                         .animation(.default)
                         .allowsHitTesting(document.game.state == .Running)
-                    HelpWebView()
-                        .zIndex(helpIsVisible ? 4 : -1)
-                        .frame(minWidth: 0,
-                               maxWidth: .infinity,
-                               minHeight: 0,
-                               maxHeight: .infinity)
-                        .opacity(helpIsVisible ? 1 : 0)
-                        .animation(.default)
+                    
+                    ScrollView {
+                        ParmaView(text: $helpText)
+                            .frame(minWidth: 0,
+                                   maxWidth: .infinity,
+                                   minHeight: 0,
+                                   maxHeight: .infinity,
+                                   alignment: .topLeading)
+                            .padding(4)
+                            .animation(.default)
+                            .onReceive(self.document.game.helpTextChanged) { state in
+                                helpText = self.document.game.helpText
+                            }
+                    }
+                    .zIndex(4)//helpIsVisible ? 4 : -1)
+                    .opacity(helpIsVisible ? 1 : 0)
+                    .animation(.default)
                 }
             }
             .layoutPriority(2)
@@ -555,9 +566,14 @@ struct ContentView: View {
             }
         }
         if rightSideBarIsVisible == true {
-            ScrollView {
-                
-                if let asset = document.game.assetFolder.current {
+            if helpIsVisible == true {
+                HelpIndexView(document.game)
+                    .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
+                    .layoutPriority(0)
+                    .animation(.easeInOut)
+            } else
+            if let asset = document.game.assetFolder.current {
+                ScrollView {
                     if asset.type == .Image {
                         VStack {
                             Text("Index \(Int(imageIndex))")
@@ -594,27 +610,27 @@ struct ContentView: View {
                             .animation(.easeInOut)
                     }
                 }
-            }
-            .animation(.easeInOut)
-            // Import Audio
-            .fileImporter(
-                isPresented: $isImportingAudio,
-                allowedContentTypes: [.item],
-                allowsMultipleSelection: false
-            ) { result in
-                do {
-                    let selectedFiles = try result.get()
-                    if selectedFiles.count > 0 {
-                        document.game.assetFolder.addAudio(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
-                        assetName = document.game.assetFolder.current!.name
-                        showAssetNamePopover = true
-                        updateView.toggle()
-                    }
-                } catch {
-                    // Handle failure.
-                }
+                .animation(.easeInOut)
             }
         }
+        }
+        // Import Audio
+        .fileImporter(
+            isPresented: $isImportingAudio,
+            allowedContentTypes: [.item],
+            allowsMultipleSelection: false
+        ) { result in
+            do {
+                let selectedFiles = try result.get()
+                if selectedFiles.count > 0 {
+                    document.game.assetFolder.addAudio(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
+                    assetName = document.game.assetFolder.current!.name
+                    showAssetNamePopover = true
+                    updateView.toggle()
+                }
+            } catch {
+                // Handle failure.
+            }
         }
     }
 }

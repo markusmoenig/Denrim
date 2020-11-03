@@ -31,13 +31,13 @@ class ScriptEditor
         self.colorScheme = colorScheme
         
         if let asset = game.assetFolder.getAsset("Game") {
-            //setValue(value: asset.value)
+            game.assetFolder.select(asset.id)
             createSession(asset)
             setTheme(colorScheme)
         }
         
         // Read out the map context help
-        var docsPath = Bundle.main.resourcePath! + "/Files/MapHelp"
+        var docsPath = Bundle.main.resourcePath! + "/Files/Help/MapHelp"
         let fileManager = FileManager.default
 
         do {
@@ -49,7 +49,7 @@ class ScriptEditor
         }
         
         // Read out the behavior context help
-        docsPath = Bundle.main.resourcePath! + "/Files/BehaviorHelp"
+        docsPath = Bundle.main.resourcePath! + "/Files/Help/BehaviorHelp"
 
         do {
             behaviorHelpIndex = try fileManager.contentsOfDirectory(atPath: docsPath).sorted()
@@ -70,7 +70,7 @@ class ScriptEditor
         }
 
         if mapHelpIndex.contains(key) {
-            guard let path = Bundle.main.path(forResource: key, ofType: "", inDirectory: "Files/MapHelp") else {
+            guard let path = Bundle.main.path(forResource: key, ofType: "", inDirectory: "Files/Help/MapHelp") else {
                 return nil
             }
             

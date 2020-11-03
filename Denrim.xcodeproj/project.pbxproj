@@ -47,8 +47,6 @@
 		2B2C2143254A900800399171 /* Parma in Frameworks */ = {isa = PBXBuildFile; productRef = 2B2C2142254A900800399171 /* Parma */; };
 		2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
 		2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
-		2B32992724FF9344007C3386 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992624FF91E1007C3386 /* HelpView.swift */; };
-		2B32992824FF9345007C3386 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992624FF91E1007C3386 /* HelpView.swift */; };
 		2B3299482501B5DC007C3386 /* Square.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299402501B5DB007C3386 /* Square.tiff */; };
 		2B3299492501B5DC007C3386 /* Square.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299402501B5DB007C3386 /* Square.tiff */; };
 		2B32994A2501B5DC007C3386 /* OpenSans.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299412501B5DB007C3386 /* OpenSans.json */; };
@@ -213,7 +211,6 @@
 		2B19C008251B383C0086239F /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2B2882E92519E69E00D1AB2D /* MapStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStructures.swift; sourceTree = "<group>"; };
 		2B32992324FF21EC007C3386 /* ShaderCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderCompiler.swift; sourceTree = "<group>"; };
-		2B32992624FF91E1007C3386 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		2B3299402501B5DB007C3386 /* Square.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Square.tiff; sourceTree = "<group>"; };
 		2B3299412501B5DB007C3386 /* OpenSans.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OpenSans.json; sourceTree = "<group>"; };
 		2B3299422501B5DB007C3386 /* SourceCodePro.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = SourceCodePro.tiff; sourceTree = "<group>"; };
@@ -332,7 +329,6 @@
 				2B01C87A24FB824900E86449 /* Metal.metal */,
 				2B01C88224FB824A00E86449 /* Metal.h */,
 				2B01C87D24FB824900E86449 /* ScriptEditor.swift */,
-				2B32992624FF91E1007C3386 /* HelpView.swift */,
 				2B01C87C24FB824900E86449 /* Utils.swift */,
 				2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */,
 				2B6D0B592509EEE80098F244 /* MapPreview.swift */,
@@ -711,7 +707,6 @@
 				2B6D0BB7250B08080098F244 /* b2MotorJoint.swift in Sources */,
 				2B6D0BAB250B08080098F244 /* b2PolygonAndCircleContact.swift in Sources */,
 				2B6D0BE1250B08080098F244 /* b2Math.swift in Sources */,
-				2B32992824FF9345007C3386 /* HelpView.swift in Sources */,
 				2B6D0BEB250B08080098F244 /* b2ChainShape.swift in Sources */,
 				2B01C86B24FB814C00E86449 /* DenrimDocument.swift in Sources */,
 				2B6D0BDB250B08080098F244 /* b2Settings.swift in Sources */,
@@ -796,7 +791,6 @@
 				2B6D0BB6250B08080098F244 /* b2MotorJoint.swift in Sources */,
 				2B6D0BAA250B08080098F244 /* b2PolygonAndCircleContact.swift in Sources */,
 				2B6D0BE0250B08080098F244 /* b2Math.swift in Sources */,
-				2B32992724FF9344007C3386 /* HelpView.swift in Sources */,
 				2B6D0BEA250B08080098F244 /* b2ChainShape.swift in Sources */,
 				2B01C86C24FB814C00E86449 /* DenrimDocument.swift in Sources */,
 				2B6D0BDA250B08080098F244 /* b2Settings.swift in Sources */,
