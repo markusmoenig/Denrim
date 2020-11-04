@@ -1,0 +1,17 @@
+## StartTimer
+
+**StartTimer** is similar to **Call** in that it invokes / calls another behavior tree. The difference is that **StartTimer** starts a timer and calls the tree in certain time intervals.
+
+Syntax:
+
+`Call<Tree: TreeName><Interval: InSeconds`
+
+Example:
+
+`Call<Tree: enemy.createEnemy><Interval: 0.2>`
+
+Would call the createEnemy tree of the enemy id every 0.2 seconds.
+
+Optional Parameter:
+
+* **Once** (true/false), if true will call the tree only once. The default is false.

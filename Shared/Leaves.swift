@@ -123,9 +123,11 @@ class SetScene: BehaviorNode
                                 map.setup(game: game)
                                 map.createDependencies()
                                 // Add Game Behavior
-                                let gameBehavior = MapBehavior(behaviorAsset: game.gameAsset!, name: "game", options: [:])
-                                map.behavior["game"] = gameBehavior
-                                return .Success
+                                if let gameAsset = game.gameAsset {
+                                    let gameBehavior = MapBehavior(behaviorAsset: gameAsset, name: "game", options: [:])
+                                    map.behavior["game"] = gameBehavior
+                                    return .Success
+                                }
                             }
                         }
                     }
@@ -297,7 +299,7 @@ class StartTimer: BehaviorNode
     var firstCall           : Bool = true
     var parameters          : [BehaviorVariable] = []
     
-    var repeating           : Bool = true
+    var once                : Bool = false
 
     override init(_ options: [String:Any] = [:])
     {
@@ -314,9 +316,9 @@ class StartTimer: BehaviorNode
             interval = value
         }
         
-        if let value = options["repeat"] as? String {
-            if value.lowercased() == "false" {
-                repeating = false
+        if let value = options["once"] as? String {
+            if value.lowercased() == "true" {
+                once = true
             }
         }
         
@@ -386,7 +388,7 @@ class StartTimer: BehaviorNode
         if treeName != nil {
             if game.state == .Running {
                 if let map = game.currentMap?.map {
-                    let timer = Timer.scheduledTimer(timeInterval: Double(interval!.x), target: self, selector: #selector(callTreeTimer), userInfo: nil, repeats: repeating)
+                    let timer = Timer.scheduledTimer(timeInterval: Double(interval!.x), target: self, selector: #selector(callTreeTimer), userInfo: nil, repeats: !once)
                     map.timer.append(timer)
                 }
             }

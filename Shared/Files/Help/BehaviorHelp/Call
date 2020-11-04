@@ -1,0 +1,21 @@
+## Calls
+
+Calls the given behavior tree.
+
+Syntax:
+
+`Call<Tree: TreeName>`
+
+Example:
+
+`Call<Tree: game.gameOver>`
+
+Optionally you can pass a series of variables to the call, the tree has to receive these variables in the same order.
+
+For example you would like to send the ballPos and ballRadius variables to the player's checkForHit tree, you can send them like this:
+
+`Call<Tree: player.checkForHit><Variables: ballPos, ballRadius>`
+
+and the tree would receive them like this:
+
+`tree "checkForHit" Float2<ballPos>Float<ballRadius>`
