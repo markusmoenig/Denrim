@@ -631,10 +631,12 @@ class SetVisible: BehaviorNode
                         for inst in instances.pairs {
                             if inst.1.behaviorAsset.behavior === context {
                                 inst.0.options.visible.x = b1!.x
+                                return .Success
                             }
                         }
                     } else {
                         shape.options.visible.x = b1!.x
+                        return .Success
                     }
                 }
             }
@@ -1539,6 +1541,14 @@ class IsVariable: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
         if let pair = pair {
+            // Bool
+            if pair.0.bool1 != nil {
+                if mode == .Equal {
+                    if pair.1.bool1!.x == pair.0.bool1!.x {
+                        return .Success
+                    }
+                }
+            } else
             // Int
             if pair.0.int1 != nil {
                 if mode == .Equal {

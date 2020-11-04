@@ -8,6 +8,7 @@
 import Foundation
 
 struct UpTo4Data {
+    var bool1        : Bool1? = nil
     var int1         : Int1? = nil
 
     var data1        : Float1? = nil
@@ -151,6 +152,17 @@ func extractPair(_ options: [String:Any], variableName: String, context: Behavio
     //print("extractPair", options, variableName)
 
     if let variableValue = extractVariableValue(options, variableName: variableName, context: context, error: &error) {
+        if let b1 = variableValue as? Bool1 {
+            variableData.bool1 = b1
+            if let data = extractBool1Value(options, context: context, tree: tree, error: &error) {
+                Data.bool1 = data
+            }
+            for oV in optionalVariables {
+                var data = UpTo4Data()
+                data.bool1 = extractBool1Value(options, context: context, tree: tree, error: &error, name: oV, isOptional: true)
+                optionals.append(data)
+            }
+        } else
         if let i1 = variableValue as? Int1 {
             variableData.int1 = i1
             if let data = extractInt1Value(options, context: context, tree: tree, error: &error) {

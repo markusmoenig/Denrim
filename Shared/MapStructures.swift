@@ -17,6 +17,7 @@ struct MapAudio {
     var options         : [String:Any]
     
     var isLocal         : Bool = true
+    var loops           : Int = 0
 }
 
 class MapSequenceData2D {

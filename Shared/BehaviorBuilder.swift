@@ -245,10 +245,14 @@ class BehaviorBuilder
                                             if currentBranch.count == 0 {
                                                 currentTree?.leaves.append(newBranch)
                                                 currentBranch.append(newBranch)
+                                                
+                                                newBranch.lineNr = error.line!
                                                 asset.behavior!.lines[error.line!] = newBranch.name
                                             } else {
                                                 if let branch = currentBranch.last {
                                                     branch.leaves.append(newBranch)
+                                                    
+                                                    newBranch.lineNr = error.line!
                                                     asset.behavior!.lines[error.line!] = newBranch.name
                                                 }
                                                 currentBranch.append(newBranch)

@@ -260,6 +260,7 @@ class Map
                             game.globalAudioPlayers[id] = player
                         }
                     }
+                    player.numberOfLoops = mapAudio.loops
                     player.prepareToPlay()
                 }
             } catch let error {

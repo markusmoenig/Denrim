@@ -258,6 +258,14 @@ class MapBuilder
                 if let asset = game.assetFolder.getAsset(name, .Audio) {                    
                     let resourceName : String = asset.id.uuidString
                     map.audio[variable] = MapAudio(resourceName: resourceName, options: options)
+                    if let global = options["global"] as? Bool1 {
+                        if global.x == true {
+                            map.audio[variable]!.isLocal = false
+                        }
+                    }
+                    if let loops = options["loops"] as? Int1 {
+                        map.audio[variable]!.loops = loops.x
+                    }
                     setLine(variable)
                 } else { error.error = "Image '\(name)' for '\(variable)' not found" }
             } else { error.error = "Audio type for '\(variable)' expects a 'Name' option" }
@@ -451,11 +459,11 @@ class MapBuilder
         //print("Processing Options", options)
 
         let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale"]
-        let integerOptions = ["index", "int", "digits", "groupindex"]
+        let integerOptions = ["index", "int", "digits", "groupindex", "loops"]
         let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval"]
         let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "grid", "scroll"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
-        let boolOptions = ["repeatx", "repeaty", "visible", "bullet"]
+        let boolOptions = ["repeatx", "repeaty", "visible", "bullet", "global"]
         let stringArrayOptions = ["layers", "shapes", "shaders"]
 
         var res: [String:Any] = [:]

@@ -103,6 +103,7 @@ class SequenceBranch: BehaviorNode
         for l in leaves {
             let rc = l.execute(game: game, context: context, tree: tree)
             if rc == .Failure {
+                context.addFailure(lineNr: lineNr)
                 return .Failure
             }
         }
@@ -126,6 +127,7 @@ class SelectorBranch: BehaviorNode
                 return .Success
             }
         }
+        context.addFailure(lineNr: lineNr)
         return .Failure
     }
 }

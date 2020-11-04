@@ -2,8 +2,15 @@
 
 **Audio** references an audio file you imported into Denrim by name.
 
+By default audio id's are local to the current map file, i.e. they stop when a new map file is loaded. You can create global audio ids with the *Global* option, this will play the audio independently from the map file and until you call **StopAudio** for the id.
+
 Syntax:
 
-`audio = Audio<Name: "AudioName">`
+`audioId = Audio<Name: "AudioName">`
 
-You can play audio references via the **PlayAudio** instruction in behavior files.
+Options
+
+* **Global** (true/false), makes the audio id global, i.e. it will play independent from the current map file and until you call **StopAudio**. Default is false.
+* **Loops** (Int), the number of loops the audio plays. A value of 0 (the default) means it plays exactly one time, enter higher numbers for a specific amount of loops. A negative number will play the audio id an unlimited amount of time.
+
+You can play audio ids via the **PlayAudio** instruction in behavior files and stop them via **StopAudio**.
