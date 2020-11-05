@@ -1,0 +1,12 @@
+## Variable Declaration
+
+A variable declaration creates a new variable of a given type and value.
+
+Currently supported variable types: Bool, Int, Float, Float2, Float3, Float4.
+
+Examples:
+
+`hasBeenHit = Bool<false>`
+`position = Float2<50, 20>`
+
+Variables can be bound to shaders and shapes.

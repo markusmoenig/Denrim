@@ -312,6 +312,7 @@ class BehaviorBuilder
                             } else
                             if rightValueArray.count > 1 {
                                 // Variable
+                                asset.behavior!.lines[error.line!] = "Variable"
                                 let possibleVariableType = rightValueArray[0].trimmingCharacters(in: .whitespaces)
                                 if possibleVariableType == "Float4" {
                                     rightValueArray.removeFirst()
