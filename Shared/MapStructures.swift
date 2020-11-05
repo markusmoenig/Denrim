@@ -239,6 +239,7 @@ struct MapShape2D {
     var originalOptions : [String:Any]
 
     var body            : b2Body? = nil
+    var categoryBits    : UInt16 = 0
 
     var instances       : MapInstance2D? = nil
     var contactList     : [String] = []

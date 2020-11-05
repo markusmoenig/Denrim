@@ -2,6 +2,8 @@
 
 This command associates a given shape with a 2D physics engine, i.e. the shape's position and rotation will be controlled by the physics engine. Optional parameters can be passed to describe various physical attributes of the shape.
 
+By default each shape with applied physics collides with every other shape with physics, you can define exactly the shapes to collide with using the *CollisionIds* parameter.
+
 Basic Syntax:
 
 `ApplyPhysics2D<ShapeId: ImageId><PhysicsId: physicsId>`
@@ -17,3 +19,5 @@ Optional Parameters:
 * **Density** (Float), defines the density of the shape, by default 0. Shapes with a density of 0 are automatically static (immovable).
 
 * **Bullet** (true/false), enables bullet mode for this shape. Bullets have continuous collision detection as they usually travel with high speed. By default bullet mode is turned off (false).
+
+* **CollisionIds** (ShapeId List), a comma separated list of shape ids which defines with which other shapes the shape should collide. If this parameter is not supplied, the shape will collide with every other shape. If you want the shape to not collide with any other shape, provide an empty list for this parameter.

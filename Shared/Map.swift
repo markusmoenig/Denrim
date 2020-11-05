@@ -215,6 +215,32 @@ class Map
             physics2D[physicsName]!.world?.setContactListener(contactListener(self))
         }
         
+        var categoryBits : UInt16 = 1
+        
+        // First pass for physic bodies, apply the category bits
+        for cmd in commands {
+            if cmd.command == "ApplyPhysics2D" {
+                if let physicsName = cmd.options["physicsid"] as? String {
+                    if physics2D[physicsName] != nil {
+                        if let shapeName = cmd.options["shapeid"] as? String {
+                            if let shape2D = shapes2D[shapeName] {
+                                
+                                if let instances = shape2D.instances {
+                                    for (index, _) in instances.pairs.enumerated() {
+                                        shape2D.instances!.pairs[index].0.categoryBits = categoryBits
+                                    }
+                                }
+ 
+                                shapes2D[shapeName]?.categoryBits = categoryBits
+                                categoryBits *= 2
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Second pass do all
         for cmd in commands {
             // Set a texture (any visual) to a shape
             if cmd.command == "ApplyTexture2D" {
@@ -234,12 +260,14 @@ class Map
                                 shapes2D[shapeName]?.physicsWorld = physics2D
                                 shapes2D[shapeName]?.physicsCmd = cmd
 
+                                let maskBits = calculateMaskBits(cmd)
+                                
                                 if let instances = shape2D.instances {
                                     for (index, _) in instances.pairs.enumerated() {
-                                        addShapeToPhysicsWorld(physics2D, shapeName, &shape2D.instances!.pairs[index].0, cmd)
+                                        addShapeToPhysicsWorld(physics2D, shapeName, &shape2D.instances!.pairs[index].0, cmd, maskBits)
                                     }
                                 } else {
-                                    addShapeToPhysicsWorld(physics2D, shapeName, &shapes2D[shapeName]!, cmd)
+                                    addShapeToPhysicsWorld(physics2D, shapeName, &shapes2D[shapeName]!, cmd, maskBits)
                                 }
                             }
                         }
@@ -269,11 +297,31 @@ class Map
         }
     }
     
+    // Calculates the mask bits for the command
+    func calculateMaskBits(_ cmd: MapCommand) -> UInt16
+    {
+        var mask : UInt16 = 0xffff
+        
+        if let collisionids = cmd.options["collisionids"] as? [String] {
+            var maskBits : UInt16 = 0
+            
+            for id in collisionids {
+                if shapes2D[id] != nil {
+                    maskBits |= shapes2D[id]!.categoryBits
+                }
+            }
+            
+            mask = maskBits
+        }
+        
+        return mask
+    }
+
     // Adds the given shape to the physics world
-    func addShapeToPhysicsWorld(_ physics2D: MapPhysics2D,_ shapeName: String,_ shape2D: inout MapShape2D,_ cmd: MapCommand)
+    func addShapeToPhysicsWorld(_ physics2D: MapPhysics2D,_ shapeName: String,_ shape2D: inout MapShape2D,_ cmd: MapCommand, _ maskBits: UInt16)
     {
         let ppm = physics2D.ppm
-
+        
         // Define the dynamic body. We set its position and call the body factory.
         let bodyDef = b2BodyDef()
         bodyDef.angle = shape2D.options.rotation.x.degreesToRadians
@@ -282,6 +330,9 @@ class Map
         let fixtureDef = b2FixtureDef()
         fixtureDef.shape = nil
 
+        fixtureDef.filter.categoryBits = shape2D.categoryBits
+        fixtureDef.filter.maskBits = maskBits
+            
         if var type = shape2D.originalOptions["type"] as? String {
             type = type.lowercased()
             if type == "disk" {
@@ -305,7 +356,7 @@ class Map
                 fixtureDef.restitution = 0.0
             }
         }
-        
+                
         if let bullet = cmd.options["bullet"] as? Bool1 {
             bodyDef.bullet = bullet.x
         }
@@ -401,8 +452,12 @@ class Map
                 mapShape2D.options.size.x = shapes2D[instancer.shapeName]!.options.size.x
                 mapShape2D.options.size.y = shapes2D[instancer.shapeName]!.options.size.y
                 
+                mapShape2D.categoryBits = shapes2D[instancer.shapeName]!.categoryBits
+                
                 if shapes2D[instancer.shapeName]!.physicsWorld != nil {
-                    addShapeToPhysicsWorld(shapes2D[instancer.shapeName]!.physicsWorld!, variableName, &mapShape2D, shapes2D[instancer.shapeName]!.physicsCmd!)
+                    let maskBits = calculateMaskBits(shapes2D[instancer.shapeName]!.physicsCmd!)
+
+                    addShapeToPhysicsWorld(shapes2D[instancer.shapeName]!.physicsWorld!, variableName, &mapShape2D, shapes2D[instancer.shapeName]!.physicsCmd!, maskBits)
                 }
 
                 instanceAsset.behavior!.execute(name: "init")
