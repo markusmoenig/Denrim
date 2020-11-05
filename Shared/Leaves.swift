@@ -36,7 +36,7 @@ class LogNode: BehaviorNode
             }
         }
         game.contextText.append(text)
-        game.contextTextChanged.send()
+        game.contextTextChanged.send(game.contextText)
         return .Success
     }
 }

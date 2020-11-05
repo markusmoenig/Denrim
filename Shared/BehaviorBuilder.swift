@@ -447,7 +447,7 @@ class BehaviorBuilder
                                 if let helpText = self.game.scriptEditor!.getBehaviorHelpForKey(name) {
                                     self.game.contextText = helpText
                                     self.game.contextKey = name
-                                    self.game.contextTextChanged.send()
+                                    self.game.contextTextChanged.send(self.game.contextText)
 
                                 }
                             }
@@ -455,7 +455,7 @@ class BehaviorBuilder
                             if self.game.contextKey != "BehaviorHelp" {
                                 self.game.contextText = self.game.scriptEditor!.behaviorHelpText
                                 self.game.contextKey = "BehaviorHelp"
-                                self.game.contextTextChanged.send()
+                                self.game.contextTextChanged.send(self.game.contextText)
                             }
                         }
                     }

@@ -1,2 +1,42 @@
 # Map Files
 
+Map files contain all the shapes and other resources for a *Scene*. A scene can be anything from a complex level in a game to a simple menu. A map file can contain any number of scenes.
+
+You define which scene is currently displayed by *SetScene*, a behavior node which has two parameters, the name of the map file and the scene id. The initial scene to display is most often set in the "init" tree of the Game behavior.
+
+## The Basics
+
+The most basic visual element is a shape, which can be a box, a disk (circle) or a triangle and more. You can associate textures and physics with shapes and create layers (which contain specific shapes) and finally compose a scene out of one or more layers.
+
+The map file has directives to define ids for shapes, physic worlds, shaders, images, sequences, audio and more. Please read the documentation for each directive for more information.
+
+## The Coordinate System
+
+When you create a shape of a certain id, you have to set it's position. In Denrim 0, 0 is the upper left edge of your canvas. 100, 100 is the lower right edge of your canvas. This makes the position relative to the size and aspect ratio of your canvas size. The *CanvasSize* directive is used to set the canvas size, either for all devices or for specific ones.
+
+For example
+
+CanvasSize<Platform: "Any"><Size: 800, 800>
+box = Shape2D<Type: "Box"><Position: 50, 50><Size: 10, 10>
+
+sets the canvas size for all devices to 800, 800 (which will be scaled up or down depending on the available size on the device). And a shape id *box* is created in the middle of the canvas and a size of 10% of the canvas size. If you omit the size parameter for the box and apply a texture to the shape the size is automatically taken from the texture size.
+
+Why use relative coordinates ? Here are a few reasons:
+
+* If you procedurally create shapes, it is nice to define shape sizes and positions independent from the current screen size, as they will need to automatically up or downscale depending on the shape's relative canvas size. The defined shapes are therefore independent from the current screen size.
+
+* You may want to have  different canvas sizes depending on the device you are running on. For example for a TV (tvOS) you may want to have an HD aspect ration while on a Desktop (maxOS) this would look too stretched and you may want another aspect ratio.
+
+* Defining a canvas size locks the aspect ratio of your game and it makes sure that the game always uses the correct aspect ratio independent from the current resolution on the current device.
+
+## Behavior Files
+
+Parameters of map directives are often linked to behavior file variables.
+
+For example
+
+playerBehavior = Behavior<Name: "Player">
+box = Shape2D<Type: "Box"><Position: playerBehavior.position><Size: 10, 10>
+
+binds the position of the box shape to the position variable of the behavior tree. The behavior file can change (or query) the position variable and the shape will follow automatically if the position updates. If you attach the shape to a physics world the position is also automatically updated and the behavior file can query the position and the current collisions and make the proper decisions.
+

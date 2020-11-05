@@ -758,7 +758,9 @@ class MapBuilder
     
     @objc func cursorCallback(_ timer: Timer) {
         if game.state == .Idle && game.scriptEditor != nil {
-            game.scriptEditor!.getSessionCursor({ (line) in
+            game.scriptEditor!.getSessionCursor({ [weak self] (line) in
+                guard let self = self else { return }
+
                 if let asset = timer.userInfo as? Asset {
                     let needsUpdate = self.scriptLine != line
                     self.scriptLine = line

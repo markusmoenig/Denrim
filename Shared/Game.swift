@@ -62,7 +62,7 @@ class Game              : ObservableObject
     
     var contextText     : String = ""
     var contextKey      : String = ""
-    let contextTextChanged = PassthroughSubject<Void, Never>()
+    let contextTextChanged = PassthroughSubject<String, Never>()
     
     var helpText        : String = ""
     let helpTextChanged = PassthroughSubject<Void, Never>()
@@ -128,7 +128,7 @@ class Game              : ObservableObject
             scriptEditor.setReadOnly(true)
             
             contextText = ""
-            contextTextChanged.send()
+            contextTextChanged.send(contextText)
         }
         
         clearLocalAudio()
@@ -365,14 +365,14 @@ class Game              : ObservableObject
             clearLocalAudio()
             if asset.type == .Shader {
                 if let shader = asset.shader {
-                    self.startDrawing()
+                    startDrawing()
                     
                     let rect = MMRect( 0, 0, self.texture!.width, self.texture!.height, scale: 1 )
-                    self.texture?.clear()
-                    self.texture?.drawShader(shader, rect)
+                    texture?.clear()
+                    texture?.drawShader(shader, rect)
                     
-                    self.stopDrawing()
-                    self.updateOnce()
+                    stopDrawing()
+                    updateOnce()
                 }
             } else
             if asset.type == .Audio {

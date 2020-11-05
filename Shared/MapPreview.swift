@@ -114,7 +114,7 @@ class MapPreview
                 game.contextText = game.scriptEditor!.mapHelpText
                 game.contextKey = "MapHelp"
             }
-            game.contextTextChanged.send()
+            game.contextTextChanged.send(game.contextText)
         }
         
         game.stopDrawing()

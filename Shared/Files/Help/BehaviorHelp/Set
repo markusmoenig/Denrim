@@ -1,0 +1,11 @@
+## Set
+
+Sets the value of a variable.
+
+Syntax:
+
+`Set<Variable: Name><Bool|Int|Float(2-4): value>`
+
+Example:
+
+`Set<Variable: position><Float2: 10, 20>`
