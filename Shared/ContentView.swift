@@ -279,7 +279,7 @@ struct ContentView: View {
                      arrowEdge: .top
             ) {
                 VStack(alignment: .leading) {
-                    Text("Name")
+                    Text("Name:")
                     TextField("Name", text: $assetName, onEditingChanged: { (changed) in
                         if let asset = document.game.assetFolder.current {
                             asset.name = assetName
