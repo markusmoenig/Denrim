@@ -336,7 +336,7 @@ struct ContentView: View {
                                 }
                                 .disabled(asset.name == "Game")
                                 
-                                if asset.type == .Behavior || asset.type == .Shader {
+                                if asset.type == .Behavior || asset.type == .Shader || asset.type == .Map || asset.type == .Audio {
                                     Button(action: {
                                         showDeleteAssetAlert = true
                                     })
