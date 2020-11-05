@@ -1,0 +1,7 @@
+## Log
+
+Writes the values of all referenced variables into the log.
+
+Syntax:
+
+`Log<Variable: VariableName><..>`

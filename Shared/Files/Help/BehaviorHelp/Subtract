@@ -1,0 +1,10 @@
+## Subtract
+
+Subtracts a value (or variable) from a given variable. The variable type defines the type of the value.
+
+`Add<Int|Float(2-4): Value><From: VariableName>`
+
+Example:
+
+`Subtract<Float2: 10, 1><From: position>`
+

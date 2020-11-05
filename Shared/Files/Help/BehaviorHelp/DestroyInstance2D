@@ -1,0 +1,7 @@
+## DestroyInstance2D
+
+*DestroyInstance2D* destroys an instance previously created using *CreateInstance2D*.
+
+Syntax:
+
+`DestroyInstance2D<Id: InstancerId>`

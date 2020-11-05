@@ -6,7 +6,7 @@ Bool values can only be checked if they are equal.
 
 Syntax:
 
-`IsVariable<Variable: Name><Mode: "Equal|SmallerThan|GreaterThan"><Bool|Int|Float(2-4): value>`
+`IsVariable<Variable: Name><Mode: "Equal|SmallerThan|GreaterThan"><Bool|Int|Float(2-4): Value>`
 
 Example:
 

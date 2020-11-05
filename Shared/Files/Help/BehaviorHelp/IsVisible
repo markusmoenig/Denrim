@@ -1,0 +1,8 @@
+## IsVisible
+
+*IsVisible* returns *Success* if the given shape is visible or *Failure* otherwise. A shape is visible by default. Use **SetVisible** to make a shape visible or invisible.
+
+Syntax:
+
+`IsVisible<ShapeId: ShapeId>`
+

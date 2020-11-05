@@ -1,0 +1,7 @@
+## ShapeContactCount
+
+*ShapeContactCount* returns *Success* if the given shape id is controlled by physics and writes the amount of contacts (collisions) of the shape into an Int variable. Useful if you want to quickly check if a collision occured without being interested in exactly which shape collided.
+
+Syntax:
+
+`ShapeContactCount<Variable: IntVariableName><ShapeId: ShapeId>`

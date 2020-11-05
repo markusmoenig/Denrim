@@ -29,10 +29,12 @@ struct HelpIndexView: View {
 
         var rootItem = HelpItem(name: "Introduction")
         rootItem.children = []
-        rootItem.children!.append(HelpItem(name: "Test"))
         rootItem.md = loadHelpKey("Introduction")
+        var examplesItem = HelpItem(name: "Examples")
+        examplesItem.md = loadHelpKey("Examples")
+        rootItem.children!.append(examplesItem)
         helpItems.append(rootItem)
-        
+
         // Behavior Files
         var behaviorItem = HelpItem(name: "Behavior Files")
         behaviorItem.children = []

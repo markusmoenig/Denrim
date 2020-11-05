@@ -1,0 +1,13 @@
+## while
+
+Conditionally executes the controlled nodes as long as a given boolean variable is true.
+
+while ignores the return values of nodes and only focuses on the state of the variable. Use *Set* to change the boolean variable value at any time to stop execution.
+
+Syntax:
+
+`while hasNotBeenHit`
+
+`while not hasNotBeenHit`
+
+If you insert **not** after the while statement while will execute the controlled nodes as long as hasNotBeenHit is false.

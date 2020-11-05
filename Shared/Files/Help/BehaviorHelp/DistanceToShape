@@ -1,0 +1,11 @@
+## DistanceToShape
+
+*DistanceToShape* always return *Success* and writes the distance of a given position to a ShapeId into a Float variable.
+
+Syntax:
+
+`DistanceToShape<Position: position><ShapeId: ShapeId><Variable: VariableName>`
+
+Optional Parameters:
+
+* **Radius** (Float), the radius of the disk at position to measure the distance to the shape id, by default 1.

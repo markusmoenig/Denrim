@@ -1,0 +1,15 @@
+## Random
+
+*Random* creates a random number (between from and to value parameters) and writes it into a variable. The variable type also determines the syntax of the node.
+
+Syntax:
+
+`Random<Variable: VariableName><From: Value><To: Value>`
+
+Examples:
+
+`Random<Variable: position><From: 0, 0><To: 50, 50>`
+
+would write a random value between 0..50 (i.e. the upper left quadrant) into the position variable. Note that the variable type also defines the syntax of the **from** and **to** parameters (in this case a Float2 value). If the variable types don't match the node returns *Failure*, otherwise always *Success*.
+
+

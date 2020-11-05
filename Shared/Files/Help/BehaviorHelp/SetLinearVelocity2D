@@ -1,0 +1,7 @@
+## SetLinearVelocity2D
+
+Sets the linear velocity of a shape. The shape has to be attached to a physics world. The linear velocity is both the speed and direction in which the shape is travelling.
+
+Syntax:
+
+`SetLinearVelocity2D<ShapeId: ShapeId><Float2: Value>     `

@@ -1,0 +1,7 @@
+## SetActive
+
+Sets the physics state of a shape. An inactive shape cannot collide with other shapes. The shape might however still be visible, use **SetVisible** to make the shape invisible to the user.
+
+Syntax:
+
+`SetActive<ShapeId: ShapeId><Bool: True/False>`

@@ -1,0 +1,13 @@
+## RandomColor
+
+*RandomColor* writes a random color into a Float4 variable. The color is computed by this forumula:
+
+color(t) = a + b * cos[ 2π(c * t + d)]
+
+The cosine oscilates c times with a phase of d. The result is scaled and biased by a and b to meet the desired constrast and brightness.
+
+For further information and example values please have a look at the following article **https://www.iquilezles.org/www/articles/palettes/palettes.htm**
+
+Syntax:
+
+`RandomColor<Variable: Float4Variable><A: Float3Value><B: Float3Value><C: Float3Value><D: Float3Value>`

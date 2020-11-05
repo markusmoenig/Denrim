@@ -1,0 +1,9 @@
+## Add
+
+Adds a value (or variable) to a given variable. The variable type defines the type of the value.
+
+`Add<Int|Float(2-4): Value><To: VariableName>`
+
+Example:
+
+`Add<Float2: 10, 1><To: position>`

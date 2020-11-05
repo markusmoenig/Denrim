@@ -1,0 +1,11 @@
+## ApplyTexture2D
+
+*ApplyTexture2D* associates a given image / sequence or alias with a shape, i.e. texturizes it. If the shape does not have it's size set yet, the size of the shape will be automatically adjusted to the given texture size. The texture will automatically scale with the shape should the shape size change.
+
+Syntax:
+
+`ApplyTexture2D<ShapeId: ShapeId><Id: TextureId>`
+
+Where the Id parameter can be an image, alias or sequence. A sequence automatically creates an animation for the shape.
+
+Note that there is also the same map directive available in behavior trees to set the initial texture of a shape.

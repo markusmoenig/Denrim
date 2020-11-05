@@ -1,0 +1,11 @@
+## CreateInstance2D
+
+*CreateInstance2D* creates a new on demand instance for a given instancer id at the given position. The instancer id has to be created using *OnDemandInstance2D* in the corresponding map file.
+
+Note that a new shape / behavior pair is created for each instance and each reference to the shape id from the behavior file will reference the correct instance. You can destroy an instance using *DestroyInstance2D*.
+
+On demand instances are very usefil to create temporary objects, like missiles / bullets / enemy ships etc.
+
+Syntax:
+
+`CreateInstance2D<Id: InstancerId><Position: Float2Value>`

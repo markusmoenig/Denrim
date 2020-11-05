@@ -1,0 +1,6 @@
+## Multiply
+
+Multiplies a value (or variable) with a given variable. The variable type defines the type of the value.
+
+`Multiply<Int|Float(2-4): Value><With: VariableName>`
+

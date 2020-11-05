@@ -1,0 +1,7 @@
+## SetVisible
+
+Sets the visibility status of a shape. Note that an invisible shape is still active inside a physics world, to also disable the physics side you need to use **SetActive**.
+
+Syntax:
+
+`SetVisible<ShapeId: ShapeId><Bool: True/False>`

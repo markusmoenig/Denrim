@@ -1,0 +1,5 @@
+## Example Files / Projects
+
+When running Denrim for the first time it will install several example projects in the new Denrim folder in your iCloud directory (inside the Examples subdirectory).
+
+Going through these examples to analyze how the map and behavior files work is highly recommended. The context sensitiv help in the right side panel will show a description of the node or directive of the current line.

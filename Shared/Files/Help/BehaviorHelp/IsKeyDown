@@ -1,0 +1,11 @@
+## IsKeyDown
+
+*IsKeyDown* will return *Success* if a given key is currently pressed or *Failure* if not.
+
+Syntax:
+
+`IsKeyDown<Key: "KeyName">`
+
+The name of the keys are the same name as on your keyboard, like "W" or "F", special case have description names, like "ArrowUp", "Space" and "Return".
+
+*IsKeyDown* is only available on devices with a keyboard. If no keyboard is present it returns *Failure*.
