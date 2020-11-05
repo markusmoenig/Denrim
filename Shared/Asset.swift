@@ -59,13 +59,29 @@ class AssetFolder       : Codable
     {
         self.game = game
         
-        guard let path = Bundle.main.path(forResource: "Game", ofType: "bt", inDirectory: "Files") else {
+        guard let path = Bundle.main.path(forResource: "Game", ofType: "", inDirectory: "Files/default") else {
             return
         }
         
-        if let gameTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
-            assets.append(Asset(type: .Behavior, name: "Game", value: gameTemplate))
+        guard let path1 = Bundle.main.path(forResource: "Box", ofType: "", inDirectory: "Files/default") else {
+            return
+        }
+        
+        guard let path2 = Bundle.main.path(forResource: "Map", ofType: "", inDirectory: "Files/default") else {
+            return
+        }
+        
+        if let value = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
+            assets.append(Asset(type: .Behavior, name: "Game", value: value))
             current = assets[0]
+        }
+        
+        if let value = try? String(contentsOfFile: path1, encoding: String.Encoding.utf8) {
+            assets.append(Asset(type: .Behavior, name: "Box", value: value))
+        }
+        
+        if let value = try? String(contentsOfFile: path2, encoding: String.Encoding.utf8) {
+            assets.append(Asset(type: .Map, name: "Map", value: value))
         }
     }
     

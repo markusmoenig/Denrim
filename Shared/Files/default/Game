@@ -1,0 +1,4 @@
+tree "init"
+    repeat
+        SetScene<Map: "Map"><SceneId: scene>
+        

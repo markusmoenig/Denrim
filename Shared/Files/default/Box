@@ -1,0 +1,13 @@
+tree "init"
+    position = Float2<35, -30>
+    rotation = Float<0>
+    color = Float4<0.408, 0.616, 0.710, 1.000>
+    contacts = Int<0>
+
+tree "update"
+    repeat
+        Set<Variable: color><Float4: 0.408, 0.616, 0.710, 1.000>
+        ShapeContactCount<Variable: contacts><ShapeId: boxShape>
+        sequence
+            IsVariable<Variable: contacts><Mode: "GreaterThan"><Int: 0>
+            Set<Variable: color><Float4: 1,0,0,1>

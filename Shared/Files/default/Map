@@ -1,0 +1,17 @@
+CanvasSize<Platform: "Any"><Size: 800, 800>
+
+physics = Physics2D<Gravity: 0, -10>
+
+box = Behavior<Name: "Box">
+
+boxShape = Shape2D<Type:"Box"><Position: box.position><Color: box.color><Size: 10, 10><Rotation: box.rotation><Border: 0.5><BorderColor: 0.5, 0.5, 0.5, 1>
+
+floorShape = Shape2D<Type:"Box"><Position: 10, 80><Color: 1, 1, 1, 1><Size: 80, 2><Rotation: 2><Round: 1.1>
+
+boxGrid = GridInstance2D<ShapeId: boxShape><BehaviorId: box><Grid: 3, 3><Offset: 12, 12>
+
+ApplyPhysics2D<ShapeId: boxShape><PhysicsId: physics><Body: "Dynamic"><Friction: 0.0><Restitution: 0.0>
+ApplyPhysics2D<ShapeId: floorShape><PhysicsId: physics>
+
+shapeLayer = Layer<Shapes: floorShape, boxShape>
+scene = Scene<Layers: shapeLayer>

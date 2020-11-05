@@ -755,7 +755,7 @@ class Map
         for s in commands {
             if s.command == "CanvasSize" {
                 if let platform = s.options["platform"] as? String {
-                    if platform == name {
+                    if platform == name || platform.lowercased() == "any" {
                         if let i = s.options["size"] as? Float2 {
                             size = i
                         }
