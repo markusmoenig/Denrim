@@ -39,6 +39,15 @@ Supported Variable types right now are:
 * **Float3**, a three dimensional float value.
 * **Float4**, a four dimensional float value mostly used for RGBA color.
 
-You can bind variables in behavior trees to shape parameters in the scene's map file (for example the above position variable). This way a behavior trees can represent a shape or shapes of a character in a scene and should implement it's overall behavior.
+You can bind variables in behavior trees to shape parameters in the scene's map file (for example the above position variable). This way a behavior trees can represent a shape or shapes of a character in a scene and can implement it's overall behavior.
+
+You can also bind variables to shaders, making it easy to provide powerful special effects for your games. See the Shaders section for more information.
+
+## Default Variables
+
+Every behavior file has some default variables which are always present:
+
+* **Time** (Float), the time in seconds since the game started.
+* **Aspect** (Float2), the current aspect ratio, this is the ratio of the current canvas size relative to the screen size. Useful in shaders to scale content in an resolution independent way.
 
 To understand behavior trees better please have a loot at the examples and the context help for each (control) node.

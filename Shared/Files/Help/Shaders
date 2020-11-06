@@ -1,0 +1,27 @@
+# Shaders
+
+*Shaders* are programs running directly on the GPU. Apple has created the Metal framework which Denrim uses. We cannot discuss here how shaders work but will offer a learning resources list at the end of this chapter.
+
+Each shader in Denrim has to define it's fragment function like this:
+
+fragment float4 shaderMain(RasterizerData in [[stage_in]], constant BehaviorData &behavior [[buffer(0)]]) {}
+
+**RasterizerData** contains these properties:
+
+* **textureCoordinate**, the normalized float2 UV coordinate.
+* **viewportSize**, the float2 size of the viewport the shader operates in. This is dependent on the shader definition in the corresponding map file, by default it covers the whole view.
+
+**BehaviorData** is used to link behavior file variables to a shader, when you bind a shader to a behavior via the BehaviorId parameter of the Shader directive you can access behavior variables inside the shader like this:
+
+float lastHitTime => behavior.lastHitTime = 0;
+float Time => behavior.Time = 0;
+float2 Aspect => behavior.Aspect = float2(1);
+
+The **=>** indicates that the variable is bound to a behavior property which is than defined via the **behavior.xxx** statement. The following assignment is the default value of the variable and is used only for providing a default preview value when developing the shader in the editor. While developing Denrim will provide a realtime preview of the shader.
+
+Note that *Time* and *Aspect* are default variables contained in every behavior file, see the *Behavior* documentation.
+
+Shader Learning Resources:
+
+* **The Book of Shaders**: https://thebookofshaders.com
+* **The Art of Code** Youtube Channel

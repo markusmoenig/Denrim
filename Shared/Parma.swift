@@ -85,6 +85,12 @@ struct HelpIndexView: View {
             game.helpText = rootItem.md
             game.helpTextChanged.send()
         }
+        
+        // Shaders
+        var shaderItem = HelpItem(name: "Shaders")
+        shaderItem.children = []
+        shaderItem.md = loadHelpKey("Shaders")
+        helpItems.append(shaderItem)
     }
     
     func loadHelpKey(_ key: String) -> String

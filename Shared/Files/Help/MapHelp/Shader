@@ -6,4 +6,4 @@ Basic Syntax:
 
 `shaderId = Shader<Name: "ShaderName">`
 
-You can optionally bind a behavior to the shader via <BehaviorId: behaviorId>, the shader will than have access to all the variables of the given behavior, see the shader documentation.
+You can optionally bind a behavior to the shader via <BehaviorId: BehaviorId>, the shader will than have access to all the variables of the given behavior, see the shader documentation.
