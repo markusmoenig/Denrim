@@ -746,14 +746,13 @@ class MapBuilder
         })
     }
     
-    func stopTimer(_ asset: Asset)
+    func stopTimer()
     {
         if cursorTimer != nil {
             cursorTimer?.invalidate()
             cursorTimer = nil
         }
         mapPreview.stopTimer()
-        asset.map = nil
     }
     
     @objc func cursorCallback(_ timer: Timer) {

@@ -722,7 +722,7 @@ class Map
                     if let body = shape2D.body {
                         shape2D.options.position.x = body.position.x * ppm - shape2D.options.size.x / 2.0
                         shape2D.options.position.y = body.position.y * ppm - shape2D.options.size.y / 2.0
-                        shape2D.options.rotation.x = body.angle.radiansToDegrees
+                        shape2D.options.rotation.x = body.angle.radiansToDegrees                        
                     }
                 }
             }

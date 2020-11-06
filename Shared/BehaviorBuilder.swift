@@ -430,7 +430,7 @@ class BehaviorBuilder
         })
     }
     
-    func stopTimer(_ asset: Asset)
+    func stopTimer()
     {
         if cursorTimer != nil {
             cursorTimer?.invalidate()
@@ -439,7 +439,7 @@ class BehaviorBuilder
     }
     
     @objc func cursorCallback(_ timer: Timer) {
-        if game.state == .Idle && game.scriptEditor != nil {
+        if game.state == .Idle && game.scriptEditor != nil && timer.userInfo != nil {
             game.scriptEditor!.getSessionCursor({ (line) in
                 if let asset = timer.userInfo as? Asset {
                     if let context = asset.behavior {

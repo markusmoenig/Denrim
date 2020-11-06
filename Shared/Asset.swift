@@ -180,13 +180,13 @@ class AssetFolder       : Codable
         if let current = current {
             if current.type == .Map {
                 if game.mapBuilder.cursorTimer != nil {
-                    game.mapBuilder.stopTimer(current)
+                    game.mapBuilder.stopTimer()
                 }
                 current.map = nil
             } else
             if current.type == .Behavior {
                 if game.behaviorBuilder.cursorTimer != nil {
-                    game.behaviorBuilder.stopTimer(current)
+                    game.behaviorBuilder.stopTimer()
                 }
                 current.map = nil
             }
@@ -298,6 +298,21 @@ class AssetFolder       : Codable
                     }
                 }
             })
+        }
+    }
+    
+    /// Safely removes an asset from the project
+    func removeAsset(_ asset: Asset)
+    {
+        if let index = assets.firstIndex(of: asset) {
+            if asset.type == .Behavior {
+                game.behaviorBuilder.stopTimer()
+            } else
+            if asset.type == .Map {
+                game.mapBuilder.stopTimer()
+            }
+            assets.remove(at: index)
+            select(assets[0].id)
         }
     }
     

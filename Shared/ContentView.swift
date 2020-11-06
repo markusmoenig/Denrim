@@ -264,11 +264,8 @@ struct ContentView: View {
                     message: Text("This action cannot be undone!"),
                     primaryButton: .destructive(Text("Yes"), action: {
                         if let asset = document.game.assetFolder.current {
-                            if let index = document.game.assetFolder.assets.firstIndex(of: asset) {
-                                document.game.assetFolder.assets.remove(at: index)
-                                document.game.assetFolder.select(document.game.assetFolder.assets[0].id)
-                                self.updateView.toggle()
-                            }
+                            document.game.assetFolder.removeAsset(asset)
+                            self.updateView.toggle()
                         }
                     }),
                     secondaryButton: .cancel(Text("No"), action: {})
