@@ -642,7 +642,7 @@ class Map
     }
     
     func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer)
-    {
+    {        
         var xPos = x + layer.options.offset.x * aspect.x
         var yPos = y + layer.options.offset.y * aspect.y
         
@@ -650,7 +650,11 @@ class Map
             for shaderName in shs {
                 if let sh = shaders[shaderName] {
                     if let shader = sh.shader {
-                        drawShader(shader, MMRect(0,0,texture.width, texture.height))
+                        if sh.canvasArea == false {
+                            drawShader(shader, MMRect(0,0,texture.width, texture.height))
+                        } else {
+                            drawShader(shader, MMRect(viewBorder.x, viewBorder.y, texture.width  - viewBorder.x * 2.0, texture.height - viewBorder.y * 2.0))
+                        }
                     }
                 }
             }

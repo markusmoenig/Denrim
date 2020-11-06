@@ -328,6 +328,12 @@ class MapBuilder
                         } else { error.error = "Could not find behavior '\(behaviorId)'" }
                     }
                     
+                    if let area = options["area"] as? String {
+                        if area.lowercased() == "canvas" {
+                            mapShader.canvasArea = true
+                        }
+                    }
+                    
                     game.shaderCompiler.compile(asset: asset, behavior: behaviorContext, cb: { (shader, errors) in
                         mapShader.shader = shader
                         if errors.count != 0 {
@@ -458,12 +464,12 @@ class MapBuilder
     {
         //print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale"]
+        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale", "area"]
         let integerOptions = ["index", "int", "digits", "groupindex", "loops"]
         let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval"]
         let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "grid", "scroll"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
-        let boolOptions = ["repeatx", "repeaty", "visible", "bullet", "global"]
+        let boolOptions = ["repeatx", "repeaty", "visible", "bullet", "global", "cliptocanvas"]
         let stringArrayOptions = ["layers", "shapes", "shaders", "collisionids"]
 
         var res: [String:Any] = [:]

@@ -99,6 +99,8 @@ struct MapLayerData2D {
     
     var offset          : Float2
     var scroll          : Float2
+    
+    var clipToCanvas    : Bool = false
 
     var accumScroll     = Float2(0,0)
 
@@ -114,6 +116,10 @@ struct MapLayerData2D {
             self.scroll = scroll
         } else {
             self.scroll = Float2(0,0)
+        }
+        
+        if let cliptocanvas = options["cliptocanvas"] as? Bool1 {
+            self.clipToCanvas = cliptocanvas.x
         }
     }
 }
@@ -269,7 +275,8 @@ struct MapCommand {
 }
 
 struct MapShader {
-    var shader          : Shader? = nil
+    var shader          : Shader? = nil    
+    var canvasArea      : Bool = false
     var options         : [String:Any]
 }
 
