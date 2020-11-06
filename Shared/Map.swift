@@ -642,7 +642,11 @@ class Map
     }
     
     func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer)
-    {        
+    {
+        if layer.options.clipToCanvas {
+            game.gameScissorRect = MTLScissorRect(x: Int(viewBorder.x), y: Int(viewBorder.y), width: Int(texture!.width - 2.0 * viewBorder.x), height: Int(texture!.height - 2.0 * viewBorder.y))
+        }
+        
         var xPos = x + layer.options.offset.x * aspect.x
         var yPos = y + layer.options.offset.y * aspect.y
         
@@ -695,6 +699,10 @@ class Map
         
         layer.options.accumScroll.x += layer.options.scroll.x * aspect.x
         layer.options.accumScroll.y += layer.options.scroll.y * aspect.y
+        
+        if layer.options.clipToCanvas {
+            game.gameScissorRect = MTLScissorRect(x: 0, y: 0, width: texture!.texture.width, height: texture!.texture.height)
+        }
     }
     
     func drawScene(_ x: Float,_ y: Float,_ scene: MapScene)
@@ -835,7 +843,8 @@ class Map
         renderPassDescriptor.colorAttachments[0].loadAction = .load
         
         let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
-        
+        renderEncoder.setScissorRect(game.gameScissorRect!)
+
         data.hasTexture = 0
         if texture2D != nil {
             if let texture = getTextureForShape(texture2D) {
@@ -885,6 +894,7 @@ class Map
         renderPassDescriptor.colorAttachments[0].loadAction = .load
         
         let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+        renderEncoder.setScissorRect(game.gameScissorRect!)
 
         data.hasTexture = 0
         if texture2D != nil {
@@ -997,6 +1007,7 @@ class Map
             renderPassDescriptor.colorAttachments[0].loadAction = .load
             
             let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+            renderEncoder.setScissorRect(game.gameScissorRect!)
 
             renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
             renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
@@ -1037,6 +1048,7 @@ class Map
         renderPassDescriptor.colorAttachments[0].loadAction = .load
         
         let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+        renderEncoder.setScissorRect(game.gameScissorRect!)
 
         renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
         renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
@@ -1166,6 +1178,7 @@ class Map
             renderPassDescriptor.colorAttachments[0].loadAction = .load
             
             let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+            renderEncoder.setScissorRect(game.gameScissorRect!)
 
             renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
             renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)

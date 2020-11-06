@@ -13,3 +13,5 @@ Other options:
 * **Scroll** (Float2) defines a relative scroll value by which the layer is scrolled per update. This is useful for automatic scrolling backgrounds.
 
 * **Offset** (Float2) is the offset into the scene for this layer. Normally a scene would start drawing a layer starting with (0, 0), using the Offset option you can define where in the scene the layer should be drawn.
+
+* **ClipToCanvas** (true/false), if true all shapes or other visual data drawn in the layer will be clipped to the canvas, i.e. draw operations only work inside the canvas. Default is false (no clipping).

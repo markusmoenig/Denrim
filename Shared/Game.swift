@@ -33,6 +33,7 @@ class Game              : ObservableObject
 
     var gameCmdQueue    : MTLCommandQueue? = nil
     var gameCmdBuffer   : MTLCommandBuffer? = nil
+    var gameScissorRect : MTLScissorRect? = nil
     
     var scriptEditor    : ScriptEditor? = nil
     var file            : File? = nil
@@ -216,6 +217,8 @@ class Game              : ObservableObject
             
             screenWidth = Float(texture!.width)
             screenHeight = Float(texture!.height)
+            
+            gameScissorRect = MTLScissorRect(x: 0, y: 0, width: texture!.texture.width, height: texture!.texture.height)
                         
             if let map = currentMap?.map {
                 map.setup(game: self)
