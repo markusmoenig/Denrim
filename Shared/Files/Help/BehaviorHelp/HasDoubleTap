@@ -1,0 +1,12 @@
+## HasDoubleTap
+
+*HasDoubleTap* returns *Success* if a double tap operation is in progress, otherwise the node returns *Failure*.
+
+A tap operation means the following:
+
+* **macOS**: The user has double clicked the left mouse button.
+* **iOS**: The user has double tapped the display. This can be in parallel to an ongoing touch operation.
+
+Syntax:
+
+`HasDoubleTap<>`

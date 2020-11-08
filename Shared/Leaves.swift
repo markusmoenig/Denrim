@@ -498,6 +498,47 @@ class ApplyTexture2D: BehaviorNode
     }
 }
 
+// Moves a float2 variable towards a 2D position given a certain step size
+class MoveTo2D: BehaviorNode
+{
+    var variable    : Float2? = nil
+    var destination : Float2? = nil
+
+    var step        = Float1(1)
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "MoveTo2D"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        
+        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "variable") {
+            variable = value
+        }
+        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "destination") {
+            destination = value
+        }
+        if let value = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "step", isOptional: true) {
+            step = value
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        let dx = destination!.x - variable!.x
+        let dy = destination!.y - variable!.y
+        
+        let angle = atan2(dy, dx)
+        
+        variable!.x = step.x * cos(angle)
+        variable!.y = step.x * sin(angle)
+
+        return .Success
+    }
+}
+
 // Sets the linear velocity for a given shape
 class SetLinearVelocity2D: BehaviorNode
 {
@@ -1168,6 +1209,106 @@ class RandomNode: BehaviorNode
     }
 }
 
+class LengthNode: BehaviorNode
+{
+    var variable: Float1? = nil
+    var value   : Any? = nil
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Length"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, isOptional: true) {
+            self.value = value
+        } else
+        if let value = extractFloat3Value(options, context: context, tree: tree, error: &error, isOptional: true) {
+            self.value = value
+        } else
+        if let value = extractFloat4Value(options, context: context, tree: tree, error: &error, isOptional: true) {
+            self.value = value
+        }
+        self.variable = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "variable")
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let value = value as? Float2 {
+            let rc = length(value.toSIMD())
+            variable!.x = rc
+            return .Success
+        } else
+        if let value = value as? Float3 {
+            let rc = length(value.toSIMD())
+            variable!.x = rc
+            return .Success
+        } else
+        if let value = value as? Float4 {
+            let rc = length(value.toSIMD())
+            variable!.x = rc
+            return .Success
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
+class DistanceNode: BehaviorNode
+{
+    var from: Any? = nil
+    var to: Any? = nil
+
+    var dest: Float1? = nil
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Distance"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let from = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+            self.from = from
+            self.to = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "to")
+        } else
+        if let from = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+            self.from = from
+            self.to = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "to")
+        } else
+        if let from = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+            self.from = from
+            self.to = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "to")
+        }
+        dest = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "variable")
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let from = from as? Float2 {
+            if let to = to as? Float2 {
+                dest!.x = distance(from.toSIMD(), to.toSIMD())
+                return .Success
+            }
+        } else
+        if let from = from as? Float3 {
+            if let to = to as? Float3 {
+                dest!.x = distance(from.toSIMD(), to.toSIMD())
+                return .Success
+            }
+        } else
+        if let from = from as? Float4 {
+            if let to = to as? Float4 {
+                dest!.x = distance(from.toSIMD(), to.toSIMD())
+                return .Success
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 class GetTouchPos: BehaviorNode
 {
     var data2: Float2? = nil
@@ -1195,6 +1336,63 @@ class GetTouchPos: BehaviorNode
         }
         context.addFailure(lineNr: lineNr)
         return .Failure
+    }
+}
+
+class HasTouch: BehaviorNode
+{
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "HasTouch"
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if game.view.mouseIsDown {
+            return .Success
+        } else {
+            context.addFailure(lineNr: lineNr)
+            return .Failure
+        }
+    }
+}
+
+class HasTap: BehaviorNode
+{
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "HasTap"
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if game.view.hasTap {
+            return .Success
+        } else {
+            context.addFailure(lineNr: lineNr)
+            return .Failure
+        }
+    }
+}
+
+class HasDoubleTap: BehaviorNode
+{    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "HasDoubleTap"
+    }
+
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if game.view.hasDoubleTap {
+            return .Success
+        } else {
+            context.addFailure(lineNr: lineNr)
+            return .Failure
+        }
     }
 }
 

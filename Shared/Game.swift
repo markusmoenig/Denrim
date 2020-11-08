@@ -121,6 +121,8 @@ class Game              : ObservableObject
             let font = Font(name: fontName, game: self)
             fonts.append(font)
         }
+        
+        view.platformInit()
     }
     
     func start()
@@ -134,6 +136,8 @@ class Game              : ObservableObject
         
         clearLocalAudio()
         clearGlobalAudio()
+        
+        view.reset()
         
         assetError.error = nil
         state = .Running

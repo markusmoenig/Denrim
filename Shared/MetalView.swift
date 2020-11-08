@@ -16,10 +16,25 @@ public class DMTKView       : MTKView
     
     var mouseIsDown         : Bool = false
     var mousePos            = float2(0, 0)
+    
+    var hasTap              : Bool = false
+    var hasDoubleTap        : Bool = false
+
+    func reset()
+    {
+        keysDown = []
+        mouseIsDown = false
+        hasTap  = false
+        hasDoubleTap  = false
+    }
 
     #if os(OSX)
         
     override public var acceptsFirstResponder: Bool { return true }
+    
+    func platformInit()
+    {
+    }
     
     func setMousePos(_ event: NSEvent)
     {
@@ -43,13 +58,17 @@ public class DMTKView       : MTKView
         
     override public func mouseDown(with event: NSEvent) {
         if game.state == .Running {
-            mouseIsDown = true
-            setMousePos(event)
+            if event.clickCount == 2 {
+                hasDoubleTap = true
+            } else {
+                mouseIsDown = true
+                setMousePos(event)
+            }
         }
     }
     
     override public func mouseDragged(with event: NSEvent) {
-        if game.state == .Running {
+        if game.state == .Running && mouseIsDown {
             setMousePos(event)
         }
     }
@@ -57,10 +76,35 @@ public class DMTKView       : MTKView
     override public func mouseUp(with event: NSEvent) {
         if game.state == .Running {
             mouseIsDown = false
+            hasTap = false
+            hasDoubleTap = false
             setMousePos(event)
         }
     }
     #elseif os(iOS)
+    
+    func platformInit()
+    {
+        let tapRecognizer = UITapGestureRecognizer(target: self, action:(#selector(self.handleTapGesture(_:))))
+        tapRecognizer.numberOfTapsRequired = 1
+        addGestureRecognizer(tapRecognizer)
+    }
+    
+    @objc func handleTapGesture(_ recognizer: UITapGestureRecognizer)
+    {
+        if recognizer.numberOfTouches == 1 {
+            hasTap = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 / 60.0) {
+                self.hasTap = false
+            }
+        } else
+        if recognizer.numberOfTouches >= 1 {
+            hasDoubleTap = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 / 60.0) {
+                self.hasDoubleTap = false
+            }
+        }
+    }
     
     func setMousePos(_ x: Float, _ y: Float)
     {

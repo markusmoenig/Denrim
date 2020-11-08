@@ -1,6 +1,11 @@
 ## GetTouchPos
 
-*GetTouchPos* returns *Success* if a touch operation is in progress, which means that on macOS the left mouse button is pressed or on iOS that the user is touching the display, otherwise the node returns *Failure*.
+*GetTouchPos* returns *Success* if a touch operation is in progress, otherwise the node returns *Failure*.
+
+A touch operation means the following:
+
+* **macOS**: The left mouse button is pressed
+* **iOS**: The user is touching the display
 
 Additionally, if a touch operation is in progress, *GetTouchPos* will write the position into a variable.
 
@@ -10,3 +15,4 @@ Syntax:
 
 VariableName has to be a *Float2* variable.
 
+If you are only interested if a touch operation is in progress without receiving the position you can also use *HasTouch*.

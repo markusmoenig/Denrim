@@ -1,0 +1,9 @@
+## Length
+
+Returns the length of a given Float2, Float3 or Float4 vector.
+
+Syntax:
+
+`Length<Variable: FloatVariableName><Float2-4: Value>`
+
+The float variable will contain the length of the Float2, Float3 or Float4 value.

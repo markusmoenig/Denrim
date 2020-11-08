@@ -1,0 +1,10 @@
+## Distance
+
+Returns the distance between two Float2, Float3 or Float4 vectors.
+
+Syntax:
+
+`Distance<Variable: FloatVariableName><From: Value><To: Value>`
+
+The float variable will contain the distance of the Float2, Float3 or Float4 values.
+

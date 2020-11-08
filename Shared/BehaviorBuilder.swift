@@ -48,6 +48,9 @@ class BehaviorBuilder
         BehaviorNodeItem("StartTimer", { (_ options: [String:Any]) -> BehaviorNode in return StartTimer(options) }),
         BehaviorNodeItem("IsKeyDown", { (_ options: [String:Any]) -> BehaviorNode in return IsKeyDown(options) }),
         BehaviorNodeItem("GetTouchPos", { (_ options: [String:Any]) -> BehaviorNode in return GetTouchPos(options) }),
+        BehaviorNodeItem("HasDoubleTap", { (_ options: [String:Any]) -> BehaviorNode in return HasDoubleTap(options) }),
+        BehaviorNodeItem("HasTouch", { (_ options: [String:Any]) -> BehaviorNode in return HasTouch(options) }),
+        BehaviorNodeItem("HasTap", { (_ options: [String:Any]) -> BehaviorNode in return HasTap(options) }),
         BehaviorNodeItem("DistanceToShape", { (_ options: [String:Any]) -> BehaviorNode in return DistanceToShape(options) }),
         BehaviorNodeItem("ShapeContactCount", { (_ options: [String:Any]) -> BehaviorNode in return ShapeContactCount(options) }),
         BehaviorNodeItem("RandomColor", { (_ options: [String:Any]) -> BehaviorNode in return RandomColorNode(options) }),
@@ -69,6 +72,10 @@ class BehaviorBuilder
         BehaviorNodeItem("IsVisible", { (_ options: [String:Any]) -> BehaviorNode in return IsVisible(options) }),
 
         BehaviorNodeItem("ApplyTexture2D", { (_ options: [String:Any]) -> BehaviorNode in return ApplyTexture2D(options) }),
+
+        BehaviorNodeItem("MoveTo2D", { (_ options: [String:Any]) -> BehaviorNode in return MoveTo2D(options) }),
+        BehaviorNodeItem("Length", { (_ options: [String:Any]) -> BehaviorNode in return LengthNode(options) }),
+        BehaviorNodeItem("Distance", { (_ options: [String:Any]) -> BehaviorNode in return DistanceNode(options) }),
 
         BehaviorNodeItem("Multiply", { (_ options: [String:Any]) -> BehaviorNode in return Multiply(options) }),
         BehaviorNodeItem("Subtract", { (_ options: [String:Any]) -> BehaviorNode in return Subtract(options) }),

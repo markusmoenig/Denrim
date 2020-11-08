@@ -1,0 +1,13 @@
+## HasTap
+
+*HasTap* returns *Success* if a tap operation is in progress, otherwise the node returns *Failure*.
+
+A tap operation means the following:
+
+* **iOS**: The user has tapped the display. This can be in parallel to an ongoing touch operation, for example if you use the current touch position to move the position of a space ship, a tap is independent of the ongoing touch operation and can be for example used to fire a missile.
+* **macOS**: Always returns .Failure
+
+Syntax:
+
+`HasTap<>`
+
