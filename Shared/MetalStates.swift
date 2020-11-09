@@ -13,7 +13,7 @@ class MetalStates {
         case DrawDisc, CopyTexture, DrawTexture, DrawBox, DrawBoxExt, DrawTextChar, DrawBackPattern
     }
     
-    let defaultLibrary          : MTLLibrary!
+    var defaultLibrary          : MTLLibrary!
 
     let pipelineStateDescriptor : MTLRenderPipelineDescriptor
     
@@ -25,7 +25,16 @@ class MetalStates {
     {
         self.game = game
         
-        defaultLibrary = game.device.makeDefaultLibrary()
+        if let frameworkId = game.frameworkId {
+            for b in Bundle.allFrameworks {
+                if b.bundleIdentifier == frameworkId {
+                    defaultLibrary = try? game.device.makeDefaultLibrary(bundle: b)
+                    break
+                }
+            }
+        } else {
+            defaultLibrary = game.device.makeDefaultLibrary()
+        }
         
         let vertexFunction = defaultLibrary!.makeFunction( name: "m4mQuadVertexShader" )
 

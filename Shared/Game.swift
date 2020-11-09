@@ -9,7 +9,7 @@ import MetalKit
 import Combine
 import AVFoundation
 
-class Game              : ObservableObject
+public class Game       : ObservableObject
 {
     enum State {
         case Idle, Running, Paused
@@ -75,9 +75,13 @@ class Game              : ObservableObject
     var globalAudioPlayers: [String:AVAudioPlayer] = [:]
     
     var showingDebugInfo: Bool = false
+    
+    var frameworkId     : String? = nil
 
-    init()
+    public init(_ frameworkId: String? = nil)
     {
+        self.frameworkId = frameworkId
+        
         viewportSize = vector_uint2( 0, 0 )
         
         #if os(OSX)
@@ -105,14 +109,18 @@ class Game              : ObservableObject
         #endif
     }
     
-    func setupView(_ view: DMTKView)
+    public func setupView(_ view: DMTKView)
     {
         self.view = view
         if let metalDevice = MTLCreateSystemDefaultDevice() {
             device = metalDevice
+            if frameworkId != nil {
+                view.device = device
+            }
         } else {
             print("Cannot initialize Metal!")
         }
+        view.game = self
         
         metalStates = MetalStates(self)
         textureLoader = MTKTextureLoader(device: device)
@@ -123,9 +131,17 @@ class Game              : ObservableObject
         }
         
         view.platformInit()
+        checkTexture()
     }
     
-    func start()
+    public func load(_ data: Data)
+    {
+        if let folder = try? JSONDecoder().decode(AssetFolder.self, from: data) {
+            assetFolder = folder
+        }
+    }
+    
+    public func start()
     {
         if let scriptEditor = scriptEditor {
             scriptEditor.setReadOnly(true)
@@ -232,7 +248,7 @@ class Game              : ObservableObject
         return false
     }
     
-    func draw()
+    public func draw()
     {
         _Time.x += 1.0 / targetFPS
 

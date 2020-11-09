@@ -1,0 +1,15 @@
+## MoveTo2D
+
+Moves a point in 2D space towards a destination point. Mostly used to move a shape towards a given coordinate or the current touch position.
+
+Can be used either directly on the position of a shape if you control it manually or to set the velocity of a physics shape via *SetLinearVelocity2D*.
+
+Syntax:
+
+`MoveTo2D<Variable: Float2Value><Destination: Flot2Value>`
+
+The variable will be updated with the new position.
+
+Options:
+
+* **Step** (Float), defines the step size towards the destination, the default value is 1.0.

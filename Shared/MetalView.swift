@@ -137,6 +137,13 @@ public class DMTKView       : MTKView
                 setMousePos(Float(point.x), Float(point.y))
         }
     }
+    
+    #elseif os(tvOS)
+        
+    func platformInit()
+    {
+    }
+    
     #endif
 }
 

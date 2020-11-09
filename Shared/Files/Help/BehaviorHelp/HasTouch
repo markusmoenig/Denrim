@@ -1,0 +1,14 @@
+## HasTouch
+
+*HasTouch* returns *Success* if a touch operation is in progress, otherwise the node returns *Failure*.
+
+A touch operation means the following:
+
+* **macOS**: The left mouse button is pressed
+* **iOS**: The user is touching the display
+
+Syntax:
+
+`HasTouch<>`
+
+If you want to receive the current touch position use *GetTouchPos*.

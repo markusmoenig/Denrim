@@ -33,8 +33,6 @@
 		2B01C89624FB824A00E86449 /* Files in Resources */ = {isa = PBXBuildFile; fileRef = 2B01C88124FB824A00E86449 /* Files */; };
 		2B01C89724FB824A00E86449 /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88324FB824A00E86449 /* Classes.swift */; };
 		2B01C89824FB824A00E86449 /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88324FB824A00E86449 /* Classes.swift */; };
-		2B01C89924FB824A00E86449 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88424FB824A00E86449 /* System.swift */; };
-		2B01C89A24FB824A00E86449 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88424FB824A00E86449 /* System.swift */; };
 		2B01C89C24FB844C00E86449 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89B24FB844C00E86449 /* MetalView.swift */; };
 		2B01C89D24FB844C00E86449 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89B24FB844C00E86449 /* MetalView.swift */; };
 		2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
@@ -61,6 +59,224 @@
 		2B3299532501B5DC007C3386 /* Square.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299452501B5DC007C3386 /* Square.json */; };
 		2B3299592501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
 		2B32995A2501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
+		2B40DA5925590ECF001FC5F1 /* DenrimDesktop.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B40DA5725590ECF001FC5F1 /* DenrimDesktop.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2B40DA5F25590EE8001FC5F1 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
+		2B40DA6025590EE8001FC5F1 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87C24FB824900E86449 /* Utils.swift */; };
+		2B40DA6125590EE8001FC5F1 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87E24FB824900E86449 /* Game.swift */; };
+		2B40DA6225590EE8001FC5F1 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87924FB824900E86449 /* MathLibrary.swift */; };
+		2B40DA6325590EE8001FC5F1 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89B24FB844C00E86449 /* MetalView.swift */; };
+		2B40DA6425590EE8001FC5F1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53617D25147B3300E8A20D /* File.swift */; };
+		2B40DA6525590EE8001FC5F1 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C008251B383C0086239F /* Utilities.swift */; };
+		2B40DA6625590EE8001FC5F1 /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
+		2B40DA6725590EE8001FC5F1 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
+		2B40DA6825590EE8001FC5F1 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
+		2B40DA6925590EE8001FC5F1 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87F24FB824900E86449 /* Asset.swift */; };
+		2B40DA6A25590EE8001FC5F1 /* Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53618D2514952800E8A20D /* Behavior.swift */; };
+		2B40DA6B25590EE8001FC5F1 /* Leaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E70D2515B21400F3317D /* Leaves.swift */; };
+		2B40DA6C25590EE8001FC5F1 /* ScriptEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87D24FB824900E86449 /* ScriptEditor.swift */; };
+		2B40DA6D25590EE8001FC5F1 /* BehaviorBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B536194251498C400E8A20D /* BehaviorBuilder.swift */; };
+		2B40DA6E25590EE8001FC5F1 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87A24FB824900E86449 /* Metal.metal */; };
+		2B40DA6F25590EE8001FC5F1 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
+		2B40DA7025590EE8001FC5F1 /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
+		2B40DA7125590EE8001FC5F1 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
+		2B40DA7425590EEE001FC5F1 /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88324FB824A00E86449 /* Classes.swift */; };
+		2B40DA7525590EEE001FC5F1 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
+		2B40DA7625590EEE001FC5F1 /* Texture2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87B24FB824900E86449 /* Texture2D.swift */; };
+		2B40DA7925590EF4001FC5F1 /* b2Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B61250B08080098F244 /* b2Body.swift */; };
+		2B40DA7C25590EFB001FC5F1 /* b2EdgeAndPolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B66250B08080098F244 /* b2EdgeAndPolygonContact.swift */; };
+		2B40DA7D25590EFB001FC5F1 /* b2EdgeAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B68250B08080098F244 /* b2EdgeAndCircleContact.swift */; };
+		2B40DA7E25590EFB001FC5F1 /* b2PolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B69250B08080098F244 /* b2PolygonContact.swift */; };
+		2B40DA7F25590EFB001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B64250B08080098F244 /* b2ChainAndPolygonContact.swift */; };
+		2B40DA8025590EFB001FC5F1 /* b2Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6B250B08080098F244 /* b2Contact.swift */; };
+		2B40DA8125590EFB001FC5F1 /* b2ContactSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B67250B08080098F244 /* b2ContactSolver.swift */; };
+		2B40DA8225590EFB001FC5F1 /* b2ChainAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B65250B08080098F244 /* b2ChainAndCircleContact.swift */; };
+		2B40DA8325590EFB001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6A250B08080098F244 /* b2PolygonAndCircleContact.swift */; };
+		2B40DA8425590EFB001FC5F1 /* b2CircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B63250B08080098F244 /* b2CircleContact.swift */; };
+		2B40DA8725590F00001FC5F1 /* b2PrismaticJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B75250B08080098F244 /* b2PrismaticJoint.swift */; };
+		2B40DA8825590F00001FC5F1 /* b2Joint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B70250B08080098F244 /* b2Joint.swift */; };
+		2B40DA8925590F00001FC5F1 /* b2WheelJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6D250B08080098F244 /* b2WheelJoint.swift */; };
+		2B40DA8A25590F00001FC5F1 /* b2RevoluteJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6F250B08080098F244 /* b2RevoluteJoint.swift */; };
+		2B40DA8B25590F00001FC5F1 /* b2MotorJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B71250B08080098F244 /* b2MotorJoint.swift */; };
+		2B40DA8C25590F00001FC5F1 /* b2GearJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B73250B08080098F244 /* b2GearJoint.swift */; };
+		2B40DA8D25590F00001FC5F1 /* b2MouseJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B77250B08080098F244 /* b2MouseJoint.swift */; };
+		2B40DA8E25590F00001FC5F1 /* b2PulleyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B76250B08080098F244 /* b2PulleyJoint.swift */; };
+		2B40DA8F25590F00001FC5F1 /* b2FrictionJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B72250B08080098F244 /* b2FrictionJoint.swift */; };
+		2B40DA9025590F00001FC5F1 /* b2WeldJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B78250B08080098F244 /* b2WeldJoint.swift */; };
+		2B40DA9125590F00001FC5F1 /* b2DistanceJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6E250B08080098F244 /* b2DistanceJoint.swift */; };
+		2B40DA9225590F00001FC5F1 /* b2RopeJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B74250B08080098F244 /* b2RopeJoint.swift */; };
+		2B40DA9525590F04001FC5F1 /* b2ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7D250B08080098F244 /* b2ContactManager.swift */; };
+		2B40DA9625590F04001FC5F1 /* b2WorldCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7A250B08080098F244 /* b2WorldCallbacks.swift */; };
+		2B40DA9725590F04001FC5F1 /* b2World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B79250B08080098F244 /* b2World.swift */; };
+		2B40DA9825590F04001FC5F1 /* b2TimeStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7B250B08080098F244 /* b2TimeStep.swift */; };
+		2B40DA9925590F04001FC5F1 /* b2Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7E250B08080098F244 /* b2Fixture.swift */; };
+		2B40DA9A25590F04001FC5F1 /* b2Island.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7C250B08080098F244 /* b2Island.swift */; };
+		2B40DA9D25590F07001FC5F1 /* b2Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B81250B08080098F244 /* b2Rope.swift */; };
+		2B40DAA025590F0B001FC5F1 /* b2Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B85250B08080098F244 /* b2Draw.swift */; };
+		2B40DAA125590F0B001FC5F1 /* b2Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B86250B08080098F244 /* b2Settings.swift */; };
+		2B40DAA225590F0B001FC5F1 /* b2Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B89250B08080098F244 /* b2Math.swift */; };
+		2B40DAA325590F0B001FC5F1 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
+		2B40DAA425590F0B001FC5F1 /* b2Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B87250B08080098F244 /* b2Common.swift */; };
+		2B40DAA525590F0B001FC5F1 /* b2GrowableStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B84250B08080098F244 /* b2GrowableStack.swift */; };
+		2B40DAA625590F0B001FC5F1 /* b2Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B88250B08080098F244 /* b2Wrappers.swift */; };
+		2B40DAA925590F0F001FC5F1 /* b2BroadPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8C250B08080098F244 /* b2BroadPhase.swift */; };
+		2B40DAAC25590F13001FC5F1 /* b2CircleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B92250B08080098F244 /* b2CircleShape.swift */; };
+		2B40DAAD25590F13001FC5F1 /* b2Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B91250B08080098F244 /* b2Shape.swift */; };
+		2B40DAAE25590F13001FC5F1 /* b2EdgeShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8E250B08080098F244 /* b2EdgeShape.swift */; };
+		2B40DAAF25590F13001FC5F1 /* b2PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8F250B08080098F244 /* b2PolygonShape.swift */; };
+		2B40DAB025590F13001FC5F1 /* b2ChainShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B90250B08080098F244 /* b2ChainShape.swift */; };
+		2B40DAB325590F17001FC5F1 /* b2Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B95250B08080098F244 /* b2Distance.swift */; };
+		2B40DAB425590F17001FC5F1 /* b2Collision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B98250B08080098F244 /* b2Collision.swift */; };
+		2B40DAB525590F17001FC5F1 /* b2TimeOfImpact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B97250B08080098F244 /* b2TimeOfImpact.swift */; };
+		2B40DAB625590F17001FC5F1 /* b2CollidePolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B96250B08080098F244 /* b2CollidePolygon.swift */; };
+		2B40DAB725590F17001FC5F1 /* b2DynamicTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B93250B08080098F244 /* b2DynamicTree.swift */; };
+		2B40DAB825590F17001FC5F1 /* b2CollideEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B94250B08080098F244 /* b2CollideEdge.swift */; };
+		2B40DAB925590F17001FC5F1 /* b2CollideCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B99250B08080098F244 /* b2CollideCircles.swift */; };
+		2B40DACD2559100A001FC5F1 /* DenrimMobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B40DACB2559100A001FC5F1 /* DenrimMobile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2B40DAD02559100A001FC5F1 /* DenrimMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B40DAC92559100A001FC5F1 /* DenrimMobile.framework */; };
+		2B40DAD12559100A001FC5F1 /* DenrimMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2B40DAC92559100A001FC5F1 /* DenrimMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2B40DAD825591016001FC5F1 /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
+		2B40DAD925591016001FC5F1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53617D25147B3300E8A20D /* File.swift */; };
+		2B40DADA25591016001FC5F1 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89B24FB844C00E86449 /* MetalView.swift */; };
+		2B40DADB25591016001FC5F1 /* BehaviorBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B536194251498C400E8A20D /* BehaviorBuilder.swift */; };
+		2B40DADC25591016001FC5F1 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87F24FB824900E86449 /* Asset.swift */; };
+		2B40DADD25591016001FC5F1 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
+		2B40DADE25591016001FC5F1 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87A24FB824900E86449 /* Metal.metal */; };
+		2B40DADF25591016001FC5F1 /* Leaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E70D2515B21400F3317D /* Leaves.swift */; };
+		2B40DAE025591016001FC5F1 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
+		2B40DAE125591016001FC5F1 /* ScriptEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87D24FB824900E86449 /* ScriptEditor.swift */; };
+		2B40DAE225591016001FC5F1 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87924FB824900E86449 /* MathLibrary.swift */; };
+		2B40DAE325591016001FC5F1 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
+		2B40DAE425591016001FC5F1 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
+		2B40DAE525591016001FC5F1 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87C24FB824900E86449 /* Utils.swift */; };
+		2B40DAE625591016001FC5F1 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87E24FB824900E86449 /* Game.swift */; };
+		2B40DAE725591016001FC5F1 /* Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53618D2514952800E8A20D /* Behavior.swift */; };
+		2B40DAE825591016001FC5F1 /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
+		2B40DAE925591016001FC5F1 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C008251B383C0086239F /* Utilities.swift */; };
+		2B40DAEA25591016001FC5F1 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
+		2B40DAED2559101B001FC5F1 /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88324FB824A00E86449 /* Classes.swift */; };
+		2B40DAEE2559101B001FC5F1 /* Texture2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87B24FB824900E86449 /* Texture2D.swift */; };
+		2B40DAEF2559101B001FC5F1 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
+		2B40DAF22559101E001FC5F1 /* b2Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B61250B08080098F244 /* b2Body.swift */; };
+		2B40DAF525591023001FC5F1 /* b2ChainAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B65250B08080098F244 /* b2ChainAndCircleContact.swift */; };
+		2B40DAF625591023001FC5F1 /* b2EdgeAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B68250B08080098F244 /* b2EdgeAndCircleContact.swift */; };
+		2B40DAF725591023001FC5F1 /* b2CircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B63250B08080098F244 /* b2CircleContact.swift */; };
+		2B40DAF825591023001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6A250B08080098F244 /* b2PolygonAndCircleContact.swift */; };
+		2B40DAF925591023001FC5F1 /* b2Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6B250B08080098F244 /* b2Contact.swift */; };
+		2B40DAFA25591023001FC5F1 /* b2ContactSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B67250B08080098F244 /* b2ContactSolver.swift */; };
+		2B40DAFB25591023001FC5F1 /* b2EdgeAndPolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B66250B08080098F244 /* b2EdgeAndPolygonContact.swift */; };
+		2B40DAFC25591023001FC5F1 /* b2PolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B69250B08080098F244 /* b2PolygonContact.swift */; };
+		2B40DAFD25591023001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B64250B08080098F244 /* b2ChainAndPolygonContact.swift */; };
+		2B40DB002559102A001FC5F1 /* b2WeldJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B78250B08080098F244 /* b2WeldJoint.swift */; };
+		2B40DB012559102A001FC5F1 /* b2Joint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B70250B08080098F244 /* b2Joint.swift */; };
+		2B40DB022559102A001FC5F1 /* b2RevoluteJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6F250B08080098F244 /* b2RevoluteJoint.swift */; };
+		2B40DB032559102A001FC5F1 /* b2FrictionJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B72250B08080098F244 /* b2FrictionJoint.swift */; };
+		2B40DB042559102A001FC5F1 /* b2RopeJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B74250B08080098F244 /* b2RopeJoint.swift */; };
+		2B40DB052559102A001FC5F1 /* b2DistanceJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6E250B08080098F244 /* b2DistanceJoint.swift */; };
+		2B40DB062559102A001FC5F1 /* b2PulleyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B76250B08080098F244 /* b2PulleyJoint.swift */; };
+		2B40DB072559102A001FC5F1 /* b2MouseJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B77250B08080098F244 /* b2MouseJoint.swift */; };
+		2B40DB082559102A001FC5F1 /* b2PrismaticJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B75250B08080098F244 /* b2PrismaticJoint.swift */; };
+		2B40DB092559102A001FC5F1 /* b2WheelJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6D250B08080098F244 /* b2WheelJoint.swift */; };
+		2B40DB0A2559102A001FC5F1 /* b2MotorJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B71250B08080098F244 /* b2MotorJoint.swift */; };
+		2B40DB0B2559102A001FC5F1 /* b2GearJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B73250B08080098F244 /* b2GearJoint.swift */; };
+		2B40DB0E2559102E001FC5F1 /* b2WorldCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7A250B08080098F244 /* b2WorldCallbacks.swift */; };
+		2B40DB0F2559102E001FC5F1 /* b2Island.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7C250B08080098F244 /* b2Island.swift */; };
+		2B40DB102559102E001FC5F1 /* b2World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B79250B08080098F244 /* b2World.swift */; };
+		2B40DB112559102E001FC5F1 /* b2TimeStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7B250B08080098F244 /* b2TimeStep.swift */; };
+		2B40DB122559102E001FC5F1 /* b2ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7D250B08080098F244 /* b2ContactManager.swift */; };
+		2B40DB132559102E001FC5F1 /* b2Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7E250B08080098F244 /* b2Fixture.swift */; };
+		2B40DB1625591032001FC5F1 /* b2Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B81250B08080098F244 /* b2Rope.swift */; };
+		2B40DB1925591036001FC5F1 /* b2Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B88250B08080098F244 /* b2Wrappers.swift */; };
+		2B40DB1A25591036001FC5F1 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
+		2B40DB1B25591036001FC5F1 /* b2Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B85250B08080098F244 /* b2Draw.swift */; };
+		2B40DB1C25591036001FC5F1 /* b2Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B89250B08080098F244 /* b2Math.swift */; };
+		2B40DB1D25591036001FC5F1 /* b2Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B86250B08080098F244 /* b2Settings.swift */; };
+		2B40DB1E25591036001FC5F1 /* b2GrowableStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B84250B08080098F244 /* b2GrowableStack.swift */; };
+		2B40DB1F25591036001FC5F1 /* b2Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B87250B08080098F244 /* b2Common.swift */; };
+		2B40DB2225591039001FC5F1 /* b2BroadPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8C250B08080098F244 /* b2BroadPhase.swift */; };
+		2B40DB252559103C001FC5F1 /* b2EdgeShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8E250B08080098F244 /* b2EdgeShape.swift */; };
+		2B40DB262559103C001FC5F1 /* b2CircleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B92250B08080098F244 /* b2CircleShape.swift */; };
+		2B40DB272559103C001FC5F1 /* b2PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8F250B08080098F244 /* b2PolygonShape.swift */; };
+		2B40DB282559103C001FC5F1 /* b2ChainShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B90250B08080098F244 /* b2ChainShape.swift */; };
+		2B40DB292559103C001FC5F1 /* b2Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B91250B08080098F244 /* b2Shape.swift */; };
+		2B40DB2C25591040001FC5F1 /* b2Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B95250B08080098F244 /* b2Distance.swift */; };
+		2B40DB2D25591040001FC5F1 /* b2CollidePolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B96250B08080098F244 /* b2CollidePolygon.swift */; };
+		2B40DB2E25591040001FC5F1 /* b2TimeOfImpact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B97250B08080098F244 /* b2TimeOfImpact.swift */; };
+		2B40DB2F25591040001FC5F1 /* b2CollideEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B94250B08080098F244 /* b2CollideEdge.swift */; };
+		2B40DB3025591040001FC5F1 /* b2Collision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B98250B08080098F244 /* b2Collision.swift */; };
+		2B40DB3125591040001FC5F1 /* b2CollideCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B99250B08080098F244 /* b2CollideCircles.swift */; };
+		2B40DB3225591040001FC5F1 /* b2DynamicTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B93250B08080098F244 /* b2DynamicTree.swift */; };
+		2B40DB55255912E0001FC5F1 /* DenrimTV.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B40DB53255912E0001FC5F1 /* DenrimTV.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2B40DB5C25591303001FC5F1 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
+		2B40DB5D25591303001FC5F1 /* BehaviorBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B536194251498C400E8A20D /* BehaviorBuilder.swift */; };
+		2B40DB5E25591303001FC5F1 /* Metal.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87A24FB824900E86449 /* Metal.metal */; };
+		2B40DB5F25591303001FC5F1 /* ShaderCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32992324FF21EC007C3386 /* ShaderCompiler.swift */; };
+		2B40DB6025591303001FC5F1 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
+		2B40DB6125591303001FC5F1 /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
+		2B40DB6225591303001FC5F1 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87924FB824900E86449 /* MathLibrary.swift */; };
+		2B40DB6325591303001FC5F1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53617D25147B3300E8A20D /* File.swift */; };
+		2B40DB6425591303001FC5F1 /* Leaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E70D2515B21400F3317D /* Leaves.swift */; };
+		2B40DB6525591303001FC5F1 /* Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53618D2514952800E8A20D /* Behavior.swift */; };
+		2B40DB6625591303001FC5F1 /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
+		2B40DB6725591303001FC5F1 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87C24FB824900E86449 /* Utils.swift */; };
+		2B40DB6825591303001FC5F1 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
+		2B40DB6925591303001FC5F1 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89B24FB844C00E86449 /* MetalView.swift */; };
+		2B40DB6A25591303001FC5F1 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
+		2B40DB6B25591303001FC5F1 /* ScriptEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87D24FB824900E86449 /* ScriptEditor.swift */; };
+		2B40DB6C25591303001FC5F1 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B19C008251B383C0086239F /* Utilities.swift */; };
+		2B40DB6D25591303001FC5F1 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87F24FB824900E86449 /* Asset.swift */; };
+		2B40DB6E25591303001FC5F1 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87E24FB824900E86449 /* Game.swift */; };
+		2B40DB7225591308001FC5F1 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
+		2B40DB7325591308001FC5F1 /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C88324FB824A00E86449 /* Classes.swift */; };
+		2B40DB7425591308001FC5F1 /* Texture2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87B24FB824900E86449 /* Texture2D.swift */; };
+		2B40DB782559130B001FC5F1 /* b2Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B61250B08080098F244 /* b2Body.swift */; };
+		2B40DB7C2559130F001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6A250B08080098F244 /* b2PolygonAndCircleContact.swift */; };
+		2B40DB7D2559130F001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B64250B08080098F244 /* b2ChainAndPolygonContact.swift */; };
+		2B40DB7E2559130F001FC5F1 /* b2ContactSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B67250B08080098F244 /* b2ContactSolver.swift */; };
+		2B40DB7F2559130F001FC5F1 /* b2EdgeAndPolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B66250B08080098F244 /* b2EdgeAndPolygonContact.swift */; };
+		2B40DB802559130F001FC5F1 /* b2CircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B63250B08080098F244 /* b2CircleContact.swift */; };
+		2B40DB812559130F001FC5F1 /* b2EdgeAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B68250B08080098F244 /* b2EdgeAndCircleContact.swift */; };
+		2B40DB822559130F001FC5F1 /* b2PolygonContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B69250B08080098F244 /* b2PolygonContact.swift */; };
+		2B40DB832559130F001FC5F1 /* b2Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6B250B08080098F244 /* b2Contact.swift */; };
+		2B40DB842559130F001FC5F1 /* b2ChainAndCircleContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B65250B08080098F244 /* b2ChainAndCircleContact.swift */; };
+		2B40DB8825591314001FC5F1 /* b2FrictionJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B72250B08080098F244 /* b2FrictionJoint.swift */; };
+		2B40DB8925591314001FC5F1 /* b2PrismaticJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B75250B08080098F244 /* b2PrismaticJoint.swift */; };
+		2B40DB8A25591314001FC5F1 /* b2WeldJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B78250B08080098F244 /* b2WeldJoint.swift */; };
+		2B40DB8B25591314001FC5F1 /* b2DistanceJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6E250B08080098F244 /* b2DistanceJoint.swift */; };
+		2B40DB8C25591314001FC5F1 /* b2GearJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B73250B08080098F244 /* b2GearJoint.swift */; };
+		2B40DB8D25591314001FC5F1 /* b2RopeJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B74250B08080098F244 /* b2RopeJoint.swift */; };
+		2B40DB8E25591314001FC5F1 /* b2WheelJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6D250B08080098F244 /* b2WheelJoint.swift */; };
+		2B40DB8F25591314001FC5F1 /* b2MotorJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B71250B08080098F244 /* b2MotorJoint.swift */; };
+		2B40DB9025591314001FC5F1 /* b2MouseJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B77250B08080098F244 /* b2MouseJoint.swift */; };
+		2B40DB9125591314001FC5F1 /* b2RevoluteJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B6F250B08080098F244 /* b2RevoluteJoint.swift */; };
+		2B40DB9225591314001FC5F1 /* b2Joint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B70250B08080098F244 /* b2Joint.swift */; };
+		2B40DB9325591314001FC5F1 /* b2PulleyJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B76250B08080098F244 /* b2PulleyJoint.swift */; };
+		2B40DB9725591319001FC5F1 /* b2Island.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7C250B08080098F244 /* b2Island.swift */; };
+		2B40DB9825591319001FC5F1 /* b2World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B79250B08080098F244 /* b2World.swift */; };
+		2B40DB9925591319001FC5F1 /* b2ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7D250B08080098F244 /* b2ContactManager.swift */; };
+		2B40DB9A25591319001FC5F1 /* b2Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7E250B08080098F244 /* b2Fixture.swift */; };
+		2B40DB9B25591319001FC5F1 /* b2WorldCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7A250B08080098F244 /* b2WorldCallbacks.swift */; };
+		2B40DB9C25591319001FC5F1 /* b2TimeStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B7B250B08080098F244 /* b2TimeStep.swift */; };
+		2B40DBA02559131B001FC5F1 /* b2Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B81250B08080098F244 /* b2Rope.swift */; };
+		2B40DBA42559131E001FC5F1 /* b2GrowableStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B84250B08080098F244 /* b2GrowableStack.swift */; };
+		2B40DBA52559131E001FC5F1 /* b2Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B87250B08080098F244 /* b2Common.swift */; };
+		2B40DBA62559131E001FC5F1 /* b2Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B88250B08080098F244 /* b2Wrappers.swift */; };
+		2B40DBA72559131E001FC5F1 /* b2Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B89250B08080098F244 /* b2Math.swift */; };
+		2B40DBA82559131E001FC5F1 /* b2Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B86250B08080098F244 /* b2Settings.swift */; };
+		2B40DBA92559131E001FC5F1 /* b2Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B85250B08080098F244 /* b2Draw.swift */; };
+		2B40DBAA2559131E001FC5F1 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
+		2B40DBAE25591321001FC5F1 /* b2BroadPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8C250B08080098F244 /* b2BroadPhase.swift */; };
+		2B40DBB225591325001FC5F1 /* b2ChainShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B90250B08080098F244 /* b2ChainShape.swift */; };
+		2B40DBB325591325001FC5F1 /* b2Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B91250B08080098F244 /* b2Shape.swift */; };
+		2B40DBB425591325001FC5F1 /* b2EdgeShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8E250B08080098F244 /* b2EdgeShape.swift */; };
+		2B40DBB525591325001FC5F1 /* b2CircleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B92250B08080098F244 /* b2CircleShape.swift */; };
+		2B40DBB625591325001FC5F1 /* b2PolygonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B8F250B08080098F244 /* b2PolygonShape.swift */; };
+		2B40DBBA2559132A001FC5F1 /* b2DynamicTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B93250B08080098F244 /* b2DynamicTree.swift */; };
+		2B40DBBB2559132A001FC5F1 /* b2Collision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B98250B08080098F244 /* b2Collision.swift */; };
+		2B40DBBC2559132A001FC5F1 /* b2CollideCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B99250B08080098F244 /* b2CollideCircles.swift */; };
+		2B40DBBD2559132A001FC5F1 /* b2CollideEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B94250B08080098F244 /* b2CollideEdge.swift */; };
+		2B40DBBE2559132A001FC5F1 /* b2Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B95250B08080098F244 /* b2Distance.swift */; };
+		2B40DBBF2559132A001FC5F1 /* b2TimeOfImpact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B97250B08080098F244 /* b2TimeOfImpact.swift */; };
+		2B40DBC02559132A001FC5F1 /* b2CollidePolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B96250B08080098F244 /* b2CollidePolygon.swift */; };
 		2B53617E25147B3300E8A20D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53617D25147B3300E8A20D /* File.swift */; };
 		2B53617F25147B3300E8A20D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53617D25147B3300E8A20D /* File.swift */; };
 		2B53618E2514952800E8A20D /* Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53618D2514952800E8A20D /* Behavior.swift */; };
@@ -168,8 +384,6 @@
 		2B6D0BFE250B0AAE0098F244 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
 		2B6D0BFF250B0B490098F244 /* b2Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B83250B08080098F244 /* b2Timer.swift */; };
 		2B6D0C02250B16C00098F244 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6D0C01250B16C00098F244 /* CloudKit.framework */; };
-		2B6D0C04250B3BF70098F244 /* Physics2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0C03250B3BF70098F244 /* Physics2D.swift */; };
-		2B6D0C05250B3BF70098F244 /* Physics2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0C03250B3BF70098F244 /* Physics2D.swift */; };
 		2B71E70E2515B21400F3317D /* Leaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E70D2515B21400F3317D /* Leaves.swift */; };
 		2B71E70F2515B21400F3317D /* Leaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E70D2515B21400F3317D /* Leaves.swift */; };
 		2B71E7192516F5BA00F3317D /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
@@ -182,6 +396,40 @@
 		2BFDAF9E254A8A4E0096A0FF /* Parma.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDAF9D254A8A4E0096A0FF /* Parma.swift */; };
 		2BFDAF9F254A8A4F0096A0FF /* Parma.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDAF9D254A8A4E0096A0FF /* Parma.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2B40DACE2559100A001FC5F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B01C85024FB814900E86449 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B40DAC82559100A001FC5F1;
+			remoteInfo = DenrimMobile;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2B196FE92558C4D20098F568 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B40DAD52559100A001FC5F1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2B40DAD12559100A001FC5F1 /* DenrimMobile.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2B01C85524FB814900E86449 /* DenrimApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DenrimApp.swift; sourceTree = "<group>"; };
@@ -203,7 +451,6 @@
 		2B01C88124FB824A00E86449 /* Files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Files; sourceTree = "<group>"; };
 		2B01C88224FB824A00E86449 /* Metal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Metal.h; sourceTree = "<group>"; };
 		2B01C88324FB824A00E86449 /* Classes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
-		2B01C88424FB824A00E86449 /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		2B01C89B24FB844C00E86449 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		2B01C89E24FB8C7500E86449 /* MetalStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalStates.swift; sourceTree = "<group>"; };
 		2B09E1E12511A619002DE701 /* Denrim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Denrim.entitlements; sourceTree = "<group>"; };
@@ -218,6 +465,15 @@
 		2B3299442501B5DC007C3386 /* OpenSans.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = OpenSans.tiff; sourceTree = "<group>"; };
 		2B3299452501B5DC007C3386 /* Square.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Square.json; sourceTree = "<group>"; };
 		2B3299582501B6F3007C3386 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		2B40DA5525590ECF001FC5F1 /* DenrimDesktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DenrimDesktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B40DA5725590ECF001FC5F1 /* DenrimDesktop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DenrimDesktop.h; sourceTree = "<group>"; };
+		2B40DA5825590ECF001FC5F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B40DAC92559100A001FC5F1 /* DenrimMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DenrimMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B40DACB2559100A001FC5F1 /* DenrimMobile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DenrimMobile.h; sourceTree = "<group>"; };
+		2B40DACC2559100A001FC5F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B40DB51255912E0001FC5F1 /* DenrimTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DenrimTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B40DB53255912E0001FC5F1 /* DenrimTV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DenrimTV.h; sourceTree = "<group>"; };
+		2B40DB54255912E0001FC5F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B53617D25147B3300E8A20D /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		2B53618D2514952800E8A20D /* Behavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Behavior.swift; sourceTree = "<group>"; };
 		2B536194251498C400E8A20D /* BehaviorBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorBuilder.swift; sourceTree = "<group>"; };
@@ -272,7 +528,6 @@
 		2B6D0B98250B08080098F244 /* b2Collision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Collision.swift; sourceTree = "<group>"; };
 		2B6D0B99250B08080098F244 /* b2CollideCircles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CollideCircles.swift; sourceTree = "<group>"; };
 		2B6D0C01250B16C00098F244 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		2B6D0C03250B3BF70098F244 /* Physics2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Physics2D.swift; sourceTree = "<group>"; };
 		2B71E70D2515B21400F3317D /* Leaves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leaves.swift; sourceTree = "<group>"; };
 		2B71E7182516F5BA00F3317D /* Branches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branches.swift; sourceTree = "<group>"; };
 		2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBuilder.swift; sourceTree = "<group>"; };
@@ -286,6 +541,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B2C2143254A900800399171 /* Parma in Frameworks */,
+				2B40DAD02559100A001FC5F1 /* DenrimMobile.framework in Frameworks */,
 				2B09E1E52511A620002DE701 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -299,6 +555,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2B40DA5225590ECF001FC5F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B40DAC62559100A001FC5F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B40DB4E255912E0001FC5F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -309,6 +586,9 @@
 				2B01C85424FB814900E86449 /* Shared */,
 				2B01C85F24FB814C00E86449 /* iOS */,
 				2B01C86624FB814C00E86449 /* macOS */,
+				2B40DA5625590ECF001FC5F1 /* DenrimDesktop */,
+				2B40DACA2559100A001FC5F1 /* DenrimMobile */,
+				2B40DB52255912E0001FC5F1 /* DenrimTV */,
 				2B01C85E24FB814C00E86449 /* Products */,
 				2B6D0C00250B16C00098F244 /* Frameworks */,
 			);
@@ -355,6 +635,9 @@
 			children = (
 				2B01C85D24FB814C00E86449 /* Denrim.app */,
 				2B01C86524FB814C00E86449 /* Denrim.app */,
+				2B40DA5525590ECF001FC5F1 /* DenrimDesktop.framework */,
+				2B40DAC92559100A001FC5F1 /* DenrimMobile.framework */,
+				2B40DB51255912E0001FC5F1 /* DenrimTV.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -380,8 +663,6 @@
 			isa = PBXGroup;
 			children = (
 				2B01C88324FB824A00E86449 /* Classes.swift */,
-				2B6D0C03250B3BF70098F244 /* Physics2D.swift */,
-				2B01C88424FB824A00E86449 /* System.swift */,
 				2B01C87B24FB824900E86449 /* Texture2D.swift */,
 				2B3299582501B6F3007C3386 /* Font.swift */,
 			);
@@ -399,6 +680,33 @@
 				2B3299402501B5DB007C3386 /* Square.tiff */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		2B40DA5625590ECF001FC5F1 /* DenrimDesktop */ = {
+			isa = PBXGroup;
+			children = (
+				2B40DA5725590ECF001FC5F1 /* DenrimDesktop.h */,
+				2B40DA5825590ECF001FC5F1 /* Info.plist */,
+			);
+			path = DenrimDesktop;
+			sourceTree = "<group>";
+		};
+		2B40DACA2559100A001FC5F1 /* DenrimMobile */ = {
+			isa = PBXGroup;
+			children = (
+				2B40DACB2559100A001FC5F1 /* DenrimMobile.h */,
+				2B40DACC2559100A001FC5F1 /* Info.plist */,
+			);
+			path = DenrimMobile;
+			sourceTree = "<group>";
+		};
+		2B40DB52255912E0001FC5F1 /* DenrimTV */ = {
+			isa = PBXGroup;
+			children = (
+				2B40DB53255912E0001FC5F1 /* DenrimTV.h */,
+				2B40DB54255912E0001FC5F1 /* Info.plist */,
+			);
+			path = DenrimTV;
 			sourceTree = "<group>";
 		};
 		2B6D0B5F250B08080098F244 /* Box2D */ = {
@@ -524,6 +832,33 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		2B40DA5025590ECF001FC5F1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B40DA5925590ECF001FC5F1 /* DenrimDesktop.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B40DAC42559100A001FC5F1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B40DACD2559100A001FC5F1 /* DenrimMobile.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B40DB4C255912E0001FC5F1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B40DB55255912E0001FC5F1 /* DenrimTV.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		2B01C85C24FB814C00E86449 /* Denrim (iOS) */ = {
 			isa = PBXNativeTarget;
@@ -532,10 +867,12 @@
 				2B01C85924FB814C00E86449 /* Sources */,
 				2B01C85A24FB814C00E86449 /* Frameworks */,
 				2B01C85B24FB814C00E86449 /* Resources */,
+				2B40DAD52559100A001FC5F1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				2B40DACF2559100A001FC5F1 /* PBXTargetDependency */,
 			);
 			name = "Denrim (iOS)";
 			packageProductDependencies = (
@@ -552,6 +889,7 @@
 				2B01C86124FB814C00E86449 /* Sources */,
 				2B01C86224FB814C00E86449 /* Frameworks */,
 				2B01C86324FB814C00E86449 /* Resources */,
+				2B196FE92558C4D20098F568 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -564,6 +902,60 @@
 			productName = "Denrim (macOS)";
 			productReference = 2B01C86524FB814C00E86449 /* Denrim.app */;
 			productType = "com.apple.product-type.application";
+		};
+		2B40DA5425590ECF001FC5F1 /* DenrimDesktop */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B40DA5A25590ECF001FC5F1 /* Build configuration list for PBXNativeTarget "DenrimDesktop" */;
+			buildPhases = (
+				2B40DA5025590ECF001FC5F1 /* Headers */,
+				2B40DA5125590ECF001FC5F1 /* Sources */,
+				2B40DA5225590ECF001FC5F1 /* Frameworks */,
+				2B40DA5325590ECF001FC5F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DenrimDesktop;
+			productName = DenrimDesktop;
+			productReference = 2B40DA5525590ECF001FC5F1 /* DenrimDesktop.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		2B40DAC82559100A001FC5F1 /* DenrimMobile */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B40DAD22559100A001FC5F1 /* Build configuration list for PBXNativeTarget "DenrimMobile" */;
+			buildPhases = (
+				2B40DAC42559100A001FC5F1 /* Headers */,
+				2B40DAC52559100A001FC5F1 /* Sources */,
+				2B40DAC62559100A001FC5F1 /* Frameworks */,
+				2B40DAC72559100A001FC5F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DenrimMobile;
+			productName = DenrimMobile;
+			productReference = 2B40DAC92559100A001FC5F1 /* DenrimMobile.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		2B40DB50255912E0001FC5F1 /* DenrimTV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B40DB56255912E0001FC5F1 /* Build configuration list for PBXNativeTarget "DenrimTV" */;
+			buildPhases = (
+				2B40DB4C255912E0001FC5F1 /* Headers */,
+				2B40DB4D255912E0001FC5F1 /* Sources */,
+				2B40DB4E255912E0001FC5F1 /* Frameworks */,
+				2B40DB4F255912E0001FC5F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DenrimTV;
+			productName = DenrimTV;
+			productReference = 2B40DB51255912E0001FC5F1 /* DenrimTV.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -579,6 +971,15 @@
 					};
 					2B01C86424FB814C00E86449 = {
 						CreatedOnToolsVersion = 12.0;
+					};
+					2B40DA5425590ECF001FC5F1 = {
+						CreatedOnToolsVersion = 12.2;
+					};
+					2B40DAC82559100A001FC5F1 = {
+						CreatedOnToolsVersion = 12.2;
+					};
+					2B40DB50255912E0001FC5F1 = {
+						CreatedOnToolsVersion = 12.2;
 					};
 				};
 			};
@@ -600,6 +1001,9 @@
 			targets = (
 				2B01C86424FB814C00E86449 /* Denrim (macOS) */,
 				2B01C85C24FB814C00E86449 /* Denrim (iOS) */,
+				2B40DA5425590ECF001FC5F1 /* DenrimDesktop */,
+				2B40DAC82559100A001FC5F1 /* DenrimMobile */,
+				2B40DB50255912E0001FC5F1 /* DenrimTV */,
 			);
 		};
 /* End PBXProject section */
@@ -635,6 +1039,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2B40DA5325590ECF001FC5F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B40DAC72559100A001FC5F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B40DB4F255912E0001FC5F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -656,7 +1081,6 @@
 				2B53617F25147B3300E8A20D /* File.swift in Sources */,
 				2B6D0BBB250B08080098F244 /* b2GearJoint.swift in Sources */,
 				2B6D0BFE250B0AAE0098F244 /* b2Timer.swift in Sources */,
-				2B01C89924FB824A00E86449 /* System.swift in Sources */,
 				2B6D0BCD250B08080098F244 /* b2Island.swift in Sources */,
 				2B6D0BF9250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */,
@@ -699,7 +1123,6 @@
 				2B6D0BD1250B08080098F244 /* b2Fixture.swift in Sources */,
 				2B6D0BE7250B08080098F244 /* b2EdgeShape.swift in Sources */,
 				2B6D0BD9250B08080098F244 /* b2Draw.swift in Sources */,
-				2B6D0C05250B3BF70098F244 /* Physics2D.swift in Sources */,
 				2B6D0BED250B08080098F244 /* b2Shape.swift in Sources */,
 				2B6D0BA9250B08080098F244 /* b2PolygonContact.swift in Sources */,
 				2B01C88B24FB824A00E86449 /* Utils.swift in Sources */,
@@ -740,7 +1163,6 @@
 				2B53617E25147B3300E8A20D /* File.swift in Sources */,
 				2B6D0BBA250B08080098F244 /* b2GearJoint.swift in Sources */,
 				2B6D0BFF250B0B490098F244 /* b2Timer.swift in Sources */,
-				2B01C89A24FB824A00E86449 /* System.swift in Sources */,
 				2B6D0BCC250B08080098F244 /* b2Island.swift in Sources */,
 				2B6D0BF8250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */,
@@ -783,7 +1205,6 @@
 				2B6D0BD0250B08080098F244 /* b2Fixture.swift in Sources */,
 				2B6D0BE6250B08080098F244 /* b2EdgeShape.swift in Sources */,
 				2B6D0BD8250B08080098F244 /* b2Draw.swift in Sources */,
-				2B6D0C04250B3BF70098F244 /* Physics2D.swift in Sources */,
 				2B6D0BEC250B08080098F244 /* b2Shape.swift in Sources */,
 				2B6D0BA8250B08080098F244 /* b2PolygonContact.swift in Sources */,
 				2B01C88C24FB824A00E86449 /* Utils.swift in Sources */,
@@ -806,7 +1227,249 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2B40DA5125590ECF001FC5F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B40DA7C25590EFB001FC5F1 /* b2EdgeAndPolygonContact.swift in Sources */,
+				2B40DAB325590F17001FC5F1 /* b2Distance.swift in Sources */,
+				2B40DA6625590EE8001FC5F1 /* MapStructures.swift in Sources */,
+				2B40DAA925590F0F001FC5F1 /* b2BroadPhase.swift in Sources */,
+				2B40DA8425590EFB001FC5F1 /* b2CircleContact.swift in Sources */,
+				2B40DA8025590EFB001FC5F1 /* b2Contact.swift in Sources */,
+				2B40DA8725590F00001FC5F1 /* b2PrismaticJoint.swift in Sources */,
+				2B40DA9625590F04001FC5F1 /* b2WorldCallbacks.swift in Sources */,
+				2B40DA9125590F00001FC5F1 /* b2DistanceJoint.swift in Sources */,
+				2B40DA5F25590EE8001FC5F1 /* MetalStates.swift in Sources */,
+				2B40DAA525590F0B001FC5F1 /* b2GrowableStack.swift in Sources */,
+				2B40DA7525590EEE001FC5F1 /* Font.swift in Sources */,
+				2B40DA8C25590F00001FC5F1 /* b2GearJoint.swift in Sources */,
+				2B40DAB625590F17001FC5F1 /* b2CollidePolygon.swift in Sources */,
+				2B40DA6825590EE8001FC5F1 /* MapBuilder.swift in Sources */,
+				2B40DA6925590EE8001FC5F1 /* Asset.swift in Sources */,
+				2B40DA6425590EE8001FC5F1 /* File.swift in Sources */,
+				2B40DA7E25590EFB001FC5F1 /* b2PolygonContact.swift in Sources */,
+				2B40DAA425590F0B001FC5F1 /* b2Common.swift in Sources */,
+				2B40DAB825590F17001FC5F1 /* b2CollideEdge.swift in Sources */,
+				2B40DA9A25590F04001FC5F1 /* b2Island.swift in Sources */,
+				2B40DAB925590F17001FC5F1 /* b2CollideCircles.swift in Sources */,
+				2B40DA6C25590EE8001FC5F1 /* ScriptEditor.swift in Sources */,
+				2B40DA8925590F00001FC5F1 /* b2WheelJoint.swift in Sources */,
+				2B40DA6525590EE8001FC5F1 /* Utilities.swift in Sources */,
+				2B40DAB025590F13001FC5F1 /* b2ChainShape.swift in Sources */,
+				2B40DA6125590EE8001FC5F1 /* Game.swift in Sources */,
+				2B40DAB425590F17001FC5F1 /* b2Collision.swift in Sources */,
+				2B40DA9725590F04001FC5F1 /* b2World.swift in Sources */,
+				2B40DA7625590EEE001FC5F1 /* Texture2D.swift in Sources */,
+				2B40DA6325590EE8001FC5F1 /* MetalView.swift in Sources */,
+				2B40DAAC25590F13001FC5F1 /* b2CircleShape.swift in Sources */,
+				2B40DAA125590F0B001FC5F1 /* b2Settings.swift in Sources */,
+				2B40DA6025590EE8001FC5F1 /* Utils.swift in Sources */,
+				2B40DA7D25590EFB001FC5F1 /* b2EdgeAndCircleContact.swift in Sources */,
+				2B40DA8825590F00001FC5F1 /* b2Joint.swift in Sources */,
+				2B40DAAE25590F13001FC5F1 /* b2EdgeShape.swift in Sources */,
+				2B40DA6A25590EE8001FC5F1 /* Behavior.swift in Sources */,
+				2B40DA7F25590EFB001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */,
+				2B40DA9825590F04001FC5F1 /* b2TimeStep.swift in Sources */,
+				2B40DA6D25590EE8001FC5F1 /* BehaviorBuilder.swift in Sources */,
+				2B40DA6725590EE8001FC5F1 /* Map.swift in Sources */,
+				2B40DAB725590F17001FC5F1 /* b2DynamicTree.swift in Sources */,
+				2B40DA8D25590F00001FC5F1 /* b2MouseJoint.swift in Sources */,
+				2B40DA8225590EFB001FC5F1 /* b2ChainAndCircleContact.swift in Sources */,
+				2B40DA9525590F04001FC5F1 /* b2ContactManager.swift in Sources */,
+				2B40DAA025590F0B001FC5F1 /* b2Draw.swift in Sources */,
+				2B40DA6225590EE8001FC5F1 /* MathLibrary.swift in Sources */,
+				2B40DA8A25590F00001FC5F1 /* b2RevoluteJoint.swift in Sources */,
+				2B40DA7925590EF4001FC5F1 /* b2Body.swift in Sources */,
+				2B40DA8B25590F00001FC5F1 /* b2MotorJoint.swift in Sources */,
+				2B40DA6F25590EE8001FC5F1 /* MapPreview.swift in Sources */,
+				2B40DA9025590F00001FC5F1 /* b2WeldJoint.swift in Sources */,
+				2B40DA8325590EFB001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */,
+				2B40DA8E25590F00001FC5F1 /* b2PulleyJoint.swift in Sources */,
+				2B40DAA625590F0B001FC5F1 /* b2Wrappers.swift in Sources */,
+				2B40DA7025590EE8001FC5F1 /* Branches.swift in Sources */,
+				2B40DA7125590EE8001FC5F1 /* ShaderCompiler.swift in Sources */,
+				2B40DA8F25590F00001FC5F1 /* b2FrictionJoint.swift in Sources */,
+				2B40DA8125590EFB001FC5F1 /* b2ContactSolver.swift in Sources */,
+				2B40DA6B25590EE8001FC5F1 /* Leaves.swift in Sources */,
+				2B40DA9925590F04001FC5F1 /* b2Fixture.swift in Sources */,
+				2B40DA7425590EEE001FC5F1 /* Classes.swift in Sources */,
+				2B40DAAF25590F13001FC5F1 /* b2PolygonShape.swift in Sources */,
+				2B40DA9D25590F07001FC5F1 /* b2Rope.swift in Sources */,
+				2B40DAAD25590F13001FC5F1 /* b2Shape.swift in Sources */,
+				2B40DAA325590F0B001FC5F1 /* b2Timer.swift in Sources */,
+				2B40DA9225590F00001FC5F1 /* b2RopeJoint.swift in Sources */,
+				2B40DA6E25590EE8001FC5F1 /* Metal.metal in Sources */,
+				2B40DAA225590F0B001FC5F1 /* b2Math.swift in Sources */,
+				2B40DAB525590F17001FC5F1 /* b2TimeOfImpact.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B40DAC52559100A001FC5F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B40DB3225591040001FC5F1 /* b2DynamicTree.swift in Sources */,
+				2B40DADD25591016001FC5F1 /* MapBuilder.swift in Sources */,
+				2B40DB2C25591040001FC5F1 /* b2Distance.swift in Sources */,
+				2B40DAE625591016001FC5F1 /* Game.swift in Sources */,
+				2B40DB272559103C001FC5F1 /* b2PolygonShape.swift in Sources */,
+				2B40DB2225591039001FC5F1 /* b2BroadPhase.swift in Sources */,
+				2B40DB0F2559102E001FC5F1 /* b2Island.swift in Sources */,
+				2B40DB032559102A001FC5F1 /* b2FrictionJoint.swift in Sources */,
+				2B40DB042559102A001FC5F1 /* b2RopeJoint.swift in Sources */,
+				2B40DAF925591023001FC5F1 /* b2Contact.swift in Sources */,
+				2B40DADA25591016001FC5F1 /* MetalView.swift in Sources */,
+				2B40DAD825591016001FC5F1 /* Branches.swift in Sources */,
+				2B40DB1E25591036001FC5F1 /* b2GrowableStack.swift in Sources */,
+				2B40DB1D25591036001FC5F1 /* b2Settings.swift in Sources */,
+				2B40DB0B2559102A001FC5F1 /* b2GearJoint.swift in Sources */,
+				2B40DAFC25591023001FC5F1 /* b2PolygonContact.swift in Sources */,
+				2B40DB082559102A001FC5F1 /* b2PrismaticJoint.swift in Sources */,
+				2B40DAF725591023001FC5F1 /* b2CircleContact.swift in Sources */,
+				2B40DAE525591016001FC5F1 /* Utils.swift in Sources */,
+				2B40DAE425591016001FC5F1 /* ShaderCompiler.swift in Sources */,
+				2B40DB2D25591040001FC5F1 /* b2CollidePolygon.swift in Sources */,
+				2B40DB022559102A001FC5F1 /* b2RevoluteJoint.swift in Sources */,
+				2B40DB122559102E001FC5F1 /* b2ContactManager.swift in Sources */,
+				2B40DAE925591016001FC5F1 /* Utilities.swift in Sources */,
+				2B40DB282559103C001FC5F1 /* b2ChainShape.swift in Sources */,
+				2B40DADC25591016001FC5F1 /* Asset.swift in Sources */,
+				2B40DB1A25591036001FC5F1 /* b2Timer.swift in Sources */,
+				2B40DAF525591023001FC5F1 /* b2ChainAndCircleContact.swift in Sources */,
+				2B40DB102559102E001FC5F1 /* b2World.swift in Sources */,
+				2B40DAEA25591016001FC5F1 /* MetalStates.swift in Sources */,
+				2B40DAD925591016001FC5F1 /* File.swift in Sources */,
+				2B40DAF825591023001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */,
+				2B40DB062559102A001FC5F1 /* b2PulleyJoint.swift in Sources */,
+				2B40DADE25591016001FC5F1 /* Metal.metal in Sources */,
+				2B40DAE825591016001FC5F1 /* MapStructures.swift in Sources */,
+				2B40DAF625591023001FC5F1 /* b2EdgeAndCircleContact.swift in Sources */,
+				2B40DB112559102E001FC5F1 /* b2TimeStep.swift in Sources */,
+				2B40DB3025591040001FC5F1 /* b2Collision.swift in Sources */,
+				2B40DB262559103C001FC5F1 /* b2CircleShape.swift in Sources */,
+				2B40DB0E2559102E001FC5F1 /* b2WorldCallbacks.swift in Sources */,
+				2B40DB072559102A001FC5F1 /* b2MouseJoint.swift in Sources */,
+				2B40DB012559102A001FC5F1 /* b2Joint.swift in Sources */,
+				2B40DAEF2559101B001FC5F1 /* Font.swift in Sources */,
+				2B40DAE725591016001FC5F1 /* Behavior.swift in Sources */,
+				2B40DB002559102A001FC5F1 /* b2WeldJoint.swift in Sources */,
+				2B40DB2F25591040001FC5F1 /* b2CollideEdge.swift in Sources */,
+				2B40DAEE2559101B001FC5F1 /* Texture2D.swift in Sources */,
+				2B40DAE225591016001FC5F1 /* MathLibrary.swift in Sources */,
+				2B40DAF22559101E001FC5F1 /* b2Body.swift in Sources */,
+				2B40DB132559102E001FC5F1 /* b2Fixture.swift in Sources */,
+				2B40DB292559103C001FC5F1 /* b2Shape.swift in Sources */,
+				2B40DB252559103C001FC5F1 /* b2EdgeShape.swift in Sources */,
+				2B40DB1B25591036001FC5F1 /* b2Draw.swift in Sources */,
+				2B40DB1F25591036001FC5F1 /* b2Common.swift in Sources */,
+				2B40DAFD25591023001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */,
+				2B40DADB25591016001FC5F1 /* BehaviorBuilder.swift in Sources */,
+				2B40DAE025591016001FC5F1 /* Map.swift in Sources */,
+				2B40DB0A2559102A001FC5F1 /* b2MotorJoint.swift in Sources */,
+				2B40DAFB25591023001FC5F1 /* b2EdgeAndPolygonContact.swift in Sources */,
+				2B40DB3125591040001FC5F1 /* b2CollideCircles.swift in Sources */,
+				2B40DB1C25591036001FC5F1 /* b2Math.swift in Sources */,
+				2B40DB1925591036001FC5F1 /* b2Wrappers.swift in Sources */,
+				2B40DADF25591016001FC5F1 /* Leaves.swift in Sources */,
+				2B40DB052559102A001FC5F1 /* b2DistanceJoint.swift in Sources */,
+				2B40DAFA25591023001FC5F1 /* b2ContactSolver.swift in Sources */,
+				2B40DAE125591016001FC5F1 /* ScriptEditor.swift in Sources */,
+				2B40DAED2559101B001FC5F1 /* Classes.swift in Sources */,
+				2B40DB1625591032001FC5F1 /* b2Rope.swift in Sources */,
+				2B40DB092559102A001FC5F1 /* b2WheelJoint.swift in Sources */,
+				2B40DAE325591016001FC5F1 /* MapPreview.swift in Sources */,
+				2B40DB2E25591040001FC5F1 /* b2TimeOfImpact.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B40DB4D255912E0001FC5F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B40DB842559130F001FC5F1 /* b2ChainAndCircleContact.swift in Sources */,
+				2B40DB6D25591303001FC5F1 /* Asset.swift in Sources */,
+				2B40DBAE25591321001FC5F1 /* b2BroadPhase.swift in Sources */,
+				2B40DB9125591314001FC5F1 /* b2RevoluteJoint.swift in Sources */,
+				2B40DB6125591303001FC5F1 /* MapStructures.swift in Sources */,
+				2B40DB8C25591314001FC5F1 /* b2GearJoint.swift in Sources */,
+				2B40DB9A25591319001FC5F1 /* b2Fixture.swift in Sources */,
+				2B40DB6525591303001FC5F1 /* Behavior.swift in Sources */,
+				2B40DB6225591303001FC5F1 /* MathLibrary.swift in Sources */,
+				2B40DBB225591325001FC5F1 /* b2ChainShape.swift in Sources */,
+				2B40DBA82559131E001FC5F1 /* b2Settings.swift in Sources */,
+				2B40DB8D25591314001FC5F1 /* b2RopeJoint.swift in Sources */,
+				2B40DB8E25591314001FC5F1 /* b2WheelJoint.swift in Sources */,
+				2B40DB6A25591303001FC5F1 /* MetalStates.swift in Sources */,
+				2B40DB9025591314001FC5F1 /* b2MouseJoint.swift in Sources */,
+				2B40DB7D2559130F001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */,
+				2B40DB9925591319001FC5F1 /* b2ContactManager.swift in Sources */,
+				2B40DB802559130F001FC5F1 /* b2CircleContact.swift in Sources */,
+				2B40DB9B25591319001FC5F1 /* b2WorldCallbacks.swift in Sources */,
+				2B40DB6025591303001FC5F1 /* Map.swift in Sources */,
+				2B40DBA92559131E001FC5F1 /* b2Draw.swift in Sources */,
+				2B40DB9725591319001FC5F1 /* b2Island.swift in Sources */,
+				2B40DB8925591314001FC5F1 /* b2PrismaticJoint.swift in Sources */,
+				2B40DB5C25591303001FC5F1 /* MapPreview.swift in Sources */,
+				2B40DBBB2559132A001FC5F1 /* b2Collision.swift in Sources */,
+				2B40DB8F25591314001FC5F1 /* b2MotorJoint.swift in Sources */,
+				2B40DBAA2559131E001FC5F1 /* b2Timer.swift in Sources */,
+				2B40DB5F25591303001FC5F1 /* ShaderCompiler.swift in Sources */,
+				2B40DBC02559132A001FC5F1 /* b2CollidePolygon.swift in Sources */,
+				2B40DB7F2559130F001FC5F1 /* b2EdgeAndPolygonContact.swift in Sources */,
+				2B40DBBF2559132A001FC5F1 /* b2TimeOfImpact.swift in Sources */,
+				2B40DBB625591325001FC5F1 /* b2PolygonShape.swift in Sources */,
+				2B40DBB525591325001FC5F1 /* b2CircleShape.swift in Sources */,
+				2B40DB7325591308001FC5F1 /* Classes.swift in Sources */,
+				2B40DB7425591308001FC5F1 /* Texture2D.swift in Sources */,
+				2B40DBB425591325001FC5F1 /* b2EdgeShape.swift in Sources */,
+				2B40DBA62559131E001FC5F1 /* b2Wrappers.swift in Sources */,
+				2B40DB6425591303001FC5F1 /* Leaves.swift in Sources */,
+				2B40DBBC2559132A001FC5F1 /* b2CollideCircles.swift in Sources */,
+				2B40DB6325591303001FC5F1 /* File.swift in Sources */,
+				2B40DB6B25591303001FC5F1 /* ScriptEditor.swift in Sources */,
+				2B40DB6C25591303001FC5F1 /* Utilities.swift in Sources */,
+				2B40DB9325591314001FC5F1 /* b2PulleyJoint.swift in Sources */,
+				2B40DB8B25591314001FC5F1 /* b2DistanceJoint.swift in Sources */,
+				2B40DBBA2559132A001FC5F1 /* b2DynamicTree.swift in Sources */,
+				2B40DBBD2559132A001FC5F1 /* b2CollideEdge.swift in Sources */,
+				2B40DB7225591308001FC5F1 /* Font.swift in Sources */,
+				2B40DB7C2559130F001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */,
+				2B40DBA42559131E001FC5F1 /* b2GrowableStack.swift in Sources */,
+				2B40DBA52559131E001FC5F1 /* b2Common.swift in Sources */,
+				2B40DB812559130F001FC5F1 /* b2EdgeAndCircleContact.swift in Sources */,
+				2B40DB6925591303001FC5F1 /* MetalView.swift in Sources */,
+				2B40DB822559130F001FC5F1 /* b2PolygonContact.swift in Sources */,
+				2B40DB782559130B001FC5F1 /* b2Body.swift in Sources */,
+				2B40DB9825591319001FC5F1 /* b2World.swift in Sources */,
+				2B40DB6825591303001FC5F1 /* MapBuilder.swift in Sources */,
+				2B40DB6E25591303001FC5F1 /* Game.swift in Sources */,
+				2B40DB832559130F001FC5F1 /* b2Contact.swift in Sources */,
+				2B40DB6625591303001FC5F1 /* Branches.swift in Sources */,
+				2B40DBA72559131E001FC5F1 /* b2Math.swift in Sources */,
+				2B40DB9225591314001FC5F1 /* b2Joint.swift in Sources */,
+				2B40DB5E25591303001FC5F1 /* Metal.metal in Sources */,
+				2B40DB9C25591319001FC5F1 /* b2TimeStep.swift in Sources */,
+				2B40DB5D25591303001FC5F1 /* BehaviorBuilder.swift in Sources */,
+				2B40DB6725591303001FC5F1 /* Utils.swift in Sources */,
+				2B40DBB325591325001FC5F1 /* b2Shape.swift in Sources */,
+				2B40DBBE2559132A001FC5F1 /* b2Distance.swift in Sources */,
+				2B40DB8A25591314001FC5F1 /* b2WeldJoint.swift in Sources */,
+				2B40DBA02559131B001FC5F1 /* b2Rope.swift in Sources */,
+				2B40DB7E2559130F001FC5F1 /* b2ContactSolver.swift in Sources */,
+				2B40DB8825591314001FC5F1 /* b2FrictionJoint.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2B40DACF2559100A001FC5F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B40DAC82559100A001FC5F1 /* DenrimMobile */;
+			targetProxy = 2B40DACE2559100A001FC5F1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2B01C87124FB814C00E86449 /* Debug */ = {
@@ -927,6 +1590,7 @@
 		2B01C87424FB814C00E86449 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Denrim.entitlements;
@@ -957,6 +1621,7 @@
 		2B01C87524FB814C00E86449 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Denrim.entitlements;
@@ -988,6 +1653,7 @@
 		2B01C87724FB814C00E86449 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
@@ -1016,6 +1682,7 @@
 		2B01C87824FB814C00E86449 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
@@ -1038,6 +1705,180 @@
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
 				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		2B40DA5B25590ECF001FC5F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G6R6L3VH62;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = DenrimDesktop/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.DenrimDesktop;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		2B40DA5C25590ECF001FC5F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G6R6L3VH62;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = DenrimDesktop/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.DenrimDesktop;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		2B40DAD32559100A001FC5F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G6R6L3VH62;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = DenrimMobile/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.DenrimMobile;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		2B40DAD42559100A001FC5F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G6R6L3VH62;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = DenrimMobile/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.DenrimMobile;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		2B40DB57255912E0001FC5F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G6R6L3VH62;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = DenrimTV/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.DenrimTV;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 14.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		2B40DB58255912E0001FC5F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G6R6L3VH62;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = DenrimTV/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.DenrimTV;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 14.2;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -1067,6 +1908,33 @@
 			buildConfigurations = (
 				2B01C87724FB814C00E86449 /* Debug */,
 				2B01C87824FB814C00E86449 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B40DA5A25590ECF001FC5F1 /* Build configuration list for PBXNativeTarget "DenrimDesktop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B40DA5B25590ECF001FC5F1 /* Debug */,
+				2B40DA5C25590ECF001FC5F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B40DAD22559100A001FC5F1 /* Build configuration list for PBXNativeTarget "DenrimMobile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B40DAD32559100A001FC5F1 /* Debug */,
+				2B40DAD42559100A001FC5F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B40DB56255912E0001FC5F1 /* Build configuration list for PBXNativeTarget "DenrimTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B40DB57255912E0001FC5F1 /* Debug */,
+				2B40DB58255912E0001FC5F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

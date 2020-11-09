@@ -5,6 +5,8 @@
 //  Created by Markus Moenig on 25/8/20.
 //
 
+#if !os(tvOS)
+
 import SwiftUI
 import WebKit
 import Combine
@@ -532,3 +534,32 @@ struct WebView  : View {
         SwiftUIWebView(game: game, colorScheme: colorScheme)
     }
 }
+
+#else
+
+class ScriptEditor
+{
+    var mapHelpText     : String = "## Available:\n\n"
+    var behaviorHelpText: String = "## Available:\n\n"
+    
+    func createSession(_ asset: Asset,_ cb: (()->())? = nil) {}
+    
+    func setAssetValue(_ asset: Asset, value: String) {}
+    func setAssetSession(_ asset: Asset) {}
+    
+    func setError(_ error: CompileError, scrollToError: Bool = false) {}
+    func setErrors(_ errors: [CompileError]) {}
+    func clearAnnotations() {}
+    
+    func getSessionCursor(_ cb: @escaping (Int32)->() ) {}
+    
+    func setReadOnly(_ readOnly: Bool = false) {}
+    func setDebugText(text: String) {}
+    
+    func setFailures(_ lines: [Int32]) {}
+    
+    func getBehaviorHelpForKey(_ key: String) -> String? { return nil }
+    func getMapHelpForKey(_ key: String) -> String? { return nil }
+}
+
+#endif
