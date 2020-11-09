@@ -1,0 +1,7 @@
+## Swiped
+
+*Swiped* returns *Success* if the given direction matches the current swipe direction on your Siri / Apple TV remote. On macOS or iOS this node always returns *Failure*.
+
+Syntax:
+
+`Swiped<Direction:"Up|Down|Right|Left">`

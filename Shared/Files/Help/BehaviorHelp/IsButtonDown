@@ -1,0 +1,21 @@
+## IsButtonDown
+
+*IsButtonDown* will return *Success* if a given button on your Siri / Apple TV remote is currently pressed or *Failure* if not. Use *IsKeyDown* to check if a button on your keyboard is down. On non Apple TV devices this node always returns *Failure*.
+
+Syntax:
+
+`IsButtonDown<Button: "ButtonName">`
+
+These buttons are current supported:
+
+* **"Menu"**
+* **"Play/Pause"**
+* **"Select"**
+* **"ArrowUp"**
+* **"ArrowDown"**
+* **"ArrowRight"**
+* **"ArrowLeft"**
+
+The arrow buttons are only supported when a keyboard is connected to the AppleTV.
+
+For swipe directions use *Swiped*.

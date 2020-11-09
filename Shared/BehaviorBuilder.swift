@@ -47,6 +47,8 @@ class BehaviorBuilder
         BehaviorNodeItem("Call", { (_ options: [String:Any]) -> BehaviorNode in return Call(options) }),
         BehaviorNodeItem("StartTimer", { (_ options: [String:Any]) -> BehaviorNode in return StartTimer(options) }),
         BehaviorNodeItem("IsKeyDown", { (_ options: [String:Any]) -> BehaviorNode in return IsKeyDown(options) }),
+        BehaviorNodeItem("IsButtonDown", { (_ options: [String:Any]) -> BehaviorNode in return IsButtonDown(options) }),
+        BehaviorNodeItem("Swiped", { (_ options: [String:Any]) -> BehaviorNode in return Swiped(options) }),
         BehaviorNodeItem("GetTouchPos", { (_ options: [String:Any]) -> BehaviorNode in return GetTouchPos(options) }),
         BehaviorNodeItem("HasDoubleTap", { (_ options: [String:Any]) -> BehaviorNode in return HasDoubleTap(options) }),
         BehaviorNodeItem("HasTouch", { (_ options: [String:Any]) -> BehaviorNode in return HasTouch(options) }),

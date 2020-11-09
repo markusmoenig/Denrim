@@ -1,6 +1,6 @@
 ## IsKeyDown
 
-*IsKeyDown* will return *Success* if a given key is currently pressed or *Failure* if not.
+*IsKeyDown* will return *Success* if a given key is currently pressed or *Failure* if not. Key is a key on your physical or virtual keyboard. Use *IsButtonDown* to check if a button on your Siri / Apple TV remote is pressed.
 
 Syntax:
 

@@ -1504,6 +1504,68 @@ class IsKeyDown: BehaviorNode
     }
 }
 
+class IsButtonDown: BehaviorNode
+{
+    var button: String? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "IsButtonDown"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["button"] as? String {
+            button = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "IsButtonDown requires a 'Button' parameter"
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let button = game.view.buttonDown {
+            if button == self.button {
+                return .Success
+            }
+        }
+        
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
+class Swiped: BehaviorNode
+{
+    var swipedDirection: String? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Swiped"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["direction"] as? String {
+            swipedDirection = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil).lowercased()
+        } else {
+            error.error = "Swiped requires a 'Direction' parameter"
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let swipedDirection = game.view.swipeDirection {
+            if swipedDirection == self.swipedDirection {
+                return .Success
+            }
+        }
+        
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 class Subtract: BehaviorNode
 {
     var pair    : (UpTo4Data, UpTo4Data, [UpTo4Data])? = nil

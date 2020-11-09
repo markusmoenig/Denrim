@@ -19,6 +19,9 @@ public class DMTKView       : MTKView
     
     var hasTap              : Bool = false
     var hasDoubleTap        : Bool = false
+    
+    var buttonDown          : String? = nil
+    var swipeDirection      : String? = nil
 
     func reset()
     {
@@ -26,6 +29,8 @@ public class DMTKView       : MTKView
         mouseIsDown = false
         hasTap  = false
         hasDoubleTap  = false
+        buttonDown = nil
+        swipeDirection = nil
     }
 
     #if os(OSX)
@@ -142,7 +147,68 @@ public class DMTKView       : MTKView
         
     func platformInit()
     {
+        var swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedRight))
+        swipeRecognizer.direction = .right
+        addGestureRecognizer(swipeRecognizer)
+        
+        swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedLeft))
+        swipeRecognizer.direction = .left
+        addGestureRecognizer(swipeRecognizer)
+        
+        swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedUp))
+        swipeRecognizer.direction = .up
+        addGestureRecognizer(swipeRecognizer)
+        
+        swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedDown))
+        swipeRecognizer.direction = .down
+        addGestureRecognizer(swipeRecognizer)
     }
+    
+    public override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?)
+    {
+        guard let buttonPress = presses.first?.type else { return }
+            
+        switch(buttonPress) {
+            case .menu:
+                buttonDown = "Menu"
+            case .playPause:
+                buttonDown = "Play/Pause"
+            case .select:
+                buttonDown = "Select"
+            case .upArrow:
+                buttonDown = "ArrowUp"
+            case .downArrow:
+                buttonDown = "ArrowDown"
+            case .leftArrow:
+                buttonDown = "ArrowLeft"
+            case .rightArrow:
+                buttonDown = "ArrowRight"
+            default:
+                print("Unkown Button", buttonPress)
+        }
+    }
+    
+    public override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?)
+    {
+        buttonDown = nil
+    }
+    
+    @objc func swipedUp() {
+       swipeDirection = "up"
+    }
+    
+    @objc func swipedDown() {
+       swipeDirection = "down"
+    }
+        
+    @objc func swipedRight() {
+       swipeDirection = "right"
+    }
+    
+    @objc func swipedLeft() {
+       swipeDirection = "left"
+    }
+
     
     #endif
 }
