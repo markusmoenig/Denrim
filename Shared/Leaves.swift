@@ -122,6 +122,7 @@ class SetScene: BehaviorNode
                                 game.currentScene = scene
                                 map.setup(game: game)
                                 map.createDependencies()
+                                game.view.reset()
                                 // Add Game Behavior
                                 if let gameAsset = game.gameAsset {
                                     let gameBehavior = MapBehavior(behaviorAsset: gameAsset, name: "game", options: [:])

@@ -1,5 +1,18 @@
 ## Example Files / Projects
 
-When running Denrim for the first time it will install several example projects in the new Denrim folder in your iCloud directory (inside the Examples subdirectory).
+Denrim will install several example projects in the new Denrim folder in your iCloud directory (it will create an Examples subdirectory).
 
 Going through these examples to analyze how the map and behavior files work is highly recommended. The context sensitiv help in the right side panel will show a description of the node or directive of the current line.
+
+### Bricks
+
+A small classic bricks game done without physics, the ball is tested if it hit bricks or walls and is reflected by simply reversing the velocity.
+
+Grid instancing is used to create and manage the bricks.
+
+### Spaceshooter
+
+A small space shooter which uses the physics engine for collisions. On demand instancing is used to create missiles and enemies.
+
+Image assets in this game are free-to-use and created by @ansimuz
+https://ansimuz.itch.io/warped-space-shooter
