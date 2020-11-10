@@ -10,6 +10,12 @@ import AVFoundation
 
 class Map
 {
+    enum ScaleMode {
+        case UpDown, Fixed
+    }
+    
+    var scaleMode           : ScaleMode = .UpDown
+    
     // Resources
     var images              : [String:MapImage] = [:]
     var audio               : [String:MapAudio] = [:]
@@ -86,8 +92,17 @@ class Map
         canvasSize = getCanvasSize()
         
         let scale: Float = min(texture.width / canvasSize.x, texture.height / canvasSize.y)
-        let scaledWidth: Float = canvasSize.x * scale
-        let scaledHeight: Float = canvasSize.y * scale
+        let scaledWidth: Float
+        let scaledHeight: Float
+        
+        if scaleMode == .UpDown {
+            scaledWidth = canvasSize.x * scale
+            scaledHeight = canvasSize.y * scale
+        } else //if scaleMode == .Fixed
+        {
+            scaledWidth = canvasSize.x
+            scaledHeight = canvasSize.y
+        }
 
         viewBorder = Float2((texture.width - scaledWidth) / 2.0, (texture.height - scaledHeight) / 2.0)
 
@@ -516,13 +531,13 @@ class Map
             alias.options.position.x = x
             alias.options.position.y = y
 
-            alias.options.width.x = width
-            alias.options.height.x = height
+            alias.options.width.x = width// * aspect.x
+            alias.options.height.x = height// * aspect.y
                         
             // Subrect ?
             if let v = alias.options.rect {
-                width = v.width
-                height = v.height
+                width = v.z / canvasSize.x * aspect.x * 100.0
+                height = v.w / canvasSize.y * aspect.y * 100.0
                 
                 alias.options.width.x = width
                 alias.options.height.x = height
@@ -758,10 +773,14 @@ class Map
     
     func getCanvasSize() -> Float2 {
         var size = Float2(texture.width, texture.height)
+        
+        scaleMode = .UpDown
 
         var name = "Desktop"
         #if os(iOS)
         name = "Mobile"
+        #elseif os(tvOS)
+        name = "TV"
         #endif
         
         for s in commands {
@@ -773,9 +792,15 @@ class Map
                         }
                     }
                 }
+                if let s = s.options["scale"] as? String {
+                    let scale = s.lowercased()
+                    if scale == "fixed" {
+                        scaleMode = .Fixed
+                    }
+                }
             }
         }
-        
+
         return size
     }
     
@@ -1144,7 +1169,7 @@ class Map
             var height : Float = options.height.toSIMD()
             let alpha : Float = 1
             
-            let subRect : Rect2D? = options.rect
+            let subRect : Float4? = options.rect
 
             position.x += viewBorder.x
             position.y += viewBorder.y
@@ -1161,8 +1186,8 @@ class Map
             if let subRect = subRect {
                 data.pos.x = subRect.x / sourceTexture.width
                 data.pos.y = subRect.y / sourceTexture.height
-                data.size.x = subRect.width / sourceTexture.width// / game.scaleFactor
-                data.size.y = subRect.height / sourceTexture.height// / game.scaleFactor
+                data.size.x = subRect.z / sourceTexture.width
+                data.size.y = subRect.w / sourceTexture.height
             } else {
                 data.pos.x = 0
                 data.pos.y = 0

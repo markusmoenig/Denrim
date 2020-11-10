@@ -46,7 +46,7 @@ struct MapAliasData2D {
     var width           = Float1(0)
     var height          = Float1(0)
 
-    var rect            : Rect2D? = nil
+    var rect            : Float4? = nil
     var texture         : Texture2D? = nil
     
     var repeatX         : Bool = false
@@ -60,7 +60,7 @@ struct MapAliasData2D {
             self.position = Float2(0,0)
         }
         
-        if let rect = options["rect"] as? Rect2D {
+        if let rect = options["rect"] as? Float4 {
             self.rect = rect
         } else {
             self.rect = nil

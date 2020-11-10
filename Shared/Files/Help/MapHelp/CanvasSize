@@ -1,6 +1,6 @@
 ## CanvasSize
 
-This command defines the canvas (the game area) for a given device name. Coordinates inside Map files are relative (between 0..100) to the current canvas size.
+This directive defines the canvas (the game area) for a given device name. Coordinates inside Map files are relative (between 0..100) to the current canvas size.
 
 For example if the current device has a canvas size of 800, 800 a coordinate of 50, 50 would be 400, 400.
 
@@ -8,3 +8,27 @@ Using relative coordinates to device specific canvas sizes allows Denrim to:
 
 1. Scale all graphics seamlessly as the coordinates for shapes are relative to the canvas size.
 2. Allows the user to specify different canvas sizes for specific devices as devices may have different aspect ratios.
+3. Allows the user to specify a scale mode.
+
+Syntax:
+
+`CanvasSize<Platform: "PlatformName"><Size: Float2Value><Scale: "UpDown|Fixed">`
+
+The platform name can be one of these options:
+
+* **Any**, this canvas setting is specific to all devices.
+* **Desktop**, this canvas setting is specific to macOS devices.
+* **Mobile**, this canvas setting is specific to iOS devices.
+* **TV**, this canvas setting is specific to tv devices.
+
+The scale mode can be one of these options:
+
+* **UpDown**, the default option, this scales the canvas size for the given platform relatively up or down depending on the screen size while maintaining the canvas aspect ratio. Use this option if you want to seamlessly scale your shapes to the canvas size. An example for this is the SpaceShooter sample game.
+
+* **Fixed**, this will keep all shapes in a fixed size (relative to the canvas size) independent of the screen size. No scaling will occure. An example for this is the JumpAndRun sample game as the tiles are small and we do not want them to scale up.
+
+Example:
+
+`CanvasSize<Platform: "Any"><Size: 800, 800><Scale: "UpDown">`
+
+You can have several *CanvasSize* directives in one map file.

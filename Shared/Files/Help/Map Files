@@ -16,7 +16,7 @@ When you create a shape of a certain id, you have to set it's position. In Denri
 
 For example
 
-CanvasSize<Platform: "Any"><Size: 800, 800>
+CanvasSize<Platform: "Any"><Size: 800, 800><Scale: "UpDown">
 box = Shape2D<Type: "Box"><Position: 50, 50><Size: 10, 10>
 
 sets the canvas size for all devices to 800, 800 (which will be scaled up or down depending on the available size on the device). And a shape id *box* is created in the middle of the canvas and a size of 10% of the canvas size. If you omit the size parameter for the box and apply a texture to the shape the size is automatically taken from the texture size.
