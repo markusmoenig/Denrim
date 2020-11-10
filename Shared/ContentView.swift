@@ -290,16 +290,15 @@ struct ContentView: View {
                 ToolbarItemGroup(placement: toolbarPlacement1) {
                     Menu {
                         Section(header: Text("Add Asset")) {
-                            Menu("New Behavior") {
-                                Button("Object 2D", action: {
-                                    document.game.assetFolder.addBehaviorTree("New Object 2D")
-                                    assetName = document.game.assetFolder.current!.name
-                                    showAssetNamePopover = true
-                                    updateView.toggle()
-                                })
-                            }
+                            Button("New Bevavior", action: {
+                                document.game.assetFolder.addBehaviorTree("New Behavior")
+                                assetName = document.game.assetFolder.current!.name
+                                showAssetNamePopover = true
+                                updateView.toggle()
+                            })
                             Button("New Map", action: {
                                 document.game.assetFolder.addMap("New Map")
+                                showMapItems = true
                                 assetName = document.game.assetFolder.current!.name
                                 showAssetNamePopover = true
                                 updateView.toggle()
@@ -307,6 +306,7 @@ struct ContentView: View {
                             Button("New Shader", action: {
                                 document.game.assetFolder.addShader("New Shader")
                                 if let asset = document.game.assetFolder.current {
+                                    showShaderItems = true
                                     assetName = document.game.assetFolder.current!.name
                                     showAssetNamePopover = true
                                     document.game.createPreview(asset)
@@ -390,6 +390,7 @@ struct ContentView: View {
                         document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
                         assetName = document.game.assetFolder.current!.name
                         showAssetNamePopover = true
+                        showImageItems = true
                         updateView.toggle()
                     }
                 } catch {
@@ -631,6 +632,7 @@ struct ContentView: View {
                     assetName = document.game.assetFolder.current!.name
                     showAssetNamePopover = true
                     updateView.toggle()
+                    showAudioItems = true
                 }
             } catch {
                 // Handle failure.

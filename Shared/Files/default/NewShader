@@ -1,0 +1,11 @@
+
+fragment float4 shaderMain(RasterizerData in [[stage_in]], constant BehaviorData &behavior [[buffer(0)]])
+{
+    float2 uv = in.textureCoordinate;
+    float2 size = in.viewportSize;
+    
+    //float Time => behavior.Time = 0;
+    //float2 Aspect => behavior.Aspect = float2(1);
+
+    return float4(uv.x, uv.y, 0, 1);
+}

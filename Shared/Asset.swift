@@ -104,20 +104,25 @@ class AssetFolder       : Codable
     
     func addBehaviorTree(_ name: String, value: String = "")
     {
-        let asset = Asset(type: .Behavior, name: name, value: value)
-        assets.append(asset)
-        select(asset.id)
-        game.scriptEditor?.createSession(asset)
+        guard let path = Bundle.main.path(forResource: "NewBehavior", ofType: "", inDirectory: "Files/default") else {
+            return
+        }
+        
+        if let behaviorTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
+            let asset = Asset(type: .Behavior, name: name, value: behaviorTemplate)
+            assets.append(asset)
+            select(asset.id)
+            game.scriptEditor?.createSession(asset)
+        }
     }
     
     func addShader(_ name: String)
     {
-        guard let path = Bundle.main.path(forResource: "Shader", ofType: "txt", inDirectory: "Files") else {
+        guard let path = Bundle.main.path(forResource: "NewShader", ofType: "", inDirectory: "Files/default") else {
             return
         }
         
         if let shaderTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
-                
             let asset = Asset(type: .Shader, name: name, value: shaderTemplate)
             assets.append(asset)
             select(asset.id)
