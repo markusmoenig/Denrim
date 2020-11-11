@@ -1,0 +1,7 @@
+## GetLinearVelocity2D
+
+Gets the linear velocity of a shape. The shape has to be attached to a physics world. The linear velocity represents both the magnitude and direction.
+
+Syntax:
+
+`SetLinearVelocity2D<ShapeId: ShapeId><Variable: VariableName>`

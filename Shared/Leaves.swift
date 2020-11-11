@@ -540,6 +540,61 @@ class MoveTo2D: BehaviorNode
     }
 }
 
+// Gets the linear velocity for a given shape
+class GetLinearVelocity2D: BehaviorNode
+{
+    var shapeId: String? = nil
+    var f2: Float2? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "GetLinearVelocity2D"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["shapeid"] as? String {
+            shapeId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "GetLinearVelocity2D requires a 'ShapeId' parameter"
+        }
+        
+        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "variable") {
+            f2 = value
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if shapeId != nil && f2 != nil {
+                if let shape = map.shapes2D[shapeId!] {
+                    if let instances = shape.instances {
+                        for inst in instances.pairs {
+                            if inst.1.behaviorAsset.behavior === context {
+                                if let body = inst.0.body {
+                                    let velocity = body.m_linearVelocity
+                                    f2!.x = velocity.x
+                                    f2!.y = -velocity.y
+                                    return .Success
+                                }
+                            }
+                        }
+                    } else
+                    if let body = shape.body {
+                        let velocity = body.m_linearVelocity
+                        f2!.x = velocity.x
+                        f2!.y = -velocity.y
+                        return .Success
+                    }
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 // Sets the linear velocity for a given shape
 class SetLinearVelocity2D: BehaviorNode
 {
@@ -573,14 +628,65 @@ class SetLinearVelocity2D: BehaviorNode
                         for inst in instances.pairs {
                             if inst.1.behaviorAsset.behavior === context {
                                 if let body = inst.0.body {
-                                    body.setLinearVelocity(b2Vec2(f2!.x, f2!.y))
+                                    body.setLinearVelocity(b2Vec2(f2!.x, -f2!.y))
                                     return .Success
                                 }
                             }
                         }
                     } else
                     if let body = shape.body {
-                        body.setLinearVelocity(b2Vec2(f2!.x, f2!.y))
+                        body.setLinearVelocity(b2Vec2(f2!.x, -f2!.y))
+                        return .Success
+                    }
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
+// Applies force
+class ApplyForce2D: BehaviorNode
+{
+    var shapeId: String? = nil
+    var f2: Float2? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "ApplyForce2D"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["shapeid"] as? String {
+            shapeId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "ApplyForce2D requires a 'ShapeId' parameter"
+        }
+        
+        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error) {
+            f2 = value
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if shapeId != nil && f2 != nil {
+                if let shape = map.shapes2D[shapeId!] {
+                    if let instances = shape.instances {
+                        for inst in instances.pairs {
+                            if inst.1.behaviorAsset.behavior === context {
+                                if let body = inst.0.body {
+                                    body.applyForceToCenter(b2Vec2(f2!.x, -f2!.y), wake: true)
+                                    return .Success
+                                }
+                            }
+                        }
+                    } else
+                    if let body = shape.body {
+                        body.applyForceToCenter(b2Vec2(f2!.x, -f2!.y), wake: true)
                         return .Success
                     }
                 }

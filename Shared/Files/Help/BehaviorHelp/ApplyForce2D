@@ -1,0 +1,7 @@
+## ApplyForce2D
+
+Applies force to a shape. The shape has to be attached to a physics world. The force represents both the magnitude and direction of the force.
+
+Syntax:
+
+`ApplyForce2D<ShapeId: ShapeId><Float2: Value>`

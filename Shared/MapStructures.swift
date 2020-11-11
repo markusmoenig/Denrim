@@ -53,6 +53,8 @@ struct MapAliasData2D {
     var repeatY         : Bool = false
     
     var physicsId       : String? = nil
+    
+    var isEmpty         : Bool = false
 
     init(_ options: [String:Any])
     {
@@ -64,6 +66,10 @@ struct MapAliasData2D {
         
         if let rect = options["rect"] as? Float4 {
             self.rect = rect
+        } else
+        if let size = options["size"] as? Float2 {
+            self.rect = Float4(0, 0, size.x, size.y)
+            isEmpty = true
         } else {
             self.rect = nil
         }
@@ -97,8 +103,11 @@ struct MapAlias {
     var type            : AliasType
     var pointsTo        : String
     var originalOptions : [String:Any]
-    
+
     var options         : MapAliasData2D
+    
+    var body            : b2Body? = nil
+    var physicsWorld    : MapPhysics2D? = nil
 }
 
 struct MapLayerData2D {

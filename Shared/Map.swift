@@ -150,6 +150,17 @@ class Map
                     }
                 }
                 
+                for (aliasName, alias) in map.aliases {
+                    print(aliasName)
+                    if let body = alias.body {
+                        print("11")
+                        if body.m_fixtureList === fixture {
+                            print("22")
+                            return aliasName
+                        }
+                    }
+                }
+                
                 return nil
             }
             
@@ -322,9 +333,9 @@ class Map
                                 if let physicsId = aliases[a]!.options.physicsId, physics2D[physicsId] != nil {
                                     let ppm = physics2D[physicsId]!.ppm
                                     
-                                    let width : Float = (advance.0 / aspect.x) * 200.0
-                                    let height : Float = (advance.1 / aspect.y) * 200.0
-
+                                    let width : Float = (advance.0 / aspect.x) / 2.0
+                                    let height : Float = (advance.1 / aspect.y) / 2.0
+                                    
                                     // Define the dynamic body. We set its position and call the body factory.
                                     let bodyDef = b2BodyDef()
                                     //bodyDef.angle = 0
@@ -333,11 +344,11 @@ class Map
                                     let fixtureDef = b2FixtureDef()
                                     fixtureDef.shape = nil
 
-                                    fixtureDef.filter.categoryBits = categoryBits * 2
+                                    fixtureDef.filter.categoryBits = categoryBits
                                     fixtureDef.filter.maskBits = 0xffff
                                     
                                     let polyShape = b2PolygonShape()
-                                    polyShape.setAsBox(halfWidth: (width / 2.0) / ppm - polyShape.m_radius, halfHeight: (height / 2.0) / ppm - polyShape.m_radius)
+                                    polyShape.setAsBox(halfWidth: width / ppm - polyShape.m_radius, halfHeight: height / ppm - polyShape.m_radius)
                                     fixtureDef.shape = polyShape
                                     
                                     /*
@@ -347,16 +358,17 @@ class Map
                                         fixtureDef.friction = 0.3
                                     }*/
                                     
-                                    fixtureDef.friction = 1.0
-                                    //fixtureDef.density = 0
+                                    fixtureDef.friction = 0.1
+                                    fixtureDef.density = 0.0
+                                    bodyDef.position.set((xPos / aspect.x + width) / ppm, (yPos / aspect.y + height) / ppm)
                                     
-                                    let rX = xPos / aspect.x//* aspect.x * 100.0
-                                    let rY = yPos / aspect.y//* aspect.y * 100.0
+                                    //print((xPos / aspect.x + width), (yPos / aspect.y + height), width, height)
 
-                                    bodyDef.position.set((rX + width / 2.0) / ppm, (rY + height / 2.0) / ppm)
-                                                                        
                                     let body = physics2D[physicsId]!.world!.createBody(bodyDef)
                                     body.createFixture(fixtureDef)
+                                    
+                                    aliases[a]!.body = body
+                                    aliases[a]!.physicsWorld = physics2D[physicsId]
                                 }
                                 // ---
                                 xPos += advance.0
@@ -451,6 +463,14 @@ class Map
             fixtureDef.shape = polyShape
         }
         
+        if let fixedRotation = cmd.options["fixedrotation"] as? Bool1 {
+            //shape2D.body?.setFixedRotation(fixedRotation.x)
+            //shape2D.body?.
+            //bodyDef.angularDamping = 0
+            //bodyDef.angularVelocity = 0
+            bodyDef.fixedRotation = fixedRotation.x
+        }
+        
         if let body = cmd.options["body"] as? String {
             if body.lowercased() == "dynamic" {
                 bodyDef.type = b2BodyType.dynamicBody
@@ -468,6 +488,7 @@ class Map
         } else {
             fixtureDef.restitution = 0.0
         }
+        
         if let friction = cmd.options["friction"] as? Float1 {
             fixtureDef.friction = friction.x
         } else {
@@ -522,6 +543,8 @@ class Map
                         shapes2D[shapeId]!.options.size.y = texture2D.height / canvasSize.y * 100.0
                     }
                 }
+                
+                return true
             }
         }
         return false
@@ -599,6 +622,10 @@ class Map
     @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: inout MapAlias, doDraw: Bool = true) -> (Float, Float)
     {
         var rc     : (Float, Float) = (0,0)
+        
+        if alias.options.isEmpty && alias.options.rect != nil {
+            return (alias.options.rect!.z, alias.options.rect!.w)
+        }
 
         if alias.options.texture == nil {
             if alias.type == .Image {
@@ -658,7 +685,6 @@ class Map
         }
         
         return rc
- 
     }
     
     func drawShape(_ shape: MapShape2D)
@@ -787,7 +813,7 @@ class Map
                     if let body = shape2D.body {
                         shape2D.options.position.x = body.position.x * ppm - shape2D.options.size.x / 2.0
                         shape2D.options.position.y = body.position.y * ppm - shape2D.options.size.y / 2.0
-                        shape2D.options.rotation.x = body.angle.radiansToDegrees                        
+                        shape2D.options.rotation.x = body.angle.radiansToDegrees
                     }
                 }
             }
@@ -796,7 +822,7 @@ class Map
         if let sceneLayers = scene.options["layers"] as? [String] {
             for l in sceneLayers {
                 if let layer = layers[l] {
-                    drawLayer(x /*+ layer.options.offset.x*/, y /*+ layer.options.offset.y*/, layer)
+                    drawLayer(x, y, layer)
                 }
             }
         }

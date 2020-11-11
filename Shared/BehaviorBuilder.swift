@@ -69,7 +69,9 @@ class BehaviorBuilder
         
         BehaviorNodeItem("SetVisible", { (_ options: [String:Any]) -> BehaviorNode in return SetVisible(options) }),
         BehaviorNodeItem("SetActive", { (_ options: [String:Any]) -> BehaviorNode in return SetActive(options) }),
+        BehaviorNodeItem("GetLinearVelocity2D", { (_ options: [String:Any]) -> BehaviorNode in return GetLinearVelocity2D(options) }),
         BehaviorNodeItem("SetLinearVelocity2D", { (_ options: [String:Any]) -> BehaviorNode in return SetLinearVelocity2D(options) }),
+        BehaviorNodeItem("ApplyForce2D", { (_ options: [String:Any]) -> BehaviorNode in return ApplyForce2D(options) }),
 
         BehaviorNodeItem("IsVisible", { (_ options: [String:Any]) -> BehaviorNode in return IsVisible(options) }),
 
