@@ -51,6 +51,8 @@ struct MapAliasData2D {
     
     var repeatX         : Bool = false
     var repeatY         : Bool = false
+    
+    var physicsId       : String? = nil
 
     init(_ options: [String:Any])
     {
@@ -78,6 +80,10 @@ struct MapAliasData2D {
         
         if let repeatY = options["repeaty"] as? Bool1 {
             self.repeatY = repeatY.x
+        }
+        
+        if let physicsId = options["physicsid"] as? String {
+            self.physicsId = physicsId
         }
     }
 }

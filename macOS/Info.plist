@@ -11,12 +11,14 @@
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
+            <key>CFBundleTypeName</key>
+             <string>Denrim</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.Denrim.game</string>
+				<string>com.moenig.Denrim</string>
 			</array>
 			<key>NSUbiquitousDocumentUserActivityType</key>
-			<string>$(PRODUCT_BUNDLE_IDENTIFIER).example-document</string>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).editing</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -82,14 +84,14 @@
 				<string>public.plain-text</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Example Text</string>
+			<string>Denrim Game</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.example.plain-text</string>
+			<string>com.moenig.denrim</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>exampletext</string>
+					<string>denrim</string>
 				</array>
 			</dict>
 		</dict>

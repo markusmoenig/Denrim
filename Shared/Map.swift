@@ -106,6 +106,9 @@ class Map
 
         viewBorder = Float2((texture.width - scaledWidth) / 2.0, (texture.height - scaledHeight) / 2.0)
 
+        viewBorder.x = max(viewBorder.x, 0)
+        viewBorder.y = max(viewBorder.y, 0)
+
         aspect = Float3(texture.width, texture.height, 0)
         aspect.x = (scaledWidth / 100.0)
         aspect.y = (scaledHeight / 100.0)
@@ -116,7 +119,7 @@ class Map
     }
     
     /// Creates physics, textures etc
-    func createDependencies()
+    func createDependencies(_ scene: MapScene)
     {
         // Contact Listener
         class contactListener : b2ContactListener {
@@ -291,6 +294,90 @@ class Map
             }
         }
         
+        // Parse layers for static tiles and add them to the physics worlds
+        if let sceneLayers = scene.options["layers"] as? [String] {
+            for l in sceneLayers {
+                if let layer = layers[l] {
+                    
+                    let x : Float = 0
+                    let y : Float = 0
+
+                    var xPos = x + layer.options.offset.x * aspect.x
+                    var yPos = y + layer.options.offset.y * aspect.y
+                    
+                    //xPos += layer.options.accumScroll.x
+                    //yPos += layer.options.accumScroll.y
+
+                    for line in layer.data {
+                        
+                        var index     : Int = 0
+                        var maxHeight : Float = 0
+                        
+                        while index < line.count - 1 {
+                            
+                            let a = String(line[line.index(line.startIndex, offsetBy: index)]) + String(line[line.index(line.startIndex, offsetBy: index+1)])
+                            if aliases[a] != nil {
+                                let advance = drawAlias(xPos, yPos, &aliases[a]!, doDraw: false)
+                                // --- Add Block
+                                if let physicsId = aliases[a]!.options.physicsId, physics2D[physicsId] != nil {
+                                    let ppm = physics2D[physicsId]!.ppm
+                                    
+                                    let width : Float = (advance.0 / aspect.x) * 200.0
+                                    let height : Float = (advance.1 / aspect.y) * 200.0
+
+                                    // Define the dynamic body. We set its position and call the body factory.
+                                    let bodyDef = b2BodyDef()
+                                    //bodyDef.angle = 0
+                                    bodyDef.type = b2BodyType.staticBody
+                                            
+                                    let fixtureDef = b2FixtureDef()
+                                    fixtureDef.shape = nil
+
+                                    fixtureDef.filter.categoryBits = categoryBits * 2
+                                    fixtureDef.filter.maskBits = 0xffff
+                                    
+                                    let polyShape = b2PolygonShape()
+                                    polyShape.setAsBox(halfWidth: (width / 2.0) / ppm - polyShape.m_radius, halfHeight: (height / 2.0) / ppm - polyShape.m_radius)
+                                    fixtureDef.shape = polyShape
+                                    
+                                    /*
+                                    if let friction = cmd.options["friction"] as? Float1 {
+                                        fixtureDef.friction = friction.x
+                                    } else {
+                                        fixtureDef.friction = 0.3
+                                    }*/
+                                    
+                                    fixtureDef.friction = 1.0
+                                    //fixtureDef.density = 0
+                                    
+                                    let rX = xPos / aspect.x//* aspect.x * 100.0
+                                    let rY = yPos / aspect.y//* aspect.y * 100.0
+
+                                    bodyDef.position.set((rX + width / 2.0) / ppm, (rY + height / 2.0) / ppm)
+                                                                        
+                                    let body = physics2D[physicsId]!.world!.createBody(bodyDef)
+                                    body.createFixture(fixtureDef)
+                                }
+                                // ---
+                                xPos += advance.0
+                                if advance.1 > maxHeight {
+                                    maxHeight = advance.1
+                                }
+                            }
+                            index += 2
+                        }
+                        
+                        yPos += maxHeight
+                        xPos = x + layer.options.offset.x * aspect.x
+                    }
+                    
+                    //layer.options.accumScroll.x += layer.options.scroll.x * aspect.x
+                    //layer.options.accumScroll.y += layer.options.scroll.y * aspect.y
+                }
+            }
+        }
+        
+        // Preload all audio
         game.clearLocalAudio()
         for (id, mapAudio) in audio {
             do {
@@ -509,7 +596,7 @@ class Map
         return nil
     }
 
-    @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: inout MapAlias) -> (Float, Float)
+    @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: inout MapAlias, doDraw: Bool = true) -> (Float, Float)
     {
         var rc     : (Float, Float) = (0,0)
 
@@ -531,36 +618,37 @@ class Map
             alias.options.position.x = x
             alias.options.position.y = y
 
-            alias.options.width.x = width// * aspect.x
-            alias.options.height.x = height// * aspect.y
+            alias.options.width.x = width
+            alias.options.height.x = height
                         
             // Subrect ?
             if let v = alias.options.rect {
-                width = v.z / canvasSize.x * aspect.x * 100.0
-                height = v.w / canvasSize.y * aspect.y * 100.0
+                width = v.z// / canvasSize.x * aspect.x * 100.0
+                height = v.w// / canvasSize.y * aspect.y * 100.0
                 
                 alias.options.width.x = width
                 alias.options.height.x = height
             }
             
             if alias.options.scale == .Full {
-                width = texture!.width - viewBorder.x * 2.0//canvasSize.x / texture2D.width//texture!.width - viewBorder.x * 2.0
-                height = texture!.height - viewBorder.y * 2.0//canvasSize.y / texture2D.height//aspect.z//texture!.height - viewBorder.y * 2.0
-                
-                //width = texture2D.width * canvasSize.x / texture2D.width //canvasSize.x / texture2D.width//texture!.width - viewBorder.x * 2.0
-                //height = texture2D.height * canvasSize.y / texture2D.height //canvasSize.y / texture2D.height//aspect.z//texture!.height - viewBorder.y * 2.0
+                width = texture!.width - viewBorder.x * 2.0
+                height = texture!.height - viewBorder.y * 2.0
                 
                 alias.options.width.x = width
                 alias.options.height.x = height
             }
             
-            drawTexture(alias.options)
+            if doDraw {
+                drawTexture(alias.options)
+            }
             
             if alias.options.repeatX == true {
                 var posX : Float = x + width
                 while posX < game!.texture!.width {
                     alias.options.position.x = posX
-                    drawTexture(alias.options)
+                    if doDraw {
+                        drawTexture(alias.options)
+                    }
                     posX += width
                 }
             }
@@ -568,56 +656,6 @@ class Map
             rc.0 = width
             rc.1 = height
         }
-        
-        /*
-        if alias.type == .Image {
-            if let image = images[alias.pointsTo] {
-                
-                if let texture2D = getImageResource(image.resourceName) {
-                    var width = texture2D.width
-                    var height = texture2D.height
-
-                    
-                    object["x"] = x
-                    object["y"] = y
-                    object["width"] = width
-                    object["height"] = height
-                    object["texture"] = texture2D
-                    
-                    if let v = alias.options["rect"] as? Rect2D {
-                        object["rect"] = v
-                        width = v.width
-                        height = v.height
-                        
-                        object["width"] = width
-                        object["height"] = height
-                    }
-                    
-                    if let scale = alias.options["scale"] as? String {
-                        if scale.lowercased() == "full" {
-                            object["width"] = texture!.width
-                            object["height"] = texture!.height
-                        }
-                    }
-                
-                    game?.texture?.drawTexture(object)
-
-                    if let v = alias.options["repeatx"] as? Bool {
-                        if v == true {
-                            var posX : Float = x + width
-                            while posX < game!.texture!.width {
-                                object["x"] = posX
-                                game?.texture?.drawTexture(object)
-                                posX += width
-                            }
-                        }
-                    }
-                    
-                    rc.0 = width
-                    rc.1 = height
-                }
-            }
-        }*/
         
         return rc
  
@@ -708,7 +746,7 @@ class Map
                 index += 2
             }
             
-            yPos -= maxHeight
+            yPos += maxHeight
             xPos = x + layer.options.offset.x * aspect.x
         }
         
@@ -758,14 +796,7 @@ class Map
         if let sceneLayers = scene.options["layers"] as? [String] {
             for l in sceneLayers {
                 if let layer = layers[l] {
-                    
-                    var layerOffX : Float = 0
-                    var layerOffY : Float = 0
-                    
-                    layerOffX = layer.options.offset.x
-                    layerOffY = layer.options.offset.y
-
-                    drawLayer(x + layerOffX, y + layerOffY, layer)
+                    drawLayer(x /*+ layer.options.offset.x*/, y /*+ layer.options.offset.y*/, layer)
                 }
             }
         }
