@@ -7,12 +7,12 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Denrim</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
-            <key>CFBundleTypeName</key>
-             <string>Denrim</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.moenig.Denrim</string>

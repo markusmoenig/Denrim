@@ -150,6 +150,7 @@ class Map
                     }
                 }
                 
+                /*
                 for (aliasName, alias) in map.aliases {
                     print(aliasName)
                     if let body = alias.body {
@@ -159,7 +160,7 @@ class Map
                             return aliasName
                         }
                     }
-                }
+                }*/
                 
                 return nil
             }
