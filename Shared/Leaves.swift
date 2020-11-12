@@ -575,7 +575,7 @@ class GetLinearVelocity2D: BehaviorNode
                                 if let body = inst.0.body {
                                     let velocity = body.m_linearVelocity
                                     f2!.x = velocity.x
-                                    f2!.y = -velocity.y
+                                    f2!.y = velocity.y
                                     return .Success
                                 }
                             }
@@ -584,7 +584,7 @@ class GetLinearVelocity2D: BehaviorNode
                     if let body = shape.body {
                         let velocity = body.m_linearVelocity
                         f2!.x = velocity.x
-                        f2!.y = -velocity.y
+                        f2!.y = velocity.y
                         return .Success
                     }
                 }
@@ -628,14 +628,14 @@ class SetLinearVelocity2D: BehaviorNode
                         for inst in instances.pairs {
                             if inst.1.behaviorAsset.behavior === context {
                                 if let body = inst.0.body {
-                                    body.setLinearVelocity(b2Vec2(f2!.x, -f2!.y))
+                                    body.setLinearVelocity(b2Vec2(f2!.x, f2!.y))
                                     return .Success
                                 }
                             }
                         }
                     } else
                     if let body = shape.body {
-                        body.setLinearVelocity(b2Vec2(f2!.x, -f2!.y))
+                        body.setLinearVelocity(b2Vec2(f2!.x, f2!.y))
                         return .Success
                     }
                 }
@@ -679,14 +679,14 @@ class ApplyForce2D: BehaviorNode
                         for inst in instances.pairs {
                             if inst.1.behaviorAsset.behavior === context {
                                 if let body = inst.0.body {
-                                    body.applyForceToCenter(b2Vec2(f2!.x, -f2!.y), wake: true)
+                                    body.applyForceToCenter(b2Vec2(f2!.x, f2!.y), wake: true)
                                     return .Success
                                 }
                             }
                         }
                     } else
                     if let body = shape.body {
-                        body.applyForceToCenter(b2Vec2(f2!.x, -f2!.y), wake: true)
+                        body.applyForceToCenter(b2Vec2(f2!.x, f2!.y), wake: true)
                         return .Success
                     }
                 }

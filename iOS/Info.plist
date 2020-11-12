@@ -7,6 +7,8 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+            <key>CFBundleTypeName</key>
+            <string>Denrim</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
 			<key>LSItemContentTypes</key>
@@ -14,7 +16,7 @@
 				<string>com.Denrim.game</string>
 			</array>
 			<key>NSUbiquitousDocumentUserActivityType</key>
-			<string>$(PRODUCT_BUNDLE_IDENTIFIER).example-document</string>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).editing</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -96,7 +98,7 @@
 			<key>UTTypeDescription</key>
 			<string>Example Text</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.example.plain-text</string>
+            <string>com.Denrim.game</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

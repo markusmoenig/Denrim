@@ -1,6 +1,6 @@
 CanvasSize<Platform: "Any"><Size: 800, 800>
 
-physics = Physics2D<Gravity: 0, -10>
+physics = Physics2D<Gravity: 0, 10>
 
 box = Behavior<Name: "Box">
 

@@ -235,12 +235,11 @@ class Map
         
         // Create the Physics2D instances
         for (physicsName, physics) in physics2D {
-            var gravity = b2Vec2(0.0, -10.0)
+            var gravity = b2Vec2(0.0, 10.0)
             if let gravityOption = physics.options["gravity"] as? Float2 {
                 gravity.x = gravityOption.x
                 gravity.y = gravityOption.y
             }
-            gravity.y = -gravity.y
             physics2D[physicsName]!.world = b2World(gravity: gravity)
             physics2D[physicsName]!.world?.setContactListener(contactListener(self))
         }

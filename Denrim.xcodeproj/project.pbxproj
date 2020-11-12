@@ -132,8 +132,6 @@
 		2B40DAB825590F17001FC5F1 /* b2CollideEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B94250B08080098F244 /* b2CollideEdge.swift */; };
 		2B40DAB925590F17001FC5F1 /* b2CollideCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B99250B08080098F244 /* b2CollideCircles.swift */; };
 		2B40DACD2559100A001FC5F1 /* DenrimMobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B40DACB2559100A001FC5F1 /* DenrimMobile.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2B40DAD02559100A001FC5F1 /* DenrimMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B40DAC92559100A001FC5F1 /* DenrimMobile.framework */; };
-		2B40DAD12559100A001FC5F1 /* DenrimMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2B40DAC92559100A001FC5F1 /* DenrimMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2B40DAD825591016001FC5F1 /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
 		2B40DAD925591016001FC5F1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B53617D25147B3300E8A20D /* File.swift */; };
 		2B40DADA25591016001FC5F1 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89B24FB844C00E86449 /* MetalView.swift */; };
@@ -397,16 +395,6 @@
 		2BFDAF9F254A8A4F0096A0FF /* Parma.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDAF9D254A8A4E0096A0FF /* Parma.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		2B40DACE2559100A001FC5F1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2B01C85024FB814900E86449 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2B40DAC82559100A001FC5F1;
-			remoteInfo = DenrimMobile;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		2B196FE92558C4D20098F568 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -414,17 +402,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2B40DAD52559100A001FC5F1 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				2B40DAD12559100A001FC5F1 /* DenrimMobile.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -541,7 +518,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B2C2143254A900800399171 /* Parma in Frameworks */,
-				2B40DAD02559100A001FC5F1 /* DenrimMobile.framework in Frameworks */,
 				2B09E1E52511A620002DE701 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -867,12 +843,10 @@
 				2B01C85924FB814C00E86449 /* Sources */,
 				2B01C85A24FB814C00E86449 /* Frameworks */,
 				2B01C85B24FB814C00E86449 /* Resources */,
-				2B40DAD52559100A001FC5F1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				2B40DACF2559100A001FC5F1 /* PBXTargetDependency */,
 			);
 			name = "Denrim (iOS)";
 			packageProductDependencies = (
@@ -1463,14 +1437,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		2B40DACF2559100A001FC5F1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2B40DAC82559100A001FC5F1 /* DenrimMobile */;
-			targetProxy = 2B40DACE2559100A001FC5F1 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
 		2B01C87124FB814C00E86449 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1590,7 +1556,6 @@
 		2B01C87424FB814C00E86449 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Denrim.entitlements;
@@ -1601,12 +1566,12 @@
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 1.02;
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
@@ -1621,7 +1586,6 @@
 		2B01C87524FB814C00E86449 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Denrim.entitlements;
@@ -1632,12 +1596,12 @@
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 1.02;
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
@@ -1670,7 +1634,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.01;
+				MARKETING_VERSION = 1.02;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
@@ -1699,7 +1663,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.01;
+				MARKETING_VERSION = 1.02;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
