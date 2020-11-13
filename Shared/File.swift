@@ -67,12 +67,21 @@ class File : NSObject
             return
         }
         
+        do {
+            if let templateData = NSData(contentsOfFile: path) {
+                let fileURL = url.appendingPathComponent(name + ".denrim")
+                try templateData.write(to: fileURL)
+            }
+        } catch {
+        }
+        
+        /*
         if let str = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
             let fileURL = url.appendingPathComponent(name + ".denrim")
             do {
                 try str.write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
             } catch {
             }
-        }
+        }*/
     }
 }
