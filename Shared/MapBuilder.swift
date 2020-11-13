@@ -751,7 +751,7 @@ class MapBuilder
             let timer = Timer.scheduledTimer(timeInterval: 0.2,
                                              target: self,
                                              selector: #selector(self.cursorCallback),
-                                             userInfo: asset,
+                                             userInfo: nil,
                                              repeats: true)
             self.cursorTimer = timer
         })
@@ -771,7 +771,7 @@ class MapBuilder
             game.scriptEditor!.getSessionCursor({ [weak self] (line) in
                 guard let self = self else { return }
 
-                if let asset = timer.userInfo as? Asset {
+                if let asset = self.game.assetFolder.current, asset.type == .Map {
                     let needsUpdate = self.scriptLine != line
                     self.scriptLine = line
                     if needsUpdate && asset.map != nil {

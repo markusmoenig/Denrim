@@ -76,19 +76,19 @@
       "size" : "76x76"
     },
     {
-      "filename" : "DenrimFill 2-1.png",
+      "filename" : "DenrimFill_NoAlpha 2-1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "76x76"
     },
     {
-      "filename" : "DenrimFill 2.png",
+      "filename" : "DenrimFill_NoAlpha 2.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "83.5x83.5"
     },
     {
-      "filename" : "DenrimFill.png",
+      "filename" : "DenrimFill_NoAlpha.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"

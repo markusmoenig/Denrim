@@ -435,7 +435,7 @@ class BehaviorBuilder
             let timer = Timer.scheduledTimer(timeInterval: 0.2,
                                              target: self,
                                              selector: #selector(self.cursorCallback),
-                                             userInfo: asset,
+                                             userInfo: nil,
                                              repeats: true)
             self.cursorTimer = timer
         })
@@ -450,9 +450,9 @@ class BehaviorBuilder
     }
     
     @objc func cursorCallback(_ timer: Timer) {
-        if game.state == .Idle && game.scriptEditor != nil && timer.userInfo != nil {
+        if game.state == .Idle && game.scriptEditor != nil {
             game.scriptEditor!.getSessionCursor({ (line) in
-                if let asset = timer.userInfo as? Asset {
+                if let asset = self.game.assetFolder.current, asset.type == .Behavior {
                     if let context = asset.behavior {
                         if let name = context.lines[line] {
                             if name != self.game.contextKey {
