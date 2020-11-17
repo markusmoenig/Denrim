@@ -233,10 +233,10 @@ class AssetFolder       : Codable
         
         if let asset = getAssetById(id) {
             if asset.type == .Behavior {
-                return "person.fill"
+                return "figure.walk"
             } else
             if asset.type == .Map {
-                return "map"
+                return "list.and.film"
             } else
             if asset.type == .Audio {
                 return "waveform"

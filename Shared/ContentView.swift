@@ -19,8 +19,10 @@ struct GroupView: View {
     @State var group        : AssetGroup
     @Binding var updateView : Bool
 
+    @Binding var showAssetNamePopover : Bool
+    @Binding var assetName: String
+    
     @State private var showBehaviorItems: Bool = true
-    @State private var showGroups: Bool = true
 
     var body: some View {
         DisclosureGroup(group.name, isExpanded: $showBehaviorItems) {
@@ -55,6 +57,16 @@ struct GroupView: View {
                                     }
                                 }
                             }
+                        }
+                        Section(header: Text("Edit")) {
+                            Button(action: {
+                                assetName = asset.name
+                                showAssetNamePopover = true
+                            })
+                            {
+                                Label("Rename", systemImage: "pencil")
+                            }
+                            .disabled(asset.name == "Game" && asset.type == .Behavior)
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
@@ -167,12 +179,6 @@ struct ContentView: View {
 
     @State private var showDeleteAssetAlert: Bool = false
 
-    @State private var showBehaviorItems: Bool = true
-    @State private var showMapItems: Bool = false
-    @State private var showShaderItems: Bool = false
-    @State private var showImageItems: Bool = false
-    @State private var showAudioItems: Bool = false
-
     @State private var rightSideBarIsVisible: Bool = true
 
     @State private var isImportingImages: Bool = false
@@ -206,7 +212,7 @@ struct ContentView: View {
             }*/
             List {
                 ForEach(document.game.assetFolder.groups, id: \.id) { group in
-                    GroupView(document: document, group: group, updateView: $updateView)
+                    GroupView(document: document, group: group, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName)
                 }
                 RootView(document: document, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName)
             }
@@ -263,7 +269,6 @@ struct ContentView: View {
                             })
                             Button("New Map", action: {
                                 document.game.assetFolder.addMap("New Map")
-                                showMapItems = true
                                 assetName = document.game.assetFolder.current!.name
                                 showAssetNamePopover = true
                                 updateView.toggle()
@@ -271,7 +276,6 @@ struct ContentView: View {
                             Button("New Shader", action: {
                                 document.game.assetFolder.addShader("New Shader")
                                 if let asset = document.game.assetFolder.current {
-                                    showShaderItems = true
                                     assetName = document.game.assetFolder.current!.name
                                     showAssetNamePopover = true
                                     document.game.createPreview(asset)
@@ -355,7 +359,6 @@ struct ContentView: View {
                         document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
                         assetName = document.game.assetFolder.current!.name
                         showAssetNamePopover = true
-                        showImageItems = true
                         updateView.toggle()
                     }
                 } catch {
@@ -597,7 +600,6 @@ struct ContentView: View {
                     assetName = document.game.assetFolder.current!.name
                     showAssetNamePopover = true
                     updateView.toggle()
-                    showAudioItems = true
                 }
             } catch {
                 // Handle failure.
