@@ -15,6 +15,70 @@ struct UpTo4Data {
     var data2        : Float2? = nil
     var data3        : Float3? = nil
     var data4        : Float4? = nil
+    
+    // if component
+    var index        : Int? = nil
+}
+
+func extractComponent(_ options: [String:Any], variableName: String = "variable", context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) -> UpTo4Data?
+{
+    var index : Int? = nil
+    if let compString = options["component"] as? String {
+        
+        let indexString = compString.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil).lowercased()
+        
+        if indexString == "x" {
+            index = 0
+        } else
+        if indexString == "y" {
+            index = 1
+        } else
+        if indexString == "z" {
+            index = 2
+        } else
+        if indexString == "w" {
+            index = 3
+        } else {
+            error.error = "Incorrect 'Component' value, must be one of x, y, z or w"
+        }
+    } else { error.error = "Missing required 'Component' parameter" }
+    
+    if let index = index {
+        if let f2 = extractFloat2Value(options, context: context, tree: tree, error: &error, name: variableName, isOptional: true) {
+            if index <= 1 {
+                var data = UpTo4Data()
+                data.data2 = f2
+                data.index = index
+                return data
+            } else {
+                error.error = "'Component' value must be x or y for a Float2 variable"
+            }
+        } else
+        if let f3 = extractFloat3Value(options, context: context, tree: tree, error: &error, name: variableName, isOptional: true) {
+            if index <= 2 {
+                var data = UpTo4Data()
+                data.data3 = f3
+                data.index = index
+                return data
+            } else {
+                error.error = "'Component' value must be x, y or z for a Float3 variable"
+            }
+        } else
+        if let f4 = extractFloat4Value(options, context: context, tree: tree, error: &error, name: variableName, isOptional: true) {
+            if index <= 3 {
+                var data = UpTo4Data()
+                data.data4 = f4
+                data.index = index
+                return data
+            } else {
+                error.error = "'Component' value must be x, y, z or w for a Float4 variable"
+            }
+        } else {
+            error.error = "'Variable' value must reference a Float2, Float3 or Float4 variable"
+        }
+    }
+    
+    return nil
 }
 
 func extractVariableValue(_ options: [String:Any], variableName: String, context: BehaviorContext, error: inout CompileError) -> Any?

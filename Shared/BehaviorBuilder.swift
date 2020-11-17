@@ -63,6 +63,7 @@ class BehaviorBuilder
 
         BehaviorNodeItem("Set", { (_ options: [String:Any]) -> BehaviorNode in return SetNode(options) }),
         BehaviorNodeItem("IsVariable", { (_ options: [String:Any]) -> BehaviorNode in return IsVariable(options) }),
+        BehaviorNodeItem("IsComponent", { (_ options: [String:Any]) -> BehaviorNode in return IsComponent(options) }),
 
         BehaviorNodeItem("CreateInstance2D", { (_ options: [String:Any]) -> BehaviorNode in return CreateInstance2D(options) }),
         BehaviorNodeItem("DestroyInstance2D", { (_ options: [String:Any]) -> BehaviorNode in return DestroyInstance2D(options) }),

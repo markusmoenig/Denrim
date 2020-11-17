@@ -26,6 +26,22 @@ class Float4
     {
         return SIMD4<Float>(x, y, z, w)
     }
+    
+    subscript(index: Int) -> Float {
+        get {
+            if index == 1 {
+                return y
+            } else
+            if index == 2 {
+                return z
+            } else
+            if index == 3 {
+                return w
+            } else {
+                return x
+            }
+        }
+    }
 }
 
 class Float3
@@ -45,6 +61,19 @@ class Float3
     {
         return SIMD3<Float>(x, y, z)
     }
+    
+    subscript(index: Int) -> Float {
+        get {
+            if index == 1 {
+                return y
+            } else
+            if index == 2 {
+                return z
+            } else {
+                return x
+            }
+        }
+    }
 }
 
 class Float2
@@ -61,6 +90,16 @@ class Float2
     func toSIMD() -> SIMD2<Float>
     {
         return SIMD2<Float>(x, y)
+    }
+    
+    subscript(index: Int) -> Float {
+        get {
+            if index == 1 {
+                return y
+            } else {
+                return x
+            }
+        }
     }
 }
 

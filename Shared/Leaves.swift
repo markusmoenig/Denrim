@@ -1874,6 +1874,84 @@ class Multiply: BehaviorNode
     }
 }
 
+class IsComponent: BehaviorNode
+{
+    enum Mode {
+        case GreaterThan, LessThan, Equal
+    }
+    
+    var mode    : Mode = .Equal
+    var pair    : (UpTo4Data, UpTo4Data, [UpTo4Data])? = nil
+    var component : UpTo4Data? = nil
+    var f1      : Float1? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "IsComponent"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        
+        if let compData = extractComponent(options, context: context, tree: tree, error: &error) {
+            component = compData
+            if var m = options["mode"] as? String {
+                m = m.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+                if m == "GreaterThan" {
+                    mode = .GreaterThan
+                } else
+                if m == "LessThan" {
+                    mode = .LessThan
+                } else
+                if m == "Equal" {
+                    mode = .Equal
+                } else { error.error = "'Mode' needs to be 'Equal', 'GreatherThan' or 'LessThan'" }
+            } else { error.error = "Missing 'Mode' statement" }
+            
+            if error.error == nil {
+                f1 = extractFloat1Value(options, context: context, tree: tree, error: &error)
+            }
+        }
+        
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        var value : Float? = nil
+        
+        if let f2 = component?.data2 {
+            value = f2[component!.index!]
+        } else
+        if let f3 = component?.data3 {
+            value = f3[component!.index!]
+        } else
+        if let f4 = component?.data4 {
+            value = f4[component!.index!]
+        }
+        
+        if let value = value {
+            if mode == .Equal {
+                if value == f1!.x {
+                    return .Success
+                }
+            } else
+            if mode == .GreaterThan {
+                if value > f1!.x {
+                    return .Success
+                }
+            } else
+            if mode == .LessThan {
+                if value < f1!.x {
+                    return .Success
+                }
+            }
+        }
+ 
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 class IsVariable: BehaviorNode
 {
     enum Mode {

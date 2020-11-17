@@ -13,3 +13,5 @@ Example:
 `IsVariable<Variable: contacts><Mode: "GreaterThan"><Int: 0>`
 
 would return *Success* if the Int variable contacts has a value 1 or more.
+
+To test for a specific component value for a Float2, Float3 or Float4 variable use *IsComponent*.
