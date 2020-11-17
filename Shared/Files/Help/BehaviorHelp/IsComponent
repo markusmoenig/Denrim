@@ -1,0 +1,13 @@
+## IsComponent
+
+Checks if a component of a given Float2, Float3 or Float4 variable is **Equal**, **LessThan** or **GreaterThan** the given Float value. If yes it returns *Success* otherwise *Failure*.
+
+Syntax:
+
+`IsComponent<Variable: Name><Component: "x|y|z|w">"<Mode: "Equal|LessThan|GreaterThan"><Float: Value>`
+
+Example:
+
+`IsComponent<Variable: position><Component: "y"><Mode: "GreaterThan"><Float: 10>`
+
+would return *Success* if the position's y component has a value of 11 or more.
