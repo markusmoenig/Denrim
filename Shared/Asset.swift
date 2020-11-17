@@ -17,19 +17,24 @@ class AssetGroup        : Codable, Equatable
     var id              = UUID()
     var name            : String = ""
     
-    init()
+    init(_ name: String)
     {
+        self.name = name
     }
     
     required init(from decoder: Decoder) throws
     {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        if let id = try container.decodeIfPresent(UUID.self, forKey: .id) {
+            self.id = id
+        }
         name = try container.decode(String.self, forKey: .name)
     }
     
     func encode(to encoder: Encoder) throws
     {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
     }
     
@@ -44,11 +49,11 @@ class AssetFolder       : Codable
     var game            : Game!
     var current         : Asset? = nil
     
-    var behaviorGroups  : [AssetGroup] = []
+    var groups          : [AssetGroup] = []
     
     private enum CodingKeys: String, CodingKey {
         case assets
-        case behaviorGroups
+        case groups
     }
     
     init()
@@ -89,9 +94,9 @@ class AssetFolder       : Codable
     {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         assets = try container.decode([Asset].self, forKey: .assets)
-        if let bGroups = try container.decodeIfPresent([AssetGroup].self, forKey: .behaviorGroups)
+        if let gs = try container.decodeIfPresent([AssetGroup].self, forKey: .groups)
         {
-            behaviorGroups = bGroups
+            groups = gs
         }
     }
     
@@ -99,7 +104,7 @@ class AssetFolder       : Codable
     {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(assets, forKey: .assets)
-        try container.encode(behaviorGroups, forKey: .behaviorGroups)
+        try container.encode(groups, forKey: .groups)
     }
     
     func addBehaviorTree(_ name: String, value: String = "")
@@ -224,6 +229,29 @@ class AssetFolder       : Codable
         }
     }
     
+    func getSystemName(_ id: UUID) -> String {
+        
+        if let asset = getAssetById(id) {
+            if asset.type == .Behavior {
+                return "person.fill"
+            } else
+            if asset.type == .Map {
+                return "map"
+            } else
+            if asset.type == .Audio {
+                return "waveform"
+            } else
+            if asset.type == .Image {
+                return "photo.on.rectangle"
+            } else
+            if asset.type == .Shader {
+                return "fx"
+            }
+        }
+        
+        return ""
+    }
+    
     func getAsset(_ name: String,_ type: Asset.AssetType = .Behavior) -> Asset?
     {
         for asset in assets {
@@ -238,6 +266,16 @@ class AssetFolder       : Codable
     {
         for asset in assets {
             if asset.type == type && asset.id == id {
+                return asset
+            }
+        }
+        return nil
+    }
+    
+    func getAssetById(_ id: UUID) -> Asset?
+    {
+        for asset in assets {
+            if asset.id == id {
                 return asset
             }
         }
@@ -350,9 +388,8 @@ class Asset         : Codable, Equatable
     var type        : AssetType = .Behavior
     var id          = UUID()
     
-    var children    : [Asset]? = nil
-    
-    var group       = ""
+    //var children    : [Asset]? = nil
+    var groupId     : UUID? = nil
     
     var name        = ""
     var value       = ""
@@ -379,7 +416,7 @@ class Asset         : Codable, Equatable
     private enum CodingKeys: String, CodingKey {
         case type
         case id
-        case group
+        case groupId
         case name
         case value
         case uuid
@@ -399,7 +436,9 @@ class Asset         : Codable, Equatable
         let container = try decoder.container(keyedBy: CodingKeys.self)
         type = try container.decode(AssetType.self, forKey: .type)
         id = try container.decode(UUID.self, forKey: .id)
-        group = try container.decode(String.self, forKey: .group)
+        if let gId = try container.decodeIfPresent(UUID?.self, forKey: .groupId) {
+            groupId = gId
+        }
         name = try container.decode(String.self, forKey: .name)
         value = try container.decode(String.self, forKey: .value)
         data = try container.decode([Data].self, forKey: .data)
@@ -410,7 +449,7 @@ class Asset         : Codable, Equatable
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .type)
         try container.encode(id, forKey: .id)
-        try container.encode(group, forKey: .group)
+        try container.encode(groupId, forKey: .groupId)
         try container.encode(name, forKey: .name)
         try container.encode(value, forKey: .value)
         try container.encode(data, forKey: .data)
