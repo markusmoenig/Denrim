@@ -64,9 +64,23 @@ struct GroupView: View {
                                 showAssetNamePopover = true
                             })
                             {
-                                Label("Rename", systemImage: "pencil")
+                                Text("Rename")//, systemImage: "pencil")
                             }
                             .disabled(asset.name == "Game" && asset.type == .Behavior)
+                            
+                            Button(action: {
+                                for asset in document.game.assetFolder.assets {
+                                    if asset.groupId == group.id {
+                                        asset.groupId = nil
+                                    }
+                                }
+                                
+                                document.game.assetFolder.groups.removeAll{$0.id == group.id}
+                                updateView.toggle()
+                            })
+                            {
+                                Text("Collapse Folder")
+                            }
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
@@ -166,28 +180,32 @@ struct RootView: View {
 struct ContentView: View {
     @Binding var document: DenrimDocument
     
-    @State private var showAssetNamePopover: Bool = false
-    @State private var assetName: String = ""
+    @State private var showAssetNamePopover : Bool = false
+    @State private var assetName: String    = ""
+    
+    @State private var showGroupNamePopover : Bool = false
+    @State private var assetGroup           : AssetGroup? = nil
+    @State private var assetGroupName       : String = ""
 
-    @State private var updateView: Bool = false
+    @State private var updateView           : Bool = false
 
-    @State private var helpIsVisible: Bool = false
-    @State private var helpText: String = ""
+    @State private var helpIsVisible        : Bool = false
+    @State private var helpText             : String = ""
 
-    @State private var imageIndex: Double = 0
-    @State private var imageScale: Double = 1
+    @State private var imageIndex           : Double = 0
+    @State private var imageScale           : Double = 1
 
-    @State private var showDeleteAssetAlert: Bool = false
+    @State private var showDeleteAssetAlert : Bool = false
 
     @State private var rightSideBarIsVisible: Bool = true
 
-    @State private var isImportingImages: Bool = false
-    @State private var isImportingAudio: Bool = false
-    @State private var isAddingImages: Bool = false
+    @State private var isImportingImages    : Bool = false
+    @State private var isImportingAudio     : Bool = false
+    @State private var isAddingImages       : Bool = false
     
-    @State private var showTemplates: Bool = true
+    @State private var showTemplates        : Bool = true
 
-    @State private var contextText: String = ""
+    @State private var contextText          : String = ""
 
     @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
 
@@ -247,17 +265,32 @@ struct ContentView: View {
                     .frame(minWidth: 200)
                 }.padding()
             }
+            // Edit Folder name
+            .popover(isPresented: self.$showGroupNamePopover,
+                     arrowEdge: .top
+            ) {
+                VStack(alignment: .leading) {
+                    Text("Name:")
+                    TextField("Name", text: $assetGroupName, onEditingChanged: { (changed) in
+                        if let group = assetGroup {
+                            group.name = assetGroupName
+                            self.updateView.toggle()
+                        }
+                    })
+                    .frame(minWidth: 200)
+                }.padding()
+            }
             .toolbar {
                 ToolbarItemGroup(placement: toolbarPlacement1) {
                     Menu {
                         Section(header: Text("Add Asset")) {
                             Button("New Folder", action: {
-                                /*
-                                document.game.assetFolder.addBehaviorTree("New F")
-                                assetName = document.game.assetFolder.current!.name
-                                showAssetNamePopover = true
-                                */
                                 let group = AssetGroup("New Folder")
+                                
+                                assetGroupName = group.name
+                                showGroupNamePopover = true
+                                assetGroup = group
+                                
                                 document.game.assetFolder.groups.append(group)
                                 updateView.toggle()
                             })
