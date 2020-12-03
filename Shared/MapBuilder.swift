@@ -49,7 +49,7 @@ class MapBuilder
         mapPreview = MapPreview(game)
     }
     
-    @discardableResult func compile(_ asset: Asset) -> CompileError
+    @discardableResult func compile(_ asset: Asset,_ path: String = "") -> CompileError
     {
         //print("compiling...")
         
@@ -169,7 +169,7 @@ class MapBuilder
                             let map = self.parser_processOptions(options, &error)
                             if error.error == nil {
                                 if let leftValue = leftValue {
-                                    self.parser_processAssignment(type, variable: leftValue, options: map, error: &error, map: asset.map!)
+                                    self.parser_processAssignment(type, variable: leftValue, options: map, error: &error, map: asset.map!, path: path)
                                 } else {
                                     self.parser_processCommand(type, options: map, error: &error, map: asset.map!)
                                 }
@@ -218,7 +218,7 @@ class MapBuilder
         setLine(type.rawValue)
     }
     
-    func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout CompileError, map: Map)
+    func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout CompileError, map: Map, path: String)
     {
         //print("Processing Assignment", type, variable, options, error.line!)
         

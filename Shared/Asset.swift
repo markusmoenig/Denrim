@@ -185,6 +185,7 @@ class AssetFolder       : Codable
         select(asset.id)
     }
     
+    /// Select the asset of the given id
     func select(_ id: UUID)
     {
         if let current = current {
@@ -229,11 +230,12 @@ class AssetFolder       : Codable
         }
     }
     
+    /// Get a system image name for the given asset
     func getSystemName(_ id: UUID) -> String {
         
         if let asset = getAssetById(id) {
             if asset.type == .Behavior {
-                return "figure.walk"
+                return "lightbulb"//"circles.hexagongrid.fill"
             } else
             if asset.type == .Map {
                 return "list.and.film"
@@ -252,16 +254,72 @@ class AssetFolder       : Codable
         return ""
     }
     
-    func getAsset(_ name: String,_ type: Asset.AssetType = .Behavior) -> Asset?
-    {
-        for asset in assets {
-            if asset.type == type && (asset.name == name || String(asset.name.split(separator: ".")[0]) == name) {
-                return asset
+    /// Returns the group identified by the given id
+    func getGroupById(_ id: UUID) -> AssetGroup? {
+        for group in groups {
+            if group.id == id {
+                return group
             }
         }
         return nil
     }
     
+    func getAssetPath(_ asset: Asset) -> String
+    {
+        let path = ""
+        
+        if let groupId = asset.groupId {
+            if let group = getGroupById(groupId) {
+                return group.name
+            }
+        }
+        
+        return path
+    }
+    
+    /// Resolves the given path into the name and the id of the AssetGroup
+    func resolvePath(_ path: String) -> (String, UUID?)?
+    {
+        var name = ""
+        var groupId : UUID? = nil
+        
+        if path.contains("/") {
+            let a = path.split(separator: "/")
+            if a.count >= 2 {
+                for group in groups {
+                    if group.name == a[0] {
+                        groupId = group.id
+                        
+                        // Future, check for sub groups
+                        break
+                    }
+                }
+                name = String(a[a.count - 1])
+                return (name, groupId)
+            }
+        } else {
+            return (path, groupId)
+        }
+        return nil
+    }
+    
+    /// Get an asset based on the path and type
+    func getAsset(_ path: String,_ type: Asset.AssetType = .Behavior) -> Asset?
+    {
+        if let tuple = resolvePath(path) {
+            let name = tuple.0
+            let groupId = tuple.1
+            
+            for asset in assets {
+                if asset.type == type && asset.name == name && asset.groupId == groupId {
+                    return asset
+                }
+            }
+        }
+        return nil
+    }
+    
+    /// Get an asset based on its id and type
     func getAssetById(_ id: UUID,_ type: Asset.AssetType = .Behavior) -> Asset?
     {
         for asset in assets {
@@ -272,6 +330,7 @@ class AssetFolder       : Codable
         return nil
     }
     
+    /// Get an asset based on its id only
     func getAssetById(_ id: UUID) -> Asset?
     {
         for asset in assets {
@@ -282,9 +341,10 @@ class AssetFolder       : Codable
         return nil
     }
     
-    func getAssetTexture(_ name: String,_ index: Int = 0) -> MTLTexture?
+    /// Creates an MTLTexture for the given Image index
+    func getAssetTexture(_ path: String,_ index: Int = 0) -> MTLTexture?
     {
-        if let asset = getAsset(name, .Image) {
+        if let asset = getAsset(path, .Image) {
             if index >= 0 && index < asset.data.count {
                 let data = asset.data[index]
                 
@@ -295,6 +355,7 @@ class AssetFolder       : Codable
         return nil
     }
     
+    /// The asset was updated in the editor, compile it
     func assetUpdated(id: UUID, value: String)//, deltaStart: Int32, deltaEnd: Int32)
     {
         for asset in assets {
