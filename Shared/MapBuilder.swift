@@ -233,8 +233,8 @@ class MapBuilder
             }
         } else {
             map.commands.append(MapCommand(command: type.rawValue, options: options))
-            setLine(type.rawValue)
         }
+        setLine(type.rawValue)
     }
     
     func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout CompileError, map: Map, path: String)
@@ -610,6 +610,10 @@ class MapBuilder
                     // Game Asset
                     if asset == nil && varArray[0] == "game" {
                         asset = game.gameAsset
+                        if asset == nil {
+                            // Fix for preview of maps to show help, as this would fail otherwise as gameAsset is nil in .Idle state
+                            isValid = true
+                        }
                     }
                 }
             }
