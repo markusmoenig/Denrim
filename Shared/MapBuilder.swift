@@ -222,7 +222,6 @@ class MapBuilder
                 if let subAsset = game.assetFolder.getAsset(name, .Map) {
                     let path = game.assetFolder.extractPath(name)
                     game.assetFolder.currentPath = path
-                    print("path", path)
                     let subError = compile(subAsset)
                     if subError.error != nil {
                         error = subError

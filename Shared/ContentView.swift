@@ -15,17 +15,17 @@ var toolbarPlacement1 : ToolbarItemPlacement = .navigationBarLeading
 #endif
 
 struct GroupView: View {
-    @State var document     : DenrimDocument
-    @State var group        : AssetGroup
-    @Binding var updateView : Bool
+    @State var document                 : DenrimDocument
+    @State var group                    : AssetGroup
+    @Binding var updateView             : Bool
 
-    @Binding var showAssetNamePopover : Bool
-    @Binding var assetName: String
+    @Binding var showAssetNamePopover   : Bool
+    @Binding var assetName              : String
     
-    @State private var showBehaviorItems: Bool = true
+    @State private var isExpanded       : Bool = false
 
     var body: some View {
-        DisclosureGroup(group.name, isExpanded: $showBehaviorItems) {
+        DisclosureGroup(group.name, isExpanded: $isExpanded) {
             ForEach(document.game.assetFolder.assets, id: \.id) { asset in
                 if asset.groupId == group.id {
                     Button(action: {
@@ -367,22 +367,6 @@ struct ContentView: View {
                 }
 
             }
-            /*
-            // Edit Folder name
-            .popover(isPresented: self.$showGroupNamePopover,
-                     arrowEdge: .top
-            ) {
-                VStack(alignment: .leading) {
-                    Text("Name:")
-                    TextField("Name", text: $assetGroupName, onEditingChanged: { (changed) in
-                        if let group = assetGroup {
-                            group.name = assetGroupName
-                            self.updateView.toggle()
-                        }
-                    })
-                    .frame(minWidth: 200)
-                }.padding()
-            }*/
             // Import Images
             .fileImporter(
                 isPresented: $isImportingImages,
@@ -540,6 +524,21 @@ struct ContentView: View {
                         Image(systemName: "sidebar.right")
                     })
                 }
+            }
+            // Edit Folder name
+            .popover(isPresented: self.$showGroupNamePopover,
+                     arrowEdge: .top
+            ) {
+                VStack(alignment: .leading) {
+                    Text("Name:")
+                    TextField("Name", text: $assetGroupName, onEditingChanged: { (changed) in
+                        if let group = assetGroup {
+                            group.name = assetGroupName
+                            self.updateView.toggle()
+                        }
+                    })
+                    .frame(minWidth: 200)
+                }.padding()
             }
             .onReceive(self.document.game.gameError) { state in
                 if let asset = self.document.game.assetError.asset {
