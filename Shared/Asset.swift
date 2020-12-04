@@ -270,7 +270,7 @@ class AssetFolder       : Codable
         return nil
     }
     
-    /// Exctracts the path
+    /// Exctracts the path from a string
     func extractPath(_ path: String) -> String?
     {
         if path.contains("/") {
@@ -282,6 +282,18 @@ class AssetFolder       : Codable
             }
             return p
         }        
+        return nil
+    }
+    
+    /// Extract the path from the group id of an asset
+    func extractPath(_ asset: Asset) -> String?
+    {
+        if asset.groupId == nil { return nil }
+        for group in groups {
+            if group.id == asset.groupId {
+                return group.name
+            }
+        }
         return nil
     }
     
@@ -390,7 +402,11 @@ class AssetFolder       : Codable
             game.behaviorBuilder.compile(asset)
         } else
         if asset.type == .Map {
+            if let path = extractPath(asset) {
+                currentPath = path
+            }
             game.mapBuilder.compile(asset)//, deltaStart: deltaStart, deltaEnd: deltaEnd)
+            currentPath = nil
         } else
         if asset.type == .Shader {
             game.shaderCompiler.compile(asset: asset, cb: { (shader, errors) in
