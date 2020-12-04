@@ -64,11 +64,13 @@ class PlayAudioNode: BehaviorNode
     {
         if let audioId = audioId {
             if let player = game.localAudioPlayers[audioId] {
+                player.stop()
                 player.currentTime = 0
                 player.play()
                 return .Success
             } else
             if let player = game.globalAudioPlayers[audioId] {
+                player.stop()
                 player.currentTime = 0
                 player.play()
                 return .Success

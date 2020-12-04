@@ -40,6 +40,8 @@ class Map
     var commandLines        : [Int32:String] = [:]
 
     var resources           : [String:Any] = [:]
+    
+    var subMaps             : [Map] = []
 
     // Rendering
     
@@ -58,6 +60,7 @@ class Map
         resources = [:]
     }
     
+    // Clears all assets of this map and it's subMaps
     func clear(_ releaseResources: Bool = false)
     {
         images = [:]
@@ -82,8 +85,43 @@ class Map
         if releaseResources {
             resources = [:]
         }
+        for sM in subMaps {
+            sM.clear()
+        }
+        subMaps = []
     }
     
+    /// Adds a subMap and copies all structs
+    func addSubMap(_ subMap: Map)
+    {
+        for (key, val) in subMap.behavior { behavior[key] = val }
+        for (key, val) in subMap.images { images[key] = val }
+        for (key, val) in subMap.audio { audio[key] = val }
+        for (key, val) in subMap.aliases { aliases[key] = val }
+        for (key, val) in subMap.sequences { sequences[key] = val }
+        for (key, val) in subMap.layers { layers[key] = val }
+        for (key, val) in subMap.scenes { scenes[key] = val }
+        for (key, val) in subMap.physics2D { physics2D[key] = val }
+        for (key, val) in subMap.shapes2D { shapes2D[key] = val }
+        for (key, val) in subMap.shaders { shaders[key] = val }
+        for (key, val) in subMap.gridInstancers { gridInstancers[key] = val }
+        for (key, val) in subMap.onDemandInstancers { onDemandInstancers[key] = val }
+        commands += subMap.commands
+        subMaps.append(subMap)
+    }
+    
+    /// Returns a behavior linked in the map
+    func getBehavior(_ name: String) -> MapBehavior? {
+        if behavior[name] != nil { return behavior[name] }
+        else {
+            for sM in subMaps {
+                if sM.behavior[name] != nil { return sM.behavior[name] }
+            }
+        }
+        return nil
+    }
+    
+    /// Setup  the aspect and view
     func setup(game: Game)
     {
         self.game = game

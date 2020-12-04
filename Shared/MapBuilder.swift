@@ -41,6 +41,7 @@ class MapBuilder
         case CanvasSize = "CanvasSize"
         case ApplyPhysics2D = "ApplyPhysics2D"
         case ApplyTexture2D = "ApplyTexture2D"
+        case LoadMap = "LoadMap"
     }
     
     init(_ game: Game)
@@ -171,7 +172,7 @@ class MapBuilder
                                 if let leftValue = leftValue {
                                     self.parser_processAssignment(type, variable: leftValue, options: map, error: &error, map: asset.map!, path: path)
                                 } else {
-                                    self.parser_processCommand(type, options: map, error: &error, map: asset.map!)
+                                    self.parser_processCommand(type, options: map, error: &error, map: &asset.map!)
                                 }
                             }
                         } else { createError("Unknown Type `\(rightValueArray[0])`")}
@@ -205,7 +206,7 @@ class MapBuilder
         return error
     }
     
-    func parser_processCommand(_ type: Types, options: [String:Any], error: inout CompileError, map: Map)
+    func parser_processCommand(_ type: Types, options: [String:Any], error: inout CompileError, map: inout Map)
     {
         //print("Processing Command", type, options, error.line!)
         
@@ -214,8 +215,27 @@ class MapBuilder
             map.commandLines[error.line!] = command
         }
         
-        map.commands.append(MapCommand(command: type.rawValue, options: options))
-        setLine(type.rawValue)
+        if type == .LoadMap {
+            // Compile a loaded map
+            if var name = options["name"] as? String {
+                name = name.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+                if let subAsset = game.assetFolder.getAsset(name, .Map) {
+                    let path = game.assetFolder.extractPath(name)
+                    game.assetFolder.currentPath = path
+                    print("path", path)
+                    let subError = compile(subAsset)
+                    if subError.error != nil {
+                        error = subError
+                    } else {
+                        map.addSubMap(subAsset.map!)
+                    }
+                    game.assetFolder.currentPath = nil
+                }
+            }
+        } else {
+            map.commands.append(MapCommand(command: type.rawValue, options: options))
+            setLine(type.rawValue)
+        }
     }
     
     func parser_processAssignment(_ type: Types, variable: String, options: [String:Any], error: inout CompileError, map: Map, path: String)

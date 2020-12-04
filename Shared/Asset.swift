@@ -51,6 +51,8 @@ class AssetFolder       : Codable
     
     var groups          : [AssetGroup] = []
     
+    var currentPath     : String? = nil
+    
     private enum CodingKeys: String, CodingKey {
         case assets
         case groups
@@ -107,7 +109,8 @@ class AssetFolder       : Codable
         try container.encode(groups, forKey: .groups)
     }
     
-    func addBehaviorTree(_ name: String, value: String = "")
+    /// Adds a Behavior
+    func addBehavior(_ name: String, value: String = "", groupId: UUID? = nil)
     {
         guard let path = Bundle.main.path(forResource: "NewBehavior", ofType: "", inDirectory: "Files/default") else {
             return
@@ -115,13 +118,14 @@ class AssetFolder       : Codable
         
         if let behaviorTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
             let asset = Asset(type: .Behavior, name: name, value: behaviorTemplate)
+            asset.groupId = groupId
             assets.append(asset)
             select(asset.id)
             game.scriptEditor?.createSession(asset)
         }
     }
     
-    func addShader(_ name: String)
+    func addShader(_ name: String, groupId: UUID? = nil)
     {
         guard let path = Bundle.main.path(forResource: "NewShader", ofType: "", inDirectory: "Files/default") else {
             return
@@ -129,15 +133,17 @@ class AssetFolder       : Codable
         
         if let shaderTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
             let asset = Asset(type: .Shader, name: name, value: shaderTemplate)
+            asset.groupId = groupId
             assets.append(asset)
             select(asset.id)
             game.scriptEditor?.createSession(asset)
         }
     }
     
-    func addMap(_ name: String)
+    func addMap(_ name: String, groupId: UUID? = nil)
     {
         let asset = Asset(type: .Map, name: name, value: "")
+        asset.groupId = groupId
         assets.append(asset)
         select(asset.id)
         game.scriptEditor?.createSession(asset)
@@ -264,17 +270,19 @@ class AssetFolder       : Codable
         return nil
     }
     
-    func getAssetPath(_ asset: Asset) -> String
+    /// Exctracts the path
+    func extractPath(_ path: String) -> String?
     {
-        let path = ""
-        
-        if let groupId = asset.groupId {
-            if let group = getGroupById(groupId) {
-                return group.name
+        if path.contains("/") {
+            let a = path.split(separator: "/")
+            var p = ""
+            for index in 0..<a.count-1  {
+                if index > 0 { p += "/" }
+                p += a[index]
             }
-        }
-        
-        return path
+            return p
+        }        
+        return nil
     }
     
     /// Resolves the given path into the name and the id of the AssetGroup
@@ -304,8 +312,15 @@ class AssetFolder       : Codable
     }
     
     /// Get an asset based on the path and type
-    func getAsset(_ path: String,_ type: Asset.AssetType = .Behavior) -> Asset?
+    func getAsset(_ name: String,_ type: Asset.AssetType = .Behavior) -> Asset?
     {
+        var path = name
+        
+        // Add the current subpath if any
+        if let current = currentPath {
+            path = current + "/" + name
+        }
+        
         if let tuple = resolvePath(path) {
             let name = tuple.0
             let groupId = tuple.1

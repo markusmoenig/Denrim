@@ -265,21 +265,6 @@ struct ContentView: View {
                     .frame(minWidth: 200)
                 }.padding()
             }
-            // Edit Folder name
-            .popover(isPresented: self.$showGroupNamePopover,
-                     arrowEdge: .top
-            ) {
-                VStack(alignment: .leading) {
-                    Text("Name:")
-                    TextField("Name", text: $assetGroupName, onEditingChanged: { (changed) in
-                        if let group = assetGroup {
-                            group.name = assetGroupName
-                            self.updateView.toggle()
-                        }
-                    })
-                    .frame(minWidth: 200)
-                }.padding()
-            }
             .toolbar {
                 ToolbarItemGroup(placement: toolbarPlacement1) {
                     Menu {
@@ -295,13 +280,15 @@ struct ContentView: View {
                                 updateView.toggle()
                             })
                             Button("New Bevavior", action: {
-                                document.game.assetFolder.addBehaviorTree("New Behavior")
+                                let current = document.game.assetFolder.current
+                                document.game.assetFolder.addBehavior("New Behavior", groupId: current != nil ? current!.groupId : nil)
                                 assetName = document.game.assetFolder.current!.name
                                 showAssetNamePopover = true
                                 updateView.toggle()
                             })
                             Button("New Map", action: {
-                                document.game.assetFolder.addMap("New Map")
+                                let current = document.game.assetFolder.current
+                                document.game.assetFolder.addMap("New Map", groupId: current != nil ? current!.groupId : nil)
                                 assetName = document.game.assetFolder.current!.name
                                 showAssetNamePopover = true
                                 updateView.toggle()
@@ -380,6 +367,22 @@ struct ContentView: View {
                 }
 
             }
+            /*
+            // Edit Folder name
+            .popover(isPresented: self.$showGroupNamePopover,
+                     arrowEdge: .top
+            ) {
+                VStack(alignment: .leading) {
+                    Text("Name:")
+                    TextField("Name", text: $assetGroupName, onEditingChanged: { (changed) in
+                        if let group = assetGroup {
+                            group.name = assetGroupName
+                            self.updateView.toggle()
+                        }
+                    })
+                    .frame(minWidth: 200)
+                }.padding()
+            }*/
             // Import Images
             .fileImporter(
                 isPresented: $isImportingImages,
