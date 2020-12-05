@@ -21,7 +21,8 @@ struct GroupView: View {
 
     @Binding var showAssetNamePopover   : Bool
     @Binding var assetName              : String
-    
+    @Binding var assetGroup             : AssetGroup?
+
     @State private var isExpanded       : Bool = false
 
     var body: some View {
@@ -61,6 +62,7 @@ struct GroupView: View {
                         Section(header: Text("Edit")) {
                             Button(action: {
                                 assetName = asset.name
+                                assetGroup = nil
                                 showAssetNamePopover = true
                             })
                             {
@@ -109,11 +111,12 @@ struct GroupView: View {
 }
 
 struct RootView: View {
-    @State var document     : DenrimDocument
-    @Binding var updateView : Bool
+    @State var document                 : DenrimDocument
+    @Binding var updateView             : Bool
     
-    @Binding var showAssetNamePopover : Bool
-    @Binding var assetName: String
+    @Binding var showAssetNamePopover   : Bool
+    @Binding var assetName              : String
+    @Binding var assetGroup             : AssetGroup?
 
     var body: some View {
         
@@ -145,6 +148,7 @@ struct RootView: View {
                     Section(header: Text("Edit")) {
                         Button(action: {
                             assetName = asset.name
+                            assetGroup = nil
                             showAssetNamePopover = true
                         })
                         {
@@ -182,10 +186,7 @@ struct ContentView: View {
     
     @State private var showAssetNamePopover : Bool = false
     @State private var assetName: String    = ""
-    
-    @State private var showGroupNamePopover : Bool = false
     @State private var assetGroup           : AssetGroup? = nil
-    @State private var assetGroupName       : String = ""
 
     @State private var updateView           : Bool = false
 
@@ -230,9 +231,9 @@ struct ContentView: View {
             }*/
             List {
                 ForEach(document.game.assetFolder.groups, id: \.id) { group in
-                    GroupView(document: document, group: group, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName)
+                    GroupView(document: document, group: group, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, assetGroup: $assetGroup)
                 }
-                RootView(document: document, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName)
+                RootView(document: document, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, assetGroup: $assetGroup)
             }
             .frame(minWidth: 160, idealWidth: 200, maxWidth: 200)
             .layoutPriority(0)
@@ -257,6 +258,10 @@ struct ContentView: View {
                 VStack(alignment: .leading) {
                     Text("Name:")
                     TextField("Name", text: $assetName, onEditingChanged: { (changed) in
+                        if let group = assetGroup {
+                            group.name = assetName
+                            self.updateView.toggle()
+                        } else
                         if let asset = document.game.assetFolder.current {
                             asset.name = assetName
                             self.updateView.toggle()
@@ -272,9 +277,9 @@ struct ContentView: View {
                             Button("New Folder", action: {
                                 let group = AssetGroup("New Folder")
                                 
-                                assetGroupName = group.name
-                                showGroupNamePopover = true
+                                assetName = group.name
                                 assetGroup = group
+                                showAssetNamePopover = true
                                 
                                 document.game.assetFolder.groups.append(group)
                                 updateView.toggle()
@@ -283,6 +288,7 @@ struct ContentView: View {
                                 let current = document.game.assetFolder.current
                                 document.game.assetFolder.addBehavior("New Behavior", groupId: current != nil ? current!.groupId : nil)
                                 assetName = document.game.assetFolder.current!.name
+                                assetGroup = nil
                                 showAssetNamePopover = true
                                 updateView.toggle()
                             })
@@ -290,6 +296,7 @@ struct ContentView: View {
                                 let current = document.game.assetFolder.current
                                 document.game.assetFolder.addMap("New Map", groupId: current != nil ? current!.groupId : nil)
                                 assetName = document.game.assetFolder.current!.name
+                                assetGroup = nil
                                 showAssetNamePopover = true
                                 updateView.toggle()
                             })
@@ -297,6 +304,7 @@ struct ContentView: View {
                                 document.game.assetFolder.addShader("New Shader")
                                 if let asset = document.game.assetFolder.current {
                                     assetName = document.game.assetFolder.current!.name
+                                    assetGroup = nil
                                     showAssetNamePopover = true
                                     document.game.createPreview(asset)
                                 }
@@ -314,7 +322,8 @@ struct ContentView: View {
                             if let asset = document.game.assetFolder.current {
                                 
                                 Button(action: {
-                                    assetName = String(asset.name.split(separator: ".")[0])
+                                    assetName = asset.name
+                                    assetGroup = nil
                                     showAssetNamePopover = true
                                 })
                                 {
@@ -378,6 +387,7 @@ struct ContentView: View {
                     if selectedFiles.count > 0 {
                         document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
                         assetName = document.game.assetFolder.current!.name
+                        assetGroup = nil
                         showAssetNamePopover = true
                         updateView.toggle()
                     }
@@ -525,21 +535,6 @@ struct ContentView: View {
                     })
                 }
             }
-            // Edit Folder name
-            .popover(isPresented: self.$showGroupNamePopover,
-                     arrowEdge: .top
-            ) {
-                VStack(alignment: .leading) {
-                    Text("Name:")
-                    TextField("Name", text: $assetGroupName, onEditingChanged: { (changed) in
-                        if let group = assetGroup {
-                            group.name = assetGroupName
-                            self.updateView.toggle()
-                        }
-                    })
-                    .frame(minWidth: 200)
-                }.padding()
-            }
             .onReceive(self.document.game.gameError) { state in
                 if let asset = self.document.game.assetError.asset {
                     document.game.assetFolder.select(asset.id)
@@ -633,6 +628,7 @@ struct ContentView: View {
                 if selectedFiles.count > 0 {
                     document.game.assetFolder.addAudio(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
                     assetName = document.game.assetFolder.current!.name
+                    assetGroup = nil
                     showAssetNamePopover = true
                     updateView.toggle()
                 }

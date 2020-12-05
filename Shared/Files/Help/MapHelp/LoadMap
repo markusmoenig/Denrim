@@ -1,0 +1,9 @@
+## LoadMap
+
+Loads a map with the given name and path. All assets inside the map are loaded relative to the path (folder) the is map is located in.
+
+Example:
+
+`LoadMap<Name: "Player/Map">`
+
+Would load the map 'Map' from the Player folder. References to assets inside the map would also be relative to the Player folder.
