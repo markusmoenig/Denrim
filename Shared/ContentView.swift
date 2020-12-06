@@ -22,7 +22,12 @@ struct GroupView: View {
     @Binding var showAssetNamePopover   : Bool
     @Binding var assetName              : String
     @Binding var assetGroup             : AssetGroup?
+    
+    @Binding var showDeleteAssetAlert   : Bool
 
+    @Binding var isAddingImages         : Bool
+    @Binding var imageIndex             : Double
+    
     @State private var isExpanded       : Bool = false
 
     var body: some View {
@@ -71,6 +76,14 @@ struct GroupView: View {
                             .disabled(asset.name == "Game" && asset.type == .Behavior)
                             
                             Button(action: {
+                                showDeleteAssetAlert = true
+                            })
+                            {
+                                Label("Remove", systemImage: "minus")
+                            }
+                            .disabled(asset.name == "Game" && asset.type == .Behavior)
+                            
+                            Button(action: {
                                 for asset in document.game.assetFolder.assets {
                                     if asset.groupId == group.id {
                                         asset.groupId = nil
@@ -82,6 +95,27 @@ struct GroupView: View {
                             })
                             {
                                 Text("Collapse Folder")
+                            }
+                        }
+                        if asset.type == .Image {
+                            Section(header: Text("Image Group")) {
+                                Button(action: {
+                                    isAddingImages = true
+                                })
+                                {
+                                    Label("Add to Group", systemImage: "plus")
+                                }
+                                
+                                Button(action: {
+                                    if let asset = document.game.assetFolder.current {
+                                        asset.data.remove(at: Int(imageIndex))
+                                    }
+                                    updateView.toggle()
+                                })
+                                {
+                                    Label("Remove Image", systemImage: "minus.circle")
+                                }
+                                .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
                             }
                         }
                     }
@@ -117,6 +151,11 @@ struct RootView: View {
     @Binding var showAssetNamePopover   : Bool
     @Binding var assetName              : String
     @Binding var assetGroup             : AssetGroup?
+
+    @Binding var showDeleteAssetAlert   : Bool
+
+    @Binding var isAddingImages         : Bool
+    @Binding var imageIndex             : Double
 
     var body: some View {
         
@@ -155,6 +194,36 @@ struct RootView: View {
                             Label("Rename", systemImage: "pencil")
                         }
                         .disabled(asset.name == "Game" && asset.type == .Behavior)
+                        
+                        Button(action: {
+                            showDeleteAssetAlert = true
+                        })
+                        {
+                            Label("Remove", systemImage: "minus")
+                        }
+                        .disabled(asset.name == "Game" && asset.type == .Behavior)
+                    }
+                    
+                    if asset.type == .Image {
+                        Section(header: Text("Image Group")) {
+                            Button(action: {
+                                isAddingImages = true
+                            })
+                            {
+                                Label("Add to Group", systemImage: "plus")
+                            }
+                            
+                            Button(action: {
+                                if let asset = document.game.assetFolder.current {
+                                    asset.data.remove(at: Int(imageIndex))
+                                }
+                                updateView.toggle()
+                            })
+                            {
+                                Label("Remove Image", systemImage: "minus.circle")
+                            }
+                            .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
+                        }
                     }
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -230,12 +299,86 @@ struct ContentView: View {
                 //.onDrag { print("here"); return NSItemProvider(object: "test" as NSString) }
             }*/
             List {
-                ForEach(document.game.assetFolder.groups, id: \.id) { group in
-                    GroupView(document: document, group: group, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, assetGroup: $assetGroup)
+                HStack{
+                    Button(action: {
+                        let group = AssetGroup("New Folder")
+                        
+                        assetName = group.name
+                        assetGroup = group
+                        showAssetNamePopover = true
+                        
+                        document.game.assetFolder.groups.append(group)
+                        updateView.toggle()
+                    })
+                    {
+                        Label("", systemImage: "folder")
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    
+                    Button(action: {
+                        let current = document.game.assetFolder.current
+                        document.game.assetFolder.addBehavior("New Behavior", groupId: current != nil ? current!.groupId : nil)
+                        assetName = document.game.assetFolder.current!.name
+                        assetGroup = nil
+                        showAssetNamePopover = true
+                        updateView.toggle()
+                    })
+                    {
+                        Label("", systemImage: "lightbulb")
+                    }
+                    .buttonStyle(PlainButtonStyle())
+
+                    Button(action: {
+                        let current = document.game.assetFolder.current
+                        document.game.assetFolder.addMap("New Map", groupId: current != nil ? current!.groupId : nil)
+                        assetName = document.game.assetFolder.current!.name
+                        assetGroup = nil
+                        showAssetNamePopover = true
+                        updateView.toggle()
+                    })
+                    {
+                        Label("", systemImage: "list.and.film")
+                    }
+                    .buttonStyle(PlainButtonStyle())
+
+                    Button(action: {
+                        document.game.assetFolder.addShader("New Shader")
+                        if let asset = document.game.assetFolder.current {
+                            assetName = document.game.assetFolder.current!.name
+                            assetGroup = nil
+                            showAssetNamePopover = true
+                            document.game.createPreview(asset)
+                        }
+                        updateView.toggle()
+                    })
+                    {
+                        Label("", systemImage: "fx")
+                    }
+                    .buttonStyle(PlainButtonStyle())
+
+                    Button(action: {
+                        isImportingImages = true
+                    })
+                    {
+                        Label("", systemImage: "photo.on.rectangle")
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    
+                    Button(action: {
+                        isImportingAudio = true
+                    })
+                    {
+                        Label("", systemImage: "waveform")
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
-                RootView(document: document, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, assetGroup: $assetGroup)
+                Divider()
+                ForEach(document.game.assetFolder.groups, id: \.id) { group in
+                    GroupView(document: document, group: group, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, assetGroup: $assetGroup, showDeleteAssetAlert: $showDeleteAssetAlert, isAddingImages: $isAddingImages, imageIndex: $imageIndex)
+                }
+                RootView(document: document, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, assetGroup: $assetGroup, showDeleteAssetAlert: $showDeleteAssetAlert, isAddingImages: $isAddingImages, imageIndex: $imageIndex)
             }
-            .frame(minWidth: 160, idealWidth: 200, maxWidth: 200)
+            .frame(minWidth: 220, idealWidth: 220, maxWidth: 220)
             .layoutPriority(0)
             // Asset deletion
             .alert(isPresented: $showDeleteAssetAlert) {
@@ -269,7 +412,7 @@ struct ContentView: View {
                     })
                     .frame(minWidth: 200)
                 }.padding()
-            }
+            }/*
             .toolbar {
                 ToolbarItemGroup(placement: toolbarPlacement1) {
                     Menu {
@@ -376,6 +519,7 @@ struct ContentView: View {
                 }
 
             }
+            */
             // Import Images
             .fileImporter(
                 isPresented: $isImportingImages,
