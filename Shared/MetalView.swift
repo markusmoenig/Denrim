@@ -34,6 +34,10 @@ public class DMTKView       : MTKView
     }
 
     #if os(OSX)
+    
+    // --- Key States
+    var shiftIsDown     : Bool = false
+    var commandIsDown   : Bool = false
         
     override public var acceptsFirstResponder: Bool { return true }
     
@@ -84,6 +88,39 @@ public class DMTKView       : MTKView
             hasTap = false
             hasDoubleTap = false
             setMousePos(event)
+        }
+    }
+    
+    override public func flagsChanged(with event: NSEvent) {
+        //https://stackoverflow.com/questions/9268045/how-can-i-detect-that-the-shift-key-has-been-pressed
+        if game.state == .Idle {
+            if event.modifierFlags.contains(.shift) {
+                shiftIsDown = true
+            } else {
+                shiftIsDown = false
+            }
+            if event.modifierFlags.contains(.command) {
+                commandIsDown = true
+            } else {
+                commandIsDown = false
+            }
+        }
+    }
+    
+    override public func scrollWheel(with event: NSEvent) {
+        if game.state == .Idle {
+            if let asset = game.assetFolder.current, asset.type == .Map {
+                if let map = asset.map {
+                    if commandIsDown {
+                        map.camera2D.zoom += Float(event.deltaY) * 0.1
+                        map.camera2D.zoom = max(map.camera2D.zoom, 0.01)
+                    } else {
+                        map.camera2D.xOffset += Float(event.deltaX)
+                        map.camera2D.yOffset += Float(event.deltaY)
+                    }
+                    game.mapBuilder.createPreview(map, true)
+                }
+            }
         }
     }
     #elseif os(iOS)
@@ -269,7 +306,16 @@ struct MetalView: NSViewRepresentable {
         }
         
         func draw(in view: MTKView) {
-            parent.game.draw()
+            if let game = parent.game {
+                if let asset = game.assetFolder.current {
+                    if let map = asset.map {
+                        game.mapBuilder.createPreview(map, true)
+                        parent.game.draw()
+                    } else {
+                        parent.game.draw()
+                    }
+                }
+            }
         }
     }
 }

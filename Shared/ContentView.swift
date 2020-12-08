@@ -564,7 +564,7 @@ struct ContentView: View {
                                alignment: .topTrailing)
                         .opacity(helpIsVisible ? 0 : (document.game.state == .Running ? 1 : document.game.previewOpacity))
                         .animation(.default)
-                        .allowsHitTesting(document.game.state == .Running)
+                        //.allowsHitTesting(document.game.state == .Running)
                     
                     ScrollView {
                         ParmaView(text: $helpText)

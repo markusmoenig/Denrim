@@ -735,6 +735,11 @@ class MapBuilder
         var command : String? = nil
         if let line = scriptLine {
             if line != previewLine || forcePreview {
+                
+                if line != previewLine {
+                    map.camera2D.clear()
+                }
+                
                 previewLine = line                
                 game.checkTexture()
                 

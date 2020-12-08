@@ -123,6 +123,7 @@ class SetScene: BehaviorNode
                                 game.currentMap = asset
                                 game.currentScene = scene
                                 map.setup(game: game)
+                                map.camera2D.clear()
                                 map.createDependencies(scene)
                                 game.view.reset()
                                 // Add Game Behavior

@@ -123,11 +123,12 @@ class MapPreview
     
     func drawTexture(_ texture: Texture2D)
     {
-        if let map = map {
-            var object : [String:Any] = [:]
-            object["texture"] = texture
-            
-            map.texture?.drawTexture(object)
+        if let map = map {            
+            var options = MapAliasData2D(Float2(0,0))
+            options.texture = texture
+            options.width = Float1(texture.width)
+            options.height = Float1(texture.height)
+            map.drawTexture(options)
         }
     }
     

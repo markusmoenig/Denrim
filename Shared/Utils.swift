@@ -117,3 +117,22 @@ class MMRect
         set(0, 0, 0, 0)
     }
 }
+
+/// Camera2D
+class Camera2D {
+    
+    var xOffset : Float = 0
+    var yOffset : Float = 0
+    var zoom    : Float = 1
+    
+    init()
+    {
+    }
+    
+    func clear()
+    {
+        xOffset = 0
+        yOffset = 0
+        zoom = 1
+    }
+}

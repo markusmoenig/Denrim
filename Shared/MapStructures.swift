@@ -56,6 +56,11 @@ struct MapAliasData2D {
     
     var isEmpty         : Bool = false
 
+    init(_ position: Float2)
+    {
+        self.position = position
+    }
+    
     init(_ options: [String:Any])
     {
         if let position = options["position"] as? Float2 {

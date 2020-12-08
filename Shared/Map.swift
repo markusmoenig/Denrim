@@ -45,6 +45,7 @@ class Map
 
     // Rendering
     
+    var camera2D            = Camera2D()
     var globalAlpha         : Float = 1
     
     // Have to be set!
@@ -151,7 +152,7 @@ class Map
         aspect.x = (scaledWidth / 100.0)
         aspect.y = (scaledHeight / 100.0)
         aspect.z = min(aspect.x, aspect.y)
-                
+
         game._Aspect.x = aspect.x
         game._Aspect.y = aspect.y
     }
@@ -356,11 +357,64 @@ class Map
                     
                     //xPos += layer.options.accumScroll.x
                     //yPos += layer.options.accumScroll.y
+                    
+                    var pX      : Float? = nil
+                    var pY      : Float? = nil
+                    var pWidth  : Float = 0
+                    var pHeight : Float = 0
+                    var pId     : String? = nil
+                    
+                    func checkPhysicsBlock()
+                    {
+                        if let physicsId = pId, pX != nil, pY != nil {
+                            let ppm = physics2D[physicsId]!.ppm
+                            
+                            //let width : Float = (advance.0 / aspect.x) / 2.0
+                            //let height : Float = (advance.1 / aspect.y) / 2.0
+                            
+                            // Define the dynamic body. We set its position and call the body factory.
+                            let bodyDef = b2BodyDef()
+                            //bodyDef.angle = 0
+                            bodyDef.type = b2BodyType.staticBody
+                                    
+                            let fixtureDef = b2FixtureDef()
+                            fixtureDef.shape = nil
+
+                            fixtureDef.filter.categoryBits = categoryBits
+                            fixtureDef.filter.maskBits = 0xffff
+                            
+                            let polyShape = b2PolygonShape()
+                            polyShape.setAsBox(halfWidth: pWidth / ppm - polyShape.m_radius, halfHeight: pHeight / ppm - polyShape.m_radius)
+                            fixtureDef.shape = polyShape
+                            
+                            /*
+                            if let friction = cmd.options["friction"] as? Float1 {
+                                fixtureDef.friction = friction.x
+                            } else {
+                                fixtureDef.friction = 0.3
+                            }*/
+                            
+                            fixtureDef.friction = 0.1
+                            fixtureDef.density = 0.0
+                            bodyDef.position.set((pX! / aspect.x + pWidth) / ppm, (pY! / aspect.y + pHeight) / ppm)
+                            
+                            //print((xPos / aspect.x + width), (yPos / aspect.y + height), width, height)
+
+                            let body = physics2D[physicsId]!.world!.createBody(bodyDef)
+                            body.createFixture(fixtureDef)
+                            
+                            //aliases[a]!.body = body
+                            //aliases[a]!.physicsWorld = physics2D[physicsId]
+                        }
+                        pX = nil; pY = nil; pId = nil
+                    }
 
                     for line in layer.data {
-                        
+
                         var index     : Int = 0
                         var maxHeight : Float = 0
+                        
+                        pX = nil; pY = nil
                         
                         while index < line.count - 1 {
                             
@@ -369,6 +423,22 @@ class Map
                                 let advance = drawAlias(xPos, yPos, &aliases[a]!, doDraw: false)
                                 // --- Add Block
                                 if let physicsId = aliases[a]!.options.physicsId, physics2D[physicsId] != nil {
+                                    
+                                    let width : Float = (advance.0 / aspect.x) / 2.0
+                                    let height : Float = (advance.1 / aspect.y) / 2.0
+                                    
+                                    if pX == nil {
+                                        pX = xPos
+                                        pY = yPos
+                                        pWidth = width
+                                        pHeight = height
+                                        pId = physicsId
+                                    } else {
+                                        pWidth += width
+                                        //pHeight += height
+                                    }
+                                    
+                                    /*
                                     let ppm = physics2D[physicsId]!.ppm
                                     
                                     let width : Float = (advance.0 / aspect.x) / 2.0
@@ -407,16 +477,24 @@ class Map
                                     
                                     aliases[a]!.body = body
                                     aliases[a]!.physicsWorld = physics2D[physicsId]
+                                    */
+                                }
+                                else {
+                                    checkPhysicsBlock()
                                 }
                                 // ---
                                 xPos += advance.0
                                 if advance.1 > maxHeight {
                                     maxHeight = advance.1
                                 }
+                            } else {
+                                checkPhysicsBlock()
                             }
                             index += 2
                         }
-                        
+                     
+                        checkPhysicsBlock()
+
                         yPos += maxHeight
                         xPos = x + layer.options.offset.x * aspect.x
                     }
@@ -660,7 +738,7 @@ class Map
     @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: inout MapAlias, doDraw: Bool = true) -> (Float, Float)
     {
         var rc     : (Float, Float) = (0,0)
-        
+                
         if alias.options.isEmpty && alias.options.rect != nil {
             return (alias.options.rect!.z, alias.options.rect!.w)
         }
@@ -1258,26 +1336,29 @@ class Map
     func drawTexture(_ options: MapAliasData2D)
     {
         if let sourceTexture = options.texture {
-                        
+            
             var position : SIMD2<Float> = options.position.toSIMD()
             var width : Float = options.width.toSIMD()
             var height : Float = options.height.toSIMD()
             let alpha : Float = 1
             
             let subRect : Float4? = options.rect
-
-            position.x += viewBorder.x
-            position.y += viewBorder.y
+            
+            position.x += viewBorder.x + camera2D.xOffset
+            position.y += viewBorder.y + camera2D.yOffset
 
             position.x /= game.scaleFactor
             position.y /= game.scaleFactor
             
+            width *= camera2D.zoom
+            height *= camera2D.zoom
+
             width /= game.scaleFactor
             height /= game.scaleFactor
             
             var data = TextureUniform()
             data.globalAlpha = alpha
-            
+
             if let subRect = subRect {
                 data.pos.x = subRect.x / sourceTexture.width
                 data.pos.y = subRect.y / sourceTexture.height
