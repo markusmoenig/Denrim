@@ -73,6 +73,20 @@ public class DMTKView       : MTKView
                 mouseIsDown = true
                 setMousePos(event)
             }
+        } else
+        if game.state == .Idle {
+            if let asset = game.assetFolder.current, asset.type == .Map {
+                if let map = asset.map {
+                    setMousePos(event)
+                    let coords = map.reverseCoordinates(mousePos.x, mousePos.y)
+                    game.tempText = "\(coords.x) x \(coords.y)"
+                    game.tempTextChanged.send()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        self.game.tempText = ""
+                        self.game.tempTextChanged.send()
+                    }
+                }
+            }
         }
     }
     
@@ -130,6 +144,30 @@ public class DMTKView       : MTKView
         let tapRecognizer = UITapGestureRecognizer(target: self, action:(#selector(self.handleTapGesture(_:))))
         tapRecognizer.numberOfTapsRequired = 1
         addGestureRecognizer(tapRecognizer)
+        
+        let pinchRecognizer = UIPinchGestureRecognizer(target: self, action:(#selector(self.handlePinchGesture(_:))))
+        addGestureRecognizer(pinchRecognizer)
+    }
+    
+    var lastPinch : Float = 1
+    
+    @objc func handlePinchGesture(_ recognizer: UIPinchGestureRecognizer)
+    {
+        if game.state == .Idle {
+            if let asset = game.assetFolder.current, asset.type == .Map {
+                if let map = asset.map {
+                    let pinch = Float(recognizer.scale)
+                    if pinch >= lastPinch {
+                        map.camera2D.zoom += pinch * 0.2
+                    } else {
+                        map.camera2D.zoom -= pinch * 0.2
+                    }
+                    lastPinch = pinch
+                    map.camera2D.zoom = max(map.camera2D.zoom, 0.01)
+                    game.mapBuilder.createPreview(map, true)
+                }
+            }
+        }
     }
     
     @objc func handleTapGesture(_ recognizer: UITapGestureRecognizer)
@@ -157,11 +195,28 @@ public class DMTKView       : MTKView
         mousePos.y /= Float(bounds.height) / game.texture!.height// / game.scaleFactor
     }
     
+    var firstTouch = float2(0,0)
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         mouseIsDown = true
         if let touch = touches.first {
             let point = touch.location(in: self)
             setMousePos(Float(point.x), Float(point.y))
+            
+            if game.state == .Idle {
+                firstTouch.x = mousePos.x
+                firstTouch.y = mousePos.y
+                if let asset = game.assetFolder.current, asset.type == .Map {
+                    if let map = asset.map {
+                        let coords = map.reverseCoordinates(mousePos.x, mousePos.y)
+                        game.tempText = "\(coords.x) x \(coords.y)"
+                        game.tempTextChanged.send()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            self.game.tempText = ""
+                            self.game.tempTextChanged.send()
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -169,6 +224,19 @@ public class DMTKView       : MTKView
         if let touch = touches.first {
             let point = touch.location(in: self)
             setMousePos(Float(point.x), Float(point.y))
+            if game.state == .Idle {
+                if let asset = game.assetFolder.current, asset.type == .Map {
+                    if let map = asset.map {
+                        map.camera2D.xOffset += mousePos.x - firstTouch.x
+                        map.camera2D.yOffset += mousePos.y - firstTouch.y
+                        
+                        firstTouch.x = mousePos.x
+                        firstTouch.y = mousePos.y
+
+                        game.mapBuilder.createPreview(map, true)
+                    }
+                }
+            }
         }
     }
     
@@ -310,10 +378,8 @@ struct MetalView: NSViewRepresentable {
                 if let asset = game.assetFolder.current {
                     if let map = asset.map {
                         game.mapBuilder.createPreview(map, true)
-                        parent.game.draw()
-                    } else {
-                        parent.game.draw()
                     }
+                    parent.game.draw()
                 }
             }
         }

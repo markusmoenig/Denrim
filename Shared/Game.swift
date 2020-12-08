@@ -67,6 +67,9 @@ public class Game       : ObservableObject
     
     var helpText        : String = ""
     let helpTextChanged = PassthroughSubject<Void, Never>()
+    
+    var tempText        : String = ""
+    let tempTextChanged = PassthroughSubject<Void, Never>()
 
     var assetError      = CompileError()
     let gameError       = PassthroughSubject<Void, Never>()

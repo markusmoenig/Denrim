@@ -27,7 +27,7 @@ struct GroupView: View {
 
     @Binding var isAddingImages         : Bool
     @Binding var imageIndex             : Double
-    
+        
     @State private var isExpanded       : Bool = false
 
     var body: some View {
@@ -276,6 +276,8 @@ struct ContentView: View {
     @State private var showTemplates        : Bool = true
 
     @State private var contextText          : String = ""
+    
+    @State private var tempText             : String = ""
 
     @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
 
@@ -565,6 +567,18 @@ struct ContentView: View {
                         .opacity(helpIsVisible ? 0 : (document.game.state == .Running ? 1 : document.game.previewOpacity))
                         .animation(.default)
                         //.allowsHitTesting(document.game.state == .Running)
+                    
+                    Text(tempText)
+                        .zIndex(3)
+                        .frame( minWidth: 0,
+                                maxWidth: .infinity,
+                                minHeight: 0,
+                                maxHeight: geometry.size.height,
+                                alignment: .bottomTrailing)
+                        .opacity(tempText.count == 0 ? 0 : 1)
+                        .onReceive(self.document.game.tempTextChanged) { state in
+                            tempText = self.document.game.tempText
+                        }
                     
                     ScrollView {
                         ParmaView(text: $helpText)

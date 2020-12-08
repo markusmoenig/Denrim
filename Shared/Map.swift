@@ -1392,4 +1392,17 @@ class Map
             renderEncoder.endEncoding()
         }
     }
+    
+    func reverseCoordinates(_ x: Float,_ y: Float) -> SIMD2<Int>
+    {
+        var rc = float2(x,y)
+        
+        rc.x -= camera2D.xOffset
+        rc.y -= camera2D.yOffset
+        
+        rc.x = round(rc.x / camera2D.zoom)
+        rc.y = round(rc.y / camera2D.zoom)
+        
+        return SIMD2<Int>(Int(rc.x), Int(rc.y))
+    }
 }

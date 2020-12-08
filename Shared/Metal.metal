@@ -217,8 +217,8 @@ fragment float4 m4mBoxPatternDrawable(RasterizerData in [[stage_in]],
     
     float4 col = checkerColor1;
     
-    float cWidth = 12.0;
-    float cHeight = 12.0;
+    float cWidth = 6.0;
+    float cHeight = 6.0;
     
     if ( fmod( floor( uv.x / cWidth ), 2.0 ) == 0.0 ) {
         if ( fmod( floor( uv.y / cHeight ), 2.0 ) != 0.0 ) col=checkerColor2;
