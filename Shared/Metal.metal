@@ -249,11 +249,11 @@ fragment float4 m4mTextureDrawable(RasterizerData in [[stage_in]],
                                 constant TextureUniform *data [[ buffer(0) ]],
                                 texture2d<half> inTexture [[ texture(1) ]])
 {
-    //constexpr sampler textureSampler (mag_filter::linear,
-    //                                  min_filter::linear);
+    constexpr sampler textureSampler (mag_filter::linear,
+                                      min_filter::linear);
     
-    constexpr sampler textureSampler (mag_filter::nearest,
-                                      min_filter::nearest);
+//    constexpr sampler textureSampler (mag_filter::nearest,
+//                                      min_filter::nearest);
     float2 uv = in.textureCoordinate;
     uv.y = 1 - uv.y;
     

@@ -280,9 +280,9 @@ public class Game       : ObservableObject
         // Game Loop
         if state == .Running {
             
-            //gameCmdBuffer?.addCompletedHandler { cb in
-            //    print("GPU Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
-            //}
+            gameCmdBuffer?.addCompletedHandler { cb in
+                //print("GPU Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
+            }
             
             //#if DEBUG
             //let startTime = Double(Date().timeIntervalSince1970)
