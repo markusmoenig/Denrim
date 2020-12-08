@@ -564,7 +564,7 @@ struct ContentView: View {
                                minHeight: 0,
                                maxHeight: geometry.size.height / document.game.previewFactor,
                                alignment: .topTrailing)
-                        .opacity(helpIsVisible ? 0 : (document.game.state == .Running ? 1 : document.game.previewOpacity))
+                        .opacity(helpIsVisible || document.game.assetFolder.isPreviewVisible() == false ? 0 : (document.game.state == .Running ? 1 : document.game.previewOpacity))
                         .animation(.default)
                         //.allowsHitTesting(document.game.state == .Running)
                     

@@ -260,6 +260,22 @@ class AssetFolder       : Codable
         return ""
     }
     
+    /// Returns true if the preview should be visible
+    func isPreviewVisible() -> Bool
+    {
+        if game.state == .Running {
+            return true
+        } else
+        if game.state == .Idle {
+            if let current = current {
+                if current.type != .Behavior && current.type != .Audio {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
     /// Returns the group identified by the given id
     func getGroupById(_ id: UUID) -> AssetGroup? {
         for group in groups {
