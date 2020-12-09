@@ -465,9 +465,11 @@ class StartTimer: BehaviorNode
 // Applies a texture to the given shape
 class ApplyTexture2D: BehaviorNode
 {
-    var shapeId: String? = nil
-    var id: String? = nil
-    
+    var shapeId : String? = nil
+    var id      : String? = nil
+
+    var flipX   : Bool1? = nil
+
     override init(_ options: [String:Any] = [:])
     {
         super.init(options)
@@ -486,15 +488,52 @@ class ApplyTexture2D: BehaviorNode
         } else {
             error.error = "SetScene requires a 'Id' parameter"
         }
+        
+        flipX = extractBool1Value(options, context: context, tree: tree, error: &error, name: "flipx", isOptional: true)
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
         if let map = game.currentMap?.map {
             if shapeId != nil && id != nil {
-                if map.applyTextureToShape(shapeId!, id!) {
+                if map.applyTextureToShape(shapeId!, id!, flipX: flipX) {
                     return .Success
                 }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
+// Mirrors the texture
+class ApplyTextureFlip2D: BehaviorNode
+{
+    var shapeId : String? = nil
+    var flipX   : Bool1? = nil
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "ApplyTextureFlip2D"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["shapeid"] as? String {
+            shapeId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "ApplyTextureFlip2D requires a 'ShapeId' parameter"
+        }
+        
+        flipX = extractBool1Value(options, context: context, tree: tree, error: &error, name: "flipx", isOptional: true)
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if shapeId != nil {
+                map.shapes2D[shapeId!]!.options.flipX = flipX == nil ? Bool1(false) : flipX!
+                return .Success
             }
         }
         context.addFailure(lineNr: lineNr)

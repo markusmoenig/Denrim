@@ -299,20 +299,22 @@ class MapBuilder
                         to = Int(vec.y)
                     }
                     var array : [String] = []
-                    for index in from...to {
-                        if index >= 0 && index < asset.data.count {
-                            let resourceName : String = asset.id.uuidString + ":" + String(index)
-                            array.append(resourceName)
-                        } else { error.error = "Sequence group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
-                    }
-                    if map.sequences[variable] != nil {
-                        map.sequences[variable] = nil
-                    }
-                    map.sequences[variable] = MapSequence(resourceNames: array, options: options)
-                    if let interval = options["interval"] as? Float1 {
-                        map.sequences[variable]!.interval = Double(interval.x)
-                    }
-                    setLine(variable)
+                    if from < to {
+                        for index in from...to {
+                            if index >= 0 && index < asset.data.count {
+                                let resourceName : String = asset.id.uuidString + ":" + String(index)
+                                array.append(resourceName)
+                            } else { error.error = "Sequence group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
+                        }
+                        if map.sequences[variable] != nil {
+                            map.sequences[variable] = nil
+                        }
+                        map.sequences[variable] = MapSequence(resourceNames: array, options: options)
+                        if let interval = options["interval"] as? Float1 {
+                            map.sequences[variable]!.interval = Double(interval.x)
+                        }
+                        setLine(variable)
+                    } else { error.error = "Invalid range!" }
                 } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
             } else { error.error = "Sequence type for '\(variable)' expects a 'Group' option" }
         } else

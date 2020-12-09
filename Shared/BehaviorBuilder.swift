@@ -77,6 +77,7 @@ class BehaviorBuilder
         BehaviorNodeItem("IsVisible", { (_ options: [String:Any]) -> BehaviorNode in return IsVisible(options) }),
 
         BehaviorNodeItem("ApplyTexture2D", { (_ options: [String:Any]) -> BehaviorNode in return ApplyTexture2D(options) }),
+        BehaviorNodeItem("ApplyTextureFlip2D", { (_ options: [String:Any]) -> BehaviorNode in return ApplyTextureFlip2D(options) }),
 
         BehaviorNodeItem("MoveTo2D", { (_ options: [String:Any]) -> BehaviorNode in return MoveTo2D(options) }),
         BehaviorNodeItem("Length", { (_ options: [String:Any]) -> BehaviorNode in return LengthNode(options) }),

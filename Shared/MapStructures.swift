@@ -179,6 +179,9 @@ struct MapShapeData2D {
     var color           : Float4
     var borderColor     : Float4
     
+    var flipX           : Bool1
+    var flipY           : Bool1
+
     var text            : TextRef
     
     init(_ options: [String:Any])
@@ -250,6 +253,9 @@ struct MapShapeData2D {
         } else {
             self.text = TextRef("")
         }
+        
+        flipX = Bool1(false)
+        flipY = Bool1(false)
     }
 }
 

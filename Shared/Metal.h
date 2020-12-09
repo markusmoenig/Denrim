@@ -50,6 +50,9 @@ typedef struct
     float           rotation;
     float           onion;
     
+    int             mirrorX;
+    int             mirrorY;
+
     int             hasTexture;
     vector_float2   textureSize;
 

@@ -70,19 +70,19 @@ class MapPreview
                 helpKey = "OnDemandInstance2D"
             } else
             if let seq = map.sequences[variable] {
-                if let range = seq.options["range"] as? Float2 {
-                    if animIndex > Int(range.y) {
-                        animIndex = Int(range.x)
+                if animIndex >= seq.resourceNames.count {
+                    animIndex = 0
+                }
+                
+                if animIndex >= 0 && animIndex < seq.resourceNames.count {
+                    let resourceName = seq.resourceNames[animIndex]
+                    if let texture2D = map.getImageResource(resourceName) {
+                        drawTexture(texture2D)
                     }
-                }
-                
-                let resourceName = seq.resourceNames[animIndex]
-                if let texture2D = map.getImageResource(resourceName) {
-                    drawTexture(texture2D)
-                }
-                
-                if animationTimer == nil {
-                    startTimer()
+                    
+                    if animationTimer == nil {
+                        startTimer()
+                    }
                 }
                 helpKey = "Sequence"
             } else

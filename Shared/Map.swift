@@ -145,6 +145,9 @@ class Map
 
         viewBorder = Float2((texture.width - scaledWidth) / 2.0, (texture.height - scaledHeight) / 2.0)
 
+        viewBorder.x = round(viewBorder.x)
+        viewBorder.y = round(viewBorder.y)
+        
         viewBorder.x = max(viewBorder.x, 0)
         viewBorder.y = max(viewBorder.y, 0)
 
@@ -630,12 +633,17 @@ class Map
     }
     
     // Applies a texture id to a given shape id
-    @discardableResult func applyTextureToShape(_ shapeId: String,_ id: String) -> Bool
+    @discardableResult func applyTextureToShape(_ shapeId: String,_ id: String, flipX: Bool1? = nil) -> Bool
     {
         if shapes2D[shapeId] != nil {
-            shapes2D[shapeId]!.texture = nil
             if images[id] != nil {
+                
+                shapes2D[shapeId]!.texture = nil
+
                 shapes2D[shapeId]!.texture = images[id]
+                if flipX != nil {
+                    shapes2D[shapeId]!.options.flipX = flipX!
+                }
                                 
                 // If size is 0, apply texture size
                 if shapes2D[shapeId]!.options.size.x == 0 {
@@ -650,8 +658,19 @@ class Map
                 return true
             } else
             if var sequence = sequences[id] {
+                var index : Int = 0
+                var lastTime : Double = 0
+                if shapes2D[shapeId]!.texture != nil && shapes2D[shapeId]!.texture as? MapSequence != nil {
+                    index = (shapes2D[shapeId]!.texture as? MapSequence)!.data!.animIndex
+                    lastTime = (shapes2D[shapeId]!.texture as? MapSequence)!.data!.lastTime
+                }
                 sequence.data = MapSequenceData2D()
+                sequence.data?.animIndex = index
+                sequence.data?.lastTime = lastTime
                 shapes2D[shapeId]!.texture = sequence
+                if flipX != nil {
+                    shapes2D[shapeId]!.options.flipX = flipX!
+                }
 
                 if shapes2D[shapeId]!.options.size.x == 0 && sequences[id]!.resourceNames.count > 0 {
                     if let texture2D = getImageResource(sequence.resourceNames[0]) {
@@ -992,13 +1011,14 @@ class Map
             if sequenceData.lastTime > 0 {
                 if currentTime - sequenceData.lastTime > sequence.interval {
                     sequenceData.animIndex += 1
-                    if sequenceData.animIndex >= sequence.resourceNames.count {
-                        sequenceData.animIndex = 0
-                    }
                     sequenceData.lastTime = currentTime
                 }
             } else {
                 sequenceData.lastTime = currentTime
+            }
+            
+            if sequenceData.animIndex >= sequence.resourceNames.count {
+                sequenceData.animIndex = 0
             }
                                             
             if let texture = getImageResource(sequence.resourceNames[sequenceData.animIndex]) {
@@ -1086,6 +1106,8 @@ class Map
         data.borderSize = border / game.scaleFactor
         data.fillColor = fillColor
         data.borderColor = borderColor
+        
+        data.mirrorX = options.flipX.x == true ? 1 : 0
 
         let renderPassDescriptor = MTLRenderPassDescriptor()
         renderPassDescriptor.colorAttachments[0].texture = texture.texture

@@ -132,11 +132,15 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
     col = mix( col, borderColor, borderMask );
     
     if (data->hasTexture == 1 && col.w > 0.0) {
-        constexpr sampler textureSampler (mag_filter::linear,
-                                          min_filter::linear);
+        constexpr sampler textureSampler (mag_filter::nearest,
+                                          min_filter::nearest);
         
         float2 uv = in.textureCoordinate;
         uv.y = 1 - uv.y;
+        
+        if (data->mirrorX)
+            uv.x = 1 - uv.x;
+        
         uv = m4mRotateCCWPivot(uv, data->rotation, 0.5);
 
         float4 sample = float4(inTexture.sample(textureSampler, uv));
@@ -179,11 +183,14 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
     col = mix( col, borderColor, borderMask );
     
     if (data->hasTexture == 1 && col.w > 0.0) {
-        constexpr sampler textureSampler (mag_filter::linear,
-                                          min_filter::linear);
+        constexpr sampler textureSampler (mag_filter::nearest,
+                                          min_filter::nearest);
         
         float2 uv = in.textureCoordinate;
         uv.y = 1 - uv.y;
+        
+        if (data->mirrorX)
+            uv.x = 1 - uv.x;
         
         uv -= data->pos / data->screenSize;
         uv *= data->screenSize / data->size;
