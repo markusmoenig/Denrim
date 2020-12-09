@@ -759,7 +759,7 @@ class Map
         var rc     : (Float, Float) = (0,0)
                 
         if alias.options.isEmpty && alias.options.rect != nil {
-            return (alias.options.rect!.z, alias.options.rect!.w)
+            return (alias.options.rect!.z / canvasSize.x * aspect.x * 100.0, alias.options.rect!.w / canvasSize.y * aspect.y * 100.0)
         }
 
         if alias.options.texture == nil {
@@ -774,31 +774,25 @@ class Map
         
         if let texture2D = alias.options.texture {
             
-            var width = texture2D.width
-            var height = texture2D.height
+            var width = texture2D.width / canvasSize.x * aspect.x * 100.0
+            var height = texture2D.height / canvasSize.y * aspect.y * 100.0
             
             alias.options.position.x = x
             alias.options.position.y = y
-
-            alias.options.width.x = width
-            alias.options.height.x = height
                         
             // Subrect ?
             if let v = alias.options.rect {
-                width = v.z// / canvasSize.x * aspect.x * 100.0
-                height = v.w// / canvasSize.y * aspect.y * 100.0
-                
-                alias.options.width.x = width
-                alias.options.height.x = height
+                width = v.z / canvasSize.x * aspect.x * 100.0
+                height = v.w / canvasSize.y * aspect.y * 100.0
             }
             
             if alias.options.scale == .Full {
                 width = texture!.width - viewBorder.x * 2.0
                 height = texture!.height - viewBorder.y * 2.0
-                
-                alias.options.width.x = width
-                alias.options.height.x = height
             }
+            
+            alias.options.width.x = width
+            alias.options.height.x = height
             
             if doDraw {
                 drawTexture(alias.options)
@@ -1369,14 +1363,14 @@ class Map
             position.x += viewBorder.x + camera2D.xOffset
             position.y += viewBorder.y + camera2D.yOffset
 
-            position.x /= game.scaleFactor
-            position.y /= game.scaleFactor
+            //position.x /= game.scaleFactor
+            //position.y /= game.scaleFactor
             
             width *= camera2D.zoom
             height *= camera2D.zoom
 
-            width /= game.scaleFactor
-            height /= game.scaleFactor
+            //width /= game.scaleFactor
+            //height /= game.scaleFactor
             
             var data = TextureUniform()
             data.globalAlpha = alpha
@@ -1393,7 +1387,7 @@ class Map
                 data.size.y = 1
             }
                     
-            let rect = MMRect( position.x, position.y, width, height, scale: game.scaleFactor )
+            let rect = MMRect(position.x, position.y, width, height, scale: 1)
             let vertexData = game.createVertexData(texture: texture, rect: rect)
             
             let renderPassDescriptor = MTLRenderPassDescriptor()
