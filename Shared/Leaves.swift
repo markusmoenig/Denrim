@@ -541,6 +541,59 @@ class ApplyTextureFlip2D: BehaviorNode
     }
 }
 
+// Sets the 2D camera values
+class SetCamera2D: BehaviorNode
+{
+    var offset      : Float2? = nil
+    var center      : Bool1? = nil
+
+    var zoom        = Float1(1)
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "SetCamera2D"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        
+        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "offset", isOptional: true) {
+            offset = value
+        }
+        if let value = extractBool1Value(options, context: context, tree: tree, error: &error, name: "center", isOptional: true) {
+            center = value
+        }
+        if let value = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "zoom", isOptional: true) {
+            zoom = value
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if let offset = offset {
+                
+                if center == nil || center!.x == false {
+                    map.camera2D.xOffset = offset.x * map.aspect.x
+                    map.camera2D.yOffset = offset.y * map.aspect.y
+                } else {
+                    let xOffset = max(50, offset.x)
+                    let yOffset = max(50, offset.y)
+
+                    map.camera2D.xOffset = 50.0 - xOffset
+                    map.camera2D.yOffset = 50.0 - yOffset
+                                    
+                    //print(offset.x, offset.y, map.camera2D.xOffset, map.camera2D.yOffset)
+
+                    map.camera2D.xOffset *= map.aspect.x
+                    map.camera2D.yOffset *= map.aspect.y
+                }
+            }
+        }
+        return .Success
+    }
+}
+
 // Moves a float2 variable towards a 2D position given a certain step size
 class MoveTo2D: BehaviorNode
 {

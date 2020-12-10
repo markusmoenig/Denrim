@@ -1,0 +1,9 @@
+## SetCamera2D
+
+Sets the camera offset. By default the camera is located at offset 0,0.
+
+The *Center* option makes sure the given offset is located in the middle of the scene view, useful for example for jump and runs who want to locate the player always in the center of the screen.
+
+Syntax:
+
+`SetCamera2D<Offset: Float2><Center: True/False>`

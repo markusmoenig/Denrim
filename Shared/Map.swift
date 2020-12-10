@@ -1098,8 +1098,8 @@ class Map
         let fillColor : SIMD4<Float> = options.color.toSIMD()
         let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
         
-        position.x += viewBorder.x
-        position.y += viewBorder.y
+        position.x += viewBorder.x + camera2D.xOffset
+        position.y += viewBorder.y + camera2D.yOffset
         
         position.x /= game.scaleFactor
         position.y /= game.scaleFactor
