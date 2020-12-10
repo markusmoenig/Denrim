@@ -814,8 +814,8 @@ class Map
                 }
             }
         
-            rc.0 = width
-            rc.1 = height
+            rc.0 = width * camera2D.zoom
+            rc.1 = height * camera2D.zoom
         }
         
         return rc
@@ -1044,8 +1044,8 @@ class Map
         let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
         let rotation : Float = options.rotation.x
 
-        position.x += viewBorder.x
-        position.y += viewBorder.y
+        position.x += viewBorder.x + camera2D.xOffset
+        position.y += viewBorder.y + camera2D.yOffset
 
         position.x /= game.scaleFactor
         position.y /= game.scaleFactor
@@ -1167,8 +1167,8 @@ class Map
         var text : String = ""
         let color : SIMD4<Float> = options.color.toSIMD()
 
-        position.x += viewBorder.x
-        position.y += viewBorder.y
+        position.x += viewBorder.x + camera2D.xOffset
+        position.y += viewBorder.y + camera2D.yOffset
         
         if let t = options.text.text {
             text = t

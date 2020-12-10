@@ -229,13 +229,16 @@ public class Game       : ObservableObject
         gameAsset = nil
         currentScene = nil
         currentMap = nil
-                
-        if let scriptEditor = scriptEditor, assetError.error == nil {
-            scriptEditor.clearAnnotations()
-        }
         
         state = .Idle
         view.isPaused = true
+        
+        if let scriptEditor = scriptEditor, assetError.error == nil {
+            scriptEditor.clearAnnotations()
+            if assetFolder.current != nil {
+                assetFolder.select(assetFolder.current!.id)
+            }
+        }
     }
     
     @discardableResult func checkTexture() -> Bool
