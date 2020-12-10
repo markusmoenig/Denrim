@@ -117,6 +117,12 @@ struct MapAlias {
 
 struct MapLayerData2D {
     
+    enum Filter {
+        case Linear, Nearest
+    }
+    
+    var filter          : Filter = .Linear
+    
     var offset          : Float2
     var scroll          : Float2
     
@@ -140,6 +146,12 @@ struct MapLayerData2D {
         
         if let cliptocanvas = options["cliptocanvas"] as? Bool1 {
             self.clipToCanvas = cliptocanvas.x
+        }
+        
+        if let sampler = options["filter"] as? String {
+            if sampler.lowercased() == "nearest" {
+                filter = .Nearest
+            }
         }
     }
 }

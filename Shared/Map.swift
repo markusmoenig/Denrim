@@ -55,6 +55,8 @@ class Map
     
     var canvasSize          = Float2(0,0)
     var viewBorder          = Float2(0,0)
+    
+    var currentSampler      : MTLSamplerState!
 
     deinit {
         clear()
@@ -90,6 +92,7 @@ class Map
             sM.clear()
         }
         subMaps = []
+        currentSampler = nil
     }
     
     /// Adds a subMap and copies all structs
@@ -158,6 +161,8 @@ class Map
 
         game._Aspect.x = aspect.x
         game._Aspect.y = aspect.y
+        
+        currentSampler = game.linearSampler
     }
     
     /// Creates physics, textures etc
@@ -791,8 +796,8 @@ class Map
                 height = texture!.height - viewBorder.y * 2.0
             }
             
-            alias.options.width.x = width
-            alias.options.height.x = height
+            alias.options.width.x = width + 0.1
+            alias.options.height.x = height + 0.1
             
             if doDraw {
                 drawTexture(alias.options)
@@ -855,6 +860,10 @@ class Map
             game.gameScissorRect = MTLScissorRect(x: Int(viewBorder.x), y: Int(viewBorder.y), width: Int(texture!.width - 2.0 * viewBorder.x), height: Int(texture!.height - 2.0 * viewBorder.y))
         }
         
+        if layer.options.filter == .Nearest {
+            currentSampler = game.nearestSampler
+        }
+        
         var xPos = x + layer.options.offset.x * aspect.x
         var yPos = y + layer.options.offset.y * aspect.y
         
@@ -908,6 +917,8 @@ class Map
         layer.options.accumScroll.x += layer.options.scroll.x * aspect.x
         layer.options.accumScroll.y += layer.options.scroll.y * aspect.y
         
+        currentSampler = game.linearSampler
+
         if layer.options.clipToCanvas {
             game.gameScissorRect = MTLScissorRect(x: 0, y: 0, width: texture!.texture.width, height: texture!.texture.height)
         }
@@ -1386,7 +1397,7 @@ class Map
                 data.size.x = 1
                 data.size.y = 1
             }
-                    
+            
             let rect = MMRect(position.x, position.y, width, height, scale: 1)
             let vertexData = game.createVertexData(texture: texture, rect: rect)
             
@@ -1402,6 +1413,8 @@ class Map
             
             renderEncoder.setFragmentBytes(&data, length: MemoryLayout<TextureUniform>.stride, index: 0)
             renderEncoder.setFragmentTexture(sourceTexture.texture, index: 1)
+            
+            renderEncoder.setFragmentSamplerState(currentSampler, index: 2)
 
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawTexture))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)

@@ -56,6 +56,9 @@ public class Game       : ObservableObject
     
     var currentMap      : Asset? = nil
     var currentScene    : MapScene? = nil
+    
+    var nearestSampler  : MTLSamplerState!
+    var linearSampler   : MTLSamplerState!
 
     // Preview Size, UI only
     var previewFactor   : CGFloat = 4
@@ -132,6 +135,16 @@ public class Game       : ObservableObject
             let font = Font(name: fontName, game: self)
             fonts.append(font)
         }
+        
+        var descriptor = MTLSamplerDescriptor()
+        descriptor.minFilter = .nearest
+        descriptor.magFilter = .nearest
+        nearestSampler = device.makeSamplerState(descriptor: descriptor)
+        
+        descriptor = MTLSamplerDescriptor()
+        descriptor.minFilter = .linear
+        descriptor.magFilter = .linear
+        linearSampler = device.makeSamplerState(descriptor: descriptor)
         
         view.platformInit()
         checkTexture()

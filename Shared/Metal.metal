@@ -132,12 +132,13 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
     col = mix( col, borderColor, borderMask );
     
     if (data->hasTexture == 1 && col.w > 0.0) {
-        constexpr sampler textureSampler (mag_filter::nearest,
-                                          min_filter::nearest);
+        constexpr sampler textureSampler(filter::nearest);
+                                          //address::clamp_to_edge);
+                                          //border_color::transparent_black);
         
         float2 uv = in.textureCoordinate;
         uv.y = 1 - uv.y;
-        
+                
         if (data->mirrorX)
             uv.x = 1 - uv.x;
         
@@ -254,13 +255,9 @@ fragment float4 m4mCopyTextureDrawable(RasterizerData in [[stage_in]],
 
 fragment float4 m4mTextureDrawable(RasterizerData in [[stage_in]],
                                 constant TextureUniform *data [[ buffer(0) ]],
-                                texture2d<half> inTexture [[ texture(1) ]])
+                                texture2d<half> inTexture [[ texture(1) ]],
+                                sampler textureSampler [[sampler(2)]])
 {
-    constexpr sampler textureSampler (mag_filter::linear,
-                                      min_filter::linear);
-    
-//    constexpr sampler textureSampler (mag_filter::nearest,
-//                                      min_filter::nearest);
     float2 uv = in.textureCoordinate;
     uv.y = 1 - uv.y;
     

@@ -325,6 +325,8 @@ class Texture2D                 : NSObject
             renderEncoder.setFragmentBytes(&data, length: MemoryLayout<TextureUniform>.stride, index: 0)
             renderEncoder.setFragmentTexture(sourceTexture.texture, index: 1)
 
+            renderEncoder.setFragmentSamplerState(game.linearSampler, index: 2)
+
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawTexture))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
             renderEncoder.endEncoding()

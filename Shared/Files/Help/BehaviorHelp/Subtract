@@ -8,3 +8,6 @@ Example:
 
 `Subtract<Float2: 10, 1><From: position>`
 
+Other options:
+
+* **Minimum** (Int|Float(2-4)), the minimal allowed value. The result will be clamped by this value.

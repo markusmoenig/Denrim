@@ -7,3 +7,7 @@ Adds a value (or variable) to a given variable. The variable type defines the ty
 Example:
 
 `Add<Float2: 10, 1><To: position>`
+
+Other options:
+
+* **Maximum** (Int|Float(2-4)), the maximum allowed value. The result will be clamped by this value.

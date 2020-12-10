@@ -8,4 +8,8 @@ Syntax:
 
 Where the Id parameter can be an image, alias or sequence. A sequence automatically creates an animation for the shape.
 
+Other options:
+
+* **FlipX** (true/false), flips the texture horizontally, default is *false*.
+
 Note that there is also the same command available in behavior trees to change the current texture of a shape.
