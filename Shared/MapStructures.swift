@@ -45,6 +45,8 @@ struct MapAliasData2D {
     var position        : Float2
     var width           = Float1(0)
     var height          = Float1(0)
+    
+    var offset          = Float2(0,0)
 
     var rect            : Float4? = nil
     var texture         : Texture2D? = nil
@@ -67,6 +69,10 @@ struct MapAliasData2D {
             self.position = position
         } else {
             self.position = Float2(0,0)
+        }
+        
+        if let offset = options["offset"] as? Float2 {
+            self.offset = offset
         }
         
         if let rect = options["rect"] as? Float4 {

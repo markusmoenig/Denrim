@@ -375,10 +375,14 @@ struct MetalView: NSViewRepresentable {
         
         func draw(in view: MTKView) {
             if let game = parent.game {
-                if let asset = game.assetFolder.current {
-                    if let map = asset.map {
-                        game.mapBuilder.createPreview(map, true)
+                if game.state == .Idle {
+                    if let asset = game.assetFolder.current {
+                        if let map = asset.map {
+                            game.mapBuilder.createPreview(map, true)
+                        }
+                        parent.game.draw()
                     }
+                } else {
                     parent.game.draw()
                 }
             }

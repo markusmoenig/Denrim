@@ -87,8 +87,17 @@ class MapPreview
                 helpKey = "Sequence"
             } else
             if map.aliases[variable] != nil {
-                map.drawAlias(0, 0, &map.aliases[variable]!)
+                map.textureState = .DrawTextureWhiteAlpha
+                map.currentSampler = game.nearestSampler
+
+                let x = (game.screenWidth - map.aliases[variable]!.options.width.x * map.camera2D.zoom) / 2.0
+                let y = (game.screenHeight - map.aliases[variable]!.options.height.x * map.camera2D.zoom) / 2.0
+
+                map.drawAlias(x, y, &map.aliases[variable]!)
                 helpKey = "Alias"
+                
+                map.textureState = .DrawTexture
+                map.currentSampler = game.linearSampler
             } else
             if let layer = map.layers[variable] {
                 helpKey = "Layer"
@@ -123,12 +132,23 @@ class MapPreview
     
     func drawTexture(_ texture: Texture2D)
     {
-        if let map = map {            
+        if let map = map {
+            map.currentSampler = game.nearestSampler
+
             var options = MapAliasData2D(Float2(0,0))
             options.texture = texture
+        
             options.width = Float1(texture.width)
             options.height = Float1(texture.height)
+            
+            let x = (game.screenWidth - texture.width * map.camera2D.zoom) / 2.0
+            let y = (game.screenHeight - texture.height * map.camera2D.zoom) / 2.0
+            
+            options.position.x = x
+            options.position.y = y
+
             map.drawTexture(options)
+            map.currentSampler = game.linearSampler
         }
     }
     

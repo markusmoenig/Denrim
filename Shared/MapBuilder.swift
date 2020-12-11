@@ -769,7 +769,7 @@ class MapBuilder
                     }
                 }
                 
-                map.setup(game: game)
+                map.setup(game: game, forceFixedScale: true)
                 mapPreview.preview(map, name, command)
             }
         }
@@ -800,7 +800,7 @@ class MapBuilder
         if game.state == .Idle && game.scriptEditor != nil {
             game.scriptEditor!.getSessionCursor({ [weak self] (line) in
                 guard let self = self else { return }
-
+                
                 if let asset = self.game.assetFolder.current, asset.type == .Map {
                     let needsUpdate = self.scriptLine != line
                     self.scriptLine = line

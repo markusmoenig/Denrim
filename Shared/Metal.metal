@@ -273,6 +273,28 @@ fragment float4 m4mTextureDrawable(RasterizerData in [[stage_in]],
     return sample;
 }
 
+fragment float4 m4mTextureDrawableWhiteAlpha(RasterizerData in [[stage_in]],
+                                constant TextureUniform *data [[ buffer(0) ]],
+                                texture2d<half> inTexture [[ texture(1) ]],
+                                sampler textureSampler [[sampler(2)]])
+{
+    float2 uv = in.textureCoordinate;
+    uv.y = 1 - uv.y;
+    
+    uv.x *= data->size.x;
+    uv.y *= data->size.y;
+
+    uv.x += data->pos.x;
+    uv.y += data->pos.y;
+    
+    float4 sample = float4(inTexture.sample(textureSampler, uv));
+    sample.w *= data->globalAlpha;
+
+    sample = mix(float4(1,1,1,1), sample, sample.w);
+    
+    return sample;
+}
+
 float m4mMedian(float r, float g, float b) {
     return max(min(r, g), min(max(r, g), b));
 }

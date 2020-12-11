@@ -48,6 +48,8 @@ class Map
     var camera2D            = Camera2D()
     var globalAlpha         : Float = 1
     
+    var textureState        : MetalStates.States = .DrawTexture
+    
     // Have to be set!
     var game                : Game!
     var texture             : Texture2D!
@@ -126,7 +128,7 @@ class Map
     }
     
     /// Setup  the aspect and view
-    func setup(game: Game)
+    func setup(game: Game, forceFixedScale: Bool = false)
     {
         self.game = game
         self.texture = game.texture
@@ -137,7 +139,7 @@ class Map
         let scaledWidth: Float
         let scaledHeight: Float
         
-        if scaleMode == .UpDown {
+        if scaleMode == .UpDown && forceFixedScale == false {
             scaledWidth = canvasSize.x * scale
             scaledHeight = canvasSize.y * scale
         } else //if scaleMode == .Fixed
@@ -492,7 +494,7 @@ class Map
                                 }
                                 // ---
                                 xPos += advance.0
-                                if advance.1 > maxHeight {
+                                if advance.1 + aliases[a]!.options.offset.y * aspect.y  > maxHeight {
                                     maxHeight = advance.1
                                 }
                             } else {
@@ -758,6 +760,39 @@ class Map
         }
         return nil
     }
+    
+    func drawShape(_ shape: MapShape2D)
+    {
+        if let instances = shape.instances {
+            for s in instances.pairs {
+                let instShape = s.0
+                                
+                if instShape.options.visible.toSIMD() == false { continue }
+                
+                if instShape.shape == .Disk {
+                    drawDisk(instShape.options, shape.texture)
+                } else
+                if instShape.shape == .Box {
+                    drawBox(instShape.options, shape.texture)
+                } else
+                if instShape.shape == .Text {
+                    drawText(instShape.options)
+                }
+            }
+        } else {
+            if shape.options.visible.toSIMD() == false { return }
+            
+            if shape.shape == .Disk {
+                drawDisk(shape.options, shape.texture)
+            } else
+            if shape.shape == .Box {
+                drawBox(shape.options, shape.texture)
+            } else
+            if shape.shape == .Text {
+                drawText(shape.options)
+            }
+        }
+    }
 
     @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: inout MapAlias, doDraw: Bool = true) -> (Float, Float)
     {
@@ -782,8 +817,8 @@ class Map
             var width = texture2D.width / canvasSize.x * aspect.x * 100.0
             var height = texture2D.height / canvasSize.y * aspect.y * 100.0
             
-            alias.options.position.x = x
-            alias.options.position.y = y
+            alias.options.position.x = x + alias.options.offset.x
+            alias.options.position.y = y + alias.options.offset.y / canvasSize.y * aspect.y * 100.0
                         
             // Subrect ?
             if let v = alias.options.rect {
@@ -819,39 +854,6 @@ class Map
         }
         
         return rc
-    }
-    
-    func drawShape(_ shape: MapShape2D)
-    {
-        if let instances = shape.instances {
-            for s in instances.pairs {
-                let instShape = s.0
-                                
-                if instShape.options.visible.toSIMD() == false { continue }
-                
-                if instShape.shape == .Disk {
-                    drawDisk(instShape.options, shape.texture)
-                } else
-                if instShape.shape == .Box {
-                    drawBox(instShape.options, shape.texture)
-                } else
-                if instShape.shape == .Text {
-                    drawText(instShape.options)
-                }
-            }
-        } else {
-            if shape.options.visible.toSIMD() == false { return }
-            
-            if shape.shape == .Disk {
-                drawDisk(shape.options, shape.texture)
-            } else
-            if shape.shape == .Box {
-                drawBox(shape.options, shape.texture)
-            } else
-            if shape.shape == .Text {
-                drawText(shape.options)
-            }
-        }
     }
     
     func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer)
@@ -903,7 +905,7 @@ class Map
                 if aliases[a] != nil {
                     let advance = drawAlias(xPos, yPos, &aliases[a]!)
                     xPos += advance.0
-                    if advance.1 > maxHeight {
+                    if advance.1 + aliases[a]!.options.offset.y / canvasSize.y * aspect.y * 100.0 > maxHeight {
                         maxHeight = advance.1
                     }
                 }
@@ -1416,7 +1418,7 @@ class Map
             
             renderEncoder.setFragmentSamplerState(currentSampler, index: 2)
 
-            renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawTexture))
+            renderEncoder.setRenderPipelineState(game.metalStates.getState(state: textureState))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
             renderEncoder.endEncoding()
         }
