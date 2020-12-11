@@ -1367,15 +1367,14 @@ class Map
             
             position.x += viewBorder.x + camera2D.xOffset
             position.y += viewBorder.y + camera2D.yOffset
-
-            //position.x /= game.scaleFactor
-            //position.y /= game.scaleFactor
             
             width *= camera2D.zoom
             height *= camera2D.zoom
-
-            //width /= game.scaleFactor
-            //height /= game.scaleFactor
+            
+            // Check if texture will be visible
+            if position.x > texture!.width || position.y > texture!.height || position.x + width < 0 || position.y + height < 0 {
+                return
+            }
             
             var data = TextureUniform()
             data.globalAlpha = alpha

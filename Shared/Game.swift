@@ -207,6 +207,7 @@ public class Game       : ObservableObject
             
             _Time.x = 0
             targetFPS = 60
+            view.preferredFramesPerSecond = Int(targetFPS)
         } else {
             stop()
         }
@@ -297,12 +298,12 @@ public class Game       : ObservableObject
         if state == .Running {
             
             gameCmdBuffer?.addCompletedHandler { cb in
-                //print("GPU Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
+//                print("GPU Time:", (cb.gpuEndTime - cb.gpuStartTime) * 1000)
             }
             
-            //#if DEBUG
-            //let startTime = Double(Date().timeIntervalSince1970)
-            //#endif
+//            #if DEBUG
+//            let startTime = Double(Date().timeIntervalSince1970)
+//            #endif
 
             //texture?.clear()
 
@@ -342,9 +343,9 @@ public class Game       : ObservableObject
                 }
             }
 
-            //#if DEBUG
-            //print("Behavior Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)
-            //#endif
+//            #if DEBUG
+//            print("Behavior Time: ", (Double(Date().timeIntervalSince1970) - startTime) * 1000)
+//            #endif
         }
                 
         let renderPassDescriptor = view.currentRenderPassDescriptor
