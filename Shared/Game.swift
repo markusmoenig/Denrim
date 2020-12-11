@@ -86,6 +86,9 @@ public class Game       : ObservableObject
 
     public init(_ frameworkId: String? = nil)
     {
+        let processInfo = ProcessInfo()
+        print(processInfo.activeProcessorCount)
+        
         self.frameworkId = frameworkId
         
         viewportSize = vector_uint2( 0, 0 )
