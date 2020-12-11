@@ -396,7 +396,7 @@ class Map
                             fixtureDef.filter.maskBits = 0xffff
                             
                             let polyShape = b2PolygonShape()
-                            polyShape.setAsBox(halfWidth: pWidth / ppm - polyShape.m_radius, halfHeight: pHeight / ppm - polyShape.m_radius)
+                            polyShape.setAsBox(halfWidth: pWidth / ppm - polyShape.m_radius, halfHeight: pHeight / 2.0 / ppm - polyShape.m_radius)
                             fixtureDef.shape = polyShape
                             
                             /*
@@ -408,7 +408,7 @@ class Map
                             
                             fixtureDef.friction = 0.1
                             fixtureDef.density = 0.0
-                            bodyDef.position.set((pX! / aspect.x + pWidth) / ppm, (pY! / aspect.y + pHeight) / ppm)
+                            bodyDef.position.set((pX! / aspect.x + pWidth) / ppm, (pY! / aspect.y + pHeight / 2.0) / ppm)
                             
                             //print((xPos / aspect.x + width), (yPos / aspect.y + height), width, height)
 
