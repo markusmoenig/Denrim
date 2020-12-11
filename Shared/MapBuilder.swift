@@ -492,7 +492,7 @@ class MapBuilder
 
         let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale", "area", "filter"]
         let integerOptions = ["index", "int", "digits", "groupindex", "loops"]
-        let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval"]
+        let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval", "lineheight"]
         let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "grid", "scroll"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
         let boolOptions = ["repeatx", "repeaty", "visible", "bullet", "global", "cliptocanvas", "fixedrotation"]

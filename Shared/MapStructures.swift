@@ -135,6 +135,8 @@ struct MapLayerData2D {
     var clipToCanvas    : Bool = false
 
     var accumScroll     = Float2(0,0)
+    
+    var lineHeight      = Float1(16)
 
     init(_ options: [String:Any])
     {
@@ -148,6 +150,10 @@ struct MapLayerData2D {
             self.scroll = scroll
         } else {
             self.scroll = Float2(0,0)
+        }
+        
+        if let lineHeight = options["lineheight"] as? Float1 {
+            self.lineHeight = lineHeight
         }
         
         if let cliptocanvas = options["cliptocanvas"] as? Bool1 {

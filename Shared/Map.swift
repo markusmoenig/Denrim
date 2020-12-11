@@ -59,6 +59,8 @@ class Map
     var viewBorder          = Float2(0,0)
     
     var currentSampler      : MTLSamplerState!
+    
+    var lastPreviewOffset   = float2(0,0)
 
     deinit {
         clear()
@@ -420,9 +422,7 @@ class Map
                     }
 
                     for line in layer.data {
-
                         var index     : Int = 0
-                        var maxHeight : Float = 0
                         
                         pX = nil; pY = nil
                         
@@ -494,9 +494,6 @@ class Map
                                 }
                                 // ---
                                 xPos += advance.0
-                                if advance.1 + aliases[a]!.options.offset.y * aspect.y  > maxHeight {
-                                    maxHeight = advance.1
-                                }
                             } else {
                                 checkPhysicsBlock()
                             }
@@ -505,7 +502,7 @@ class Map
                      
                         checkPhysicsBlock()
 
-                        yPos += maxHeight
+                        yPos += layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0
                         xPos = x + layer.options.offset.x * aspect.x
                     }
                     
@@ -895,9 +892,7 @@ class Map
         yPos += layer.options.accumScroll.y
 
         for line in layer.data {
-            
             var index     : Int = 0
-            var maxHeight : Float = 0
             
             while index < line.count - 1 {
                 
@@ -905,14 +900,11 @@ class Map
                 if aliases[a] != nil {
                     let advance = drawAlias(xPos, yPos, &aliases[a]!)
                     xPos += advance.0
-                    if advance.1 + aliases[a]!.options.offset.y / canvasSize.y * aspect.y * 100.0 > maxHeight {
-                        maxHeight = advance.1
-                    }
                 }
                 index += 2
             }
             
-            yPos += maxHeight
+            yPos += layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0
             xPos = x + layer.options.offset.x * aspect.x
         }
         
@@ -1430,6 +1422,9 @@ class Map
         
         rc.x -= camera2D.xOffset
         rc.y -= camera2D.yOffset
+        
+        rc.x -= lastPreviewOffset.x
+        rc.y -= lastPreviewOffset.y
         
         rc.x = round(rc.x / camera2D.zoom)
         rc.y = round(rc.y / camera2D.zoom)

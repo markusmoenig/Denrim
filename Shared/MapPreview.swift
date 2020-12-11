@@ -90,14 +90,16 @@ class MapPreview
                 map.textureState = .DrawTextureWhiteAlpha
                 map.currentSampler = game.nearestSampler
 
-                let x = (game.screenWidth - map.aliases[variable]!.options.width.x * map.camera2D.zoom) / 2.0
-                let y = (game.screenHeight - map.aliases[variable]!.options.height.x * map.camera2D.zoom) / 2.0
+                let x = (game.texture!.width - map.aliases[variable]!.options.width.x * map.camera2D.zoom) / 2.0
+                let y = (game.texture!.height - map.aliases[variable]!.options.height.x * map.camera2D.zoom) / 2.0
 
                 map.drawAlias(x, y, &map.aliases[variable]!)
                 helpKey = "Alias"
                 
                 map.textureState = .DrawTexture
                 map.currentSampler = game.linearSampler
+                map.lastPreviewOffset.x = x
+                map.lastPreviewOffset.y = y
             } else
             if let layer = map.layers[variable] {
                 helpKey = "Layer"
@@ -141,14 +143,16 @@ class MapPreview
             options.width = Float1(texture.width)
             options.height = Float1(texture.height)
             
-            let x = (game.screenWidth - texture.width * map.camera2D.zoom) / 2.0
-            let y = (game.screenHeight - texture.height * map.camera2D.zoom) / 2.0
+            let x = (game.texture!.width - texture.width * map.camera2D.zoom) / 2.0
+            let y = (game.texture!.height - texture.height * map.camera2D.zoom) / 2.0
             
             options.position.x = x
             options.position.y = y
 
             map.drawTexture(options)
             map.currentSampler = game.linearSampler
+            map.lastPreviewOffset.x = x
+            map.lastPreviewOffset.y = y
         }
     }
     
