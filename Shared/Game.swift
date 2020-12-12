@@ -86,8 +86,8 @@ public class Game       : ObservableObject
 
     public init(_ frameworkId: String? = nil)
     {
-        let processInfo = ProcessInfo()
-        print(processInfo.activeProcessorCount)
+        //let processInfo = ProcessInfo()
+        //print(processInfo.activeProcessorCount)
         
         self.frameworkId = frameworkId
         

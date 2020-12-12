@@ -837,7 +837,7 @@ class Map
             
             if alias.options.repeatX == true {
                 var posX : Float = x + width
-                while posX < game!.texture!.width {
+                while posX + camera2D.xOffset < game!.texture!.width {
                     alias.options.position.x = posX
                     if doDraw {
                         drawTexture(alias.options)
