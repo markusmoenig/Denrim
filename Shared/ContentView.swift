@@ -280,6 +280,12 @@ struct ContentView: View {
     @State private var tempText             : String = ""
 
     @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
+    
+    #if os(macOS)
+    let leftPanelWidth                      : CGFloat = 200
+    #else
+    let leftPanelWidth                      : CGFloat = 250
+    #endif
 
     var body: some View {
         HStack {
@@ -293,7 +299,7 @@ struct ContentView: View {
                     document.game.createPreview(asset)
                     updateView.toggle()
                 })
-                {                    
+                {
                     Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -301,7 +307,7 @@ struct ContentView: View {
                 //.onDrag { print("here"); return NSItemProvider(object: "test" as NSString) }
             }*/
             List {
-                HStack{
+                HStack(spacing: 3) {
                     Button(action: {
                         let group = AssetGroup("New Folder")
                         
@@ -314,6 +320,7 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "folder")
+                            .font(.system(size: 11))
                     }
                     .buttonStyle(PlainButtonStyle())
                     
@@ -327,6 +334,7 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "lightbulb")
+                            .font(.system(size: 11))
                     }
                     .buttonStyle(PlainButtonStyle())
 
@@ -340,6 +348,7 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "list.and.film")
+                            .font(.system(size: 11))
                     }
                     .buttonStyle(PlainButtonStyle())
 
@@ -355,6 +364,7 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "fx")
+                            .font(.system(size: 11))
                     }
                     .buttonStyle(PlainButtonStyle())
 
@@ -363,6 +373,7 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "photo.on.rectangle")
+                            .font(.system(size: 11))
                     }
                     .buttonStyle(PlainButtonStyle())
                     
@@ -371,16 +382,19 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "waveform")
+                            .font(.system(size: 11))
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
+                #if os(macOS)
                 Divider()
+                #endif
                 ForEach(document.game.assetFolder.groups, id: \.id) { group in
                     GroupView(document: document, group: group, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, assetGroup: $assetGroup, showDeleteAssetAlert: $showDeleteAssetAlert, isAddingImages: $isAddingImages, imageIndex: $imageIndex)
                 }
                 RootView(document: document, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, assetGroup: $assetGroup, showDeleteAssetAlert: $showDeleteAssetAlert, isAddingImages: $isAddingImages, imageIndex: $imageIndex)
             }
-            .frame(minWidth: 220, idealWidth: 220, maxWidth: 220)
+            .frame(minWidth: leftPanelWidth, idealWidth: leftPanelWidth, maxWidth: leftPanelWidth)
             .layoutPriority(0)
             // Asset deletion
             .alert(isPresented: $showDeleteAssetAlert) {
