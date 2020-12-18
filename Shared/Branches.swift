@@ -27,7 +27,7 @@ class WhileBranch: BehaviorNode
             } else {
                 let opts : [String:String] = ["bool":key.key]
                 test = key.key
-                variable = extractBool1Value(opts, context: context, tree: tree, error: &error)
+                variable = extractBool1Value(opts, container: context, parameters: tree.parameters, error: &error)
             }
         }
     }
@@ -71,7 +71,7 @@ class RepeatBranch: BehaviorNode
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
         for key in options {
             let opts : [String:String] = ["int":key.key]
-            repetitions = extractInt1Value(opts, context: context, tree: tree, error: &error)
+            repetitions = extractInt1Value(opts, container: context, parameters: tree.parameters, error: &error)
         }
     }
     

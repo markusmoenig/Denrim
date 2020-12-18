@@ -200,22 +200,22 @@ class BehaviorBuilder
                                             let varName = String(rightValueArray[1])
                                             if CharacterSet.letters.isSuperset(of: CharacterSet(charactersIn: varName)) {
                                                 if possibleVar == "int" {
-                                                    currentTree?.parameters.append(BehaviorVariable(varName, Int1(0)))
+                                                    currentTree?.parameters.append(Int1(varName, 0))
                                                 } else
                                                 if possibleVar == "bool" {
-                                                    currentTree?.parameters.append(BehaviorVariable(varName, Bool1()))
+                                                    currentTree?.parameters.append(Bool1(varName))
                                                 } else
                                                 if possibleVar == "float" {
-                                                    currentTree?.parameters.append(BehaviorVariable(varName, Float1(0)))
+                                                    currentTree?.parameters.append(Float1(varName, 0))
                                                 } else
                                                 if possibleVar == "float2" {
-                                                    currentTree?.parameters.append(BehaviorVariable(varName, Float2(0,0)))
+                                                    currentTree?.parameters.append(Float2(varName, 0,0))
                                                 } else
                                                 if possibleVar == "float3" {
-                                                    currentTree?.parameters.append(BehaviorVariable(varName, Float3(0,0,0)))
+                                                    currentTree?.parameters.append(Float3(varName, 0,0,0))
                                                 } else
                                                 if possibleVar == "float4" {
-                                                    currentTree?.parameters.append(BehaviorVariable(varName, Float4(0,0,0,0)))
+                                                    currentTree?.parameters.append(Float4(varName, 0,0,0,0))
                                                 }
                                             } else { error.error = "Invalid variable '\(varName)'" }
                                             
@@ -339,8 +339,8 @@ class BehaviorBuilder
                                         let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 0 }
                                         let w : Float; if let v = Float(array[3].dropLast().trimmingCharacters(in: .whitespaces)) { w = v } else { w = 0 }
 
-                                        let value = Float4(x, y, z, w)
-                                        asset.behavior!.addVariable(variableName!, value)
+                                        let value = Float4(variableName!, x, y, z, w)
+                                        asset.behavior!.addVariable(value)
                                         processed = true
                                     } else { createError() }
                                 } else
@@ -353,8 +353,8 @@ class BehaviorBuilder
                                         let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
                                         let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 0 }
 
-                                        let value = Float3(x, y, z)
-                                        asset.behavior!.addVariable(variableName!, value)
+                                        let value = Float3(variableName!, x, y, z)
+                                        asset.behavior!.addVariable(value)
                                         processed = true
                                     } else { createError() }
                                 } else
@@ -366,33 +366,33 @@ class BehaviorBuilder
                                         let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
                                         let y : Float; if let v = Float(array[1].dropLast().trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
 
-                                        let value = Float2(x, y)
-                                        asset.behavior!.addVariable(variableName!, value)
+                                        let value = Float2(variableName!, x, y)
+                                        asset.behavior!.addVariable(value)
                                         processed = true
                                     } else { createError() }
                                 } else
                                 if possibleVariableType == "Float" {
                                     rightValueArray.removeFirst()
                                     let value : Float; if let v = Float(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
-                                    asset.behavior!.addVariable(variableName!, Float1(value))
+                                    asset.behavior!.addVariable(Float1(variableName!, value))
                                     processed = true
                                 } else
                                 if possibleVariableType == "Int" {
                                     rightValueArray.removeFirst()
                                     let value : Int; if let v = Int(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
-                                    asset.behavior!.addVariable(variableName!, Int1(value))
+                                    asset.behavior!.addVariable(Int1(variableName!, value))
                                     processed = true
                                 } else
                                 if possibleVariableType == "Bool" {
                                     rightValueArray.removeFirst()
                                     let value : Bool; if let v = Bool(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = false }
-                                    asset.behavior!.addVariable(variableName!, Bool1(value))
+                                    asset.behavior!.addVariable(Bool1(variableName!, value))
                                     processed = true
                                 } else
                                 if possibleVariableType == "Text" {
                                     rightValueArray.removeFirst()
                                     let v = String(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces))
-                                    asset.behavior!.addVariable(variableName!, TextRef(v))
+                                    asset.behavior!.addVariable(Text1(variableName!, v))
                                     processed = true
                                 } else { error.error = "Unrecognized Variable type '\(possbibleCmd)'" }
                             }

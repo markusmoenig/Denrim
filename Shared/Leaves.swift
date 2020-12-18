@@ -153,7 +153,7 @@ class Call: BehaviorNode
     
     var firstCall           : Bool = true
     
-    var parameters          : [BehaviorVariable] = []
+    var parameters          : [BaseVariable] = []
 
     override init(_ options: [String:Any] = [:])
     {
@@ -171,7 +171,7 @@ class Call: BehaviorNode
 
             for v in array {
                 let val = String(v.trimmingCharacters(in: .whitespaces))
-                var foundVar : BehaviorVariable? = nil
+                var foundVar : BaseVariable? = nil
                 for variable in context.variables {
                     if variable.name == val {
                         foundVar = variable
@@ -236,36 +236,36 @@ class Call: BehaviorNode
                     for (index, variable) in parameters.enumerated() {
                         if index < tree.parameters.count {
                             let param = tree.parameters[index]
-                            if let dest = param.value as? Int1 {
-                                if let source = variable.value as? Int1 {
+                            if let dest = param as? Int1 {
+                                if let source = variable as? Int1 {
                                     dest.x = source.x
                                 }
                             } else
-                            if let dest = param.value as? Bool1 {
-                                if let source = variable.value as? Bool1 {
+                            if let dest = param as? Bool1 {
+                                if let source = variable as? Bool1 {
                                     dest.x = source.x
                                 }
                             } else
-                            if let dest = param.value as? Float1 {
-                                if let source = variable.value as? Float1 {
+                            if let dest = param as? Float1 {
+                                if let source = variable as? Float1 {
                                     dest.x = source.x
                                 }
                             } else
-                            if let dest = param.value as? Float2 {
-                                if let source = variable.value as? Float2 {
+                            if let dest = param as? Float2 {
+                                if let source = variable as? Float2 {
                                     dest.x = source.x
                                     dest.y = source.y
                                 }
                             } else
-                            if let dest = param.value as? Float3 {
-                                if let source = variable.value as? Float3 {
+                            if let dest = param as? Float3 {
+                                if let source = variable as? Float3 {
                                     dest.x = source.x
                                     dest.y = source.y
                                     dest.z = source.z
                                 }
                             } else
-                            if let dest = param.value as? Float4 {
-                                if let source = variable.value as? Float4 {
+                            if let dest = param as? Float4 {
+                                if let source = variable as? Float4 {
                                     dest.x = source.x
                                     dest.y = source.y
                                     dest.z = source.z
@@ -301,7 +301,7 @@ class StartTimer: BehaviorNode
     var interval            : Float1? = nil
     
     var firstCall           : Bool = true
-    var parameters          : [BehaviorVariable] = []
+    var parameters          : [BaseVariable] = []
     
     var once                : Bool = false
 
@@ -316,7 +316,7 @@ class StartTimer: BehaviorNode
             error.error = "Call requires a 'Tree' parameter"
         }
         
-        if let value = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "interval") {
+        if let value = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "interval") {
             interval = value
         }
         
@@ -331,7 +331,7 @@ class StartTimer: BehaviorNode
 
             for v in array {
                 let val = String(v.trimmingCharacters(in: .whitespaces))
-                var foundVar : BehaviorVariable? = nil
+                var foundVar : BaseVariable? = nil
                 for variable in context.variables {
                     if variable.name == val {
                         foundVar = variable
@@ -412,36 +412,36 @@ class StartTimer: BehaviorNode
                     for (index, variable) in parameters.enumerated() {
                         if index < tree.parameters.count {
                             let param = tree.parameters[index]
-                            if let dest = param.value as? Int1 {
-                                if let source = variable.value as? Int1 {
+                            if let dest = param as? Int1 {
+                                if let source = variable as? Int1 {
                                     dest.x = source.x
                                 }
                             } else
-                            if let dest = param.value as? Bool1 {
-                                if let source = variable.value as? Bool1 {
+                            if let dest = param as? Bool1 {
+                                if let source = variable as? Bool1 {
                                     dest.x = source.x
                                 }
                             } else
-                            if let dest = param.value as? Float1 {
-                                if let source = variable.value as? Float1 {
+                            if let dest = param as? Float1 {
+                                if let source = variable as? Float1 {
                                     dest.x = source.x
                                 }
                             } else
-                            if let dest = param.value as? Float2 {
-                                if let source = variable.value as? Float2 {
+                            if let dest = param as? Float2 {
+                                if let source = variable as? Float2 {
                                     dest.x = source.x
                                     dest.y = source.y
                                 }
                             } else
-                            if let dest = param.value as? Float3 {
-                                if let source = variable.value as? Float3 {
+                            if let dest = param as? Float3 {
+                                if let source = variable as? Float3 {
                                     dest.x = source.x
                                     dest.y = source.y
                                     dest.z = source.z
                                 }
                             } else
-                            if let dest = param.value as? Float4 {
-                                if let source = variable.value as? Float4 {
+                            if let dest = param as? Float4 {
+                                if let source = variable as? Float4 {
                                     dest.x = source.x
                                     dest.y = source.y
                                     dest.z = source.z
@@ -489,7 +489,7 @@ class ApplyTexture2D: BehaviorNode
             error.error = "SetScene requires a 'Id' parameter"
         }
         
-        flipX = extractBool1Value(options, context: context, tree: tree, error: &error, name: "flipx", isOptional: true)
+        flipX = extractBool1Value(options, container: context, parameters: tree.parameters, error: &error, name: "flipx", isOptional: true)
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
@@ -525,7 +525,7 @@ class ApplyTextureFlip2D: BehaviorNode
             error.error = "ApplyTextureFlip2D requires a 'ShapeId' parameter"
         }
         
-        flipX = extractBool1Value(options, context: context, tree: tree, error: &error, name: "flipx", isOptional: true)
+        flipX = extractBool1Value(options, container: context, parameters: tree.parameters, error: &error, name: "flipx", isOptional: true)
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
@@ -557,13 +557,13 @@ class SetCamera2D: BehaviorNode
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
         
-        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "offset", isOptional: true) {
+        if let value = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "offset", isOptional: true) {
             offset = value
         }
-        if let value = extractBool1Value(options, context: context, tree: tree, error: &error, name: "center", isOptional: true) {
+        if let value = extractBool1Value(options, container: context, parameters: tree.parameters, error: &error, name: "center", isOptional: true) {
             center = value
         }
-        if let value = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "zoom", isOptional: true) {
+        if let value = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "zoom", isOptional: true) {
             zoom = value
         }
     }
@@ -610,13 +610,13 @@ class MoveTo2D: BehaviorNode
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
         
-        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "variable") {
+        if let value = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable") {
             variable = value
         }
-        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "destination") {
+        if let value = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "destination") {
             destination = value
         }
-        if let value = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "step", isOptional: true) {
+        if let value = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "step", isOptional: true) {
             step = value
         }
     }
@@ -654,7 +654,7 @@ class GetLinearVelocity2D: BehaviorNode
             error.error = "GetLinearVelocity2D requires a 'ShapeId' parameter"
         }
         
-        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "variable") {
+        if let value = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable") {
             f2 = value
         }
     }
@@ -709,7 +709,7 @@ class SetLinearVelocity2D: BehaviorNode
             error.error = "SetLinearVelocity2D requires a 'ShapeId' parameter"
         }
         
-        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error) {
+        if let value = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error) {
             f2 = value
         }
     }
@@ -760,7 +760,7 @@ class ApplyForce2D: BehaviorNode
             error.error = "ApplyForce2D requires a 'ShapeId' parameter"
         }
         
-        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error) {
+        if let value = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error) {
             f2 = value
         }
     }
@@ -811,7 +811,7 @@ class SetActive: BehaviorNode
             error.error = "SetActive requires a 'ShapeId' parameter"
         }
         
-        if let value = extractBool1Value(options, context: context, tree: tree, error: &error) {
+        if let value = extractBool1Value(options, container: context, parameters: tree.parameters, error: &error) {
             b1 = value
         }
     }
@@ -862,7 +862,7 @@ class SetVisible: BehaviorNode
             error.error = "SetActive requires a 'ShapeId' parameter"
         }
         
-        if let value = extractBool1Value(options, context: context, tree: tree, error: &error) {
+        if let value = extractBool1Value(options, container: context, parameters: tree.parameters, error: &error) {
             b1 = value
         }
     }
@@ -955,7 +955,7 @@ class CreateInstance2D: BehaviorNode
             error.error = "CreateInstance2D requires an 'Id' parameter for the OnDemandInstance2D reference"
         }
         
-        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "position") {
+        if let value = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "position") {
             position2 = value
         }
     }
@@ -1047,40 +1047,40 @@ class SetNode: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        if let variable = extractVariableValue(options, variableName: "variable", context: context, error: &error) {
+        if let variable = extractVariableValue(options, variableName: "variable", container: context, error: &error) {
             
             if variable as? Bool1 != nil {
-                if let value = extractBool1Value(options, context: context, tree: tree, error: &error) {
+                if let value = extractBool1Value(options, container: context, parameters: tree.parameters, error: &error) {
                     self.variable = variable
                     self.value = value
                 } else { error.error = "Missing 'Bool' parameter" }
             } else
             if variable as? Int1 != nil {
-                if let value = extractInt1Value(options, context: context, tree: tree, error: &error) {
+                if let value = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error) {
                     self.variable = variable
                     self.value = value
                 } else { error.error = "Missing 'Int' parameter" }
             } else
             if variable as? Float1 != nil {
-                if let value = extractFloat1Value(options, context: context, tree: tree, error: &error) {
+                if let value = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error) {
                     self.variable = variable
                     self.value = value
                 } else { error.error = "Missing 'Float' parameter" }
             } else
             if variable as? Float2 != nil {
-                if let value = extractFloat2Value(options, context: context, tree: tree, error: &error) {
+                if let value = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error) {
                     self.variable = variable
                     self.value = value
                 } else { error.error = "Missing 'Float2' parameter" }
             } else
             if variable as? Float3 != nil {
-                if let value = extractFloat3Value(options, context: context, tree: tree, error: &error) {
+                if let value = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error) {
                     self.variable = variable
                     self.value = value
                 } else { error.error = "Missing 'Float3' parameter" }
             } else
             if variable as? Float4 != nil {
-                if let value = extractFloat4Value(options, context: context, tree: tree, error: &error) {
+                if let value = extractFloat4Value(options, container: context, parameters: tree.parameters, error: &error) {
                     self.variable = variable
                     self.value = value
                 } else { error.error = "Missing 'Float4' parameter" }
@@ -1151,9 +1151,9 @@ class DistanceToShape: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        position2 = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "position")
-        radius1 = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "radius", isOptional: true)
-        dest = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "variable")
+        position2 = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "position")
+        radius1 = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "radius", isOptional: true)
+        dest = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
 
         if let shapeN = options["shapeid"] as? String {
             shapeName = shapeN
@@ -1230,7 +1230,7 @@ class ShapeContactCount: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        dest = extractInt1Value(options, context: context, tree: tree, error: &error, name: "variable")
+        dest = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
 
         if let shapeN = options["shapeid"] as? String {
             shapeName = shapeN
@@ -1282,19 +1282,19 @@ class RandomColorNode: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        if let a = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "a", isOptional: true) {
+        if let a = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "a", isOptional: true) {
             self.a = a
         }
-        if let b = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "b", isOptional: true) {
+        if let b = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "b", isOptional: true) {
             self.b = b
         }
-        if let c = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "c", isOptional: true) {
+        if let c = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "c", isOptional: true) {
             self.c = c
         }
-        if let d = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "d", isOptional: true) {
+        if let d = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "d", isOptional: true) {
             self.d = d
         }
-        dest = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "variable")
+        dest = extractFloat4Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
@@ -1331,30 +1331,30 @@ class RandomNode: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        if let from = extractInt1Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+        if let from = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
             self.from = from
-            self.to = extractInt1Value(options, context: context, tree: tree, error: &error, name: "to")
-            dest = extractInt1Value(options, context: context, tree: tree, error: &error, name: "variable")
+            self.to = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
+            dest = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
         } else
-        if let from = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+        if let from = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
             self.from = from
-            self.to = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "to")
-            dest = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "variable")
+            self.to = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
+            dest = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
         } else
-        if let from = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+        if let from = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
             self.from = from
-            self.to = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "to")
-            dest = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "variable")
+            self.to = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
+            dest = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
         } else
-        if let from = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+        if let from = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
             self.from = from
-            self.to = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "to")
-            dest = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "variable")
+            self.to = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
+            dest = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
         } else
-        if let from = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+        if let from = extractFloat4Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
             self.from = from
-            self.to = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "to")
-            dest = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "variable")
+            self.to = extractFloat4Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
+            dest = extractFloat4Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
         }
     }
     
@@ -1423,16 +1423,16 @@ class LengthNode: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        if let value = extractFloat2Value(options, context: context, tree: tree, error: &error, isOptional: true) {
+        if let value = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, isOptional: true) {
             self.value = value
         } else
-        if let value = extractFloat3Value(options, context: context, tree: tree, error: &error, isOptional: true) {
+        if let value = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, isOptional: true) {
             self.value = value
         } else
-        if let value = extractFloat4Value(options, context: context, tree: tree, error: &error, isOptional: true) {
+        if let value = extractFloat4Value(options, container: context, parameters: tree.parameters, error: &error, isOptional: true) {
             self.value = value
         }
-        self.variable = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "variable")
+        self.variable = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
@@ -1471,19 +1471,19 @@ class DistanceNode: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        if let from = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+        if let from = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
             self.from = from
-            self.to = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "to")
+            self.to = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
         } else
-        if let from = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+        if let from = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
             self.from = from
-            self.to = extractFloat3Value(options, context: context, tree: tree, error: &error, name: "to")
+            self.to = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
         } else
-        if let from = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "from", isOptional: true) {
+        if let from = extractFloat4Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
             self.from = from
-            self.to = extractFloat4Value(options, context: context, tree: tree, error: &error, name: "to")
+            self.to = extractFloat4Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
         }
-        dest = extractFloat1Value(options, context: context, tree: tree, error: &error, name: "variable")
+        dest = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
@@ -1522,7 +1522,7 @@ class GetTouchPos: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        data2 = extractFloat2Value(options, context: context, tree: tree, error: &error, name: "variable")
+        data2 = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
@@ -1779,7 +1779,7 @@ class Subtract: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        pair = extractPair(options, variableName: "from", context: context, tree: tree, error: &error, optionalVariables: ["minimum"])
+        pair = extractPair(options, variableName: "from", container: context, parameters: tree.parameters, error: &error, optionalVariables: ["minimum"])
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
@@ -1853,7 +1853,7 @@ class Add: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        pair = extractPair(options, variableName: "to", context: context, tree: tree, error: &error, optionalVariables: ["maximum"])
+        pair = extractPair(options, variableName: "to", container: context, parameters: tree.parameters, error: &error, optionalVariables: ["maximum"])
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
@@ -1927,7 +1927,7 @@ class Multiply: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        pair = extractPair(options, variableName: "with", context: context, tree: tree, error: &error, optionalVariables: [])
+        pair = extractPair(options, variableName: "with", container: context, parameters: tree.parameters, error: &error, optionalVariables: [])
     }
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
@@ -1988,7 +1988,7 @@ class IsComponent: BehaviorNode
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
         
-        if let compData = extractComponent(options, context: context, tree: tree, error: &error) {
+        if let compData = extractComponent(options, container: context, parameters: tree.parameters, error: &error) {
             component = compData
             if var m = options["mode"] as? String {
                 m = m.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
@@ -2004,7 +2004,7 @@ class IsComponent: BehaviorNode
             } else { error.error = "Missing 'Mode' statement" }
             
             if error.error == nil {
-                f1 = extractFloat1Value(options, context: context, tree: tree, error: &error)
+                f1 = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error)
             }
         }
         
@@ -2063,7 +2063,7 @@ class IsVariable: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        pair = extractPair(options, variableName: "variable", context: context, tree: tree, error: &error, optionalVariables: [])
+        pair = extractPair(options, variableName: "variable", container: context, parameters: tree.parameters, error: &error, optionalVariables: [])
         if error.error == nil {
             if var m = options["mode"] as? String {
                 m = m.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)

@@ -40,7 +40,7 @@ class BehaviorNode {
 
 class BehaviorTree  : BehaviorNode
 {
-    var parameters  : [BehaviorVariable] = []
+    var parameters  : [BaseVariable] = []
 
     init(_ name: String)
     {
@@ -57,22 +57,9 @@ class BehaviorTree  : BehaviorNode
     }
 }
 
-class BehaviorVariable
-{
-    var name        : String
-    var value       : Any
-    
-    init(_ name: String,_ value:Any)
-    {
-        self.name = name
-        self.value = value
-    }
-}
-
-class BehaviorContext
+class BehaviorContext       : VariableContainer
 {
     var trees               : [BehaviorTree] = []
-    var variables           : [BehaviorVariable] = []
     var failedAt            : [Int32] = []
     
     var lines               : [Int32:String] = [:]
@@ -91,12 +78,12 @@ class BehaviorContext
         lines = [:]
     }
     
-    func addVariable(_ name: String,_ value: Any)
+    func addVariable(_ value: BaseVariable)
     {
-        variables.append(BehaviorVariable(name, value))
+        variables.append(value)
     }
     
-    func getVariableValue(_ name: String, tree: BehaviorTree? = nil) -> Any?
+    override func getVariableValue(_ name: String, parameters: [BaseVariable] = []) -> BaseVariable?
     {
         // Globals
         if name == "Time" {
@@ -107,17 +94,15 @@ class BehaviorContext
         }
         
         // First check the optional tree parameters (if any) as they overrule the context variables
-        if let tree = tree {
-            for v in tree.parameters {
-                if v.name == name {
-                    return v.value
-                }
+        for v in parameters {
+            if v.name == name {
+                return v
             }
         }
         // Check the context variables
         for v in variables {
             if v.name == name {
-                return v.value
+                return v
             }
         }
         return nil

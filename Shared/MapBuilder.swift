@@ -625,7 +625,7 @@ class MapBuilder
                     for v in behavior.variables {
                         if v.name == varArray[1] {
                             isValid = true
-                            replacedOptions[optionName] = v.value
+                            replacedOptions[optionName] = v
                             break
                         }
                     }
