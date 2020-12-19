@@ -457,7 +457,12 @@ struct ContentView: View {
                     message: Text("This action cannot be undone!"),
                     primaryButton: .destructive(Text("Yes"), action: {
                         if let asset = document.game.assetFolder.current {
-                            document.game.assetFolder.removeAsset(asset)
+                            document.game.assetFolder.removeAsset(asset, stopTimer: true)
+                            for a in document.game.assetFolder.assets {
+                                if a.type != .Folder {
+                                    document.game.assetFolder.select(a.id)
+                                }
+                            }
                             self.updateView.toggle()
                         }
                     }),
@@ -479,114 +484,7 @@ struct ContentView: View {
                     })
                     .frame(minWidth: 200)
                 }.padding()
-            }/*
-            .toolbar {
-                ToolbarItemGroup(placement: toolbarPlacement1) {
-                    Menu {
-                        Section(header: Text("Add Asset")) {
-                            Button("New Folder", action: {
-                                let group = AssetGroup("New Folder")
-                                
-                                assetName = group.name
-                                assetGroup = group
-                                showAssetNamePopover = true
-                                
-                                document.game.assetFolder.groups.append(group)
-                                updateView.toggle()
-                            })
-                            Button("New Bevavior", action: {
-                                let current = document.game.assetFolder.current
-                                document.game.assetFolder.addBehavior("New Behavior", groupId: current != nil ? current!.groupId : nil)
-                                assetName = document.game.assetFolder.current!.name
-                                assetGroup = nil
-                                showAssetNamePopover = true
-                                updateView.toggle()
-                            })
-                            Button("New Map", action: {
-                                let current = document.game.assetFolder.current
-                                document.game.assetFolder.addMap("New Map", groupId: current != nil ? current!.groupId : nil)
-                                assetName = document.game.assetFolder.current!.name
-                                assetGroup = nil
-                                showAssetNamePopover = true
-                                updateView.toggle()
-                            })
-                            Button("New Shader", action: {
-                                document.game.assetFolder.addShader("New Shader")
-                                if let asset = document.game.assetFolder.current {
-                                    assetName = document.game.assetFolder.current!.name
-                                    assetGroup = nil
-                                    showAssetNamePopover = true
-                                    document.game.createPreview(asset)
-                                }
-                                updateView.toggle()
-                            })
-                            Button("New Image(s)", action: {
-                                isImportingImages = true
-                            })
-                            Button("New Audio", action: {
-                                isImportingAudio = true
-                            })
-                        }
-                        Section(header: Text("Edit Asset")) {
-                            // Optional toolbar items depending on asset
-                            if let asset = document.game.assetFolder.current {
-                                
-                                Button(action: {
-                                    assetName = asset.name
-                                    assetGroup = nil
-                                    showAssetNamePopover = true
-                                })
-                                {
-                                    Label("Rename", systemImage: "pencil")//rectangle.and.pencil.and.ellipsis")
-                                }
-                                .disabled(asset.name == "Game")
-                                
-                                if asset.type == .Behavior || asset.type == .Shader || asset.type == .Map || asset.type == .Audio {
-                                    Button(action: {
-                                        showDeleteAssetAlert = true
-                                    })
-                                    {
-                                        Label("Remove", systemImage: "minus")
-                                    }
-                                    .disabled(asset.name == "Game")
-                                } else
-                                if asset.type == .Image {
-                                    Button(action: {
-                                        isAddingImages = true
-                                    })
-                                    {
-                                        Label("Add to Group", systemImage: "plus")
-                                    }
-                                    
-                                    Button(action: {
-                                        showDeleteAssetAlert = true
-                                    })
-                                    {
-                                        Label("Remove Image Group", systemImage: "minus")
-                                    }
-                                    
-                                    Button(action: {
-                                        if let asset = document.game.assetFolder.current {
-                                            asset.data.remove(at: Int(imageIndex))
-                                        }
-                                        updateView.toggle()
-                                    })
-                                    {
-                                        Label("Remove Image", systemImage: "minus.circle")
-                                    }
-                                    .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
-                                }
-                            }
-                        }
-                    }
-                    label: {
-                        //Text("Asset")//.foregroundColor(Color.gray)
-                        Label("Command", systemImage: "contextualmenu.and.cursorarrow")
-                    }
-                }
-
             }
-            */
             // Import Images
             .fileImporter(
                 isPresented: $isImportingImages,

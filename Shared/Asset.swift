@@ -273,17 +273,9 @@ class AssetFolder       : Codable
     /// Moves the given asset to the folder
     func moveToFolder(folderName: String, asset: Asset)
     {
-        var removedSuccessfully: Bool = false
-        // Remove asset from current folder
-        if asset.path == "" {
-            if let index = assets.firstIndex(of: asset) {
-                assets.remove(at: index)
-                removedSuccessfully = true
-            }
-        }
+        let removedSuccessfully = removeAsset(asset)
         
-        // Insert at new folder
-        
+        // Insert at new folder        
         if removedSuccessfully {
             for a in assets {
                 if a.type == .Folder && a.name == folderName {
@@ -520,18 +512,32 @@ class AssetFolder       : Codable
     }
     
     /// Safely removes an asset from the project
-    func removeAsset(_ asset: Asset)
+    @discardableResult func removeAsset(_ asset: Asset, stopTimer: Bool = false) -> Bool
     {
-        if let index = assets.firstIndex(of: asset) {
+        if stopTimer {
             if asset.type == .Behavior {
                 game.behaviorBuilder.stopTimer()
             } else
             if asset.type == .Map {
                 game.mapBuilder.stopTimer()
             }
-            assets.remove(at: index)
-            select(assets[0].id)
         }
+        
+        if let path = asset.path {
+            if let folder = getAsset(path, .Folder) {
+                if let index = folder.children?.firstIndex(of: asset) {
+                    folder.children?.remove(at: index)
+                    return true
+                }
+            }
+        } else {
+            if let index = assets.firstIndex(of: asset) {
+                assets.remove(at: index)
+                return true
+            }
+        }
+        
+        return false
     }
     
     // Create a preview for the current asset
