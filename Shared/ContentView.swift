@@ -473,6 +473,7 @@ struct ContentView: View {
                     TextField("Name", text: $assetName, onEditingChanged: { (changed) in
                         if let asset = document.game.assetFolder.current {
                             asset.name = assetName
+                            document.game.assetFolder.sort()
                             self.updateView.toggle()
                         }
                     })

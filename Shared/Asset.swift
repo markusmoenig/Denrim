@@ -23,6 +23,60 @@ class AssetFolder       : Codable
     {
     }
     
+    /// Sort the array
+    func sort()
+    {
+        func getIndex(_ asset: Asset) -> Int
+        {
+            if asset.type == .Folder { return 0 }
+            else
+            if asset.type == .Behavior { return 1 }
+            else
+            if asset.type == .Map { return 2 }
+            else
+            if asset.type == .Shader { return 3 }
+            else
+            if asset.type == .Image { return 4 }
+            else { return 5 }
+        }
+        
+        func sorting(_ a0: Asset,_ a1: Asset) -> Bool
+        {
+            if getIndex(a0) < getIndex(a1) {
+                return true
+            }
+            return false
+        }
+        
+        assets = assets.sorted(by: {
+            if $0.type == $1.type {
+                return $0.name < $1.name
+            } else
+            if sorting($0, $1) {
+                return true
+            }
+            
+            return false
+        })
+        
+        for asset in assets {
+            if asset.type == .Folder {
+                asset.children = asset.children!.sorted(by: {
+                    
+                    if $0.type == $1.type {
+                        return $0.name < $1.name
+                    } else
+                    if sorting($0, $1) {
+                        return true
+                    }
+                    
+                    return false
+                })
+            }
+        }
+    }
+    
+    /// Sets up the default project
     func setup(_ game: Game)
     {
         self.game = game
@@ -57,6 +111,7 @@ class AssetFolder       : Codable
     {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         assets = try container.decode([Asset].self, forKey: .assets)
+        sort()
     }
     
     func encode(to encoder: Encoder) throws
