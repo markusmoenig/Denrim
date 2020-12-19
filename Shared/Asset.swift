@@ -588,6 +588,19 @@ class AssetFolder       : Codable
         return false
     }
     
+    /// Generates the destination path for a new Asset based on the current asset path or folder
+    func genDestinationPath() -> String? {
+        if let current = current {
+            if let path = current.path {
+                return path
+            }
+            if current.type == .Folder {
+                return current.name
+            }
+        }
+        return nil
+    }
+    
     // Create a preview for the current asset
     func createPreview()
     {

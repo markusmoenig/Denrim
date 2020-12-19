@@ -433,8 +433,7 @@ struct ContentView: View {
                     .buttonStyle(PlainButtonStyle())
                     
                     Button(action: {
-                        let current = document.game.assetFolder.current
-                        document.game.assetFolder.addBehavior("New Behavior", path: current != nil ? current!.path : nil)
+                        document.game.assetFolder.addBehavior("New Behavior", path: document.game.assetFolder.genDestinationPath())
                         assetName = document.game.assetFolder.current!.name
                         showAssetNamePopover = true
                         updateView.toggle()
@@ -446,8 +445,7 @@ struct ContentView: View {
                     .buttonStyle(PlainButtonStyle())
 
                     Button(action: {
-                        let current = document.game.assetFolder.current
-                        document.game.assetFolder.addMap("New Map", path: current != nil ? current!.path : nil)
+                        document.game.assetFolder.addMap("New Map", path: document.game.assetFolder.genDestinationPath())
                         assetName = document.game.assetFolder.current!.name
                         showAssetNamePopover = true
                         updateView.toggle()
@@ -459,8 +457,7 @@ struct ContentView: View {
                     .buttonStyle(PlainButtonStyle())
 
                     Button(action: {
-                        let current = document.game.assetFolder.current
-                        document.game.assetFolder.addShader("New Shader", path: current != nil ? current!.path : nil)
+                        document.game.assetFolder.addShader("New Shader", path: document.game.assetFolder.genDestinationPath())
                         if let asset = document.game.assetFolder.current {
                             assetName = document.game.assetFolder.current!.name
                             showAssetNamePopover = true
