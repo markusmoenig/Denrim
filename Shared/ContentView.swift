@@ -14,6 +14,7 @@ var toolbarPlacement1 : ToolbarItemPlacement = .automatic
 var toolbarPlacement1 : ToolbarItemPlacement = .navigationBarLeading
 #endif
 
+/*
 struct GroupView: View {
     @State var document                 : DenrimDocument
     @State var group                    : AssetGroup
@@ -249,13 +250,13 @@ struct RootView: View {
         }
     }
 }
+*/
 
 struct ContentView: View {
     @Binding var document: DenrimDocument
     
     @State private var showAssetNamePopover : Bool = false
     @State private var assetName: String    = ""
-    @State private var assetGroup           : AssetGroup? = nil
 
     @State private var updateView           : Bool = false
 
@@ -281,6 +282,8 @@ struct ContentView: View {
 
     @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
     
+    @State private var selection            : UUID? = nil
+
     #if os(macOS)
     let leftPanelWidth                      : CGFloat = 200
     #else
@@ -290,32 +293,12 @@ struct ContentView: View {
     var body: some View {
         HStack {
         NavigationView() {
-            /*
-            List(document.game.assetFolder.assets, id: \.id, children: \.children) { asset in
-                //Image(systemName: row.icon)
-                
-                Button(action: {
-                    document.game.assetFolder.select(asset.id)
-                    document.game.createPreview(asset)
-                    updateView.toggle()
-                })
-                {
-                    Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
-                }
-                .buttonStyle(PlainButtonStyle())
-                .foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
-                //.onDrag { print("here"); return NSItemProvider(object: "test" as NSString) }
-            }*/
-            List {
+            VStack {
                 HStack(spacing: 3) {
                     Button(action: {
-                        let group = AssetGroup("New Folder")
-                        
-                        assetName = group.name
-                        assetGroup = group
+                        document.game.assetFolder.addFolder("New Folder")
+                        assetName = document.game.assetFolder.current!.name
                         showAssetNamePopover = true
-                        
-                        document.game.assetFolder.groups.append(group)
                         updateView.toggle()
                     })
                     {
@@ -326,9 +309,8 @@ struct ContentView: View {
                     
                     Button(action: {
                         let current = document.game.assetFolder.current
-                        document.game.assetFolder.addBehavior("New Behavior", groupId: current != nil ? current!.groupId : nil)
+                        document.game.assetFolder.addBehavior("New Behavior", path: current != nil ? current!.path : nil)
                         assetName = document.game.assetFolder.current!.name
-                        assetGroup = nil
                         showAssetNamePopover = true
                         updateView.toggle()
                     })
@@ -340,9 +322,8 @@ struct ContentView: View {
 
                     Button(action: {
                         let current = document.game.assetFolder.current
-                        document.game.assetFolder.addMap("New Map", groupId: current != nil ? current!.groupId : nil)
+                        document.game.assetFolder.addMap("New Map", path: current != nil ? current!.path : nil)
                         assetName = document.game.assetFolder.current!.name
-                        assetGroup = nil
                         showAssetNamePopover = true
                         updateView.toggle()
                     })
@@ -353,10 +334,10 @@ struct ContentView: View {
                     .buttonStyle(PlainButtonStyle())
 
                     Button(action: {
-                        document.game.assetFolder.addShader("New Shader")
+                        let current = document.game.assetFolder.current
+                        document.game.assetFolder.addShader("New Shader", path: current != nil ? current!.path : nil)
                         if let asset = document.game.assetFolder.current {
                             assetName = document.game.assetFolder.current!.name
-                            assetGroup = nil
                             showAssetNamePopover = true
                             document.game.createPreview(asset)
                         }
@@ -386,13 +367,86 @@ struct ContentView: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
-                #if os(macOS)
+                .padding(.bottom, 2)
                 Divider()
-                #endif
-                ForEach(document.game.assetFolder.groups, id: \.id) { group in
-                    GroupView(document: document, group: group, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, assetGroup: $assetGroup, showDeleteAssetAlert: $showDeleteAssetAlert, isAddingImages: $isAddingImages, imageIndex: $imageIndex)
+                List(document.game.assetFolder.assets, id: \.id, children: \.children, selection: $selection) { asset in
+                    //Image(systemName: row.icon)
+                    
+                    Button(action: {
+                        selection = asset.id
+                        document.game.assetFolder.select(asset.id)
+                        document.game.createPreview(asset)
+                        updateView.toggle()
+                    })
+                    {
+                        Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    //.foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
+                    //.onDrag { print("here"); return NSItemProvider(object: "test" as NSString) }
+                    .contextMenu {
+                        
+                        Section(header: Text("Move to Folder")) {
+                            ForEach(document.game.assetFolder.assets, id: \.id) { folder in
+                                if folder.type == .Folder {
+                                    Button(action: {
+                                        document.game.assetFolder.moveToFolder(folderName: folder.name, asset: asset)
+                                        updateView.toggle()
+                                    }) {
+                                        Text(folder.name)
+                                        if asset.path == folder.name {
+                                            Image(systemName: "checkmark")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        Section(header: Text("Edit")) {
+                            
+                            Button(action: {
+                                assetName = asset.name
+                                showAssetNamePopover = true
+                            })
+                            {
+                                Label("Rename", systemImage: "pencil")
+                            }
+                            //.disabled(asset.name == "Game" && asset.type == .Behavior)
+                            
+                            Button(action: {
+                                showDeleteAssetAlert = true
+                            })
+                            {
+                                Label("Remove", systemImage: "minus")
+                            }
+                            //.disabled(asset.name == "Game" && asset.type == .Behavior)
+                            
+                        }
+                        /*
+                        if asset.type == .Image {
+                            Section(header: Text("Image Group")) {
+                                Button(action: {
+                                    isAddingImages = true
+                                })
+                                {
+                                    Label("Add to Group", systemImage: "plus")
+                                }
+                                
+                                Button(action: {
+                                    if let asset = document.game.assetFolder.current {
+                                        asset.data.remove(at: Int(imageIndex))
+                                    }
+                                    updateView.toggle()
+                                })
+                                {
+                                    Label("Remove Image", systemImage: "minus.circle")
+                                }
+                                .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
+                            }
+                        }
+                        */
+                    }
                 }
-                RootView(document: document, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, assetGroup: $assetGroup, showDeleteAssetAlert: $showDeleteAssetAlert, isAddingImages: $isAddingImages, imageIndex: $imageIndex)
             }
             .frame(minWidth: leftPanelWidth, idealWidth: leftPanelWidth, maxWidth: leftPanelWidth)
             .layoutPriority(0)
@@ -417,10 +471,6 @@ struct ContentView: View {
                 VStack(alignment: .leading) {
                     Text("Name:")
                     TextField("Name", text: $assetName, onEditingChanged: { (changed) in
-                        if let group = assetGroup {
-                            group.name = assetName
-                            self.updateView.toggle()
-                        } else
                         if let asset = document.game.assetFolder.current {
                             asset.name = assetName
                             self.updateView.toggle()
@@ -547,7 +597,6 @@ struct ContentView: View {
                     if selectedFiles.count > 0 {
                         document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
                         assetName = document.game.assetFolder.current!.name
-                        assetGroup = nil
                         showAssetNamePopover = true
                         updateView.toggle()
                     }
@@ -800,7 +849,6 @@ struct ContentView: View {
                 if selectedFiles.count > 0 {
                     document.game.assetFolder.addAudio(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
                     assetName = document.game.assetFolder.current!.name
-                    assetGroup = nil
                     showAssetNamePopover = true
                     updateView.toggle()
                 }

@@ -7,55 +7,16 @@
 
 import MetalKit
 
-class AssetGroup        : Codable, Equatable
-{
-    private enum CodingKeys: String, CodingKey {
-        case id
-        case name
-    }
-    
-    var id              = UUID()
-    var name            : String = ""
-    
-    init(_ name: String)
-    {
-        self.name = name
-    }
-    
-    required init(from decoder: Decoder) throws
-    {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        if let id = try container.decodeIfPresent(UUID.self, forKey: .id) {
-            self.id = id
-        }
-        name = try container.decode(String.self, forKey: .name)
-    }
-    
-    func encode(to encoder: Encoder) throws
-    {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(name, forKey: .name)
-    }
-    
-    static func ==(lhs:AssetGroup, rhs:AssetGroup) -> Bool { // Implement Equatable
-        return lhs.id == rhs.id
-    }
-}
-
 class AssetFolder       : Codable
 {
     var assets          : [Asset] = []
     var game            : Game!
     var current         : Asset? = nil
-    
-    var groups          : [AssetGroup] = []
-    
+        
     var currentPath     : String? = nil
     
     private enum CodingKeys: String, CodingKey {
         case assets
-        case groups
     }
     
     init()
@@ -96,55 +57,76 @@ class AssetFolder       : Codable
     {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         assets = try container.decode([Asset].self, forKey: .assets)
-        if let gs = try container.decodeIfPresent([AssetGroup].self, forKey: .groups)
-        {
-            groups = gs
-        }
     }
     
     func encode(to encoder: Encoder) throws
     {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(assets, forKey: .assets)
-        try container.encode(groups, forKey: .groups)
+    }
+    
+    /// Adds a folder
+    func addFolder(_ name: String)
+    {
+        let asset = Asset(type: .Folder, name: name)
+
+        asset.children = []
+        assets.insert(asset, at: 0)
+        select(asset.id)
+        game.scriptEditor?.createSession(asset)
     }
     
     /// Adds a Behavior
-    func addBehavior(_ name: String, value: String = "", groupId: UUID? = nil)
+    func addBehavior(_ name: String, value: String = "", path: String? = nil)
     {
-        guard let path = Bundle.main.path(forResource: "NewBehavior", ofType: "", inDirectory: "Files/default") else {
+        guard let resourcePath = Bundle.main.path(forResource: "NewBehavior", ofType: "", inDirectory: "Files/default") else {
             return
         }
         
-        if let behaviorTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
+        if let behaviorTemplate = try? String(contentsOfFile: resourcePath, encoding: String.Encoding.utf8) {
             let asset = Asset(type: .Behavior, name: name, value: behaviorTemplate)
-            asset.groupId = groupId
-            assets.append(asset)
+            if let path = path {
+                if let folder = getAsset(path, .Folder) {
+                    folder.children?.append(asset)
+                }
+            } else {
+                assets.append(asset)
+            }
             select(asset.id)
             game.scriptEditor?.createSession(asset)
         }
     }
     
-    func addShader(_ name: String, groupId: UUID? = nil)
+    func addShader(_ name: String, path: String? = nil)
     {
-        guard let path = Bundle.main.path(forResource: "NewShader", ofType: "", inDirectory: "Files/default") else {
+        guard let resourcePath = Bundle.main.path(forResource: "NewShader", ofType: "", inDirectory: "Files/default") else {
             return
         }
         
-        if let shaderTemplate = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
+        if let shaderTemplate = try? String(contentsOfFile: resourcePath, encoding: String.Encoding.utf8) {
             let asset = Asset(type: .Shader, name: name, value: shaderTemplate)
-            asset.groupId = groupId
-            assets.append(asset)
+            if let path = path {
+                if let folder = getAsset(path, .Folder) {
+                    folder.children?.append(asset)
+                }
+            } else {
+                assets.append(asset)
+            }
             select(asset.id)
             game.scriptEditor?.createSession(asset)
         }
     }
     
-    func addMap(_ name: String, groupId: UUID? = nil)
+    func addMap(_ name: String, path: String? = nil)
     {
         let asset = Asset(type: .Map, name: name, value: "")
-        asset.groupId = groupId
-        assets.append(asset)
+        if let path = path {
+            if let folder = getAsset(path, .Folder) {
+                folder.children?.append(asset)
+            }
+        } else {
+            assets.append(asset)
+        }
         select(asset.id)
         game.scriptEditor?.createSession(asset)
     }
@@ -209,29 +191,51 @@ class AssetFolder       : Codable
             }
         }
 
-        for asset in assets {
-            if asset.id == id {
-                if asset.scriptName.isEmpty {
-                    game.scriptEditor?.createSession(asset)
-                }
-                game.scriptEditor?.setAssetSession(asset)
-                
-                if game.state == .Idle {
-                    assetCompile(asset)
-                    if asset.type == .Map {
-                        if game.mapBuilder.cursorTimer == nil {
-                            game.mapBuilder.startTimer(asset)
-                        }
-                    } else
-                    if asset.type == .Behavior {
-                        if game.behaviorBuilder.cursorTimer == nil {
-                            game.behaviorBuilder.startTimer(asset)
-                        }
+        if let asset = getAssetById(id) {
+            if asset.scriptName.isEmpty {
+                game.scriptEditor?.createSession(asset)
+            }
+            game.scriptEditor?.setAssetSession(asset)
+            
+            if game.state == .Idle {
+                assetCompile(asset)
+                if asset.type == .Map {
+                    if game.mapBuilder.cursorTimer == nil {
+                        game.mapBuilder.startTimer(asset)
+                    }
+                } else
+                if asset.type == .Behavior {
+                    if game.behaviorBuilder.cursorTimer == nil {
+                        game.behaviorBuilder.startTimer(asset)
                     }
                 }
-                
-                current = asset
-                break
+            }
+            
+            current = asset
+        }
+    }
+    
+    /// Moves the given asset to the folder
+    func moveToFolder(folderName: String, asset: Asset)
+    {
+        var removedSuccessfully: Bool = false
+        // Remove asset from current folder
+        if asset.path == "" {
+            if let index = assets.firstIndex(of: asset) {
+                assets.remove(at: index)
+                removedSuccessfully = true
+            }
+        }
+        
+        // Insert at new folder
+        
+        if removedSuccessfully {
+            for a in assets {
+                if a.type == .Folder && a.name == folderName {
+                    a.children?.append(asset)
+                    a.path = folderName
+                    break
+                }
             }
         }
     }
@@ -254,6 +258,9 @@ class AssetFolder       : Codable
             } else
             if asset.type == .Shader {
                 return "fx"
+            } else
+            if asset.type == .Folder {
+                return "folder"
             }
         }
         
@@ -276,16 +283,6 @@ class AssetFolder       : Codable
         return false
     }
     
-    /// Returns the group identified by the given id
-    func getGroupById(_ id: UUID) -> AssetGroup? {
-        for group in groups {
-            if group.id == id {
-                return group
-            }
-        }
-        return nil
-    }
-    
     /// Exctracts the path from a string
     func extractPath(_ path: String) -> String?
     {
@@ -304,37 +301,31 @@ class AssetFolder       : Codable
     /// Extract the path from the group id of an asset
     func extractPath(_ asset: Asset) -> String?
     {
-        if asset.groupId == nil { return nil }
-        for group in groups {
-            if group.id == asset.groupId {
-                return group.name
-            }
-        }
-        return nil
+        return asset.path
     }
     
-    /// Resolves the given path into the name and the id of the AssetGroup
-    func resolvePath(_ path: String) -> (String, UUID?)?
+    /// Resolves the given path into the name and the folder asset
+    func resolvePath(_ path: String) -> (String, Asset?)?
     {
         var name = ""
-        var groupId : UUID? = nil
+        var folder : Asset? = nil
         
         if path.contains("/") {
             let a = path.split(separator: "/")
             if a.count >= 2 {
-                for group in groups {
-                    if group.name == a[0] {
-                        groupId = group.id
+                for fo in assets {
+                    if fo.type == .Folder && fo.name == a[0] {
+                        folder = fo
                         
                         // Future, check for sub groups
                         break
                     }
                 }
                 name = String(a[a.count - 1])
-                return (name, groupId)
+                return (name, folder)
             }
         } else {
-            return (path, groupId)
+            return (path, nil)
         }
         return nil
     }
@@ -351,11 +342,18 @@ class AssetFolder       : Codable
         
         if let tuple = resolvePath(path) {
             let name = tuple.0
-            let groupId = tuple.1
             
-            for asset in assets {
-                if asset.type == type && asset.name == name && asset.groupId == groupId {
-                    return asset
+            if let folder = tuple.1 {
+                for asset in folder.children! {
+                    if asset.type == type && asset.name == name {
+                        return asset
+                    }
+                }
+            } else {
+                for asset in assets {
+                    if asset.type == type && asset.name == name {
+                        return asset
+                    }
                 }
             }
         }
@@ -369,6 +367,13 @@ class AssetFolder       : Codable
             if asset.type == type && asset.id == id {
                 return asset
             }
+            if let children = asset.children {
+                for child in children {
+                    if child.type == type && child.id == id {
+                        return child
+                    }
+                }
+            }
         }
         return nil
     }
@@ -379,6 +384,13 @@ class AssetFolder       : Codable
         for asset in assets {
             if asset.id == id {
                 return asset
+            }
+            if let children = asset.children {
+                for child in children {
+                    if child.id == id {
+                        return child
+                    }
+                }
             }
         }
         return nil
@@ -490,15 +502,15 @@ class AssetFolder       : Codable
 class Asset         : Codable, Equatable
 {
     enum AssetType  : Int, Codable {
-        case Behavior, Image, Shader, Map, Audio
+        case Behavior, Image, Shader, Map, Audio, Folder
     }
     
     var type        : AssetType = .Behavior
     var id          = UUID()
     
-    //var children    : [Asset]? = nil
-    var groupId     : UUID? = nil
-    
+    var children    : [Asset]? = nil
+    var path        : String? = nil
+        
     var name        = ""
     var value       = ""
     
@@ -524,11 +536,12 @@ class Asset         : Codable, Equatable
     private enum CodingKeys: String, CodingKey {
         case type
         case id
-        case groupId
         case name
         case value
         case uuid
         case data
+        case children
+        case path
     }
     
     init(type: AssetType, name: String, value: String = "", data: [Data] = [])
@@ -544,12 +557,15 @@ class Asset         : Codable, Equatable
         let container = try decoder.container(keyedBy: CodingKeys.self)
         type = try container.decode(AssetType.self, forKey: .type)
         id = try container.decode(UUID.self, forKey: .id)
-        if let gId = try container.decodeIfPresent(UUID?.self, forKey: .groupId) {
-            groupId = gId
-        }
         name = try container.decode(String.self, forKey: .name)
         value = try container.decode(String.self, forKey: .value)
         data = try container.decode([Data].self, forKey: .data)
+        if let childs = try container.decodeIfPresent([Asset]?.self, forKey: .children) {
+            children = childs
+        }
+        if let p = try container.decodeIfPresent(String.self, forKey: .path) {
+            path = p
+        }
     }
     
     func encode(to encoder: Encoder) throws
@@ -557,10 +573,11 @@ class Asset         : Codable, Equatable
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .type)
         try container.encode(id, forKey: .id)
-        try container.encode(groupId, forKey: .groupId)
         try container.encode(name, forKey: .name)
         try container.encode(value, forKey: .value)
         try container.encode(data, forKey: .data)
+        try container.encode(children, forKey: .children)
+        try container.encode(path, forKey: .path)
     }
     
     static func ==(lhs:Asset, rhs:Asset) -> Bool { // Implement Equatable
