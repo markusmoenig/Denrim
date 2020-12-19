@@ -190,7 +190,9 @@ class MapBuilder
             } else {
                 game.scriptEditor?.clearAnnotations()
                 DispatchQueue.main.async {
-                    self.createPreview(asset.map!)
+                    if let map = asset.map {
+                        self.createPreview(map)
+                    }
                 }
             }
         } else

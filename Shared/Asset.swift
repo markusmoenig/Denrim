@@ -111,6 +111,16 @@ class AssetFolder       : Codable
     {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         assets = try container.decode([Asset].self, forKey: .assets)
+        
+        // Potential problem fixer, reset all paths
+        for f in assets {
+            if f.type == .Folder {
+                for child in f.children! {
+                    child.path = f.name
+                }
+            }
+            f.path = nil
+        }
         sort()
     }
     
@@ -271,19 +281,25 @@ class AssetFolder       : Codable
     }
     
     /// Moves the given asset to the folder
-    func moveToFolder(folderName: String, asset: Asset)
+    func moveToFolder(folderName: String?, asset: Asset)
     {
         let removedSuccessfully = removeAsset(asset)
         
         // Insert at new folder        
         if removedSuccessfully {
-            for a in assets {
-                if a.type == .Folder && a.name == folderName {
-                    a.children?.append(asset)
-                    a.path = folderName
-                    break
+            if let folderName = folderName {
+                for a in assets {
+                    if a.type == .Folder && a.name == folderName {
+                        a.children?.append(asset)
+                        asset.path = folderName
+                        break
+                    }
                 }
+            } else {
+                assets.append(asset)
+                asset.path = nil
             }
+            sort()
         }
     }
     
@@ -537,6 +553,38 @@ class AssetFolder       : Codable
             }
         }
         
+        return false
+    }
+    
+    /// Asset is a folder
+    func isFolder(_ asset: Asset) -> Bool {
+        if asset.type == .Folder {
+            return true
+        }
+        return false
+    }
+    
+    /// Asset is an image
+    func isImage(_ asset: Asset) -> Bool {
+        if asset.type == .Image {
+            return true
+        }
+        return false
+    }
+    
+    /// Asset is the main game asset
+    func isGameAsset(_ asset: Asset) -> Bool {
+        if asset.type == .Behavior && asset.name == "Game" {
+            return true
+        }
+        return false
+    }
+    
+    /// Asset is located in the root dir
+    func isInsideRoot(_ asset: Asset) -> Bool {
+        if asset.path == nil {
+            return true
+        }
         return false
     }
     

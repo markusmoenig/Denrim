@@ -252,6 +252,131 @@ struct RootView: View {
 }
 */
 
+
+struct ListView: View {
+    @State var document                 : DenrimDocument
+    
+    @Binding var selection              : UUID?
+    @Binding var updateView             : Bool
+    
+    @Binding var showAssetNamePopover   : Bool
+    @Binding var assetName              : String
+
+    @Binding var showDeleteAssetAlert   : Bool
+
+    @Binding var isAddingImages         : Bool
+    @Binding var imageIndex             : Double
+
+    var body: some View {
+ 
+        List(document.game.assetFolder.assets, id: \.id, children: \.children, selection: $selection) { asset in
+            
+            Button(action: {
+                selection = asset.id
+                document.game.assetFolder.select(asset.id)
+                document.game.createPreview(asset)
+                updateView.toggle()
+            })
+            {
+                Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
+            }
+            .buttonStyle(PlainButtonStyle())
+            //.onDrag { print("here"); return NSItemProvider(object: "test" as NSString) }
+            .contextMenu {
+                
+                if document.game.assetFolder.isFolder(asset) == false {
+                    Section(header: Text("Move to Folder")) {
+                        
+                        Button(action: {
+                            document.game.assetFolder.moveToFolder(folderName: nil, asset: asset)
+                            updateView.toggle()
+                        }) {
+                            Text("Root")
+                            if document.game.assetFolder.isInsideRoot(asset) {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                        
+                        ForEach(document.game.assetFolder.assets, id: \.id) { folder in
+                            if folder.type == .Folder {
+                                Button(action: {
+                                    document.game.assetFolder.moveToFolder(folderName: folder.name, asset: asset)
+                                    updateView.toggle()
+                                }) {
+                                    Text(folder.name)
+                                    if asset.path == folder.name {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                                .disabled(document.game.assetFolder.isFolder(asset))
+                            }
+                        }
+                    }
+                }
+                
+                Section(header: Text("Edit")) {
+                    
+                    Button(action: {
+                        assetName = asset.name
+                        showAssetNamePopover = true
+                    })
+                    {
+                        Label("Rename", systemImage: "pencil")
+                    }
+                    .disabled(document.game.assetFolder.isGameAsset(asset))
+                    
+                    Button(action: {
+                        showDeleteAssetAlert = true
+                    })
+                    {
+                        Label("Remove", systemImage: "minus")
+                    }
+                    .disabled(document.game.assetFolder.isGameAsset(asset))
+                }
+                
+                //if document.game.assetFolder.isImage(asset) == true {
+                    
+                    Section(header: Text("Image Group")) {
+                        Button(action: {
+                            isAddingImages = true
+                        })
+                        {
+                            Label("Add to Group", systemImage: "plus")
+                        }
+                        
+                        Button(action: {
+                            if let asset = document.game.assetFolder.current {
+                                asset.data.remove(at: Int(imageIndex))
+                            }
+                            updateView.toggle()
+                        })
+                        {
+                            Label("Remove Image", systemImage: "minus.circle")
+                        }
+                        .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
+                    }
+                    
+                //}
+            }
+        }
+        /*
+        // delete action
+        .onDelete { indexSet in
+            for index in indexSet {
+                if document.game.assetFolder.assets[index].name != "Game" {
+                    document.game.assetFolder.assets.remove(at: index)
+                }
+            }
+        }
+        // move action
+        .onMove { indexSet, newOffset in
+            document.game.assetFolder.assets.move(fromOffsets: indexSet, toOffset: newOffset)
+            updateView.toggle()
+        }
+        */
+    }
+}
+
 struct ContentView: View {
     @Binding var document: DenrimDocument
     
@@ -369,84 +494,7 @@ struct ContentView: View {
                 }
                 .padding(.bottom, 2)
                 Divider()
-                List(document.game.assetFolder.assets, id: \.id, children: \.children, selection: $selection) { asset in
-                    //Image(systemName: row.icon)
-                    
-                    Button(action: {
-                        selection = asset.id
-                        document.game.assetFolder.select(asset.id)
-                        document.game.createPreview(asset)
-                        updateView.toggle()
-                    })
-                    {
-                        Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    //.foregroundColor(document.game.assetFolder.current === asset ? Color.accentColor : Color.primary)
-                    //.onDrag { print("here"); return NSItemProvider(object: "test" as NSString) }
-                    .contextMenu {
-                        
-                        Section(header: Text("Move to Folder")) {
-                            ForEach(document.game.assetFolder.assets, id: \.id) { folder in
-                                if folder.type == .Folder {
-                                    Button(action: {
-                                        document.game.assetFolder.moveToFolder(folderName: folder.name, asset: asset)
-                                        updateView.toggle()
-                                    }) {
-                                        Text(folder.name)
-                                        if asset.path == folder.name {
-                                            Image(systemName: "checkmark")
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        Section(header: Text("Edit")) {
-                            
-                            Button(action: {
-                                assetName = asset.name
-                                showAssetNamePopover = true
-                            })
-                            {
-                                Label("Rename", systemImage: "pencil")
-                            }
-                            //.disabled(asset.name == "Game" && asset.type == .Behavior)
-                            
-                            Button(action: {
-                                showDeleteAssetAlert = true
-                            })
-                            {
-                                Label("Remove", systemImage: "minus")
-                            }
-                            //.disabled(asset.name == "Game" && asset.type == .Behavior)
-                            
-                        }
-                        /*
-                        if asset.type == .Image {
-                            Section(header: Text("Image Group")) {
-                                Button(action: {
-                                    isAddingImages = true
-                                })
-                                {
-                                    Label("Add to Group", systemImage: "plus")
-                                }
-                                
-                                Button(action: {
-                                    if let asset = document.game.assetFolder.current {
-                                        asset.data.remove(at: Int(imageIndex))
-                                    }
-                                    updateView.toggle()
-                                })
-                                {
-                                    Label("Remove Image", systemImage: "minus.circle")
-                                }
-                                .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
-                            }
-                        }
-                        */
-                    }
-                }
+                ListView(document: document, selection: $selection, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, showDeleteAssetAlert: $showDeleteAssetAlert, isAddingImages: $isAddingImages, imageIndex: $imageIndex )
             }
             .frame(minWidth: leftPanelWidth, idealWidth: leftPanelWidth, maxWidth: leftPanelWidth)
             .layoutPriority(0)
