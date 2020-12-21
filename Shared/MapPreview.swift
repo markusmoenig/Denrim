@@ -106,7 +106,7 @@ class MapPreview
             if let layer = map.layers[variable] {
                 helpKey = "Layer"
                 map.startEncoding()
-                map.drawLayer(0, 0, layer)
+                map.drawLayer(0, -layer.options.offset.y * map.aspect.y, layer)
                 map.stopEncoding()
             } else
             if let scene = map.scenes[variable] {

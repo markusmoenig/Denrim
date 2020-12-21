@@ -745,8 +745,8 @@ class Map
             var width = texture2D.width / canvasSize.x * aspect.x * 100.0
             var height = texture2D.height / canvasSize.y * aspect.y * 100.0
             
-            alias.options.position.x = x + alias.options.offset.x
-            alias.options.position.y = y + alias.options.offset.y / canvasSize.y * aspect.y * 100.0
+            alias.options.position.x = x + (alias.options.offset.x) * (game.state == .Idle ? camera2D.zoom : 1)
+            alias.options.position.y = y + (alias.options.offset.y / canvasSize.y * aspect.y * 100.0) * (game.state == .Idle ? camera2D.zoom : 1)
                         
             // Subrect ?
             if let v = alias.options.rect {
@@ -777,8 +777,8 @@ class Map
                 }
             }
         
-            rc.0 = width * camera2D.zoom
-            rc.1 = height * camera2D.zoom
+            rc.0 = width
+            rc.1 = height
         }
         
         return rc
@@ -826,10 +826,19 @@ class Map
             
             for var a in line.line {
                 let advance = drawAlias(xPos, yPos, &a)
-                xPos += advance.0
+                if game.state == .Running {
+                    xPos += advance.0
+                } else {
+                    xPos += advance.0 * camera2D.zoom
+                }
             }
-            yPos += layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0
-            xPos = x + layer.options.offset.x * aspect.x
+            if game.state == .Running {
+                yPos += layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0
+                xPos = x + layer.options.offset.x * aspect.x
+            } else {
+                yPos += (layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0) * camera2D.zoom
+                xPos = x + layer.options.offset.x * aspect.x
+            }
         }
         
         layer.options.accumScroll.x += layer.options.scroll.x * aspect.x

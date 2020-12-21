@@ -85,9 +85,7 @@ class MapBuilder
                     var data = str
                     data.removeFirst()
                     data = data.trimmingCharacters(in: .whitespaces)
-                    
-                    //asset.map!.layers[self.currentLayer!]?.data.append(data)
-                    
+                                        
                     var aliasLine = AliasLine()
                     
                     var index     : Int = 0
