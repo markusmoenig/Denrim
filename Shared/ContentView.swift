@@ -428,18 +428,24 @@ struct ContentView: View {
     @Environment(\.colorScheme) var deviceColorScheme: ColorScheme
     
     @State private var selection            : UUID? = nil
-
+    
     #if os(macOS)
     let leftPanelWidth                      : CGFloat = 200
+    let toolBarIconSize                     : CGFloat = 13
+    let toolBarTopPadding                   : CGFloat = 0
+    let toolBarSpacing                      : CGFloat = 4
     #else
     let leftPanelWidth                      : CGFloat = 250
+    let toolBarIconSize                     : CGFloat = 16
+    let toolBarTopPadding                   : CGFloat = 8
+    let toolBarSpacing                      : CGFloat = 6
     #endif
 
     var body: some View {
         HStack {
         NavigationView() {
             VStack {
-                HStack(spacing: 3) {
+                HStack(spacing: toolBarSpacing) {
                     Button(action: {
                         document.game.assetFolder.addFolder("New Folder")
                         assetName = document.game.assetFolder.current!.name
@@ -448,7 +454,7 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "folder")
-                            .font(.system(size: 11))
+                            .font(.system(size: toolBarIconSize))
                     }
                     .buttonStyle(PlainButtonStyle())
                     
@@ -460,7 +466,7 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "lightbulb")
-                            .font(.system(size: 11))
+                            .font(.system(size: toolBarIconSize))
                     }
                     .buttonStyle(PlainButtonStyle())
 
@@ -472,7 +478,7 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "list.and.film")
-                            .font(.system(size: 11))
+                            .font(.system(size: toolBarIconSize))
                     }
                     .buttonStyle(PlainButtonStyle())
 
@@ -487,7 +493,7 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "fx")
-                            .font(.system(size: 11))
+                            .font(.system(size: toolBarIconSize))
                     }
                     .buttonStyle(PlainButtonStyle())
 
@@ -496,7 +502,7 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "photo.on.rectangle")
-                            .font(.system(size: 11))
+                            .font(.system(size: toolBarIconSize))
                     }
                     .buttonStyle(PlainButtonStyle())
                     
@@ -505,10 +511,11 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "waveform")
-                            .font(.system(size: 11))
+                            .font(.system(size: toolBarIconSize))
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
+                .padding(.top, toolBarTopPadding)
                 .padding(.bottom, 2)
                 Divider()
                 ListView(document: document, selection: $selection, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, showDeleteAssetAlert: $showDeleteAssetAlert, isAddingImages: $isAddingImages, imageIndex: $imageIndex )
