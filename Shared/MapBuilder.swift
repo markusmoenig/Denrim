@@ -86,7 +86,21 @@ class MapBuilder
                     data.removeFirst()
                     data = data.trimmingCharacters(in: .whitespaces)
                     
-                    asset.map!.layers[self.currentLayer!]?.data.append(data)
+                    //asset.map!.layers[self.currentLayer!]?.data.append(data)
+                    
+                    var aliasLine = AliasLine()
+                    
+                    var index     : Int = 0
+                    while index < data.count - 1 {
+                        
+                        let a = String(data[data.index(data.startIndex, offsetBy: index)]) + String(data[data.index(data.startIndex, offsetBy: index+1)])
+                        if asset.map!.aliases[a] != nil {
+                            aliasLine.line.append(asset.map!.aliases[a]!)
+                        }
+                        index += 2
+                    }
+                    
+                    asset.map!.layers[self.currentLayer!]?.data.append(aliasLine)
                     
                     lineNumber += 1
                     return

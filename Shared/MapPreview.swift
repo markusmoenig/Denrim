@@ -93,7 +93,9 @@ class MapPreview
                 let x = (game.texture!.width - map.viewBorder.x * 2.0 - map.aliases[variable]!.options.width.x * map.camera2D.zoom) / 2.0
                 let y = (game.texture!.height - map.viewBorder.y * 2.0 - map.aliases[variable]!.options.height.x * map.camera2D.zoom) / 2.0
 
+                map.startEncoding()
                 map.drawAlias(x, y, &map.aliases[variable]!)
+                map.stopEncoding()
                 helpKey = "Alias"
                 
                 map.textureState = .DrawTexture
@@ -103,7 +105,9 @@ class MapPreview
             } else
             if let layer = map.layers[variable] {
                 helpKey = "Layer"
+                map.startEncoding()
                 map.drawLayer(0, 0, layer)
+                map.stopEncoding()
             } else
             if let scene = map.scenes[variable] {
                 helpKey = "Scene"
@@ -111,7 +115,9 @@ class MapPreview
             } else
             if let shape = map.shapes2D[variable] {
                 helpKey = "Shape2D"
+                map.startEncoding()
                 map.drawShape(shape)
+                map.stopEncoding()
             }
         }
         
@@ -149,10 +155,12 @@ class MapPreview
             options.position.x = x
             options.position.y = y
 
+            map.startEncoding()
             map.drawTexture(options)
             map.currentSampler = game.linearSampler
             map.lastPreviewOffset.x = x
             map.lastPreviewOffset.y = y
+            map.stopEncoding()
         }
     }
     

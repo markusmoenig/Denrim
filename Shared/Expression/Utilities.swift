@@ -159,7 +159,7 @@ func extractFloat2Value(_ options: [String:Any], container: VariableContainer, p
 }
 
 /// Extract a float1 vale
-func extractFloat1Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "float", isOptional: Bool = false ) -> Float1?
+func extractFloat1Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "float", isOptional: Bool = false, allowExpressions: Bool = true ) -> Float1?
 {
     if let value = options[name] as? Float1 {
         return value
@@ -173,10 +173,10 @@ func extractFloat1Value(_ options: [String:Any], container: VariableContainer, p
             return v
         }  else
         {
-            if let context = expressionBuilder( expression: value, container: container, error: &error) {
-                return context.executeForFloat1()
-            } else {
-                if isOptional == false { error.error = "Parameter '\(name)' not found" }
+            if allowExpressions {
+                if let context = expressionBuilder( expression: value, container: container, error: &error) {
+                    return context.executeForFloat1()
+                }
             }
             if isOptional == false { error.error = "Parameter '\(name)' not found" }
         }

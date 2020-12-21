@@ -1336,7 +1336,7 @@ class RandomNode: BehaviorNode
             self.to = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
             dest = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
         } else
-        if let from = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
+        if let from = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true, allowExpressions: false) {
             self.from = from
             self.to = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
             dest = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")

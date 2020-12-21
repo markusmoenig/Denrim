@@ -42,6 +42,8 @@ class Map
     var resources           : [String:Any] = [:]
     
     var subMaps             : [Map] = []
+    
+    var renderEncoder       : MTLRenderCommandEncoder!
 
     // Rendering
     
@@ -200,18 +202,6 @@ class Map
                         }
                     }
                 }
-                
-                /*
-                for (aliasName, alias) in map.aliases {
-                    print(aliasName)
-                    if let body = alias.body {
-                        print("11")
-                        if body.m_fixtureList === fixture {
-                            print("22")
-                            return aliasName
-                        }
-                    }
-                }*/
                 
                 return nil
             }
@@ -399,13 +389,6 @@ class Map
                             polyShape.setAsBox(halfWidth: pWidth / ppm - polyShape.m_radius, halfHeight: pHeight / 2.0 / ppm - polyShape.m_radius)
                             fixtureDef.shape = polyShape
                             
-                            /*
-                            if let friction = cmd.options["friction"] as? Float1 {
-                                fixtureDef.friction = friction.x
-                            } else {
-                                fixtureDef.friction = 0.3
-                            }*/
-                            
                             fixtureDef.friction = 0.1
                             fixtureDef.density = 0.0
                             bodyDef.position.set((pX! / aspect.x + pWidth) / ppm, (pY! / aspect.y + pHeight / 2.0) / ppm)
@@ -414,90 +397,38 @@ class Map
 
                             let body = physics2D[physicsId]!.world!.createBody(bodyDef)
                             body.createFixture(fixtureDef)
-                            
-                            //aliases[a]!.body = body
-                            //aliases[a]!.physicsWorld = physics2D[physicsId]
                         }
                         pX = nil; pY = nil; pId = nil
                     }
 
                     for line in layer.data {
-                        var index     : Int = 0
                         
                         pX = nil; pY = nil
                         
-                        while index < line.count - 1 {
-                            
-                            let a = String(line[line.index(line.startIndex, offsetBy: index)]) + String(line[line.index(line.startIndex, offsetBy: index+1)])
-                            if aliases[a] != nil {
-                                let advance = drawAlias(xPos, yPos, &aliases[a]!, doDraw: false)
-                                // --- Add Block
-                                if let physicsId = aliases[a]!.options.physicsId, physics2D[physicsId] != nil {
-                                    
-                                    let width : Float = (advance.0 / aspect.x) / 2.0
-                                    let height : Float = (advance.1 / aspect.y) / 2.0
-                                    
-                                    if pX == nil {
-                                        pX = xPos
-                                        pY = yPos
-                                        pWidth = width
-                                        pHeight = height
-                                        pId = physicsId
-                                    } else {
-                                        pWidth += width
-                                        //pHeight += height
-                                    }
-                                    
-                                    /*
-                                    let ppm = physics2D[physicsId]!.ppm
-                                    
-                                    let width : Float = (advance.0 / aspect.x) / 2.0
-                                    let height : Float = (advance.1 / aspect.y) / 2.0
-                                    
-                                    // Define the dynamic body. We set its position and call the body factory.
-                                    let bodyDef = b2BodyDef()
-                                    //bodyDef.angle = 0
-                                    bodyDef.type = b2BodyType.staticBody
-                                            
-                                    let fixtureDef = b2FixtureDef()
-                                    fixtureDef.shape = nil
-
-                                    fixtureDef.filter.categoryBits = categoryBits
-                                    fixtureDef.filter.maskBits = 0xffff
-                                    
-                                    let polyShape = b2PolygonShape()
-                                    polyShape.setAsBox(halfWidth: width / ppm - polyShape.m_radius, halfHeight: height / ppm - polyShape.m_radius)
-                                    fixtureDef.shape = polyShape
-                                    
-                                    /*
-                                    if let friction = cmd.options["friction"] as? Float1 {
-                                        fixtureDef.friction = friction.x
-                                    } else {
-                                        fixtureDef.friction = 0.3
-                                    }*/
-                                    
-                                    fixtureDef.friction = 0.1
-                                    fixtureDef.density = 0.0
-                                    bodyDef.position.set((xPos / aspect.x + width) / ppm, (yPos / aspect.y + height) / ppm)
-                                    
-                                    //print((xPos / aspect.x + width), (yPos / aspect.y + height), width, height)
-
-                                    let body = physics2D[physicsId]!.world!.createBody(bodyDef)
-                                    body.createFixture(fixtureDef)
-                                    
-                                    aliases[a]!.body = body
-                                    aliases[a]!.physicsWorld = physics2D[physicsId]
-                                    */
+                        for var a in line.line {
+                            let advance = drawAlias(xPos, yPos, &a, doDraw: false)
+                            // --- Add Block
+                            if let physicsId = a.options.physicsId, physics2D[physicsId] != nil {
+                                
+                                let width : Float = (advance.0 / aspect.x) / 2.0
+                                let height : Float = (advance.1 / aspect.y) / 2.0
+                                
+                                if pX == nil {
+                                    pX = xPos
+                                    pY = yPos
+                                    pWidth = width
+                                    pHeight = height
+                                    pId = physicsId
+                                } else {
+                                    pWidth += width
+                                    //pHeight += height
                                 }
-                                else {
-                                    checkPhysicsBlock()
-                                }
-                                // ---
-                                xPos += advance.0
-                            } else {
+                            }
+                            else {
                                 checkPhysicsBlock()
                             }
-                            index += 2
+                            // ---
+                            xPos += advance.0
                         }
                      
                         checkPhysicsBlock()
@@ -892,18 +823,11 @@ class Map
         yPos += layer.options.accumScroll.y
 
         for line in layer.data {
-            var index     : Int = 0
             
-            while index < line.count - 1 {
-                
-                let a = String(line[line.index(line.startIndex, offsetBy: index)]) + String(line[line.index(line.startIndex, offsetBy: index+1)])
-                if aliases[a] != nil {
-                    let advance = drawAlias(xPos, yPos, &aliases[a]!)
-                    xPos += advance.0
-                }
-                index += 2
+            for var a in line.line {
+                let advance = drawAlias(xPos, yPos, &a)
+                xPos += advance.0
             }
-            
             yPos += layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0
             xPos = x + layer.options.offset.x * aspect.x
         }
@@ -921,6 +845,8 @@ class Map
     func drawScene(_ x: Float,_ y: Float,_ scene: MapScene)
     {
         texture.clear(scene.backColor)
+        
+        startEncoding()
         
         for (_, physics2D) in physics2D {
         
@@ -960,6 +886,8 @@ class Map
                 }
             }
         }
+        
+        stopEncoding()
     }
     
     func getCanvasSize() -> Float2 {
@@ -1055,11 +983,6 @@ class Map
         let rect = MMRect(position.x - data.borderSize / 2, position.y - data.borderSize / 2, data.radius * 2 + data.borderSize * 2, data.radius * 2 + data.borderSize * 2, scale: game.scaleFactor )
         let vertexData = game.createVertexData(texture: texture, rect: rect)
         
-        let renderPassDescriptor = MTLRenderPassDescriptor()
-        renderPassDescriptor.colorAttachments[0].texture = texture.texture
-        renderPassDescriptor.colorAttachments[0].loadAction = .load
-        
-        let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         renderEncoder.setScissorRect(game.gameScissorRect!)
 
         data.hasTexture = 0
@@ -1077,7 +1000,6 @@ class Map
         renderEncoder.setFragmentBytes(&data, length: MemoryLayout<DiscUniform>.stride, index: 0)
         renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawDisc))
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
-        renderEncoder.endEncoding()
     }
     
     /// Draw a Box
@@ -1108,11 +1030,6 @@ class Map
         
         data.mirrorX = options.flipX.x == true ? 1 : 0
 
-        let renderPassDescriptor = MTLRenderPassDescriptor()
-        renderPassDescriptor.colorAttachments[0].texture = texture.texture
-        renderPassDescriptor.colorAttachments[0].loadAction = .load
-        
-        let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         renderEncoder.setScissorRect(game.gameScissorRect!)
 
         data.hasTexture = 0
@@ -1149,7 +1066,6 @@ class Map
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBoxExt))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         }
-        renderEncoder.endEncoding()
     }
     
     /// Draws the given text
@@ -1221,11 +1137,6 @@ class Map
             let rect = MMRect(x, y, char.width * adjScale, char.height * adjScale, scale: scaleFactor)
             let vertexData = game.createVertexData(texture: texture, rect: rect)
             
-            let renderPassDescriptor = MTLRenderPassDescriptor()
-            renderPassDescriptor.colorAttachments[0].texture = texture.texture
-            renderPassDescriptor.colorAttachments[0].loadAction = .load
-            
-            let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
             renderEncoder.setScissorRect(game.gameScissorRect!)
 
             renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
@@ -1236,7 +1147,6 @@ class Map
 
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawTextChar))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
-            renderEncoder.endEncoding()
         }
         
         if let font = font {
@@ -1262,11 +1172,6 @@ class Map
     {
         let vertexData = game.createVertexData(texture: texture, rect: rect)
         
-        let renderPassDescriptor = MTLRenderPassDescriptor()
-        renderPassDescriptor.colorAttachments[0].texture = texture.texture!
-        renderPassDescriptor.colorAttachments[0].loadAction = .load
-        
-        let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         renderEncoder.setScissorRect(game.gameScissorRect!)
 
         renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
@@ -1351,7 +1256,6 @@ class Map
 
         renderEncoder.setRenderPipelineState(shader.pipelineState)
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
-        renderEncoder.endEncoding()
     }
     
     func drawTexture(_ options: MapAliasData2D)
@@ -1394,11 +1298,6 @@ class Map
             let rect = MMRect(position.x, position.y, width, height, scale: 1)
             let vertexData = game.createVertexData(texture: texture, rect: rect)
             
-            let renderPassDescriptor = MTLRenderPassDescriptor()
-            renderPassDescriptor.colorAttachments[0].texture = texture.texture
-            renderPassDescriptor.colorAttachments[0].loadAction = .load
-            
-            let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
             renderEncoder.setScissorRect(game.gameScissorRect!)
 
             renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
@@ -1411,7 +1310,6 @@ class Map
 
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: textureState))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
-            renderEncoder.endEncoding()
         }
     }
     
@@ -1429,5 +1327,20 @@ class Map
         rc.y = round(rc.y / camera2D.zoom)
         
         return SIMD2<Int>(Int(rc.x), Int(rc.y))
+    }
+    
+    /// Starts encoding for this scene
+    func startEncoding() {
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = texture.texture
+        renderPassDescriptor.colorAttachments[0].loadAction = .load
+        
+        renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+    }
+    
+    /// Stops encoding for this scene
+    func stopEncoding() {
+        renderEncoder.endEncoding()
+        renderEncoder = nil
     }
 }
