@@ -476,12 +476,10 @@ class AssetFolder       : Codable
     /// The asset was updated in the editor, compile it
     func assetUpdated(id: UUID, value: String)//, deltaStart: Int32, deltaEnd: Int32)
     {
-        for asset in assets {
-            if asset.id == id {
-                asset.value = value
-                if game.state == .Idle {
-                    assetCompile(asset)
-                }
+        if let asset = getAssetById(id) {
+            asset.value = value
+            if game.state == .Idle {
+                assetCompile(asset)
             }
         }
     }

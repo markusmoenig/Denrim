@@ -271,23 +271,16 @@ struct ListView: View {
  
         List(document.game.assetFolder.assets, id: \.id, children: \.children, selection: $selection) { asset in
             
-            Button(action: {
-                selection = asset.id
-                document.game.assetFolder.select(asset.id)
-                document.game.createPreview(asset)
-                updateView.toggle()
-            })
-            {
-                Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
-            }
-            .buttonStyle(PlainButtonStyle())
-            //.onDrag { print("here"); return NSItemProvider(object: "test" as NSString) }
+            Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
             .contextMenu {
                 
                 if document.game.assetFolder.isFolder(asset) == false {
                     Section(header: Text("Move to Folder")) {
                         
                         Button(action: {
+                            selection = asset.id
+                            document.game.assetFolder.select(asset.id)
+                            
                             document.game.assetFolder.moveToFolder(folderName: nil, asset: asset)
                             updateView.toggle()
                         }) {
@@ -300,6 +293,9 @@ struct ListView: View {
                         ForEach(document.game.assetFolder.assets, id: \.id) { folder in
                             if folder.type == .Folder {
                                 Button(action: {
+                                    selection = asset.id
+                                    document.game.assetFolder.select(asset.id)
+                                    
                                     document.game.assetFolder.moveToFolder(folderName: folder.name, asset: asset)
                                     updateView.toggle()
                                 }) {
@@ -317,6 +313,9 @@ struct ListView: View {
                 Section(header: Text("Edit")) {
                     
                     Button(action: {
+                        selection = asset.id
+                        document.game.assetFolder.select(asset.id)
+                        
                         assetName = asset.name
                         showAssetNamePopover = true
                     })
@@ -326,6 +325,9 @@ struct ListView: View {
                     .disabled(document.game.assetFolder.isGameAsset(asset))
                     
                     Button(action: {
+                        selection = asset.id
+                        document.game.assetFolder.select(asset.id)
+                        
                         showDeleteAssetAlert = true
                     })
                     {
@@ -338,13 +340,20 @@ struct ListView: View {
                     
                     Section(header: Text("Image Group")) {
                         Button(action: {
+                            selection = asset.id
+                            document.game.assetFolder.select(asset.id)
+                            
                             isAddingImages = true
                         })
                         {
                             Label("Add to Group", systemImage: "plus")
                         }
+                        .disabled(document.game.assetFolder.isImage(asset) == false)
                         
                         Button(action: {
+                            selection = asset.id
+                            document.game.assetFolder.select(asset.id)
+                            
                             if let asset = document.game.assetFolder.current {
                                 asset.data.remove(at: Int(imageIndex))
                             }
@@ -353,12 +362,23 @@ struct ListView: View {
                         {
                             Label("Remove Image", systemImage: "minus.circle")
                         }
-                        .disabled(document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
+                        .disabled(document.game.assetFolder.isImage(asset) == false || document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
                     }
                     
                 //}
             }
         }
+        // Selection handling
+        .onChange(of: selection) { newState in
+            if let id = newState {
+                document.game.assetFolder.select(id)
+                if let asset = document.game.assetFolder.getAssetById(id) {
+                    document.game.createPreview(asset)
+                }
+                updateView.toggle()
+            }
+        }
+        //.onDrag { print("here"); return NSItemProvider(object: "test" as NSString) }
         /*
         // delete action
         .onDelete { indexSet in
@@ -498,7 +518,7 @@ struct ContentView: View {
             // Asset deletion
             .alert(isPresented: $showDeleteAssetAlert) {
                 Alert(
-                    title: Text("Do you want to remove the asset '\(document.game.assetFolder.current!.name)' ?"),
+                    title: Text(document.game.assetFolder.current != nil && document.game.assetFolder.current!.type != .Folder ? "Do you want to remove the file '\(document.game.assetFolder.current!.name)' ?" : "Do you want to remove the folder '\(document.game.assetFolder.current!.name)' and all of it's contents ?"),
                     message: Text("This action cannot be undone!"),
                     primaryButton: .destructive(Text("Yes"), action: {
                         if let asset = document.game.assetFolder.current {

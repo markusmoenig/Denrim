@@ -855,7 +855,7 @@ class Map
     
     func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer)
     {
-        if layer.options.clipToCanvas {
+        if layer.options.clipToCanvas && game.state == .Running {
             game.gameScissorRect = MTLScissorRect(x: Int(viewBorder.x), y: Int(viewBorder.y), width: Int(texture!.width - 2.0 * viewBorder.x), height: Int(texture!.height - 2.0 * viewBorder.y))
         }
         
@@ -913,7 +913,7 @@ class Map
         
         currentSampler = game.linearSampler
 
-        if layer.options.clipToCanvas {
+        if layer.options.clipToCanvas && game.state == .Running {
             game.gameScissorRect = MTLScissorRect(x: 0, y: 0, width: texture!.texture.width, height: texture!.texture.height)
         }
     }
