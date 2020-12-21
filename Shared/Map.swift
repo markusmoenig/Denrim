@@ -43,6 +43,8 @@ class Map
     
     var subMaps             : [Map] = []
     
+    var layerPreviewZoom    : Float = 1
+    
     var renderEncoder       : MTLRenderCommandEncoder!
 
     // Rendering
@@ -745,8 +747,8 @@ class Map
             var width = texture2D.width / canvasSize.x * aspect.x * 100.0
             var height = texture2D.height / canvasSize.y * aspect.y * 100.0
             
-            alias.options.position.x = x + (alias.options.offset.x) * (game.state == .Idle ? camera2D.zoom : 1)
-            alias.options.position.y = y + (alias.options.offset.y / canvasSize.y * aspect.y * 100.0) * (game.state == .Idle ? camera2D.zoom : 1)
+            alias.options.position.x = x + (alias.options.offset.x) * layerPreviewZoom
+            alias.options.position.y = y + (alias.options.offset.y / canvasSize.y * aspect.y * 100.0) * layerPreviewZoom
                         
             // Subrect ?
             if let v = alias.options.rect {
@@ -794,6 +796,12 @@ class Map
             currentSampler = game.nearestSampler
         }
         
+        if game.state == .Running {
+            layerPreviewZoom = 1
+        } else {
+            layerPreviewZoom = camera2D.zoom
+        }
+        
         var xPos = x + layer.options.offset.x * aspect.x
         var yPos = y + layer.options.offset.y * aspect.y
         
@@ -826,19 +834,10 @@ class Map
             
             for var a in line.line {
                 let advance = drawAlias(xPos, yPos, &a)
-                if game.state == .Running {
-                    xPos += advance.0
-                } else {
-                    xPos += advance.0 * camera2D.zoom
-                }
+                xPos += advance.0 * layerPreviewZoom
             }
-            if game.state == .Running {
-                yPos += layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0
-                xPos = x + layer.options.offset.x * aspect.x
-            } else {
-                yPos += (layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0) * camera2D.zoom
-                xPos = x + layer.options.offset.x * aspect.x
-            }
+            yPos += (layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0) * layerPreviewZoom
+            xPos = x + layer.options.offset.x * aspect.x
         }
         
         layer.options.accumScroll.x += layer.options.scroll.x * aspect.x
