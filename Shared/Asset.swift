@@ -398,9 +398,11 @@ class AssetFolder       : Codable
     {
         var path = name
         
-        // Add the current subpath if any
+        // Add the current subpath if not an absolute path
         if let current = currentPath {
-            path = current + "/" + name
+            if name.starts(with: "/") == false {
+                path = current + "/" + name
+            }
         }
         
         if let tuple = resolvePath(path) {
