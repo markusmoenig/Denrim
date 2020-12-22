@@ -1,6 +1,6 @@
 ## Alias
 
-An **Alias** is a reference to an image or to a given sub-brect of an image (a tile). Aliases are used to describe tile sets in layers and are very powerful as you can specify attributes like repetition for an alias.
+An **Alias** is a reference to an image or to a given sub-rect of an image (a tile). Aliases are used to describe tile sets in layers and are very powerful as you can specify attributes like repetition for an alias or can mark the alias as static in a physics engine.
 
 Basic Syntax:
 
@@ -15,3 +15,5 @@ Aliases can have various options:
 * **RepeatY** (true/false), repeats the alias vertically.
 
 * **Scale** ("Full"), scales the image up to the full canvas size, useful for background images.
+
+* **PhysicsId** (Name), name of the physics engine. This will mark the alias as static in the physics engine, making it easy to define where characters can go and where not, for example in an jump and run.

@@ -455,7 +455,7 @@ class BehaviorBuilder
     
     @objc func cursorCallback(_ timer: Timer) {
         if game.state == .Idle && game.scriptEditor != nil {
-            game.scriptEditor!.getSessionCursor({ (line) in
+            game.scriptEditor!.getSessionCursor({ (line, _) in
                 if let asset = self.game.assetFolder.current, asset.type == .Behavior {
                     if let context = asset.behavior {
                         if let name = context.lines[line] {

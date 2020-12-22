@@ -22,7 +22,7 @@ class MapPreview
         self.game = game
     }
     
-    func preview(_ map: Map,_ variable: String?, _ command: String? = nil)
+    func preview(_ map: Map,_ variable: String?, _ command: String? = nil, layerLineOffset: Int32? = nil)
     {
         self.map = map
         currentVariable = variable
@@ -106,7 +106,21 @@ class MapPreview
             if let layer = map.layers[variable] {
                 helpKey = "Layer"
                 map.startEncoding()
-                map.drawLayer(0, -layer.options.offset.y * map.aspect.y, layer)
+                
+                var x : Float = 0
+                var y : Float = -layer.options.offset.y * map.aspect.y
+                if let layerLineOffset = layerLineOffset {
+                    if layerLineOffset >= 1 {
+                        if let offset = map.getLayerOffset(game.mapBuilder.scriptColumn, layerLineOffset, layer) {
+                            x -= offset.0
+                            y -= offset.1
+                            
+                            x += game.texture!.width / 2.0
+                            y += game.texture!.height / 2.0
+                        }
+                    }
+                }
+                map.drawLayer(x, y, layer)
                 map.stopEncoding()
             } else
             if let scene = map.scenes[variable] {

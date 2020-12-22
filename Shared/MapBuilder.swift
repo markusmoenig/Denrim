@@ -14,6 +14,7 @@ class MapBuilder
     
     var cursorTimer     : Timer? = nil
     var scriptLine      : Int32? = nil
+    var scriptColumn    : Int32 = 0
     var previewLine     : Int32? = nil
 
     let mapPreview      : MapPreview
@@ -761,6 +762,8 @@ class MapBuilder
                 
                 command = map.commandLines[line]
                 
+                var layerLineOffset : Int32? = nil
+
                 if let n = map.lines[line] {
                     name = n
                 } else {
@@ -775,6 +778,8 @@ class MapBuilder
                         }
                     }
                     
+                    layerLineOffset =  line - lastLine
+                    
                     // If yes, check if the line is inside the layer range
                     if map.layers[lastVar] != nil {
                             if line < map.layers[lastVar]!.endLine {
@@ -784,7 +789,7 @@ class MapBuilder
                 }
                 
                 map.setup(game: game, forceFixedScale: true)
-                mapPreview.preview(map, name, command)
+                mapPreview.preview(map, name, command, layerLineOffset: layerLineOffset)
             }
         }
     }
@@ -812,12 +817,12 @@ class MapBuilder
     
     @objc func cursorCallback(_ timer: Timer) {
         if game.state == .Idle && game.scriptEditor != nil {
-            game.scriptEditor!.getSessionCursor({ [weak self] (line) in
+            game.scriptEditor!.getSessionCursor({ [weak self] (line, column) in
                 guard let self = self else { return }
-                
                 if let asset = self.game.assetFolder.current, asset.type == .Map {
                     let needsUpdate = self.scriptLine != line
                     self.scriptLine = line
+                    self.scriptColumn = column
                     if needsUpdate && asset.map != nil {
                         self.createPreview(asset.map!)
                     }

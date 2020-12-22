@@ -170,7 +170,7 @@ struct MapLayerData2D {
 
 struct AliasLine {
     var line            : [MapAlias] = []
-    
+        
     init(_ line : [MapAlias] = []) {
         self.line = line
     }
@@ -182,6 +182,7 @@ struct MapLayer {
     
     var originalOptions : [String:Any]
     var options         : MapLayerData2D
+
     var endLine         : Int32 = 0
 }
 
