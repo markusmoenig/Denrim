@@ -252,6 +252,39 @@ struct RootView: View {
 }
 */
 
+// https://stackoverflow.com/questions/61386877/in-swiftui-is-it-possible-to-use-a-modifier-only-for-a-certain-os-target
+enum OperatingSystem {
+    case macOS
+    case iOS
+    case tvOS
+    case watchOS
+
+    #if os(macOS)
+    static let current = macOS
+    #elseif os(iOS)
+    static let current = iOS
+    #elseif os(tvOS)
+    static let current = tvOS
+    #elseif os(watchOS)
+    static let current = watchOS
+    #else
+    #error("Unsupported platform")
+    #endif
+}
+
+extension View {
+    @ViewBuilder
+    func ifOS<Content: View>(
+        _ operatingSystems: OperatingSystem...,
+        modifier: @escaping (Self) -> Content
+    ) -> some View {
+        if operatingSystems.contains(OperatingSystem.current) {
+            modifier(self)
+        } else {
+            self
+        }
+    }
+}
 
 struct ListView: View {
     @State var document                 : DenrimDocument
@@ -272,6 +305,14 @@ struct ListView: View {
         List(document.game.assetFolder.assets, id: \.id, children: \.children, selection: $selection) { asset in
             
             Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
+            .ifOS(.iOS) {
+                $0.foregroundColor(asset === document.game.assetFolder.current ? Color.accentColor : Color.white)
+            }
+            .onTapGesture {
+                selection = asset.id
+                document.game.assetFolder.select(asset.id)
+                document.game.createPreview(asset)
+            }
             .contextMenu {
                 
                 if document.game.assetFolder.isFolder(asset) == false {
@@ -378,7 +419,12 @@ struct ListView: View {
                 updateView.toggle()
             }
         }
-        //.onDrag { print("here"); return NSItemProvider(object: "test" as NSString) }
+        .onAppear {
+            if let asset = document.game.assetFolder.getAsset("Game") {
+                document.game.assetFolder.select(asset.id)
+                selection = asset.id
+            }
+        }
         /*
         // delete action
         .onDelete { indexSet in

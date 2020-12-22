@@ -109,7 +109,7 @@ main : context {
    }
    
    : pattern {
-      regex          \= (\b(Group|Index|Rect|Id|RepeatX|Range|Layers|Platform|Size|Name|Shapes|Position|Float|Shaders|Float2|Float3|Float4|From|To|Minimum|Maximum|Key|SceneOffset|Mode|Variables|Variable|With|Text|Type|Color|Font|FontSize|Digits|Int|Variable|Variables|Tree|Bool|not|BehaviorId|ShapeId|PhysicsId|Gravity|Scale|Delay|Interval|Map|SceneId|Bullet|Global|Loops|CollisionIds|Area|ClipToCanvas|Destination|Step|Button|Direction|FixedRotation|Filter|Offset|Body|Density|Friction|Restitution|Center)\b)
+      regex          \= (\b(Group|Index|Rect|Id|RepeatX|Range|Layers|Platform|Size|Name|Shapes|Position|Float|Shaders|Float2|Float3|Float4|From|To|Minimum|Maximum|Key|SceneOffset|Mode|Variables|Variable|With|Text|Type|Color|Font|FontSize|Digits|Int|Variable|Variables|Tree|Bool|not|BehaviorId|ShapeId|PhysicsId|Gravity|Scale|Delay|Interval|Map|SceneId|Bullet|Global|Loops|CollisionIds|Area|ClipToCanvas|Destination|Step|Button|Direction|FixedRotation|Filter|Offset|Body|Density|Friction|Restitution|Center|LineHeight|Component)\b)
       styles []       = .comment;
    }
    
@@ -160,6 +160,11 @@ main : context {
       styles []       = .punctuation;
    }
    
+   : pattern {
+      regex          \= (\ [\*\/\+\-]\ )
+      styles []       = .punctuation;
+   }
+   
    : inline_push {
       regex          \= (\")
       styles []       = .punctuation;
@@ -194,7 +199,6 @@ main : context {
       regex          \= ([^\s])
       styles []       = .illegal;
    }
-   
 }
 
 #################################################
