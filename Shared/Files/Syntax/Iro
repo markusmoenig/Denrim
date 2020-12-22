@@ -114,7 +114,7 @@ main : context {
    }
    
    : pattern {
-      regex          \= (\b(\.|Shape2D|GridInstance2D|Physics2D|ApplyPhysics2D|ApplyTexture2D|SetLinearVelocity2D|OnDemandInstance2D|CreateInstance2D|DestroyInstance2D|MoveTo2D|ApplyForce2D|GetLinearVelocity2D|SetCamera2D)\b)
+      regex          \= (\b(\.|Shape2D|GridInstance2D|Physics2D|ApplyPhysics2D|ApplyTexture2D|SetLinearVelocity2D|OnDemandInstance2D|CreateInstance2D|DestroyInstance2D|MoveTo2D|ApplyForce2D|GetLinearVelocity2D|SetCamera2D|SetPosition2D)\b)
       styles []       = .keyword;
    }
    

@@ -23,20 +23,22 @@ class LogNode: BehaviorNode
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
         var text: String = ""
-        for (name, exp) in options {
+        for (_, exp) in options {
             if let string = exp as? String {
                 if let value = context.getVariableValue(string) {
                     if let v = value as? Int1 {
-                        text += name + " " + String(v.x)
+                        text += string + " " + String(v.x)
                     } else
                     if let v = value as? Float1 {
-                        text += name + " " + String(v.x)
+                        text += string + " " + String(v.x)
+                    } else
+                    if let v = value as? Float2 {
+                        text += string + " <" + String(v.x) + ", " + String(v.y) + ">"
                     }
                 }
             }
         }
-        game.contextText.append(text)
-        game.contextTextChanged.send(game.contextText)
+        game.logText.append(text + "\n")
         return .Success
     }
 }

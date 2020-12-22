@@ -10,7 +10,7 @@ import Foundation
 class File : NSObject
 {
     var containerUrl: URL? {
-        return FileManager.default.url(forUbiquityContainerIdentifier: /*"<G6R6L3VH62>.<iCloud.com.moenig.Denrim>"*/ nil)?.appendingPathComponent("Documents")
+        return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
     }
     
     override init()
@@ -51,7 +51,8 @@ class File : NSObject
             
             copyTemplateToExamples("Bricks", url)
             copyTemplateToExamples("SpaceShooter", url)
-            
+            copyTemplateToExamples("JumpAndRun", url)
+
             /*
             do {
                 let mapHelpIndex = try FileManager.default.contentsOfDirectory(atPath: url.path)

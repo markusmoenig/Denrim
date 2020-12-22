@@ -755,8 +755,8 @@ struct ContentView: View {
                         if let texture = document.game.texture?.texture {
                             Text("\(texture.width) x \(texture.height)")
                         }
-                        //Label("View", systemImage: "viewfinder")
                     }
+                    .frame(minWidth: 100)
                     .onReceive(self.document.game.updateUI) { value in
                         updateView.toggle()
                     }
@@ -768,7 +768,6 @@ struct ContentView: View {
                     Button(action: {
                         helpIsVisible.toggle()
                     }) {
-                        //Text(!helpIsVisible ? "Help" : "Hide")
                         Label("Help", systemImage: "questionmark")
                     }
                     .keyboardShortcut("h")
@@ -855,8 +854,8 @@ struct ContentView: View {
         }
         }
         // For Mac Screenshots, 1440x900
-        //.frame(minWidth: 1440, minHeight: 806)
-        //.frame(maxWidth: 1440, maxHeight: 806)
+        .frame(minWidth: 1440, minHeight: 806)
+        .frame(maxWidth: 1440, maxHeight: 806)
         // For Mac App Previews 1920x1080
         //.frame(minWidth: 1920, minHeight: 978)
         //.frame(maxWidth: 1920, maxHeight: 978)

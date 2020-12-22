@@ -565,7 +565,7 @@ class ScriptEditor
     func setErrors(_ errors: [CompileError]) {}
     func clearAnnotations() {}
     
-    func getSessionCursor(_ cb: @escaping (Int32)->() ) {}
+    func getSessionCursor(_ cb: @escaping (Int32, Int32)->() ) {}
     
     func setReadOnly(_ readOnly: Bool = false) {}
     func setDebugText(text: String) {}

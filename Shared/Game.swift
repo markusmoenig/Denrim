@@ -68,6 +68,8 @@ public class Game       : ObservableObject
     var contextKey      : String = ""
     let contextTextChanged = PassthroughSubject<String, Never>()
     
+    var logText         : String = ""
+    
     var helpText        : String = ""
     let helpTextChanged = PassthroughSubject<Void, Never>()
     
@@ -168,8 +170,7 @@ public class Game       : ObservableObject
         if let scriptEditor = scriptEditor {
             scriptEditor.setReadOnly(true)
             
-            contextText = ""
-            contextTextChanged.send(contextText)
+            logText = ""
         }
         
         clearLocalAudio()
@@ -391,6 +392,14 @@ public class Game       : ObservableObject
                         debugText += "  Current contacts: \(world.contactCount)\n"
                     }
                 }
+            }
+            
+            debugText += "\nLog:\n\n" + logText
+            
+            if logText.isEmpty {
+                debugText += "<Empty>\n"
+            } else {
+                debugText += logText
             }
             
             scriptEditor!.setDebugText(text: debugText)

@@ -1,6 +1,6 @@
 ## Log
 
-Writes the values of all referenced variables into the log.
+Writes the values of all referenced variables into the log. The log is displayed together with the other debug text and can be activated by clicking the bug symbol in the toolbar while the game is running.
 
 Syntax:
 
