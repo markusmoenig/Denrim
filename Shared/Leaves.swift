@@ -690,6 +690,58 @@ class GetLinearVelocity2D: BehaviorNode
     }
 }
 
+// Set physics 2D position
+class SetPosition2D: BehaviorNode
+{
+    var shapeId: String? = nil
+    var f2: Float2? = nil
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "SetPosition2D"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if let value = options["shapeid"] as? String {
+            shapeId = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        } else {
+            error.error = "SetPosition2D requires a 'ShapeId' parameter"
+        }
+        
+        if let value = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error) {
+            f2 = value
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let map = game.currentMap?.map {
+            if shapeId != nil && f2 != nil {
+                if let shape = map.shapes2D[shapeId!], shape.physicsWorld != nil {
+                    let ppm = shape.physicsWorld!.ppm
+                    if let instances = shape.instances {
+                        for inst in instances.pairs {
+                            if inst.1.behaviorAsset.behavior === context {
+                                if let body = inst.0.body {
+                                    body.setTransform(position: b2Vec2((f2!.x + shape.options.size.x / 2.0) / ppm, (f2!.y + shape.options.size.y / 2.0) / ppm), angle: body.angle)
+                                    return .Success
+                                }
+                            }
+                        }
+                    } else
+                    if let body = shape.body {
+                        body.setTransform(position: b2Vec2((f2!.x + shape.options.size.x / 2.0) / ppm, (f2!.y + shape.options.size.x / 2.0) / ppm), angle: body.angle)
+                        return .Success
+                    }
+                }
+            }
+        }
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
 // Sets the linear velocity for a given shape
 class SetLinearVelocity2D: BehaviorNode
 {

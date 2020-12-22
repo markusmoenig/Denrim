@@ -1,0 +1,8 @@
+## SetPosition2D
+
+Sets the position of a shape inside the physics world. The shape has to be attached to a physics world. If the shape is not within a physics world you can simply change it's position variable.
+
+Syntax:
+
+`SetPosition2D<ShapeId: ShapeId><Float2: Value>`
+

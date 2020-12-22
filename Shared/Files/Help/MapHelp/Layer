@@ -2,11 +2,11 @@
 
 A **Layer** contains visual data like shapes, shaders and tile aliases. Layers are combined into a **Scene**.
 
-There are two different ways to construct a Layer, first is to list the shapes and shaders which should be displayed in this layer:
+There are two different ways to construct a Layer, first is to list the shapes and shaders which should be displayed in the layer:
 
 `layer = Layer<Shaders: ..><Shapes: ..>`
 
-The second way is to construct a tile set for the layer using an empty Layer<> statement and start the following lines with : followed by the aliases. See the examples.
+The second way is to construct a tile set for the layer using an empty Layer<> statement and start the following lines with : followed by the aliases. See the JumpAndRun example.
 
 Other options:
 

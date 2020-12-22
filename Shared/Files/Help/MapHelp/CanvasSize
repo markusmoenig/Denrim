@@ -25,7 +25,7 @@ The scale mode can be one of these options:
 
 * **UpDown**, the default option, this scales the canvas size for the given platform relatively up or down depending on the screen size while maintaining the canvas aspect ratio. Use this option if you want to seamlessly scale your shapes to the canvas size. An example for this is the SpaceShooter sample game.
 
-* **Fixed**, this will keep all shapes in a fixed size (relative to the canvas size) independent of the screen size. No scaling will occure. An example for this is the JumpAndRun sample game as the tiles are small and we do not want them to scale up.
+* **Fixed**, this will keep all shapes in a fixed size (relative to the canvas size) independent of the screen size. No scaling will occure.
 
 Example:
 
