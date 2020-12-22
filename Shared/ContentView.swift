@@ -387,7 +387,7 @@ struct ListView: View {
                             isAddingImages = true
                         })
                         {
-                            Label("Add to Group", systemImage: "plus")
+                            Label("Add to Image Group", systemImage: "plus")
                         }
                         .disabled(document.game.assetFolder.isImage(asset) == false)
                         
@@ -752,8 +752,13 @@ struct ContentView: View {
                         }
                     }
                     label: {
-                        //Text("Preview")
-                        Label("View", systemImage: "viewfinder")
+                        if let texture = document.game.texture?.texture {
+                            Text("\(texture.width) x \(texture.height)")
+                        }
+                        //Label("View", systemImage: "viewfinder")
+                    }
+                    .onReceive(self.document.game.updateUI) { value in
+                        updateView.toggle()
                     }
                     
                     Divider()

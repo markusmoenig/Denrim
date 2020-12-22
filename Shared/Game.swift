@@ -71,6 +71,9 @@ public class Game       : ObservableObject
     var helpText        : String = ""
     let helpTextChanged = PassthroughSubject<Void, Never>()
     
+    let updateUI        = PassthroughSubject<Void, Never>()
+    var didSendupdateUI = false
+    
     var tempText        : String = ""
     let tempTextChanged = PassthroughSubject<Void, Never>()
 
@@ -263,6 +266,14 @@ public class Game       : ObservableObject
             
             gameScissorRect = MTLScissorRect(x: 0, y: 0, width: texture!.texture.width, height: texture!.texture.height)
                         
+            if didSendupdateUI == false {
+                didSendupdateUI = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.updateUI.send()
+                    self.didSendupdateUI = false
+                }
+            }
+
             if let map = currentMap?.map {
                 map.setup(game: self)
             }
