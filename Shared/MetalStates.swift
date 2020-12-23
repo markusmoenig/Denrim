@@ -25,7 +25,7 @@ class MetalStates {
     {
         self.game = game
         
-        if let frameworkId = game.frameworkId {
+        if let frameworkId = game.frameworkId, frameworkId != "internal" {
             for b in Bundle.allFrameworks {
                 if b.bundleIdentifier == frameworkId {
                     defaultLibrary = try? game.device.makeDefaultLibrary(bundle: b)

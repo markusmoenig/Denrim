@@ -64,7 +64,7 @@ class File : NSObject
     
     func copyTemplateToExamples(_ name: String,_ url: URL)
     {
-        guard let path = Bundle.main.path(forResource: name, ofType: "denrim", inDirectory: "Files/Templates") else {
+        guard let path = Bundle.main.path(forResource: name, ofType: "denrim", inDirectory: "Templates") else {
             return
         }
         

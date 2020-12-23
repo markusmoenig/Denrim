@@ -90,10 +90,7 @@ public class Game       : ObservableObject
     var frameworkId     : String? = nil
 
     public init(_ frameworkId: String? = nil)
-    {
-        //let processInfo = ProcessInfo()
-        //print(processInfo.activeProcessorCount)
-        
+    {        
         self.frameworkId = frameworkId
         
         viewportSize = vector_uint2( 0, 0 )
@@ -128,7 +125,7 @@ public class Game       : ObservableObject
         self.view = view
         if let metalDevice = MTLCreateSystemDefaultDevice() {
             device = metalDevice
-            if frameworkId != nil {
+            if frameworkId != nil || frameworkId == "internal" {
                 view.device = device
             }
         } else {
@@ -306,7 +303,7 @@ public class Game       : ObservableObject
         guard let drawable = view.currentDrawable else {
             return
         }
-        
+
         startDrawing()
 
         // Game Loop
