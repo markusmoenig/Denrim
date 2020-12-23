@@ -217,7 +217,8 @@ public class Game       : ObservableObject
         }
     }
     
-    func stop()
+    /// Stop playbacl
+    func stop(silent: Bool = false)
     {
         clearLocalAudio()
         clearGlobalAudio()
@@ -226,7 +227,7 @@ public class Game       : ObservableObject
             map.clear()
         }
         
-        if let scriptEditor = scriptEditor {
+        if let scriptEditor = scriptEditor, silent == false {
             scriptEditor.setReadOnly(false)
             scriptEditor.setDebugText(text: "The game engine will display debug information during runtime here.")
         }
@@ -238,7 +239,7 @@ public class Game       : ObservableObject
         state = .Idle
         view.isPaused = true
         
-        if let scriptEditor = scriptEditor, assetError.error == nil {
+        if let scriptEditor = scriptEditor, assetError.error == nil, silent == false {
             scriptEditor.clearAnnotations()
             if assetFolder.current != nil {
                 assetFolder.select(assetFolder.current!.id)
@@ -345,7 +346,7 @@ public class Game       : ObservableObject
             }
         
             // Display failures when have editor
-            if let asset = assetFolder.current, scriptEditor != nil {
+            if let asset = assetFolder.current, scriptEditor != nil, showingDebugInfo == false {
                 var error = CompileError()
                 error.error = ""
                 error.column = 0
@@ -376,14 +377,14 @@ public class Game       : ObservableObject
             
             if let map = currentMap?.map {
             
-                debugText += "Current Map: \(currentMap!.name)\n"
+                debugText += "Current map \"\(currentMap!.name)\"\n"
                 
                 if let scene = currentScene {
-                    debugText += "Current Scene: \(scene.name)\n\n"
+                    debugText += "Current scene \"\(scene.name)\"\n"
                 }
 
                 for (physicsName, physics2D) in map.physics2D {
-                    debugText += physicsName + "\n"
+                    debugText += "\nPhysics world \"" + physicsName + "\"\n"
                     if let world = physics2D.world {
                         debugText += "  Bodies in world: \(world.bodyCount)\n"
                         debugText += "  Current contacts: \(world.contactCount)\n"
@@ -391,7 +392,44 @@ public class Game       : ObservableObject
                 }
             }
             
-            debugText += "\nLog:\n\n" + logText
+            // Current selection
+            
+            if let asset = assetFolder.current {
+                if let behavior = asset.behavior {
+                    debugText += "\nBehavior variables for \"\(asset.name)\"\n\n"
+
+                    if behavior.variables.isEmpty {
+                        debugText += "<None>\n"
+                    }
+                    for v in behavior.variables {
+                        if let b1 = v as? Bool1 {
+                            debugText += "\(v.name) <\(b1.toSIMD())>\n"
+                        } else
+                        if let i1 = v as? Int1 {
+                            debugText += "\(v.name) <\(i1.toSIMD())>\n"
+                        } else
+                        if let f1 = v as? Float1 {
+                            debugText += "\(v.name) <\(f1.toSIMD())>\n"
+                        } else
+                        if let f2 = v as? Float2 {
+                            let value = f2.toSIMD()
+                            debugText += "\(v.name) <\(value.x), \(value.y)>\n"
+                        } else
+                        if let f3 = v as? Float3 {
+                            let value = f3.toSIMD()
+                            debugText += "\(v.name) <\(value.x), \(value.y), \(value.z)>\n"
+                        } else
+                        if let f4 = v as? Float4 {
+                            let value = f4.toSIMD()
+                            debugText += "\(v.name) <\(value.x), \(value.y), \(value.z), \(value.w)>\n"
+                        }
+                    }
+                }
+            }
+            
+            // Log
+            
+            debugText += "\nLog\n\n" + logText
             
             if logText.isEmpty {
                 debugText += "<Empty>\n"

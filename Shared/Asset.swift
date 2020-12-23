@@ -241,7 +241,7 @@ class AssetFolder       : Codable
     /// Select the asset of the given id
     func select(_ id: UUID)
     {
-        if let current = current {
+        if let current = current, game.state == .Idle {
             if current.type == .Map {
                 if game.mapBuilder.cursorTimer != nil {
                     game.mapBuilder.stopTimer()
@@ -257,10 +257,14 @@ class AssetFolder       : Codable
         }
 
         if let asset = getAssetById(id) {
-            if asset.scriptName.isEmpty {
-                game.scriptEditor?.createSession(asset)
+            
+            // Set the asset in the editor, except when game is running and debug info is shown
+            if game.state == .Idle || (game.state == .Running && game.showingDebugInfo == false) {
+                if asset.scriptName.isEmpty {
+                    game.scriptEditor?.createSession(asset)
+                }
+                game.scriptEditor?.setAssetSession(asset)
             }
-            game.scriptEditor?.setAssetSession(asset)
             
             if game.state == .Idle {
                 assetCompile(asset)

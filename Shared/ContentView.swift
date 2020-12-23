@@ -685,7 +685,7 @@ struct ContentView: View {
                                     
                     // Game Controls
                     Button(action: {
-                        document.game.stop()
+                        document.game.stop(silent: true)
                         document.game.start()
                         helpIsVisible = false
                         updateView.toggle()
@@ -705,7 +705,14 @@ struct ContentView: View {
                     
                     Button(action: {
                         if let scriptEditor = document.game.scriptEditor {
-                            scriptEditor.activateDebugSession()
+                            if document.game.showingDebugInfo == false {
+                                scriptEditor.activateDebugSession()
+                            } else {
+                                document.game.showingDebugInfo = false
+                                if let current = document.game.assetFolder.current {
+                                    document.game.assetFolder.select(current.id)
+                                }
+                            }
                         }
                     }) {
                         Label("Bug", systemImage: "ant.fill")

@@ -173,11 +173,12 @@ func extractFloat1Value(_ options: [String:Any], container: VariableContainer, p
             return v
         }  else
         {
+            /*
             if allowExpressions {
                 if let context = expressionBuilder( expression: value, container: container, error: &error) {
                     return context.executeForFloat1()
                 }
-            }
+            }*/
             if isOptional == false { error.error = "Parameter '\(name)' not found" }
         }
     } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
