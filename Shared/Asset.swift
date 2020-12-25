@@ -472,6 +472,7 @@ class AssetFolder       : Codable
             asset.value = value
             if game.state == .Idle {
                 assetCompile(asset)
+                game.contentChanged.send()
             }
         }
     }

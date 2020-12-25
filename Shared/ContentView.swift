@@ -616,6 +616,7 @@ struct ContentView: View {
                         assetName = document.game.assetFolder.current!.name
                         showAssetNamePopover = true
                         updateView.toggle()
+                        document.game.contentChanged.send()
                     }
                 } catch {
                     // Handle failure.
@@ -648,6 +649,11 @@ struct ContentView: View {
                             .zIndex(0)
                             .frame(maxWidth: .infinity)
                             .layoutPriority(2)
+                        
+                            .onReceive(self.document.game.contentChanged) { state in
+                                document.updated.toggle()
+                            }
+                        
                         MetalView(document.game)
                             .zIndex(2)
                             .frame(minWidth: 0,
@@ -814,6 +820,7 @@ struct ContentView: View {
                     if selectedFiles.count > 0 {
                         document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles, existingAsset: document.game.assetFolder.current)
 
+                        document.game.contentChanged.send()
                         updateView.toggle()
                     }
                 } catch {
@@ -891,6 +898,7 @@ struct ContentView: View {
                     assetName = document.game.assetFolder.current!.name
                     showAssetNamePopover = true
                     updateView.toggle()
+                    document.game.contentChanged.send()
                 }
             } catch {
                 // Handle failure.

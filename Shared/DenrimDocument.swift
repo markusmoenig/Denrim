@@ -17,7 +17,8 @@ extension UTType {
 struct DenrimDocument: FileDocument {
     
     @ObservedObject var game = Game()
-
+    var updated              : Bool = false
+    
     init() {
     }
 
@@ -58,7 +59,6 @@ struct DenrimDocument: FileDocument {
     
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
         var data = Data()
-        
         let encodedData = try? JSONEncoder().encode(game.assetFolder)
         if let json = String(data: encodedData!, encoding: .utf8) {
             data = json.data(using: .utf8)!

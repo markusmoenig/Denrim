@@ -73,6 +73,8 @@ public class Game       : ObservableObject
     var helpText        : String = ""
     let helpTextChanged = PassthroughSubject<Void, Never>()
     
+    let contentChanged = PassthroughSubject<Void, Never>()
+
     let updateUI        = PassthroughSubject<Void, Never>()
     var didSendupdateUI = false
     
