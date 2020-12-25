@@ -85,4 +85,18 @@ class File : NSObject
             }
         }*/
     }
+    
+    func loadTemplate(_ name: String) -> String?
+    {
+        guard let path = Bundle.main.path(forResource: name, ofType: "denrim", inDirectory: "Templates") else {
+            return nil
+        }
+        
+        if let templateData = NSData(contentsOfFile: path) {
+            let string = String(decoding: templateData, as: UTF8.self)
+            return string
+        }
+        
+        return nil
+    }
 }

@@ -622,60 +622,72 @@ struct ContentView: View {
                 }
             }
             GeometryReader { geometry in
-                ZStack(alignment: .topTrailing) {
-                    ScrollView {
+                // New File Browser
+                if self.document.game.assetFolder.isNewProject {
+                    BrowserView(document.game, updateView: $updateView)
+                        .frame(minWidth: geometry.size.width,
+                               maxWidth: geometry.size.width,
+                               minHeight: geometry.size.height,
+                               maxHeight: geometry.size.height,
+                               alignment: .topLeading)
+                        //.opacity(1)
+                        //.background(Color.clear)
+                } else {
+                    ZStack(alignment: .topTrailing) {
+                        ScrollView {
 
-                        WebView(document.game, deviceColorScheme).tabItem {
-                        }
-                            .frame(height: geometry.size.height)
-                            .tag(1)
-                            .onChange(of: deviceColorScheme) { newValue in
-                                document.game.scriptEditor?.setTheme(newValue)
+                            WebView(document.game, deviceColorScheme).tabItem {
                             }
-                            .opacity(helpIsVisible ? 0 : 1)
-                    }
-                        .zIndex(0)
-                        .frame(maxWidth: .infinity)
-                        .layoutPriority(2)
-                    MetalView(document.game)
-                        .zIndex(2)
-                        .frame(minWidth: 0,
-                               maxWidth: geometry.size.width / document.game.previewFactor,
-                               minHeight: 0,
-                               maxHeight: geometry.size.height / document.game.previewFactor,
-                               alignment: .topTrailing)
-                        .opacity(helpIsVisible || document.game.assetFolder.isPreviewVisible() == false ? 0 : (document.game.state == .Running ? 1 : document.game.previewOpacity))
-                        .animation(.default)
-                        //.allowsHitTesting(document.game.state == .Running)
-                    
-                    Text(tempText)
-                        .zIndex(3)
-                        .frame( minWidth: 0,
-                                maxWidth: .infinity,
-                                minHeight: 0,
-                                maxHeight: geometry.size.height,
-                                alignment: .bottomTrailing)
-                        .opacity(tempText.count == 0 ? 0 : 1)
-                        .onReceive(self.document.game.tempTextChanged) { state in
-                            tempText = self.document.game.tempText
+                                .frame(height: geometry.size.height)
+                                .tag(1)
+                                .onChange(of: deviceColorScheme) { newValue in
+                                    document.game.scriptEditor?.setTheme(newValue)
+                                }
+                                .opacity(helpIsVisible ? 0 : 1)
                         }
-                    
-                    ScrollView {
-                        ParmaView(text: $helpText)
+                            .zIndex(0)
+                            .frame(maxWidth: .infinity)
+                            .layoutPriority(2)
+                        MetalView(document.game)
+                            .zIndex(2)
                             .frame(minWidth: 0,
-                                   maxWidth: .infinity,
+                                   maxWidth: geometry.size.width / document.game.previewFactor,
                                    minHeight: 0,
-                                   maxHeight: .infinity,
-                                   alignment: .topLeading)
-                            .padding(4)
+                                   maxHeight: geometry.size.height / document.game.previewFactor,
+                                   alignment: .topTrailing)
+                            .opacity(helpIsVisible || document.game.assetFolder.isPreviewVisible() == false ? 0 : (document.game.state == .Running ? 1 : document.game.previewOpacity))
                             .animation(.default)
-                            .onReceive(self.document.game.helpTextChanged) { state in
-                                helpText = self.document.game.helpText
+                            //.allowsHitTesting(document.game.state == .Running)
+                        
+                        Text(tempText)
+                            .zIndex(3)
+                            .frame( minWidth: 0,
+                                    maxWidth: .infinity,
+                                    minHeight: 0,
+                                    maxHeight: geometry.size.height,
+                                    alignment: .bottomTrailing)
+                            .opacity(tempText.count == 0 ? 0 : 1)
+                            .onReceive(self.document.game.tempTextChanged) { state in
+                                tempText = self.document.game.tempText
                             }
+                        
+                        ScrollView {
+                            ParmaView(text: $helpText)
+                                .frame(minWidth: 0,
+                                       maxWidth: .infinity,
+                                       minHeight: 0,
+                                       maxHeight: .infinity,
+                                       alignment: .topLeading)
+                                .padding(4)
+                                .animation(.default)
+                                .onReceive(self.document.game.helpTextChanged) { state in
+                                    helpText = self.document.game.helpText
+                                }
+                        }
+                        .zIndex(4)//helpIsVisible ? 4 : -1)
+                        .opacity(helpIsVisible ? 1 : 0)
+                        .animation(.default)
                     }
-                    .zIndex(4)//helpIsVisible ? 4 : -1)
-                    .opacity(helpIsVisible ? 1 : 0)
-                    .animation(.default)
                 }
             }
             .layoutPriority(2)
@@ -809,7 +821,7 @@ struct ContentView: View {
                 }
             }
         }
-        if rightSideBarIsVisible == true {
+        if rightSideBarIsVisible == true && document.game.assetFolder.isNewProject == false {
             if helpIsVisible == true {
                 HelpIndexView(document.game)
                     .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)

@@ -15,6 +15,8 @@ class AssetFolder       : Codable
         
     var currentPath     : String? = nil
     
+    var isNewProject    : Bool = true
+    
     private enum CodingKeys: String, CodingKey {
         case assets
     }
@@ -81,30 +83,8 @@ class AssetFolder       : Codable
     {
         self.game = game
         
-        guard let path = Bundle.main.path(forResource: "Game", ofType: "", inDirectory: "Files/default") else {
-            return
-        }
-        
-        guard let path1 = Bundle.main.path(forResource: "Box", ofType: "", inDirectory: "Files/default") else {
-            return
-        }
-        
-        guard let path2 = Bundle.main.path(forResource: "Map", ofType: "", inDirectory: "Files/default") else {
-            return
-        }
-        
-        if let value = try? String(contentsOfFile: path, encoding: String.Encoding.utf8) {
-            assets.append(Asset(type: .Behavior, name: "Game", value: value))
-            current = assets[0]
-        }
-        
-        if let value = try? String(contentsOfFile: path1, encoding: String.Encoding.utf8) {
-            assets.append(Asset(type: .Behavior, name: "Box", value: value))
-        }
-        
-        if let value = try? String(contentsOfFile: path2, encoding: String.Encoding.utf8) {
-            assets.append(Asset(type: .Map, name: "Map", value: value))
-        }
+        assets.append(Asset(type: .Behavior, name: "Game", value: ""))
+        isNewProject = true
     }
     
     required init(from decoder: Decoder) throws
@@ -112,6 +92,12 @@ class AssetFolder       : Codable
         let container = try decoder.container(keyedBy: CodingKeys.self)
         assets = try container.decode([Asset].self, forKey: .assets)
         
+        if assets.count == 1 && assets[0].value == "" {
+            isNewProject = true
+        } else {
+            isNewProject = false
+        }
+                
         // Potential problem fixer, reset all paths
         for f in assets {
             if f.type == .Folder {

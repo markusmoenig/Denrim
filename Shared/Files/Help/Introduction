@@ -1,14 +1,16 @@
 # Introduction
 
-Denrim is a unique game creator for the Apple Metal ecosystem (macOS, iOS, tvOS). It uses a unique text based approach to describe everything you need for a 2D game, the basic building blocks are *map* and *behavior* files.
+Denrim is a 2D game creator for the Apple Metal ecosystem (macOS, iOS, tvOS). It uses a unique text based approach to describe everything you need for a 2D game, the basic building blocks are *map* and *behavior* files.
 
 ## Map Files
 
-You can import resources like images and audio files and reference them in *Map* files, along with various other metadata you need for your game (like shapes and shaders). The ultimate output of a map file is a scene, which references all layered visual data.
+Map files define scenes (or levels / menus) in your game. You can import resources like images and audio files and reference them in *Map* files, along with various other meta data you need for your game (like shapes and shaders). The ultimate output of a map file is a scene, which references all layered visual data.
 
 ## Behavior Trees
 
 *Behavior* files assign behavior to game objects using easy to use, text based behavior trees. Behavior files and map files interact, as any data inside a map file can be bound to a variable in a behavior tree.
+
+The default starting point for any game is your **Game** behavior file. Typically in it's "init" tree it will call *SetScene<>* which activates the first map based scene in the game.
 
 ## Shaders
 

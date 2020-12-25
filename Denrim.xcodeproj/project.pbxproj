@@ -471,6 +471,8 @@
 		2B71E70F2515B21400F3317D /* Leaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E70D2515B21400F3317D /* Leaves.swift */; };
 		2B71E7192516F5BA00F3317D /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
 		2B71E71A2516F5BA00F3317D /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
+		2BE27C992595690100B8AAD8 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE27C982595690100B8AAD8 /* Browser.swift */; };
+		2BE27C9A2595690100B8AAD8 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE27C982595690100B8AAD8 /* Browser.swift */; };
 		2BE9737F258CAD0700D8019D /* ExpAtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */; };
 		2BE97380258CAD0700D8019D /* ExpAtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */; };
 		2BE97381258CAD0700D8019D /* ExpAtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */; };
@@ -622,6 +624,7 @@
 		2B6D0C01250B16C00098F244 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2B71E70D2515B21400F3317D /* Leaves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leaves.swift; sourceTree = "<group>"; };
 		2B71E7182516F5BA00F3317D /* Branches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branches.swift; sourceTree = "<group>"; };
+		2BE27C982595690100B8AAD8 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpAtomNodes.swift; sourceTree = "<group>"; };
 		2BE9737C258CAD0700D8019D /* Variables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Variables.swift; sourceTree = "<group>"; };
 		2BE9737D258CAD0700D8019D /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
@@ -703,6 +706,7 @@
 				2B01C85524FB814900E86449 /* DenrimApp.swift */,
 				2B01C85624FB814900E86449 /* DenrimDocument.swift */,
 				2B01C85724FB814900E86449 /* ContentView.swift */,
+				2BE27C982595690100B8AAD8 /* Browser.swift */,
 				2BFDAF9D254A8A4E0096A0FF /* Parma.swift */,
 				2B01C87F24FB824900E86449 /* Asset.swift */,
 				2B01C87E24FB824900E86449 /* Game.swift */,
@@ -1253,6 +1257,7 @@
 				2B53617F25147B3300E8A20D /* File.swift in Sources */,
 				2B6D0BBB250B08080098F244 /* b2GearJoint.swift in Sources */,
 				2B6D0BFE250B0AAE0098F244 /* b2Timer.swift in Sources */,
+				2BE27C9A2595690100B8AAD8 /* Browser.swift in Sources */,
 				2B6D0BCD250B08080098F244 /* b2Island.swift in Sources */,
 				2B6D0BF9250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */,
@@ -1338,6 +1343,7 @@
 				2B53617E25147B3300E8A20D /* File.swift in Sources */,
 				2B6D0BBA250B08080098F244 /* b2GearJoint.swift in Sources */,
 				2B6D0BFF250B0B490098F244 /* b2Timer.swift in Sources */,
+				2BE27C992595690100B8AAD8 /* Browser.swift in Sources */,
 				2B6D0BCC250B08080098F244 /* b2Island.swift in Sources */,
 				2B6D0BF8250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */,
