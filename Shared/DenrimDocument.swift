@@ -16,8 +16,8 @@ extension UTType {
 
 struct DenrimDocument: FileDocument {
     
-    @ObservedObject var game = Game()
-    var updated              : Bool = false
+    var game        = Game()
+    var updated     = false
     
     init() {
     }
