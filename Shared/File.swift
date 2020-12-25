@@ -28,7 +28,7 @@ class File : NSObject
             }
         }
         
-        checkIfExamplesExist()
+        //checkIfExamplesExist()
     }
     
     func checkIfExamplesExist()
