@@ -625,7 +625,7 @@ struct ContentView: View {
             GeometryReader { geometry in
                 // New File Browser
                 if self.document.game.assetFolder.isNewProject {
-                    BrowserView(document.game, updateView: $updateView)
+                    BrowserView(document.game, updateView: $updateView, selection: $selection)
                         .frame(minWidth: geometry.size.width,
                                maxWidth: geometry.size.width,
                                minHeight: geometry.size.height,
@@ -703,6 +703,7 @@ struct ContentView: View {
                                     
                     // Game Controls
                     Button(action: {
+                        if document.game.view == nil { return }
                         document.game.stop(silent: true)
                         document.game.start()
                         helpIsVisible = false
@@ -714,6 +715,7 @@ struct ContentView: View {
                     .keyboardShortcut("r")
                     
                     Button(action: {
+                        if document.game.view == nil { return }
                         document.game.stop()
                         updateView.toggle()
                     }) {

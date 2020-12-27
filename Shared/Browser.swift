@@ -31,7 +31,8 @@ struct BrowserView: View {
     @State var selectedText         : String = ""
 
     @Binding var updateView         : Bool
-    
+    @Binding var selection          : UUID?
+
     let columns = [
         GridItem(.fixed(140)),
         GridItem(.fixed(140)),
@@ -40,11 +41,12 @@ struct BrowserView: View {
     
     @State var text: String = "Hallo"
         
-    init(_ game: Game, updateView: Binding<Bool>)
+    init(_ game: Game, updateView: Binding<Bool>, selection: Binding<UUID?>)
     {
         self.game = game
         self._updateView = updateView
-        
+        self._selection = selection
+
         let item1 = BrowserItem("Simple Physics", path: "Simple Physics", description: "A simple physics example using instantiated, plain shapes")
         let item2 = BrowserItem("Space Shooter", path: "SpaceShooter", description: "A more complex space shooter using texturized shapes and physics")
         let item3 = BrowserItem("Jump And Run", path: "JumpAndRun", description: "A jump and run concept game demonstrating how to build the world from aliases")
@@ -74,6 +76,7 @@ struct BrowserView: View {
                         game.assetFolder.isNewProject = false
                         if let gameAsset = game.assetFolder.getAsset("Game", .Behavior) {
                             game.assetFolder.select(gameAsset.id)
+                            selection = gameAsset.id
                         }
                     }
                 }

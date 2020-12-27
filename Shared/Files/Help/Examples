@@ -1,14 +1,12 @@
-## Example Files / Projects
+## Example Projects
 
-Denrim will install several example projects in the new Denrim folder in your iCloud directory (it will create an Examples subdirectory).
+When creating a new project you can choose between several starter projects.
 
 Going through these examples to analyze how the map and behavior files work is highly recommended. The context sensitiv help in the right side panel will show a description of the node or directive of the current line.
 
-### Bricks
+### Simple Physics
 
-A small classic bricks game done without physics, the ball is tested if it hit bricks or walls and is reflected by simply reversing the velocity.
-
-Grid instancing is used to create and manage the bricks.
+Simple physics demonstration using plain, instantiated shapes.
 
 ### Spaceshooter
 
@@ -16,3 +14,17 @@ A small space shooter which uses the physics engine for collisions. On demand in
 
 Image assets in this game are free-to-use and created by @ansimuz
 https://ansimuz.itch.io/warped-space-shooter
+
+### Jump and Run
+
+A jump and run concept game, demonstrating how to build worlds from Aliases.
+
+Image assets in this game are free-to-use and created by @ansimuz
+https://ansimuz.itch.io/sunny-land-pixel-game-art
+
+### Bricks
+
+A small classic bricks game done without physics, the ball is tested if it hit bricks or walls and is reflected by simply reversing the velocity.
+
+Grid instancing is used to create and manage the bricks.
+
