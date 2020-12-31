@@ -1,22 +1,52 @@
-# ShaderMania
+# Denrim
 
-[![AppStore](images/appstore.svg)](https://apps.apple.com/us/app/shadermania/id1541065830)
+[![AppStore](images/appstore.svg)](https://apps.apple.com/us/app/denrim/id1529774186)
 
-![screenshot](images/screen.png)
+![screenshot](images/screen.png) | ![screenshot](images/screen2.png)
 
-ShaderMania is an editor for procedural Metal fragment shaders featuring realtime preview and playback.
+<table><tr>
+<td> <img src="images/screen.png" alt="Screen 1" style="width: 500px;"/> </td>
+<td> <img src="images/screen2.png" alt="Screen 2" style="width: 500px;"/> </td>
+</tr></table>
 
-macOS Big Sur or iOS 14.x is required.
+Denrim is a 2D game creator utilizing a unique text based approach for game logic and resources. It is highly optimized for the Metal GPU framework and combines ease-of-use with the highest possible performance.
 
-Features:
+Denrim utilizes a text based approach to game creation paired with instant previews and visual game state feedback. You do not need to be a developer to create games with Denrim as no scripting languages are used. 
 
-* Realtime syntax check and compilation of your shaders with realtime preview.
-* Render to custom resolutions and export your shader output to PNG.
-* Display of syntax errors and warnings.
-* Add textures to your project by importing images.
-* Shaders can be chained with each shader supporting up to 4 inputs (shaders or textures).
-* Common code shader code which is shared by all shaders.
+Text based behavior trees are easy-to-use yet powerful tools to create game logic and AI. They are easier to use and  understand than scripting languages but are natively compiled into Swift and therefore offer the maximum in native performance. During game execution visual feedback of the state of the nodes are provided for easy debugging.
 
-A help file explains the parameters and syntax of the main entry point for each shader.
+An integrated 2D physics engine provides realistic and fast physics for your game.
 
-Thanks to [Kali](https://www.shadertoy.com/user/Kali) for allowing me to use his [Fractal Land](https://www.shadertoy.com/view/XsBXWt) shader for the app and it's icon.
+Map files map resources like shapes, images and audio files to layers and scenes, and resource parameters can be directly bound to behavior tree variables.
+
+Metal shaders are natively supported and can be edited with live preview. Shaders can also be bound directly to behavior tree variables, offering powerful special effects based on the game state.
+
+Games created with Denrim can be played on macOS, iOS and tvOS using a special free player app. Note that you need to have an Apple Developer account to release games on the AppStores.
+
+Denrim ships with 3 example games for learning, a space shooter, a jump and run concept and a bricks game. Using the context sensitive help it is easy to understand these examples and learn.
+
+##Behavior Trees
+
+* Easy-to-use text based approach to game logic and artificial intelligence.
+* Maximum performance with native Swift compilation.
+* Visual feedback during game execution on the state of nodes inside the trees.
+* Behavior variables can be bound to shape parameters and shaders.
+Context sensitive help is available for all behavior tree nodes.
+Live debugging of behavior variables.
+
+##Map Files
+
+* Text based meta language to defines (texturized) shapes and other resources for layers and scenes.
+* Offers instant syntax check and validation.
+Supported resources are shapes, images, audio and metal shaders.
+Define physical behavior of your shapes.
+* Context sensitive help is available anytime and for all functionality.
+
+##Metal Shaders
+
+* Offer a powerful way to create special effects inside games but are optional, you do not need to be able to code shaders to create games with Denrim.
+* Can be edited inside the editor with realtime preview.
+* Can be bound to behavior tree variables to allow game state dependent special effects.
+* Instant visual feedback on compile issues.
+
+It is currently possible to create arcade and jump and run games with Denrim. More game types and features are under development.

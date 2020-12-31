@@ -687,7 +687,6 @@
 		2B01C84F24FB814900E86449 = {
 			isa = PBXGroup;
 			children = (
-				2B09E1E12511A619002DE701 /* Denrim.entitlements */,
 				2B01C85424FB814900E86449 /* Shared */,
 				2B01C85F24FB814C00E86449 /* iOS */,
 				2B01C86624FB814C00E86449 /* macOS */,
@@ -755,6 +754,7 @@
 			isa = PBXGroup;
 			children = (
 				2B01C86024FB814C00E86449 /* Info.plist */,
+				2B09E1E12511A619002DE701 /* Denrim.entitlements */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -1879,7 +1879,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Denrim.entitlements;
+				CODE_SIGN_ENTITLEMENTS = iOS/Denrim.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1909,7 +1909,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Denrim.entitlements;
+				CODE_SIGN_ENTITLEMENTS = iOS/Denrim.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
