@@ -2,8 +2,6 @@
 
 [![AppStore](images/appstore.svg)](https://apps.apple.com/us/app/denrim/id1529774186)
 
-![screenshot](images/screen.png) | ![screenshot](images/screen2.png)
-
 <table><tr>
 <td> <img src="images/screen.png" alt="Screen 1" style="width: 500px;"/> </td>
 <td> <img src="images/screen2.png" alt="Screen 2" style="width: 500px;"/> </td>
