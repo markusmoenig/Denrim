@@ -23,7 +23,7 @@ Games created with Denrim can be played on macOS, iOS and tvOS using a special f
 
 Denrim ships with 3 example games for learning, a space shooter, a jump and run concept and a bricks game. Using the context sensitive help it is easy to understand these examples and learn.
 
-##Behavior Trees
+## Behavior Trees
 
 * Easy-to-use text based approach to game logic and artificial intelligence.
 * Maximum performance with native Swift compilation.
@@ -32,7 +32,7 @@ Denrim ships with 3 example games for learning, a space shooter, a jump and run 
 Context sensitive help is available for all behavior tree nodes.
 Live debugging of behavior variables.
 
-##Map Files
+## Map Files
 
 * Text based meta language to defines (texturized) shapes and other resources for layers and scenes.
 * Offers instant syntax check and validation.
@@ -40,7 +40,7 @@ Supported resources are shapes, images, audio and metal shaders.
 Define physical behavior of your shapes.
 * Context sensitive help is available anytime and for all functionality.
 
-##Metal Shaders
+## Metal Shaders
 
 * Offer a powerful way to create special effects inside games but are optional, you do not need to be able to code shaders to create games with Denrim.
 * Can be edited inside the editor with realtime preview.
