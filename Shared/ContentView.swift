@@ -444,8 +444,9 @@ struct ListView: View {
 }
 
 struct ContentView: View {
-    @Binding var document: DenrimDocument
-    
+    @Binding var document                   : DenrimDocument
+    @StateObject var storeManager           : StoreManager
+
     @State private var showAssetNamePopover : Bool = false
     @State private var assetName: String    = ""
 
@@ -799,6 +800,54 @@ struct ContentView: View {
                     }
                     .keyboardShortcut("h")
                     
+                    Menu {
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text("Small Tip")
+                                    .font(.headline)
+                                Text("Tip of $2 for the author")
+                                    .font(.caption2)
+                            }
+                            Button(action: {
+                                storeManager.purchaseId("com.moenig.Denrim.IAP.Tip2")
+                            }) {
+                                Text("Buy for $2")
+                            }
+                            .foregroundColor(.blue)
+                            Divider()
+                            VStack(alignment: .leading) {
+                                Text("Medium Tip")
+                                    .font(.headline)
+                                Text("Tip of $5 for the author")
+                                    .font(.caption2)
+                            }
+                            Button(action: {
+                                storeManager.purchaseId("com.moenig.Denrim.IAP.Tip5")
+                            }) {
+                                Text("Buy for $5")
+                            }
+                            .foregroundColor(.blue)
+                            Divider()
+                            VStack(alignment: .leading) {
+                                Text("Large Tip")
+                                    .font(.headline)
+                                Text("Tip of $10 for the author")
+                                    .font(.caption2)
+                            }
+                            Button(action: {
+                                storeManager.purchaseId("com.moenig.Denrim.IAP.Tip10")
+                            }) {
+                                Text("Buy for $10")
+                            }
+                            .foregroundColor(.blue)
+                            Divider()
+                            Text("You are awesome! ❤️❤️")
+                        }
+                    }
+                    label: {
+                        Label("Dollar", systemImage: "gift")//dollarsign.circle")
+                    }
+                    
                     Button(action: { rightSideBarIsVisible.toggle() }, label: {
                         Image(systemName: "sidebar.right")
                     })
@@ -906,11 +955,18 @@ struct ContentView: View {
                 // Handle failure.
             }
         }
+        .onAppear(perform: {
+            if storeManager.myProducts.isEmpty {
+                DispatchQueue.main.async {
+                    storeManager.getProducts()
+                }
+            }
+        })
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(document: .constant(DenrimDocument()))
+        ContentView(document: .constant(DenrimDocument()), storeManager: StoreManager())
     }
 }

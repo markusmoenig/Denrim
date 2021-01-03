@@ -12,12 +12,13 @@ import Combine
 struct DenrimApp: App {
         
     @StateObject var appState = AppState()
+    @StateObject var storeManager = StoreManager()
 
     private let exportCommand = PassthroughSubject<Void, Never>()
 
     var body: some Scene {
         DocumentGroup(newDocument: DenrimDocument()) { file in
-            ContentView(document: file.$document)
+            ContentView(document: file.$document, storeManager: storeManager)
                 .onReceive(exportCommand) { _ in
                     print("test")
                     //file.document.beginExport()
@@ -48,7 +49,7 @@ struct DenrimApp: App {
     
     private func createView(for file: FileDocumentConfiguration<DenrimDocument>) -> some View {
         appState.currentDocument = file.document
-        return ContentView(document: file.$document)
+        return ContentView(document: file.$document, storeManager: storeManager)
     }
 }
 
