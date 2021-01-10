@@ -368,6 +368,26 @@ class ExpressionContext
                     values.append(v)
                     return
                 }
+            } else
+            if defaultVariableType == .Int {
+                if let v = container.getVariableValue(expression), v as? Int1 != nil {
+                    values.append(v)
+                    return
+                }
+                if let i = Int(expression) {
+                    values.append(Int1(i))
+                    return
+                }
+            } else
+            if defaultVariableType == .Bool {
+                if let v = container.getVariableValue(expression), v as? Bool1 != nil {
+                    values.append(v)
+                    return
+                }
+                if let b = Bool(expression) {
+                    values.append(Bool1(b))
+                    return
+                }
             }
         }
         
@@ -395,12 +415,6 @@ class ExpressionContext
                     if variableRef.isConstant() == false {
                         resultType = .Variable
                     }
-                    testForConsumption()
-                } else
-                if let b = Bool(element) {
-                    uncomsumed.append(values.count)
-                    values.append(Bool1(b))
-                    
                     testForConsumption()
                 } else {
                     if element.isEmpty == false {

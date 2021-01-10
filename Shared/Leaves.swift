@@ -52,17 +52,6 @@ final class VariableAssignmentNode : BehaviorNode
         }
         return .Success
     }
-    
-    /*
-    override func getHelp() -> String
-    {
-        return "Creates or modifies a variable."
-    }
-    
-    override func getOptions() -> [GraphOption]
-    {
-        return []
-    }*/
 }
 
 // Logs the given variables

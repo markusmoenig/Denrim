@@ -988,11 +988,11 @@ final class Int1 : BaseVariable
     {
         super.init(name)
         let exp = ExpressionContext()
-        exp.parse(expression: parameters, container: container, error: &error)
+        exp.parse(expression: parameters, container: container, defaultVariableType: .Int, error: &error)
         if error.error == nil {
             if exp.resultType == .Constant {
-                if let f1 = exp.executeForInt1() {
-                    x = f1.x
+                if let i1 = exp.executeForInt1() {
+                    x = i1.x
                 }
             } else {
                 self.context = exp
@@ -1002,11 +1002,44 @@ final class Int1 : BaseVariable
     
     @inlinable func toSIMD() -> Int
     {
+        if isConstant() {
+            return x
+        }
+        if let ref = reference {
+            return Int(ref[qualifiers[0]])
+        } else
+        if let context = context {
+            if let i1 = context.executeForInt1() {
+                return i1.x
+            }
+        }
         return x
     }
     
     override func getTypeName() -> String {
         return "Int"
+    }
+    
+    override func toString() -> String {
+        return String(x)
+    }
+    
+    @inlinable func fromSIMD(_ v: Int)
+    {
+        x = v
+    }
+    
+    @inlinable override subscript(index: Int) -> Float {
+        get {
+            if let reference = reference {
+                return reference[index]
+            } else {
+                return Float(x)
+            }
+        }
+        set(v) {
+            x = Int(v)
+        }
     }
 }
 
@@ -1031,11 +1064,11 @@ final class Bool1 : BaseVariable
     {
         super.init(name)
         let exp = ExpressionContext()
-        exp.parse(expression: parameters, container: container, error: &error)
+        exp.parse(expression: parameters, container: container, defaultVariableType: .Bool, error: &error)
         if error.error == nil {
             if exp.resultType == .Constant {
-                if let f1 = exp.executeForBool1() {
-                    x = f1.x
+                if let b1 = exp.executeForBool1() {
+                    x = b1.x
                 }
             } else {
                 self.context = exp
