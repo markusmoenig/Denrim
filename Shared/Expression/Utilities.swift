@@ -93,7 +93,7 @@ func extractVariableValue(_ options: [String:Any], variableName: String, contain
 }
 
 /// Extract a float4 vale
-func extractFloat4Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "float4", isOptional: Bool = false ) -> Float4?
+func extractFloat4Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "float4", isOptional: Bool = false,  ignoreErrors: Bool = false) -> Float4?
 {
     if let value = options[name] as? String {
         if let context = expressionBuilder( expression: value, container: container, defaultVariableType: .Float4, error: &error) {
@@ -106,11 +106,14 @@ func extractFloat4Value(_ options: [String:Any], container: VariableContainer, p
         }
     } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     
+    if ignoreErrors {
+        error.error = nil
+    }
     return nil
 }
 
 /// Extract a float3 vale
-func extractFloat3Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "float3", isOptional: Bool = false ) -> Float3?
+func extractFloat3Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "float3", isOptional: Bool = false, ignoreErrors: Bool = false) -> Float3?
 {
     if let value = options[name] as? String {
         if let context = expressionBuilder( expression: value, container: container, defaultVariableType: .Float3, error: &error) {
@@ -123,15 +126,15 @@ func extractFloat3Value(_ options: [String:Any], container: VariableContainer, p
         }
     } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     
+    if ignoreErrors {
+        error.error = nil
+    }
     return nil
 }
 
 /// Extract a float2 vale
-func extractFloat2Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "float2", isOptional: Bool = false ) -> Float2?
+func extractFloat2Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "float2", isOptional: Bool = false, ignoreErrors: Bool = false) -> Float2?
 {
-    //if let value = options[name] as? Float2 {
-    //    return value
-    //} else
     if let value = options[name] as? String {
         if let context = expressionBuilder( expression: value, container: container, defaultVariableType: .Float2, error: &error) {
             if let value = context.executeForFloat2() {
@@ -143,11 +146,14 @@ func extractFloat2Value(_ options: [String:Any], container: VariableContainer, p
         }
     } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     
+    if ignoreErrors {
+        error.error = nil
+    }
     return nil
 }
 
 /// Extract a float1 vale
-func extractFloat1Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "float", isOptional: Bool = false ) -> Float1?
+func extractFloat1Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "float", isOptional: Bool = false, ignoreErrors: Bool = false) -> Float1?
 {
     if let value = options[name] as? Float1 {
         return value
@@ -173,11 +179,14 @@ func extractFloat1Value(_ options: [String:Any], container: VariableContainer, p
         }
     } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     
+    if ignoreErrors {
+        error.error = nil
+    }
     return nil
 }
 
 /// Extract a int1 vale
-func extractInt1Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "int", isOptional: Bool = false ) -> Int1?
+func extractInt1Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "int", isOptional: Bool = false, ignoreErrors: Bool = false) -> Int1?
 {
     if var value = options[name] as? String {
         value = value.trimmingCharacters(in: .whitespaces)
@@ -188,11 +197,15 @@ func extractInt1Value(_ options: [String:Any], container: VariableContainer, par
             return v
         }  else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
+    
+    if ignoreErrors {
+        error.error = nil
+    }
     return nil
 }
 
 /// Extract a Bool1 vale
-func extractBool1Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "bool", isOptional: Bool = false ) -> Bool1?
+func extractBool1Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "bool", isOptional: Bool = false,  ignoreErrors: Bool = false) -> Bool1?
 {
     if var value = options[name] as? String {
         value = value.trimmingCharacters(in: .whitespaces)
@@ -203,6 +216,10 @@ func extractBool1Value(_ options: [String:Any], container: VariableContainer, pa
             return v
         }  else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
+    
+    if ignoreErrors {
+        error.error = nil
+    }
     return nil
 }
 

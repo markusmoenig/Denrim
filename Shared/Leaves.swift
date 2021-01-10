@@ -1435,22 +1435,23 @@ class RandomNode: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        if let from = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
+        if let from = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true, ignoreErrors: true) {
             self.from = from
             self.to = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
             dest = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
         } else
-        if let from = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {//}, allowExpressions: false) {
+        if let from = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true, ignoreErrors: true) {//}, allowExpressions: false) {
             self.from = from
             self.to = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
             dest = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
         } else
-        if let from = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
+        if let from = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true, ignoreErrors: true) {
+            
             self.from = from
             self.to = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
             dest = extractFloat2Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
         } else
-        if let from = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {
+        if let from = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true, ignoreErrors: true) {
             self.from = from
             self.to = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
             dest = extractFloat3Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
