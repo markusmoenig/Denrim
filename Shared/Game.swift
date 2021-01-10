@@ -403,7 +403,8 @@ public class Game       : ObservableObject
                     if behavior.variables.isEmpty {
                         debugText += "<None>\n"
                     }
-                    for v in behavior.variables {
+                    
+                    for (_,v) in behavior.variables {
                         if let b1 = v as? Bool1 {
                             debugText += "\(v.name) <\(b1.toSIMD())>\n"
                         } else

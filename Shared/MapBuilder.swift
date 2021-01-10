@@ -637,12 +637,9 @@ class MapBuilder
                                             
             if let asset = asset, varArray.count == 2 {
                 if let behavior = asset.behavior {
-                    for v in behavior.variables {
-                        if v.name == varArray[1] {
-                            isValid = true
-                            replacedOptions[optionName] = v
-                            break
-                        }
+                    if let v = behavior.getVariableValue(String(varArray[1])) {
+                        isValid = true
+                        replacedOptions[optionName] = v
                     }
                     if isValid == false {
                         error.error = "Behavior'\(varArray[0])' does not contain variable '\(varArray[1])'"

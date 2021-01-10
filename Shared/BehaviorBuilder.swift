@@ -160,11 +160,88 @@ class BehaviorBuilder
             }
             
             var variableName : String? = nil
+            var assignmentType : VariableAssignmentNode.AssignmentType = .Copy
+
             // --- Check for variable assignment
-            let values = leftOfComment.split(separator: "=")
-            if values.count == 2 {
-                variableName = String(values[0]).trimmingCharacters(in: .whitespaces)
-                leftOfComment = String(values[1])
+            if leftOfComment.contains("="){
+             
+                var values : [String] = []
+                
+                if leftOfComment.contains("*=") {
+                    assignmentType = .Multiply
+                    values = leftOfComment.components(separatedBy: "*=")
+                } else
+                if leftOfComment.contains("/=") {
+                    assignmentType = .Divide
+                    values = leftOfComment.components(separatedBy: "/=")
+                } else
+                if leftOfComment.contains("+=") {
+                    assignmentType = .Add
+                    values = leftOfComment.components(separatedBy: "+=")
+                } else
+                if leftOfComment.contains("-=") {
+                    assignmentType = .Subtract
+                    values = leftOfComment.components(separatedBy: "+=")
+                } else {
+                    values = leftOfComment.components(separatedBy: "=")
+                }
+                
+                if values.count == 2 {
+                    variableName = String(values[0]).trimmingCharacters(in: .whitespaces)
+                    leftOfComment = String(values[1])
+                }
+            }
+            
+            /// Splits the option string into a possible command and its <> enclosed options
+            func splitIntoCommandPlusOptions(_ string: String,_ error: inout CompileError) -> [String]
+            {
+                var rc : [String] = []
+                
+                if let first = string.firstIndex(of: "<")?.utf16Offset(in: string) {
+
+                    let index = string.index(string.startIndex, offsetBy: first)
+                    let possibleCommand = string[..<index]//string.prefix(index)
+                    rc.append(String(possibleCommand))
+                    
+                    //let rest = string[index...]
+                    
+                    var offset      : Int = first
+                    var hierarchy   : Int = -1
+                    var option      = ""
+                    
+                    while offset < string.count {
+                        if string[offset] == "<" {
+                            if hierarchy >= 0 {
+                                option.append(string[offset])
+                            }
+                            hierarchy += 1
+                        } else
+                        if string[offset] == ">" {
+                            if hierarchy == 0 {
+                                rc.append(option)
+                                option = ""
+                                hierarchy = -1
+                            } else
+                            if hierarchy < 0 {
+                                error.error = "Syntax Error"
+                            } else {
+                                hierarchy -= 1
+                                if hierarchy >= 0 {
+                                    option.append(string[offset])
+                                }
+                            }
+                        } else {
+                            option.append(string[offset])
+                        }
+                        
+                        offset += 1
+                    }
+                    if option.isEmpty == false && error.error == nil {
+                        error.error = "Syntax Error: \(option)"
+                    }
+                }
+                               
+                return rc
             }
 
             if leftOfComment.count > 0 {
@@ -227,180 +304,237 @@ class BehaviorBuilder
                                 }
                             } else { error.error = "Invalid name for tree '\(name)'" }
                         } else { error.error = "No name given for tree" }
+                    }
+                }
+                
+                if processed == false {
+                    var rightValueArray : [String]
+                        
+                    if variableName == nil {
+                        rightValueArray = splitIntoCommandPlusOptions(leftOfComment, &error)
+                        if rightValueArray.isEmpty {
+                            rightValueArray = [leftOfComment]
+                        }
                     } else {
-                        var rightValueArray : [String.SubSequence]
-                            
-                        if leftOfComment.firstIndex(of: "<") != nil {
-                            rightValueArray = leftOfComment.split(separator: "<")
-                        } else {
-                            rightValueArray = leftOfComment.split(separator: " ")
+                        rightValueArray = [leftOfComment]
+                    }
+                                                            
+                    if rightValueArray.count > 0 && error.error == nil {
+                        
+                        var possibleCmd = String(rightValueArray[0]).trimmingCharacters(in: .whitespaces)
+                        let cmdSplit = possibleCmd.split(separator: " ")
+                        if cmdSplit.count > 1 {
+                            possibleCmd = String(cmdSplit[0])
                         }
                         
-                        if rightValueArray.count > 0 {
+                        if variableName == nil {
                             
-                            let possbibleCmd = String(rightValueArray[0]).trimmingCharacters(in: .whitespaces)
-                            
-                            if variableName == nil {
-                                
-                                // Looking for branch
-                                for branch in self.branches {
-                                    if branch.name == possbibleCmd {
-                                        
-                                        // Build options
-                                        var nodeOptions : [String:String] = [:]
-                                        var no = leftOfComment.split(separator: " ")
-                                        no.removeFirst()
-                                        
-                                        for s in no {
-                                            let ss = String(s)
-                                            nodeOptions[ss] = ss
-                                        }
+                            // Looking for branch
+                            for branch in self.branches {
+                                if branch.name == possibleCmd {
+                                    
+                                    // Build options
+                                    var nodeOptions : [String:String] = [:]
+                                    var no = leftOfComment.split(separator: " ")
+                                    no.removeFirst()
+                                    
+                                    for s in no {
+                                        let ss = String(s)
+                                        nodeOptions[ss] = ss
+                                    }
 
-                                        let newBranch = branch.createNode(nodeOptions)
-                                        newBranch.verifyOptions(context: asset.behavior!, tree: currentTree!, error: &error)
-                                        if error.error == nil {                                            
-                                            if currentBranch.count == 0 {
-                                                currentTree?.leaves.append(newBranch)
-                                                currentBranch.append(newBranch)
+                                    let newBranch = branch.createNode(nodeOptions)
+                                    
+                                    asset.behavior!.parameters = currentTree!.parameters
+                                    newBranch.verifyOptions(context: asset.behavior!, tree: currentTree!, error: &error)
+                                    asset.behavior!.parameters = nil
+                                    if error.error == nil {
+                                        if currentBranch.count == 0 {
+                                            currentTree?.leaves.append(newBranch)
+                                            currentBranch.append(newBranch)
+                                            
+                                            newBranch.lineNr = error.line!
+                                            asset.behavior!.lines[error.line!] = newBranch.name
+                                        } else {
+                                            if let branch = currentBranch.last {
+                                                branch.leaves.append(newBranch)
                                                 
                                                 newBranch.lineNr = error.line!
                                                 asset.behavior!.lines[error.line!] = newBranch.name
-                                            } else {
-                                                if let branch = currentBranch.last {
-                                                    branch.leaves.append(newBranch)
-                                                    
-                                                    newBranch.lineNr = error.line!
-                                                    asset.behavior!.lines[error.line!] = newBranch.name
-                                                }
-                                                currentBranch.append(newBranch)
                                             }
-                                            processed = true
+                                            currentBranch.append(newBranch)
                                         }
+                                        processed = true
+                                    }
+                                }
+                            }
+                            
+                            if processed == false {
+                                // Looking for leave
+                                for leave in self.leaves {
+                                    if leave.name == possibleCmd {
+                                        
+                                        var options : [String: String] = [:]
+                                        
+                                        // Fill in options
+                                        rightValueArray.removeFirst()
+                                        if rightValueArray.count == 1 && rightValueArray[0] == "" {
+                                            // Empty Arguments
+                                        } else {
+                                            while rightValueArray.count > 0 {
+                                                let array = rightValueArray[0].split(separator: ":")
+                                                //print("2", array)
+                                                rightValueArray.removeFirst()
+                                                if array.count == 2 {
+                                                    let optionName = array[0].lowercased().trimmingCharacters(in: .whitespaces)
+                                                    let values = array[1].trimmingCharacters(in: .whitespaces)
+
+                                                    options[optionName] = String(values)
+                                                } else { createError(); rightValueArray = [] }
+                                            }
+                                        }
+                                        
+                                        let nodeOptions = self.parser_processOptions(options, &error)
+                                        if error.error == nil {
+                                            if let branch = currentBranch.last {
+                                                let behaviorNode = leave.createNode(nodeOptions)
+                                                asset.behavior!.parameters = currentTree!.parameters
+                                                behaviorNode.verifyOptions(context: asset.behavior!, tree: currentTree!, error: &error)
+                                                asset.behavior!.parameters = nil
+                                                if error.error == nil {
+                                                    behaviorNode.lineNr = error.line!
+                                                    branch.leaves.append(behaviorNode)
+                                                    asset.behavior!.lines[error.line!] = behaviorNode.name
+                                                    processed = true
+                                                }
+                                            } else { createError("Leaf node without active branch") }
+                                        }
+                                    }
+                                }
+                            }
+                        } else
+                        if var variableName = variableName {
+                            
+                            // Variable assignment
+                            let rightSide = leftOfComment.trimmingCharacters(in: .whitespaces)
+                            //print(variableName, "rightSide", rightSide)
+                            let exp = ExpressionContext()
+                            exp.parse(expression: rightSide, container: asset.behavior!, error: &error)
+                            
+                            if error.error == nil {
+                                
+                                var branch = currentBranch.last
+                                if branch == nil {
+                                    if let tree = currentTree {
+                                        branch = tree
                                     }
                                 }
                                 
-                                if processed == false {
-                                    // Looking for leave
-                                    for leave in self.leaves {
-                                        if leave.name == possbibleCmd {
-                                            
-                                            var options : [String: String] = [:]
-                                            
-                                            // Fill in options
-                                            rightValueArray.removeFirst()
-                                            if rightValueArray.count == 1 && rightValueArray[0] == ">" {
-                                                // Empty Arguments
-                                            } else {
-                                                while rightValueArray.count > 0 {
-                                                    let array = rightValueArray[0].split(separator: ":")
-                                                    //print("2", array)
-                                                    rightValueArray.removeFirst()
-                                                    if array.count == 2 {
-                                                        let optionName = array[0].lowercased().trimmingCharacters(in: .whitespaces)
-                                                        var values = array[1].trimmingCharacters(in: .whitespaces)
-                                                        //print("option", optionName, "value", values)
-                                                                                            
-                                                        if values.count > 0 && values.last! != ">" {
-                                                            createError("No closing '>' for option '\(optionName)'")
-                                                        } else {
-                                                            values = String(values.dropLast())
-                                                        }
-                                                        options[optionName] = String(values)
-                                                    } else { createError(); rightValueArray = [] }
-                                                }
-                                            }
-                                            
-                                            let nodeOptions = self.parser_processOptions(options, &error)
-                                            if error.error == nil {
-                                                if let branch = currentBranch.last {
-                                                    let behaviorNode = leave.createNode(nodeOptions)
-                                                    behaviorNode.verifyOptions(context: asset.behavior!, tree: currentTree!, error: &error)
-                                                    if error.error == nil {
-                                                        behaviorNode.lineNr = error.line!
-                                                        branch.leaves.append(behaviorNode)
-                                                        asset.behavior!.lines[error.line!] = behaviorNode.name
-                                                        processed = true
-                                                    }
-                                                } else { createError("Leaf node without active branch") }
-                                            }
+                                if let branch = branch {
+                                    
+                                    var assignmentComponents : Int = 0
+                                    
+                                    if variableName.contains(".") {
+                                        let array = variableName.split(separator: ".")
+                                        if array.count == 2 {
+                                            variableName = String(array[0])
+                                            assignmentComponents = array[1].count
                                         }
                                     }
-                                }
-                            } else
-                            if rightValueArray.count > 1 {
-                                // Variable
-                                asset.behavior!.lines[error.line!] = "Variable"
-                                let possibleVariableType = rightValueArray[0].trimmingCharacters(in: .whitespaces)
-                                if possibleVariableType == "Float4" {
-                                    rightValueArray.removeFirst()
-                                    let array = rightValueArray[0].split(separator: ",")
-                                    if array.count == 4 {
-                                        
-                                        let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
-                                        let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
-                                        let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 0 }
-                                        let w : Float; if let v = Float(array[3].dropLast().trimmingCharacters(in: .whitespaces)) { w = v } else { w = 0 }
-
-                                        let value = Float4(variableName!, x, y, z, w)
-                                        asset.behavior!.addVariable(value)
-                                        processed = true
-                                    } else { createError() }
-                                } else
-                                if possibleVariableType == "Float3" {
-                                    rightValueArray.removeFirst()
-                                    let array = rightValueArray[0].split(separator: ",")
-                                    if array.count == 3 {
-                                        
-                                        let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
-                                        let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
-                                        let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 0 }
-
-                                        let value = Float3(variableName!, x, y, z)
-                                        asset.behavior!.addVariable(value)
-                                        processed = true
-                                    } else { createError() }
-                                } else
-                                if possibleVariableType == "Float2" {
-                                    rightValueArray.removeFirst()
-                                    let array = rightValueArray[0].split(separator: ",")
-                                    if array.count == 2 {
-                                        
-                                        let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
-                                        let y : Float; if let v = Float(array[1].dropLast().trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
-
-                                        let value = Float2(variableName!, x, y)
-                                        asset.behavior!.addVariable(value)
-                                        processed = true
-                                    } else { createError() }
-                                } else
-                                if possibleVariableType == "Float" {
-                                    rightValueArray.removeFirst()
-                                    let value : Float; if let v = Float(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
-                                    asset.behavior!.addVariable(Float1(variableName!, value))
+                                    
+                                    let variableNode = VariableAssignmentNode()
+                                    variableNode.givenName = variableName
+                                    variableNode.assignmentComponents = assignmentComponents
+                                    variableNode.assignmentType = assignmentType
+                                    variableNode.expression = exp
+                                    
+                                    variableNode.execute(game: self.game, context: asset.behavior!, tree: nil)
+                                    
+                                    variableNode.lineNr = error.line!
+                                    branch.leaves.append(variableNode)
+                                    asset.behavior!.lines[error.line!] = variableNode.name
                                     processed = true
                                 } else
-                                if possibleVariableType == "Int" {
-                                    rightValueArray.removeFirst()
-                                    let value : Int; if let v = Int(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
-                                    asset.behavior!.addVariable(Int1(variableName!, value))
-                                    processed = true
-                                } else
-                                if possibleVariableType == "Bool" {
-                                    rightValueArray.removeFirst()
-                                    let value : Bool; if let v = Bool(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = false }
-                                    asset.behavior!.addVariable(Bool1(variableName!, value))
-                                    processed = true
-                                } else
-                                if possibleVariableType == "Text" {
-                                    rightValueArray.removeFirst()
-                                    let v = String(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces))
-                                    asset.behavior!.addVariable(Text1(variableName!, v))
-                                    processed = true
-                                } else { error.error = "Unrecognized Variable type '\(possbibleCmd)'" }
-                            }
+                                if error.error == nil { createError("Leaf node without active branch") }
+                            } else { createError("Invalid expression") }
                         }
+
+                        /*
+                        if rightValueArray.count > 1 {
+                            // Variable
+                            asset.behavior!.lines[error.line!] = "Variable"
+                            let possibleVariableType = rightValueArray[0].trimmingCharacters(in: .whitespaces)
+                            if possibleVariableType == "Float4" {
+                                rightValueArray.removeFirst()
+                                let array = rightValueArray[0].split(separator: ",")
+                                if array.count == 4 {
+                                    
+                                    let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
+                                    let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
+                                    let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 0 }
+                                    let w : Float; if let v = Float(array[3].dropLast().trimmingCharacters(in: .whitespaces)) { w = v } else { w = 0 }
+
+                                    let value = Float4(variableName!, x, y, z, w)
+                                    asset.behavior!.addVariable(value)
+                                    processed = true
+                                } else { createError() }
+                            } else
+                            if possibleVariableType == "Float3" {
+                                rightValueArray.removeFirst()
+                                let array = rightValueArray[0].split(separator: ",")
+                                if array.count == 3 {
+                                    
+                                    let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
+                                    let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
+                                    let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 0 }
+
+                                    let value = Float3(variableName!, x, y, z)
+                                    asset.behavior!.addVariable(value)
+                                    processed = true
+                                } else { createError() }
+                            } else
+                            if possibleVariableType == "Float2" {
+                                rightValueArray.removeFirst()
+                                let array = rightValueArray[0].split(separator: ",")
+                                if array.count == 2 {
+                                    
+                                    let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
+                                    let y : Float; if let v = Float(array[1].dropLast().trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
+
+                                    let value = Float2(variableName!, x, y)
+                                    asset.behavior!.addVariable(value)
+                                    processed = true
+                                } else { createError() }
+                            } else
+                            if possibleVariableType == "Float" {
+                                rightValueArray.removeFirst()
+                                let value : Float; if let v = Float(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
+                                asset.behavior!.addVariable(Float1(variableName!, value))
+                                processed = true
+                            } else
+                            if possibleVariableType == "Int" {
+                                rightValueArray.removeFirst()
+                                let value : Int; if let v = Int(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
+                                asset.behavior!.addVariable(Int1(variableName!, value))
+                                processed = true
+                            } else
+                            if possibleVariableType == "Bool" {
+                                rightValueArray.removeFirst()
+                                let value : Bool; if let v = Bool(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = false }
+                                asset.behavior!.addVariable(Bool1(variableName!, value))
+                                processed = true
+                            } else
+                            if possibleVariableType == "Text" {
+                                rightValueArray.removeFirst()
+                                let v = String(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces))
+                                asset.behavior!.addVariable(Text1(variableName!, v))
+                                processed = true
+                            } else { error.error = "Unrecognized Variable type '\(possbibleCmd)'" }
+                        }
+                        */
                     }
                 }
+                
                 if str.trimmingCharacters(in: .whitespaces).count > 0 && processed == false && error.error == nil {
                     error.error = "Unrecognized statement"
                 }

@@ -17,6 +17,8 @@ class BehaviorNode {
     var leaves              : [BehaviorNode] = []
     
     var name                : String = ""
+    var givenName           : String = ""
+
     var lineNr              : Int32 = 0
     
     // Options
@@ -50,9 +52,13 @@ class BehaviorTree  : BehaviorNode
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
+        
+        let prevParams = context.parameters
+        context.parameters = parameters
         for leave in leaves {
             leave.execute(game: game, context: context, tree: self)
         }
+        context.parameters = prevParams
         return .Success
     }
 }
@@ -74,13 +80,13 @@ class BehaviorContext       : VariableContainer
     func clear()
     {
         trees = []
-        variables = []
+        variables = [:]
         lines = [:]
     }
     
-    func addVariable(_ value: BaseVariable)
+    func addVariable(_ variable: BaseVariable)
     {
-        variables.append(value)
+        variables[variable.name] = variable
     }
     
     override func getVariableValue(_ name: String, parameters: [BaseVariable] = []) -> BaseVariable?
@@ -93,19 +99,15 @@ class BehaviorContext       : VariableContainer
             return game._Aspect
         }
         
+        /*
         // First check the optional tree parameters (if any) as they overrule the context variables
         for v in parameters {
             if v.name == name {
                 return v
             }
-        }
-        // Check the context variables
-        for v in variables {
-            if v.name == name {
-                return v
-            }
-        }
-        return nil
+        }*/
+
+        return super.getVariableValue(name)
     }
     
     func getTree(_ name: String) -> BehaviorTree?

@@ -8,6 +8,63 @@
 import Foundation
 import simd
 
+
+/// VariableAssignmentNode, assign or modify a variable via assignment, =, *=, -= etc
+final class VariableAssignmentNode : BehaviorNode
+{
+    enum AssignmentType {
+        case Copy, Multiply, Divide, Add, Subtract
+    }
+    
+    /// The right handed expression the variables gets assigned to
+    var expression                  : ExpressionContext? = nil
+    /// The components  of the assignment (like outColor.xyz has 3 assignment components)
+    var assignmentComponents        : Int = 0
+    /// The assignment type
+    var assignmentType              : AssignmentType = .Copy
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "VariableAsignment"
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if let expression = expression {
+            // Assign to existing variable
+            if let existing = context.variables[givenName] {
+                if let v = expression.execute() {
+                    existing.role = expression.isConstant() ? .User : .System
+                    if v.getType() == .Float && (assignmentType == .Multiply || assignmentType == .Divide) {
+                        existing.assignFromFloat(from: v, using: assignmentType, upTo: assignmentComponents)
+                    } else {
+                        existing.role = expression.isConstant() ? .User : .System
+                        existing.assign(from: v, using: assignmentType)
+                    }
+                }
+            } else {
+                // New variable
+                
+                context.variables[givenName] = expression.execute()//expression.values.last!
+                context.variables[givenName]!.role = expression.isConstant() ? .User : .System
+            }
+        }
+        return .Success
+    }
+    
+    /*
+    override func getHelp() -> String
+    {
+        return "Creates or modifies a variable."
+    }
+    
+    override func getOptions() -> [GraphOption]
+    {
+        return []
+    }*/
+}
+
 // Logs the given variables
 class LogNode: BehaviorNode
 {
@@ -173,15 +230,9 @@ class Call: BehaviorNode
 
             for v in array {
                 let val = String(v.trimmingCharacters(in: .whitespaces))
-                var foundVar : BaseVariable? = nil
-                for variable in context.variables {
-                    if variable.name == val {
-                        foundVar = variable
-                        break
-                    }
-                }
-                if foundVar != nil {
-                    parameters.append(foundVar!)
+                
+                if let v = context.getVariableValue(val) {
+                    parameters.append(v)
                 } else {
                     error.error = "Variable '\(val)' not found"
                 }
@@ -280,7 +331,6 @@ class Call: BehaviorNode
             }
         }
         
-        
         if treeName != nil {
             for context in callContext {
                 context.execute(name: treeName!)
@@ -334,7 +384,7 @@ class StartTimer: BehaviorNode
             for v in array {
                 let val = String(v.trimmingCharacters(in: .whitespaces))
                 var foundVar : BaseVariable? = nil
-                for variable in context.variables {
+                for (_,variable) in context.variables {
                     if variable.name == val {
                         foundVar = variable
                         break
@@ -1390,7 +1440,7 @@ class RandomNode: BehaviorNode
             self.to = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
             dest = extractInt1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")
         } else
-        if let from = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true, allowExpressions: false) {
+        if let from = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "from", isOptional: true) {//}, allowExpressions: false) {
             self.from = from
             self.to = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "to")
             dest = extractFloat1Value(options, container: context, parameters: tree.parameters, error: &error, name: "variable")

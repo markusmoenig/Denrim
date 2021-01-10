@@ -304,7 +304,7 @@
 		2B5901EF2592D24000FCF16D /* Leaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E70D2515B21400F3317D /* Leaves.swift */; };
 		2B5901F52592D24300FCF16D /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
 		2B5901FB2592D24500FCF16D /* MapStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2882E92519E69E00D1AB2D /* MapStructures.swift */; };
-		2B5902012592D24E00FCF16D /* ExpAtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */; };
+		2B5902012592D24E00FCF16D /* AtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* AtomNodes.swift */; };
 		2B5902022592D24E00FCF16D /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737E258CAD0700D8019D /* Utilities.swift */; };
 		2B5902032592D24E00FCF16D /* Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737C258CAD0700D8019D /* Variables.swift */; };
 		2B5902042592D24E00FCF16D /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737D258CAD0700D8019D /* Expression.swift */; };
@@ -369,6 +369,12 @@
 		2B5902D22592DFF900FCF16D /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 2B5902D12592DFF900FCF16D /* Templates */; };
 		2B5902D32592DFF900FCF16D /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 2B5902D12592DFF900FCF16D /* Templates */; };
 		2B5902D92592E03E00FCF16D /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 2B5902D12592DFF900FCF16D /* Templates */; };
+		2B6193DC25AA870B0077F64D /* FunctionNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6193DB25AA870B0077F64D /* FunctionNodes.swift */; };
+		2B6193DD25AA870B0077F64D /* FunctionNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6193DB25AA870B0077F64D /* FunctionNodes.swift */; };
+		2B6193DE25AA870B0077F64D /* FunctionNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6193DB25AA870B0077F64D /* FunctionNodes.swift */; };
+		2B6193DF25AA870B0077F64D /* FunctionNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6193DB25AA870B0077F64D /* FunctionNodes.swift */; };
+		2B6193E025AA870B0077F64D /* FunctionNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6193DB25AA870B0077F64D /* FunctionNodes.swift */; };
+		2B6193E125AA870B0077F64D /* FunctionNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6193DB25AA870B0077F64D /* FunctionNodes.swift */; };
 		2B6D0B5A2509EEE80098F244 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
 		2B6D0B5B2509EEE80098F244 /* MapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B592509EEE80098F244 /* MapPreview.swift */; };
 		2B6D0B9A250B08080098F244 /* b2Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D0B61250B08080098F244 /* b2Body.swift */; };
@@ -476,11 +482,11 @@
 		2B71E71A2516F5BA00F3317D /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
 		2BE27C992595690100B8AAD8 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE27C982595690100B8AAD8 /* Browser.swift */; };
 		2BE27C9A2595690100B8AAD8 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE27C982595690100B8AAD8 /* Browser.swift */; };
-		2BE9737F258CAD0700D8019D /* ExpAtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */; };
-		2BE97380258CAD0700D8019D /* ExpAtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */; };
-		2BE97381258CAD0700D8019D /* ExpAtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */; };
-		2BE97382258CAD0700D8019D /* ExpAtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */; };
-		2BE97383258CAD0700D8019D /* ExpAtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */; };
+		2BE9737F258CAD0700D8019D /* AtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* AtomNodes.swift */; };
+		2BE97380258CAD0700D8019D /* AtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* AtomNodes.swift */; };
+		2BE97381258CAD0700D8019D /* AtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* AtomNodes.swift */; };
+		2BE97382258CAD0700D8019D /* AtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* AtomNodes.swift */; };
+		2BE97383258CAD0700D8019D /* AtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* AtomNodes.swift */; };
 		2BE97384258CAD0700D8019D /* Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737C258CAD0700D8019D /* Variables.swift */; };
 		2BE97385258CAD0700D8019D /* Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737C258CAD0700D8019D /* Variables.swift */; };
 		2BE97386258CAD0700D8019D /* Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737C258CAD0700D8019D /* Variables.swift */; };
@@ -576,6 +582,7 @@
 		2B5901802592D0CA00FCF16D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2B5901822592D0CA00FCF16D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B5902D12592DFF900FCF16D /* Templates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Templates; sourceTree = "<group>"; };
+		2B6193DB25AA870B0077F64D /* FunctionNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionNodes.swift; sourceTree = "<group>"; };
 		2B6D0B592509EEE80098F244 /* MapPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPreview.swift; sourceTree = "<group>"; };
 		2B6D0B61250B08080098F244 /* b2Body.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2Body.swift; sourceTree = "<group>"; };
 		2B6D0B63250B08080098F244 /* b2CircleContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b2CircleContact.swift; sourceTree = "<group>"; };
@@ -630,7 +637,7 @@
 		2B71E70D2515B21400F3317D /* Leaves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leaves.swift; sourceTree = "<group>"; };
 		2B71E7182516F5BA00F3317D /* Branches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branches.swift; sourceTree = "<group>"; };
 		2BE27C982595690100B8AAD8 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
-		2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpAtomNodes.swift; sourceTree = "<group>"; };
+		2BE9737B258CAD0700D8019D /* AtomNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomNodes.swift; sourceTree = "<group>"; };
 		2BE9737C258CAD0700D8019D /* Variables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Variables.swift; sourceTree = "<group>"; };
 		2BE9737D258CAD0700D8019D /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
 		2BE9737E258CAD0700D8019D /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -966,8 +973,9 @@
 		2BE97376258CACDA00D8019D /* Expression */ = {
 			isa = PBXGroup;
 			children = (
-				2BE9737B258CAD0700D8019D /* ExpAtomNodes.swift */,
 				2BE9737D258CAD0700D8019D /* Expression.swift */,
+				2BE9737B258CAD0700D8019D /* AtomNodes.swift */,
+				2B6193DB25AA870B0077F64D /* FunctionNodes.swift */,
 				2BE9737E258CAD0700D8019D /* Utilities.swift */,
 				2BE9737C258CAD0700D8019D /* Variables.swift */,
 			);
@@ -1285,6 +1293,7 @@
 				2B01C89724FB824A00E86449 /* Classes.swift in Sources */,
 				2B01C89124FB824A00E86449 /* Asset.swift in Sources */,
 				2B6D0BAD250B08080098F244 /* b2Contact.swift in Sources */,
+				2B6193DD25AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B6D0BA3250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
 				2B224D8525A1851D006C5C2F /* StoreManager.swift in Sources */,
 				2B6D0BDF250B08080098F244 /* b2Wrappers.swift in Sources */,
@@ -1292,7 +1301,7 @@
 				2B01C88D24FB824A00E86449 /* ScriptEditor.swift in Sources */,
 				2B6D0BCB250B08080098F244 /* b2TimeStep.swift in Sources */,
 				2B6D0BC7250B08080098F244 /* b2World.swift in Sources */,
-				2BE97380258CAD0700D8019D /* ExpAtomNodes.swift in Sources */,
+				2BE97380258CAD0700D8019D /* AtomNodes.swift in Sources */,
 				2B6D0BC5250B08080098F244 /* b2WeldJoint.swift in Sources */,
 				2B01C88924FB824A00E86449 /* Texture2D.swift in Sources */,
 				2B6D0BC3250B08080098F244 /* b2MouseJoint.swift in Sources */,
@@ -1372,6 +1381,7 @@
 				2B01C89824FB824A00E86449 /* Classes.swift in Sources */,
 				2B01C89224FB824A00E86449 /* Asset.swift in Sources */,
 				2B6D0BAC250B08080098F244 /* b2Contact.swift in Sources */,
+				2B6193DC25AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B6D0BA2250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
 				2B224D8425A1851D006C5C2F /* StoreManager.swift in Sources */,
 				2B6D0BDE250B08080098F244 /* b2Wrappers.swift in Sources */,
@@ -1379,7 +1389,7 @@
 				2B01C88E24FB824A00E86449 /* ScriptEditor.swift in Sources */,
 				2B6D0BCA250B08080098F244 /* b2TimeStep.swift in Sources */,
 				2B6D0BC6250B08080098F244 /* b2World.swift in Sources */,
-				2BE9737F258CAD0700D8019D /* ExpAtomNodes.swift in Sources */,
+				2BE9737F258CAD0700D8019D /* AtomNodes.swift in Sources */,
 				2B6D0BC4250B08080098F244 /* b2WeldJoint.swift in Sources */,
 				2B01C88A24FB824A00E86449 /* Texture2D.swift in Sources */,
 				2B6D0BC2250B08080098F244 /* b2MouseJoint.swift in Sources */,
@@ -1462,6 +1472,7 @@
 				2B40DA7D25590EFB001FC5F1 /* b2EdgeAndCircleContact.swift in Sources */,
 				2B40DA8825590F00001FC5F1 /* b2Joint.swift in Sources */,
 				2B40DAAE25590F13001FC5F1 /* b2EdgeShape.swift in Sources */,
+				2B6193DF25AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B40DA6A25590EE8001FC5F1 /* Behavior.swift in Sources */,
 				2B40DA7F25590EFB001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */,
 				2B40DA9825590F04001FC5F1 /* b2TimeStep.swift in Sources */,
@@ -1472,7 +1483,7 @@
 				2B40DA8225590EFB001FC5F1 /* b2ChainAndCircleContact.swift in Sources */,
 				2B40DA9525590F04001FC5F1 /* b2ContactManager.swift in Sources */,
 				2B40DAA025590F0B001FC5F1 /* b2Draw.swift in Sources */,
-				2BE97381258CAD0700D8019D /* ExpAtomNodes.swift in Sources */,
+				2BE97381258CAD0700D8019D /* AtomNodes.swift in Sources */,
 				2B40DA6225590EE8001FC5F1 /* MathLibrary.swift in Sources */,
 				2B40DA8A25590F00001FC5F1 /* b2RevoluteJoint.swift in Sources */,
 				2B40DA7925590EF4001FC5F1 /* b2Body.swift in Sources */,
@@ -1543,6 +1554,7 @@
 				2B40DAE825591016001FC5F1 /* MapStructures.swift in Sources */,
 				2B40DAF625591023001FC5F1 /* b2EdgeAndCircleContact.swift in Sources */,
 				2B40DB112559102E001FC5F1 /* b2TimeStep.swift in Sources */,
+				2B6193E025AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B40DB3025591040001FC5F1 /* b2Collision.swift in Sources */,
 				2B40DB262559103C001FC5F1 /* b2CircleShape.swift in Sources */,
 				2B40DB0E2559102E001FC5F1 /* b2WorldCallbacks.swift in Sources */,
@@ -1553,7 +1565,7 @@
 				2B40DB002559102A001FC5F1 /* b2WeldJoint.swift in Sources */,
 				2B40DB2F25591040001FC5F1 /* b2CollideEdge.swift in Sources */,
 				2B40DAEE2559101B001FC5F1 /* Texture2D.swift in Sources */,
-				2BE97382258CAD0700D8019D /* ExpAtomNodes.swift in Sources */,
+				2BE97382258CAD0700D8019D /* AtomNodes.swift in Sources */,
 				2B40DAE225591016001FC5F1 /* MathLibrary.swift in Sources */,
 				2B40DAF22559101E001FC5F1 /* b2Body.swift in Sources */,
 				2B40DB132559102E001FC5F1 /* b2Fixture.swift in Sources */,
@@ -1624,6 +1636,7 @@
 				2B40DB7325591308001FC5F1 /* Classes.swift in Sources */,
 				2B40DB7425591308001FC5F1 /* Texture2D.swift in Sources */,
 				2B40DBB425591325001FC5F1 /* b2EdgeShape.swift in Sources */,
+				2B6193E125AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B40DBA62559131E001FC5F1 /* b2Wrappers.swift in Sources */,
 				2B40DB6425591303001FC5F1 /* Leaves.swift in Sources */,
 				2B40DBBC2559132A001FC5F1 /* b2CollideCircles.swift in Sources */,
@@ -1634,7 +1647,7 @@
 				2B40DBBA2559132A001FC5F1 /* b2DynamicTree.swift in Sources */,
 				2B40DBBD2559132A001FC5F1 /* b2CollideEdge.swift in Sources */,
 				2B40DB7225591308001FC5F1 /* Font.swift in Sources */,
-				2BE97383258CAD0700D8019D /* ExpAtomNodes.swift in Sources */,
+				2BE97383258CAD0700D8019D /* AtomNodes.swift in Sources */,
 				2B40DB7C2559130F001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */,
 				2B40DBA42559131E001FC5F1 /* b2GrowableStack.swift in Sources */,
 				2B40DBA52559131E001FC5F1 /* b2Common.swift in Sources */,
@@ -1714,6 +1727,7 @@
 				2B5902652592D2FA00FCF16D /* b2Shape.swift in Sources */,
 				2B5902042592D24E00FCF16D /* Expression.swift in Sources */,
 				2B5901952592D20B00FCF16D /* Asset.swift in Sources */,
+				2B6193DE25AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B5902162592D2C300FCF16D /* Font.swift in Sources */,
 				2B5902712592D2FD00FCF16D /* b2Distance.swift in Sources */,
 				2B5902232592D2D900FCF16D /* b2CircleContact.swift in Sources */,
@@ -1721,7 +1735,7 @@
 				2B5901C52592D22B00FCF16D /* MapBuilder.swift in Sources */,
 				2B5902572592D2EC00FCF16D /* b2Timer.swift in Sources */,
 				2B5902272592D2D900FCF16D /* b2EdgeAndCircleContact.swift in Sources */,
-				2B5902012592D24E00FCF16D /* ExpAtomNodes.swift in Sources */,
+				2B5902012592D24E00FCF16D /* AtomNodes.swift in Sources */,
 				2B5902582592D2EC00FCF16D /* b2GrowableStack.swift in Sources */,
 				2B5902322592D2DD00FCF16D /* b2RevoluteJoint.swift in Sources */,
 				2B5902532592D2EC00FCF16D /* b2Math.swift in Sources */,
@@ -1955,7 +1969,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = G6R6L3VH62;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1965,7 +1979,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.05;
+				MARKETING_VERSION = 1.06;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
@@ -1984,7 +1998,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = G6R6L3VH62;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1994,7 +2008,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.05;
+				MARKETING_VERSION = 1.06;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
