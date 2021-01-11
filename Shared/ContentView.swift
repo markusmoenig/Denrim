@@ -477,12 +477,12 @@ struct ContentView: View {
     @State private var selection            : UUID? = nil
     
     #if os(macOS)
-    let leftPanelWidth                      : CGFloat = 200
+    let leftPanelWidth                      : CGFloat = 220
     let toolBarIconSize                     : CGFloat = 13
     let toolBarTopPadding                   : CGFloat = 0
     let toolBarSpacing                      : CGFloat = 4
     #else
-    let leftPanelWidth                      : CGFloat = 250
+    let leftPanelWidth                      : CGFloat = 270
     let toolBarIconSize                     : CGFloat = 16
     let toolBarTopPadding                   : CGFloat = 8
     let toolBarSpacing                      : CGFloat = 6
@@ -525,6 +525,18 @@ struct ContentView: View {
                     })
                     {
                         Label("", systemImage: "list.and.film")
+                            .font(.system(size: toolBarIconSize))
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    
+                    Button(action: {
+                        document.game.assetFolder.addShape("New Shape", path: document.game.assetFolder.genDestinationPath())
+                        assetName = document.game.assetFolder.current!.name
+                        showAssetNamePopover = true
+                        updateView.toggle()
+                    })
+                    {
+                        Label("", systemImage: "cube")
                             .font(.system(size: toolBarIconSize))
                     }
                     .buttonStyle(PlainButtonStyle())

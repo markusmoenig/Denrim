@@ -148,6 +148,27 @@ class AssetFolder       : Codable
         }
     }
     
+    /// Adds a shape
+    func addShape(_ name: String, value: String = "", path: String? = nil)
+    {
+        guard let resourcePath = Bundle.main.path(forResource: "NewShape", ofType: "", inDirectory: "Files/default") else {
+            return
+        }
+        
+        if let behaviorTemplate = try? String(contentsOfFile: resourcePath, encoding: String.Encoding.utf8) {
+            let asset = Asset(type: .Shape, name: name, value: behaviorTemplate)
+            if let path = path {
+                if let folder = getAsset(path, .Folder) {
+                    folder.children?.append(asset)
+                }
+            } else {
+                assets.append(asset)
+            }
+            select(asset.id)
+            game.scriptEditor?.createSession(asset)
+        }
+    }
+    
     func addShader(_ name: String, path: String? = nil)
     {
         guard let resourcePath = Bundle.main.path(forResource: "NewShader", ofType: "", inDirectory: "Files/default") else {
@@ -302,6 +323,9 @@ class AssetFolder       : Codable
             } else
             if asset.type == .Map {
                 return "list.and.film"
+            } else
+            if asset.type == .Shape {
+                return "cube"
             } else
             if asset.type == .Audio {
                 return "waveform"
@@ -615,7 +639,7 @@ class AssetFolder       : Codable
 class Asset         : Codable, Equatable
 {
     enum AssetType  : Int, Codable {
-        case Behavior, Image, Shader, Map, Audio, Folder
+        case Behavior, Image, Shader, Map, Audio, Folder, Shape
     }
     
     var type        : AssetType = .Behavior
