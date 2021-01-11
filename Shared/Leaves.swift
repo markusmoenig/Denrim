@@ -8,20 +8,15 @@
 import Foundation
 import simd
 
-
 /// VariableAssignmentNode, assign or modify a variable via assignment, =, *=, -= etc
 final class VariableAssignmentNode : BehaviorNode
 {
-    enum AssignmentType {
-        case Copy, Multiply, Divide, Add, Subtract
-    }
-    
     /// The right handed expression the variables gets assigned to
     var expression                  : ExpressionContext? = nil
     /// The components  of the assignment (like outColor.xyz has 3 assignment components)
     var assignmentComponents        : Int = 0
     /// The assignment type
-    var assignmentType              : AssignmentType = .Copy
+    var assignmentType              : GraphVariableAssignmentNode.AssignmentType = .Copy
     
     override init(_ options: [String:Any] = [:])
     {

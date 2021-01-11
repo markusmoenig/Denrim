@@ -7,15 +7,6 @@
 
 import Foundation
 
-struct CompileError
-{
-    var asset           : Asset? = nil
-    var line            : Int32? = nil
-    var column          : Int32? = 0
-    var error           : String? = nil
-    var type            : String = "error"
-}
-
 class BehaviorNodeItem
 {
     var name         : String
@@ -162,7 +153,7 @@ class BehaviorBuilder
             }
             
             var variableName : String? = nil
-            var assignmentType : VariableAssignmentNode.AssignmentType = .Copy
+            var assignmentType : GraphVariableAssignmentNode.AssignmentType = .Copy
 
             // --- Check for variable assignment
             if leftOfComment.contains("="){

@@ -666,6 +666,9 @@ class Asset         : Codable, Equatable
 
     // If this is a shader
     var shader      : Shader? = nil
+    
+    // Compiled Graph for graph assets (Shape / Material)
+    var graph       : GraphContext? = nil
 
     // If the asset has an error
     var hasError    : Bool = false

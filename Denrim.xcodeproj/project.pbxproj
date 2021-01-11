@@ -480,6 +480,60 @@
 		2B71E70F2515B21400F3317D /* Leaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E70D2515B21400F3317D /* Leaves.swift */; };
 		2B71E7192516F5BA00F3317D /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
 		2B71E71A2516F5BA00F3317D /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
+		2B76D7E025AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
+		2B76D7E125AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
+		2B76D7E225AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
+		2B76D7E325AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
+		2B76D7E425AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
+		2B76D7E525AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
+		2B76D7E625AC3A5200AF6FF2 /* BranchNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */; };
+		2B76D7E725AC3A5200AF6FF2 /* BranchNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */; };
+		2B76D7E825AC3A5200AF6FF2 /* BranchNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */; };
+		2B76D7E925AC3A5200AF6FF2 /* BranchNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */; };
+		2B76D7EA25AC3A5200AF6FF2 /* BranchNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */; };
+		2B76D7EB25AC3A5200AF6FF2 /* BranchNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */; };
+		2B76D7EC25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DA25AC3A5200AF6FF2 /* SDFNodes.swift */; };
+		2B76D7ED25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DA25AC3A5200AF6FF2 /* SDFNodes.swift */; };
+		2B76D7EE25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DA25AC3A5200AF6FF2 /* SDFNodes.swift */; };
+		2B76D7EF25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DA25AC3A5200AF6FF2 /* SDFNodes.swift */; };
+		2B76D7F025AC3A5200AF6FF2 /* SDFNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DA25AC3A5200AF6FF2 /* SDFNodes.swift */; };
+		2B76D7F125AC3A5200AF6FF2 /* SDFNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DA25AC3A5200AF6FF2 /* SDFNodes.swift */; };
+		2B76D7F225AC3A5200AF6FF2 /* BoolNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DB25AC3A5200AF6FF2 /* BoolNodes.swift */; };
+		2B76D7F325AC3A5200AF6FF2 /* BoolNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DB25AC3A5200AF6FF2 /* BoolNodes.swift */; };
+		2B76D7F425AC3A5200AF6FF2 /* BoolNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DB25AC3A5200AF6FF2 /* BoolNodes.swift */; };
+		2B76D7F525AC3A5200AF6FF2 /* BoolNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DB25AC3A5200AF6FF2 /* BoolNodes.swift */; };
+		2B76D7F625AC3A5200AF6FF2 /* BoolNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DB25AC3A5200AF6FF2 /* BoolNodes.swift */; };
+		2B76D7F725AC3A5200AF6FF2 /* BoolNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DB25AC3A5200AF6FF2 /* BoolNodes.swift */; };
+		2B76D7F825AC3A5200AF6FF2 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DC25AC3A5200AF6FF2 /* Graph.swift */; };
+		2B76D7F925AC3A5200AF6FF2 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DC25AC3A5200AF6FF2 /* Graph.swift */; };
+		2B76D7FA25AC3A5200AF6FF2 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DC25AC3A5200AF6FF2 /* Graph.swift */; };
+		2B76D7FB25AC3A5200AF6FF2 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DC25AC3A5200AF6FF2 /* Graph.swift */; };
+		2B76D7FC25AC3A5200AF6FF2 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DC25AC3A5200AF6FF2 /* Graph.swift */; };
+		2B76D7FD25AC3A5200AF6FF2 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DC25AC3A5200AF6FF2 /* Graph.swift */; };
+		2B76D7FE25AC3A5200AF6FF2 /* Nodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DD25AC3A5200AF6FF2 /* Nodes.swift */; };
+		2B76D7FF25AC3A5200AF6FF2 /* Nodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DD25AC3A5200AF6FF2 /* Nodes.swift */; };
+		2B76D80025AC3A5200AF6FF2 /* Nodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DD25AC3A5200AF6FF2 /* Nodes.swift */; };
+		2B76D80125AC3A5200AF6FF2 /* Nodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DD25AC3A5200AF6FF2 /* Nodes.swift */; };
+		2B76D80225AC3A5200AF6FF2 /* Nodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DD25AC3A5200AF6FF2 /* Nodes.swift */; };
+		2B76D80325AC3A5200AF6FF2 /* Nodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DD25AC3A5200AF6FF2 /* Nodes.swift */; };
+		2B76D80425AC3A5200AF6FF2 /* TexNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DE25AC3A5200AF6FF2 /* TexNodes.swift */; };
+		2B76D80525AC3A5200AF6FF2 /* TexNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DE25AC3A5200AF6FF2 /* TexNodes.swift */; };
+		2B76D80625AC3A5200AF6FF2 /* TexNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DE25AC3A5200AF6FF2 /* TexNodes.swift */; };
+		2B76D80725AC3A5200AF6FF2 /* TexNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DE25AC3A5200AF6FF2 /* TexNodes.swift */; };
+		2B76D80825AC3A5200AF6FF2 /* TexNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DE25AC3A5200AF6FF2 /* TexNodes.swift */; };
+		2B76D80925AC3A5200AF6FF2 /* TexNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DE25AC3A5200AF6FF2 /* TexNodes.swift */; };
+		2B76D80A25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DF25AC3A5200AF6FF2 /* AnalyticalNodes.swift */; };
+		2B76D80B25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DF25AC3A5200AF6FF2 /* AnalyticalNodes.swift */; };
+		2B76D80C25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DF25AC3A5200AF6FF2 /* AnalyticalNodes.swift */; };
+		2B76D80D25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DF25AC3A5200AF6FF2 /* AnalyticalNodes.swift */; };
+		2B76D80E25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DF25AC3A5200AF6FF2 /* AnalyticalNodes.swift */; };
+		2B76D80F25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7DF25AC3A5200AF6FF2 /* AnalyticalNodes.swift */; };
+		2B76D81625AC3A8400AF6FF2 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D81525AC3A8400AF6FF2 /* Tool.swift */; };
+		2B76D81725AC3A8400AF6FF2 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D81525AC3A8400AF6FF2 /* Tool.swift */; };
+		2B76D81825AC3A8400AF6FF2 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D81525AC3A8400AF6FF2 /* Tool.swift */; };
+		2B76D81925AC3A8400AF6FF2 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D81525AC3A8400AF6FF2 /* Tool.swift */; };
+		2B76D81A25AC3A8400AF6FF2 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D81525AC3A8400AF6FF2 /* Tool.swift */; };
+		2B76D81B25AC3A8400AF6FF2 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D81525AC3A8400AF6FF2 /* Tool.swift */; };
 		2BE27C992595690100B8AAD8 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE27C982595690100B8AAD8 /* Browser.swift */; };
 		2BE27C9A2595690100B8AAD8 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE27C982595690100B8AAD8 /* Browser.swift */; };
 		2BE9737F258CAD0700D8019D /* AtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* AtomNodes.swift */; };
@@ -636,6 +690,15 @@
 		2B6D0C01250B16C00098F244 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2B71E70D2515B21400F3317D /* Leaves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leaves.swift; sourceTree = "<group>"; };
 		2B71E7182516F5BA00F3317D /* Branches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branches.swift; sourceTree = "<group>"; };
+		2B76D7D825AC3A5200AF6FF2 /* Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
+		2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BranchNodes.swift; sourceTree = "<group>"; };
+		2B76D7DA25AC3A5200AF6FF2 /* SDFNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDFNodes.swift; sourceTree = "<group>"; };
+		2B76D7DB25AC3A5200AF6FF2 /* BoolNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoolNodes.swift; sourceTree = "<group>"; };
+		2B76D7DC25AC3A5200AF6FF2 /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
+		2B76D7DD25AC3A5200AF6FF2 /* Nodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nodes.swift; sourceTree = "<group>"; };
+		2B76D7DE25AC3A5200AF6FF2 /* TexNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TexNodes.swift; sourceTree = "<group>"; };
+		2B76D7DF25AC3A5200AF6FF2 /* AnalyticalNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticalNodes.swift; sourceTree = "<group>"; };
+		2B76D81525AC3A8400AF6FF2 /* Tool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
 		2BE27C982595690100B8AAD8 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		2BE9737B258CAD0700D8019D /* AtomNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomNodes.swift; sourceTree = "<group>"; };
 		2BE9737C258CAD0700D8019D /* Variables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Variables.swift; sourceTree = "<group>"; };
@@ -740,6 +803,7 @@
 				2B71E70D2515B21400F3317D /* Leaves.swift */,
 				2BFC028A2505EDA500AB489E /* Map.swift */,
 				2B2882E92519E69E00D1AB2D /* MapStructures.swift */,
+				2B76D7D225AC3A0300AF6FF2 /* Graph */,
 				2BE97376258CACDA00D8019D /* Expression */,
 				2B32993F2501B592007C3386 /* Fonts */,
 				2B32991F24FE3CC2007C3386 /* Classes */,
@@ -968,6 +1032,22 @@
 				2B6D0C01250B16C00098F244 /* CloudKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2B76D7D225AC3A0300AF6FF2 /* Graph */ = {
+			isa = PBXGroup;
+			children = (
+				2B76D81525AC3A8400AF6FF2 /* Tool.swift */,
+				2B76D7D825AC3A5200AF6FF2 /* Builder.swift */,
+				2B76D7DC25AC3A5200AF6FF2 /* Graph.swift */,
+				2B76D7DD25AC3A5200AF6FF2 /* Nodes.swift */,
+				2B76D7DE25AC3A5200AF6FF2 /* TexNodes.swift */,
+				2B76D7DB25AC3A5200AF6FF2 /* BoolNodes.swift */,
+				2B76D7DA25AC3A5200AF6FF2 /* SDFNodes.swift */,
+				2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */,
+				2B76D7DF25AC3A5200AF6FF2 /* AnalyticalNodes.swift */,
+			);
+			path = Graph;
 			sourceTree = "<group>";
 		};
 		2BE97376258CACDA00D8019D /* Expression */ = {
@@ -1260,6 +1340,8 @@
 				2B01C86924FB814C00E86449 /* DenrimApp.swift in Sources */,
 				2B6D0BAF250B08080098F244 /* b2WheelJoint.swift in Sources */,
 				2B6D0BE5250B08080098F244 /* b2BroadPhase.swift in Sources */,
+				2B76D80525AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
+				2B76D7ED25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
 				2B71E71A2516F5BA00F3317D /* Branches.swift in Sources */,
 				2B6D0BF3250B08080098F244 /* b2CollideEdge.swift in Sources */,
 				2BE9738A258CAD0700D8019D /* Expression.swift in Sources */,
@@ -1267,6 +1349,7 @@
 				2B01C88F24FB824A00E86449 /* Game.swift in Sources */,
 				2B6D0BA1250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */,
 				2B6D0BEF250B08080098F244 /* b2CircleShape.swift in Sources */,
+				2B76D80B25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
 				2B6D0BB5250B08080098F244 /* b2Joint.swift in Sources */,
 				2B6D0BC9250B08080098F244 /* b2WorldCallbacks.swift in Sources */,
 				2BE97385258CAD0700D8019D /* Variables.swift in Sources */,
@@ -1287,6 +1370,7 @@
 				2B6D0BDD250B08080098F244 /* b2Common.swift in Sources */,
 				2B6D0BFD250B08080098F244 /* b2CollideCircles.swift in Sources */,
 				2B6D0BB3250B08080098F244 /* b2RevoluteJoint.swift in Sources */,
+				2B76D81725AC3A8400AF6FF2 /* Tool.swift in Sources */,
 				2B6D0BCF250B08080098F244 /* b2ContactManager.swift in Sources */,
 				2BE9738F258CAD0700D8019D /* Utilities.swift in Sources */,
 				2B536196251498C400E8A20D /* BehaviorBuilder.swift in Sources */,
@@ -1296,6 +1380,7 @@
 				2B6193DD25AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B6D0BA3250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
 				2B224D8525A1851D006C5C2F /* StoreManager.swift in Sources */,
+				2B76D7FF25AC3A5200AF6FF2 /* Nodes.swift in Sources */,
 				2B6D0BDF250B08080098F244 /* b2Wrappers.swift in Sources */,
 				2B6D0BB9250B08080098F244 /* b2FrictionJoint.swift in Sources */,
 				2B01C88D24FB824A00E86449 /* ScriptEditor.swift in Sources */,
@@ -1305,6 +1390,7 @@
 				2B6D0BC5250B08080098F244 /* b2WeldJoint.swift in Sources */,
 				2B01C88924FB824A00E86449 /* Texture2D.swift in Sources */,
 				2B6D0BC3250B08080098F244 /* b2MouseJoint.swift in Sources */,
+				2B76D7E725AC3A5200AF6FF2 /* BranchNodes.swift in Sources */,
 				2B6D0BC1250B08080098F244 /* b2PulleyJoint.swift in Sources */,
 				2B6D0B9D250B08080098F244 /* b2CircleContact.swift in Sources */,
 				2BFC028C2505EDA500AB489E /* Map.swift in Sources */,
@@ -1317,6 +1403,7 @@
 				2B6D0BBD250B08080098F244 /* b2RopeJoint.swift in Sources */,
 				2B01C89C24FB844C00E86449 /* MetalView.swift in Sources */,
 				2B6D0BD1250B08080098F244 /* b2Fixture.swift in Sources */,
+				2B76D7F925AC3A5200AF6FF2 /* Graph.swift in Sources */,
 				2B6D0BE7250B08080098F244 /* b2EdgeShape.swift in Sources */,
 				2B6D0BD9250B08080098F244 /* b2Draw.swift in Sources */,
 				2B6D0BED250B08080098F244 /* b2Shape.swift in Sources */,
@@ -1324,6 +1411,7 @@
 				2B01C88B24FB824A00E86449 /* Utils.swift in Sources */,
 				2B6D0B9B250B08080098F244 /* b2Body.swift in Sources */,
 				2B6D0BB7250B08080098F244 /* b2MotorJoint.swift in Sources */,
+				2B76D7F325AC3A5200AF6FF2 /* BoolNodes.swift in Sources */,
 				2B6D0BAB250B08080098F244 /* b2PolygonAndCircleContact.swift in Sources */,
 				2B6D0BE1250B08080098F244 /* b2Math.swift in Sources */,
 				2B6D0BEB250B08080098F244 /* b2ChainShape.swift in Sources */,
@@ -1336,6 +1424,7 @@
 				2B6D0BD3250B08080098F244 /* b2Rope.swift in Sources */,
 				2B01C88524FB824A00E86449 /* MathLibrary.swift in Sources */,
 				2B6D0BB1250B08080098F244 /* b2DistanceJoint.swift in Sources */,
+				2B76D7E125AC3A5200AF6FF2 /* Builder.swift in Sources */,
 				2B6D0BE9250B08080098F244 /* b2PolygonShape.swift in Sources */,
 				2B6D0BF5250B08080098F244 /* b2Distance.swift in Sources */,
 			);
@@ -1348,6 +1437,8 @@
 				2B01C86A24FB814C00E86449 /* DenrimApp.swift in Sources */,
 				2B6D0BAE250B08080098F244 /* b2WheelJoint.swift in Sources */,
 				2B6D0BE4250B08080098F244 /* b2BroadPhase.swift in Sources */,
+				2B76D80425AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
+				2B76D7EC25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
 				2B71E7192516F5BA00F3317D /* Branches.swift in Sources */,
 				2B6D0BF2250B08080098F244 /* b2CollideEdge.swift in Sources */,
 				2BE97389258CAD0700D8019D /* Expression.swift in Sources */,
@@ -1355,6 +1446,7 @@
 				2B01C89024FB824A00E86449 /* Game.swift in Sources */,
 				2B6D0BA0250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */,
 				2B6D0BEE250B08080098F244 /* b2CircleShape.swift in Sources */,
+				2B76D80A25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
 				2B6D0BB4250B08080098F244 /* b2Joint.swift in Sources */,
 				2B6D0BC8250B08080098F244 /* b2WorldCallbacks.swift in Sources */,
 				2BE97384258CAD0700D8019D /* Variables.swift in Sources */,
@@ -1375,6 +1467,7 @@
 				2B6D0BDC250B08080098F244 /* b2Common.swift in Sources */,
 				2B6D0BFC250B08080098F244 /* b2CollideCircles.swift in Sources */,
 				2B6D0BB2250B08080098F244 /* b2RevoluteJoint.swift in Sources */,
+				2B76D81625AC3A8400AF6FF2 /* Tool.swift in Sources */,
 				2B6D0BCE250B08080098F244 /* b2ContactManager.swift in Sources */,
 				2BE9738E258CAD0700D8019D /* Utilities.swift in Sources */,
 				2B536195251498C400E8A20D /* BehaviorBuilder.swift in Sources */,
@@ -1384,6 +1477,7 @@
 				2B6193DC25AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B6D0BA2250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
 				2B224D8425A1851D006C5C2F /* StoreManager.swift in Sources */,
+				2B76D7FE25AC3A5200AF6FF2 /* Nodes.swift in Sources */,
 				2B6D0BDE250B08080098F244 /* b2Wrappers.swift in Sources */,
 				2B6D0BB8250B08080098F244 /* b2FrictionJoint.swift in Sources */,
 				2B01C88E24FB824A00E86449 /* ScriptEditor.swift in Sources */,
@@ -1393,6 +1487,7 @@
 				2B6D0BC4250B08080098F244 /* b2WeldJoint.swift in Sources */,
 				2B01C88A24FB824A00E86449 /* Texture2D.swift in Sources */,
 				2B6D0BC2250B08080098F244 /* b2MouseJoint.swift in Sources */,
+				2B76D7E625AC3A5200AF6FF2 /* BranchNodes.swift in Sources */,
 				2B6D0BC0250B08080098F244 /* b2PulleyJoint.swift in Sources */,
 				2B6D0B9C250B08080098F244 /* b2CircleContact.swift in Sources */,
 				2BFC028B2505EDA500AB489E /* Map.swift in Sources */,
@@ -1405,6 +1500,7 @@
 				2B6D0BBC250B08080098F244 /* b2RopeJoint.swift in Sources */,
 				2B01C89D24FB844C00E86449 /* MetalView.swift in Sources */,
 				2B6D0BD0250B08080098F244 /* b2Fixture.swift in Sources */,
+				2B76D7F825AC3A5200AF6FF2 /* Graph.swift in Sources */,
 				2B6D0BE6250B08080098F244 /* b2EdgeShape.swift in Sources */,
 				2B6D0BD8250B08080098F244 /* b2Draw.swift in Sources */,
 				2B6D0BEC250B08080098F244 /* b2Shape.swift in Sources */,
@@ -1412,6 +1508,7 @@
 				2B01C88C24FB824A00E86449 /* Utils.swift in Sources */,
 				2B6D0B9A250B08080098F244 /* b2Body.swift in Sources */,
 				2B6D0BB6250B08080098F244 /* b2MotorJoint.swift in Sources */,
+				2B76D7F225AC3A5200AF6FF2 /* BoolNodes.swift in Sources */,
 				2B6D0BAA250B08080098F244 /* b2PolygonAndCircleContact.swift in Sources */,
 				2B6D0BE0250B08080098F244 /* b2Math.swift in Sources */,
 				2B6D0BEA250B08080098F244 /* b2ChainShape.swift in Sources */,
@@ -1424,6 +1521,7 @@
 				2B6D0BD2250B08080098F244 /* b2Rope.swift in Sources */,
 				2B01C88624FB824A00E86449 /* MathLibrary.swift in Sources */,
 				2B6D0BB0250B08080098F244 /* b2DistanceJoint.swift in Sources */,
+				2B76D7E025AC3A5200AF6FF2 /* Builder.swift in Sources */,
 				2B6D0BE8250B08080098F244 /* b2PolygonShape.swift in Sources */,
 				2B6D0BF4250B08080098F244 /* b2Distance.swift in Sources */,
 			);
@@ -1436,6 +1534,7 @@
 				2B40DA7C25590EFB001FC5F1 /* b2EdgeAndPolygonContact.swift in Sources */,
 				2B40DAB325590F17001FC5F1 /* b2Distance.swift in Sources */,
 				2B40DA6625590EE8001FC5F1 /* MapStructures.swift in Sources */,
+				2B76D81925AC3A8400AF6FF2 /* Tool.swift in Sources */,
 				2BE97386258CAD0700D8019D /* Variables.swift in Sources */,
 				2B40DAA925590F0F001FC5F1 /* b2BroadPhase.swift in Sources */,
 				2B40DA8425590EFB001FC5F1 /* b2CircleContact.swift in Sources */,
@@ -1451,13 +1550,17 @@
 				2B40DA6825590EE8001FC5F1 /* MapBuilder.swift in Sources */,
 				2BE97390258CAD0700D8019D /* Utilities.swift in Sources */,
 				2B40DA6925590EE8001FC5F1 /* Asset.swift in Sources */,
+				2B76D7E925AC3A5200AF6FF2 /* BranchNodes.swift in Sources */,
+				2B76D80125AC3A5200AF6FF2 /* Nodes.swift in Sources */,
 				2B40DA6425590EE8001FC5F1 /* File.swift in Sources */,
 				2B40DA7E25590EFB001FC5F1 /* b2PolygonContact.swift in Sources */,
 				2B40DAA425590F0B001FC5F1 /* b2Common.swift in Sources */,
 				2B40DAB825590F17001FC5F1 /* b2CollideEdge.swift in Sources */,
 				2B40DA9A25590F04001FC5F1 /* b2Island.swift in Sources */,
+				2B76D7FB25AC3A5200AF6FF2 /* Graph.swift in Sources */,
 				2B40DAB925590F17001FC5F1 /* b2CollideCircles.swift in Sources */,
 				2B40DA6C25590EE8001FC5F1 /* ScriptEditor.swift in Sources */,
+				2B76D7F525AC3A5200AF6FF2 /* BoolNodes.swift in Sources */,
 				2B40DA8925590F00001FC5F1 /* b2WheelJoint.swift in Sources */,
 				2B40DAB025590F13001FC5F1 /* b2ChainShape.swift in Sources */,
 				2B40DA6125590EE8001FC5F1 /* Game.swift in Sources */,
@@ -1465,6 +1568,7 @@
 				2B40DA9725590F04001FC5F1 /* b2World.swift in Sources */,
 				2B40DA7625590EEE001FC5F1 /* Texture2D.swift in Sources */,
 				2B40DA6325590EE8001FC5F1 /* MetalView.swift in Sources */,
+				2B76D80D25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
 				2BE9738B258CAD0700D8019D /* Expression.swift in Sources */,
 				2B40DAAC25590F13001FC5F1 /* b2CircleShape.swift in Sources */,
 				2B40DAA125590F0B001FC5F1 /* b2Settings.swift in Sources */,
@@ -1492,6 +1596,7 @@
 				2B40DA9025590F00001FC5F1 /* b2WeldJoint.swift in Sources */,
 				2B40DA8325590EFB001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */,
 				2B40DA8E25590F00001FC5F1 /* b2PulleyJoint.swift in Sources */,
+				2B76D7E325AC3A5200AF6FF2 /* Builder.swift in Sources */,
 				2B40DAA625590F0B001FC5F1 /* b2Wrappers.swift in Sources */,
 				2B40DA7025590EE8001FC5F1 /* Branches.swift in Sources */,
 				2B40DA7125590EE8001FC5F1 /* ShaderCompiler.swift in Sources */,
@@ -1500,6 +1605,8 @@
 				2B40DA6B25590EE8001FC5F1 /* Leaves.swift in Sources */,
 				2B40DA9925590F04001FC5F1 /* b2Fixture.swift in Sources */,
 				2B40DA7425590EEE001FC5F1 /* Classes.swift in Sources */,
+				2B76D7EF25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
+				2B76D80725AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
 				2B40DAAF25590F13001FC5F1 /* b2PolygonShape.swift in Sources */,
 				2B40DA9D25590F07001FC5F1 /* b2Rope.swift in Sources */,
 				2B40DAAD25590F13001FC5F1 /* b2Shape.swift in Sources */,
@@ -1518,6 +1625,7 @@
 				2B40DB3225591040001FC5F1 /* b2DynamicTree.swift in Sources */,
 				2B40DADD25591016001FC5F1 /* MapBuilder.swift in Sources */,
 				2B40DB2C25591040001FC5F1 /* b2Distance.swift in Sources */,
+				2B76D81A25AC3A8400AF6FF2 /* Tool.swift in Sources */,
 				2BE97387258CAD0700D8019D /* Variables.swift in Sources */,
 				2B40DAE625591016001FC5F1 /* Game.swift in Sources */,
 				2B40DB272559103C001FC5F1 /* b2PolygonShape.swift in Sources */,
@@ -1533,13 +1641,17 @@
 				2B40DB0B2559102A001FC5F1 /* b2GearJoint.swift in Sources */,
 				2BE97391258CAD0700D8019D /* Utilities.swift in Sources */,
 				2B40DAFC25591023001FC5F1 /* b2PolygonContact.swift in Sources */,
+				2B76D7EA25AC3A5200AF6FF2 /* BranchNodes.swift in Sources */,
+				2B76D80225AC3A5200AF6FF2 /* Nodes.swift in Sources */,
 				2B40DB082559102A001FC5F1 /* b2PrismaticJoint.swift in Sources */,
 				2B40DAF725591023001FC5F1 /* b2CircleContact.swift in Sources */,
 				2B40DAE525591016001FC5F1 /* Utils.swift in Sources */,
 				2B40DAE425591016001FC5F1 /* ShaderCompiler.swift in Sources */,
 				2B40DB2D25591040001FC5F1 /* b2CollidePolygon.swift in Sources */,
+				2B76D7FC25AC3A5200AF6FF2 /* Graph.swift in Sources */,
 				2B40DB022559102A001FC5F1 /* b2RevoluteJoint.swift in Sources */,
 				2B40DB122559102E001FC5F1 /* b2ContactManager.swift in Sources */,
+				2B76D7F625AC3A5200AF6FF2 /* BoolNodes.swift in Sources */,
 				2B40DB282559103C001FC5F1 /* b2ChainShape.swift in Sources */,
 				2B40DADC25591016001FC5F1 /* Asset.swift in Sources */,
 				2B40DB1A25591036001FC5F1 /* b2Timer.swift in Sources */,
@@ -1547,6 +1659,7 @@
 				2B40DB102559102E001FC5F1 /* b2World.swift in Sources */,
 				2B40DAEA25591016001FC5F1 /* MetalStates.swift in Sources */,
 				2B40DAD925591016001FC5F1 /* File.swift in Sources */,
+				2B76D80E25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
 				2BE9738C258CAD0700D8019D /* Expression.swift in Sources */,
 				2B40DAF825591023001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */,
 				2B40DB062559102A001FC5F1 /* b2PulleyJoint.swift in Sources */,
@@ -1574,6 +1687,7 @@
 				2B40DB1B25591036001FC5F1 /* b2Draw.swift in Sources */,
 				2B40DB1F25591036001FC5F1 /* b2Common.swift in Sources */,
 				2B40DAFD25591023001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */,
+				2B76D7E425AC3A5200AF6FF2 /* Builder.swift in Sources */,
 				2B40DADB25591016001FC5F1 /* BehaviorBuilder.swift in Sources */,
 				2B40DAE025591016001FC5F1 /* Map.swift in Sources */,
 				2B40DB0A2559102A001FC5F1 /* b2MotorJoint.swift in Sources */,
@@ -1582,6 +1696,8 @@
 				2B40DB1C25591036001FC5F1 /* b2Math.swift in Sources */,
 				2B40DB1925591036001FC5F1 /* b2Wrappers.swift in Sources */,
 				2B40DADF25591016001FC5F1 /* Leaves.swift in Sources */,
+				2B76D7F025AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
+				2B76D80825AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
 				2B40DB052559102A001FC5F1 /* b2DistanceJoint.swift in Sources */,
 				2B40DAFA25591023001FC5F1 /* b2ContactSolver.swift in Sources */,
 				2B40DAE125591016001FC5F1 /* ScriptEditor.swift in Sources */,
@@ -1600,6 +1716,7 @@
 				2B40DB842559130F001FC5F1 /* b2ChainAndCircleContact.swift in Sources */,
 				2B40DB6D25591303001FC5F1 /* Asset.swift in Sources */,
 				2B40DBAE25591321001FC5F1 /* b2BroadPhase.swift in Sources */,
+				2B76D81B25AC3A8400AF6FF2 /* Tool.swift in Sources */,
 				2BE97388258CAD0700D8019D /* Variables.swift in Sources */,
 				2B40DB9125591314001FC5F1 /* b2RevoluteJoint.swift in Sources */,
 				2B40DB6125591303001FC5F1 /* MapStructures.swift in Sources */,
@@ -1615,13 +1732,17 @@
 				2B40DB9025591314001FC5F1 /* b2MouseJoint.swift in Sources */,
 				2BE97392258CAD0700D8019D /* Utilities.swift in Sources */,
 				2B40DB7D2559130F001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */,
+				2B76D7EB25AC3A5200AF6FF2 /* BranchNodes.swift in Sources */,
+				2B76D80325AC3A5200AF6FF2 /* Nodes.swift in Sources */,
 				2B40DB9925591319001FC5F1 /* b2ContactManager.swift in Sources */,
 				2B40DB802559130F001FC5F1 /* b2CircleContact.swift in Sources */,
 				2B40DB9B25591319001FC5F1 /* b2WorldCallbacks.swift in Sources */,
 				2B40DB6025591303001FC5F1 /* Map.swift in Sources */,
 				2B40DBA92559131E001FC5F1 /* b2Draw.swift in Sources */,
+				2B76D7FD25AC3A5200AF6FF2 /* Graph.swift in Sources */,
 				2B40DB9725591319001FC5F1 /* b2Island.swift in Sources */,
 				2B40DB8925591314001FC5F1 /* b2PrismaticJoint.swift in Sources */,
+				2B76D7F725AC3A5200AF6FF2 /* BoolNodes.swift in Sources */,
 				2B40DB5C25591303001FC5F1 /* MapPreview.swift in Sources */,
 				2B40DBBB2559132A001FC5F1 /* b2Collision.swift in Sources */,
 				2B40DB8F25591314001FC5F1 /* b2MotorJoint.swift in Sources */,
@@ -1629,6 +1750,7 @@
 				2B40DB5F25591303001FC5F1 /* ShaderCompiler.swift in Sources */,
 				2B40DBC02559132A001FC5F1 /* b2CollidePolygon.swift in Sources */,
 				2B40DB7F2559130F001FC5F1 /* b2EdgeAndPolygonContact.swift in Sources */,
+				2B76D80F25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
 				2BE9738D258CAD0700D8019D /* Expression.swift in Sources */,
 				2B40DBBF2559132A001FC5F1 /* b2TimeOfImpact.swift in Sources */,
 				2B40DBB625591325001FC5F1 /* b2PolygonShape.swift in Sources */,
@@ -1656,6 +1778,7 @@
 				2B40DB822559130F001FC5F1 /* b2PolygonContact.swift in Sources */,
 				2B40DB782559130B001FC5F1 /* b2Body.swift in Sources */,
 				2B40DB9825591319001FC5F1 /* b2World.swift in Sources */,
+				2B76D7E525AC3A5200AF6FF2 /* Builder.swift in Sources */,
 				2B40DB6825591303001FC5F1 /* MapBuilder.swift in Sources */,
 				2B40DB6E25591303001FC5F1 /* Game.swift in Sources */,
 				2B40DB832559130F001FC5F1 /* b2Contact.swift in Sources */,
@@ -1664,6 +1787,8 @@
 				2B40DB9225591314001FC5F1 /* b2Joint.swift in Sources */,
 				2B40DB5E25591303001FC5F1 /* Metal.metal in Sources */,
 				2B40DB9C25591319001FC5F1 /* b2TimeStep.swift in Sources */,
+				2B76D7F125AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
+				2B76D80925AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
 				2B40DB5D25591303001FC5F1 /* BehaviorBuilder.swift in Sources */,
 				2B40DB6725591303001FC5F1 /* Utils.swift in Sources */,
 				2B40DBB325591325001FC5F1 /* b2Shape.swift in Sources */,
@@ -1682,6 +1807,7 @@
 				2B59023A2592D2DD00FCF16D /* b2PulleyJoint.swift in Sources */,
 				2B5902352592D2DD00FCF16D /* b2Joint.swift in Sources */,
 				2B59025F2592D2F600FCF16D /* b2BroadPhase.swift in Sources */,
+				2B76D81825AC3A8400AF6FF2 /* Tool.swift in Sources */,
 				2B5902242592D2D900FCF16D /* b2ChainAndCircleContact.swift in Sources */,
 				2B59024D2592D2E600FCF16D /* b2Rope.swift in Sources */,
 				2B5902562592D2EC00FCF16D /* b2Common.swift in Sources */,
@@ -1689,6 +1815,7 @@
 				2B5902452592D2E100FCF16D /* b2WorldCallbacks.swift in Sources */,
 				2B5902312592D2DD00FCF16D /* b2WheelJoint.swift in Sources */,
 				2B5902722592D2FD00FCF16D /* b2CollideEdge.swift in Sources */,
+				2B76D80025AC3A5200AF6FF2 /* Nodes.swift in Sources */,
 				2B5902292592D2D900FCF16D /* b2ContactSolver.swift in Sources */,
 				2B5902552592D2EC00FCF16D /* b2Wrappers.swift in Sources */,
 				2B5902172592D2C300FCF16D /* Texture2D.swift in Sources */,
@@ -1699,6 +1826,7 @@
 				2B59022B2592D2D900FCF16D /* b2Contact.swift in Sources */,
 				2B5901A72592D21500FCF16D /* MetalView.swift in Sources */,
 				2B5901B32592D21A00FCF16D /* Metal.metal in Sources */,
+				2B76D80625AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
 				2B5901792592D0C900FCF16D /* Shaders.metal in Sources */,
 				2B5901E92592D23C00FCF16D /* Branches.swift in Sources */,
 				2B5901D12592D23000FCF16D /* ShaderCompiler.swift in Sources */,
@@ -1706,6 +1834,7 @@
 				2B59023B2592D2DD00FCF16D /* b2MotorJoint.swift in Sources */,
 				2B5901A12592D21100FCF16D /* MathLibrary.swift in Sources */,
 				2B5902672592D2FA00FCF16D /* b2ChainShape.swift in Sources */,
+				2B76D7EE25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
 				2B59022A2592D2D900FCF16D /* b2PolygonContact.swift in Sources */,
 				2B5902022592D24E00FCF16D /* Utilities.swift in Sources */,
 				2B5901E32592D23900FCF16D /* BehaviorBuilder.swift in Sources */,
@@ -1727,7 +1856,9 @@
 				2B5902652592D2FA00FCF16D /* b2Shape.swift in Sources */,
 				2B5902042592D24E00FCF16D /* Expression.swift in Sources */,
 				2B5901952592D20B00FCF16D /* Asset.swift in Sources */,
+				2B76D80C25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
 				2B6193DE25AA870B0077F64D /* FunctionNodes.swift in Sources */,
+				2B76D7E825AC3A5200AF6FF2 /* BranchNodes.swift in Sources */,
 				2B5902162592D2C300FCF16D /* Font.swift in Sources */,
 				2B5902712592D2FD00FCF16D /* b2Distance.swift in Sources */,
 				2B5902232592D2D900FCF16D /* b2CircleContact.swift in Sources */,
@@ -1749,7 +1880,9 @@
 				2B5901CB2592D22E00FCF16D /* MapPreview.swift in Sources */,
 				2B5901AD2592D21700FCF16D /* MetalStates.swift in Sources */,
 				2B5902032592D24E00FCF16D /* Variables.swift in Sources */,
+				2B76D7FA25AC3A5200AF6FF2 /* Graph.swift in Sources */,
 				2B5902252592D2D900FCF16D /* b2EdgeAndPolygonContact.swift in Sources */,
+				2B76D7F425AC3A5200AF6FF2 /* BoolNodes.swift in Sources */,
 				2B5901762592D0C900FCF16D /* Renderer.swift in Sources */,
 				2B5902382592D2DD00FCF16D /* b2PrismaticJoint.swift in Sources */,
 				2B5901FB2592D24500FCF16D /* MapStructures.swift in Sources */,
@@ -1758,6 +1891,7 @@
 				2B59026F2592D2FD00FCF16D /* b2TimeOfImpact.swift in Sources */,
 				2B5901DD2592D23600FCF16D /* Behavior.swift in Sources */,
 				2B5902372592D2DD00FCF16D /* b2GearJoint.swift in Sources */,
+				2B76D7E225AC3A5200AF6FF2 /* Builder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
