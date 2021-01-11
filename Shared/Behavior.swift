@@ -89,7 +89,7 @@ class BehaviorContext       : VariableContainer
         variables[variable.name] = variable
     }
     
-    override func getVariableValue(_ name: String, parameters: [BaseVariable] = []) -> BaseVariable?
+    override func getVariableValue(_ name: String) -> BaseVariable?
     {
         // Globals
         if name == "Time" {
@@ -98,14 +98,6 @@ class BehaviorContext       : VariableContainer
         if name == "Aspect" {
             return game._Aspect
         }
-        
-        /*
-        // First check the optional tree parameters (if any) as they overrule the context variables
-        for v in parameters {
-            if v.name == name {
-                return v
-            }
-        }*/
 
         return super.getVariableValue(name)
     }

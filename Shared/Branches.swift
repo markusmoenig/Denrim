@@ -27,7 +27,7 @@ class WhileBranch: BehaviorNode
             } else {
                 let opts : [String:String] = ["bool":key.key]
                 test = key.key
-                variable = extractBool1Value(opts, container: context, parameters: tree.parameters, error: &error)
+                variable = extractBool1Value(opts, container: context, error: &error)
             }
         }
     }

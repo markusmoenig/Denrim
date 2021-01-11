@@ -16,7 +16,7 @@ class VariableContainer
     var parameters          : [BaseVariable]? = nil
 
     /// Get the given variable
-    func getVariableValue(_ name: String, parameters: [BaseVariable] = []) -> BaseVariable?
+    func getVariableValue(_ name: String) -> BaseVariable?
     {
         if let params = self.parameters {
             for p in params {
