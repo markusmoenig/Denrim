@@ -188,6 +188,9 @@ func extractFloat1Value(_ options: [String:Any], container: VariableContainer, p
 /// Extract a int1 vale
 func extractInt1Value(_ options: [String:Any], container: VariableContainer, parameters: [BaseVariable] = [], error: inout CompileError, name: String = "int", isOptional: Bool = false, ignoreErrors: Bool = false) -> Int1?
 {
+    if let value = options[name] as? Int1 {
+        return value
+    } else
     if var value = options[name] as? String {
         value = value.trimmingCharacters(in: .whitespaces)
         if let value = Int(value) {
@@ -195,7 +198,18 @@ func extractInt1Value(_ options: [String:Any], container: VariableContainer, par
         } else
         if let v = container.getVariableValue(value, parameters: parameters) as? Int1 {
             return v
-        }  else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
+        }  else
+        {
+            if let context = expressionBuilder( expression: value, container: container, defaultVariableType: .Int, error: &error) {
+                if let value = context.executeForInt1() {
+                    return value
+                } else {
+                    error.error = "Result for '\(name)' is not a Int value but \(context.wrongType)"
+                    return nil
+                }
+            }
+            if isOptional == false { error.error = "Parameter '\(name)' not found" }
+        }
     } else { if isOptional == false { error.error = "Parameter '\(name)' not found" } }
     
     if ignoreErrors {

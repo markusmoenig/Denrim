@@ -112,6 +112,8 @@ class BehaviorBuilder
             asset.behavior!.clear()
         }
         
+        let behavior = asset.behavior!
+        
         let ns = asset.value as NSString
         var lineNumber  : Int32 = 0
         
@@ -300,6 +302,8 @@ class BehaviorBuilder
                                             
                                             rightValueArray = Array(rightValueArray.dropFirst(2))
                                         }
+                                        
+                                        behavior.parameters = currentTree!.parameters
                                     }
                                 }
                             } else { error.error = "Invalid name for tree '\(name)'" }
@@ -345,9 +349,7 @@ class BehaviorBuilder
 
                                     let newBranch = branch.createNode(nodeOptions)
                                     
-                                    asset.behavior!.parameters = currentTree!.parameters
                                     newBranch.verifyOptions(context: asset.behavior!, tree: currentTree!, error: &error)
-                                    asset.behavior!.parameters = nil
                                     if error.error == nil {
                                         if currentBranch.count == 0 {
                                             currentTree?.leaves.append(newBranch)
@@ -398,9 +400,7 @@ class BehaviorBuilder
                                         if error.error == nil {
                                             if let branch = currentBranch.last {
                                                 let behaviorNode = leave.createNode(nodeOptions)
-                                                asset.behavior!.parameters = currentTree!.parameters
                                                 behaviorNode.verifyOptions(context: asset.behavior!, tree: currentTree!, error: &error)
-                                                asset.behavior!.parameters = nil
                                                 if error.error == nil {
                                                     behaviorNode.lineNr = error.line!
                                                     branch.leaves.append(behaviorNode)
@@ -448,7 +448,7 @@ class BehaviorBuilder
                                     variableNode.assignmentType = assignmentType
                                     variableNode.expression = exp
                                     
-                                    variableNode.execute(game: self.game, context: asset.behavior!, tree: nil)
+                                    variableNode.execute(game: self.game, context: behavior, tree: currentTree)
                                     
                                     variableNode.lineNr = error.line!
                                     branch.leaves.append(variableNode)
@@ -458,80 +458,6 @@ class BehaviorBuilder
                                 if error.error == nil { createError("Leaf node without active branch") }
                             } else { createError("Invalid expression") }
                         }
-
-                        /*
-                        if rightValueArray.count > 1 {
-                            // Variable
-                            asset.behavior!.lines[error.line!] = "Variable"
-                            let possibleVariableType = rightValueArray[0].trimmingCharacters(in: .whitespaces)
-                            if possibleVariableType == "Float4" {
-                                rightValueArray.removeFirst()
-                                let array = rightValueArray[0].split(separator: ",")
-                                if array.count == 4 {
-                                    
-                                    let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
-                                    let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
-                                    let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 0 }
-                                    let w : Float; if let v = Float(array[3].dropLast().trimmingCharacters(in: .whitespaces)) { w = v } else { w = 0 }
-
-                                    let value = Float4(variableName!, x, y, z, w)
-                                    asset.behavior!.addVariable(value)
-                                    processed = true
-                                } else { createError() }
-                            } else
-                            if possibleVariableType == "Float3" {
-                                rightValueArray.removeFirst()
-                                let array = rightValueArray[0].split(separator: ",")
-                                if array.count == 3 {
-                                    
-                                    let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
-                                    let y : Float; if let v = Float(array[1].trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
-                                    let z : Float; if let v = Float(array[2].trimmingCharacters(in: .whitespaces)) { z = v } else { z = 0 }
-
-                                    let value = Float3(variableName!, x, y, z)
-                                    asset.behavior!.addVariable(value)
-                                    processed = true
-                                } else { createError() }
-                            } else
-                            if possibleVariableType == "Float2" {
-                                rightValueArray.removeFirst()
-                                let array = rightValueArray[0].split(separator: ",")
-                                if array.count == 2 {
-                                    
-                                    let x : Float; if let v = Float(array[0].trimmingCharacters(in: .whitespaces)) { x = v } else { x = 0 }
-                                    let y : Float; if let v = Float(array[1].dropLast().trimmingCharacters(in: .whitespaces)) { y = v } else { y = 0 }
-
-                                    let value = Float2(variableName!, x, y)
-                                    asset.behavior!.addVariable(value)
-                                    processed = true
-                                } else { createError() }
-                            } else
-                            if possibleVariableType == "Float" {
-                                rightValueArray.removeFirst()
-                                let value : Float; if let v = Float(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
-                                asset.behavior!.addVariable(Float1(variableName!, value))
-                                processed = true
-                            } else
-                            if possibleVariableType == "Int" {
-                                rightValueArray.removeFirst()
-                                let value : Int; if let v = Int(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = 0 }
-                                asset.behavior!.addVariable(Int1(variableName!, value))
-                                processed = true
-                            } else
-                            if possibleVariableType == "Bool" {
-                                rightValueArray.removeFirst()
-                                let value : Bool; if let v = Bool(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces)) { value = v } else { value = false }
-                                asset.behavior!.addVariable(Bool1(variableName!, value))
-                                processed = true
-                            } else
-                            if possibleVariableType == "Text" {
-                                rightValueArray.removeFirst()
-                                let v = String(rightValueArray[0].dropLast().trimmingCharacters(in: .whitespaces))
-                                asset.behavior!.addVariable(Text1(variableName!, v))
-                                processed = true
-                            } else { error.error = "Unrecognized Variable type '\(possbibleCmd)'" }
-                        }
-                        */
                     }
                 }
                 
@@ -552,7 +478,9 @@ class BehaviorBuilder
                 game.scriptEditor?.clearAnnotations()
             }
         }
-
+        
+        behavior.parameters = nil
+        
         return error
     }
     
