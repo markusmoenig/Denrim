@@ -38,7 +38,7 @@ class GraphNode : Equatable, Identifiable {
     }
     
     enum NodeContext {
-        case None, Analytical, SDF, Material, Render
+        case None, Analytical, SDF, SDF2D, Material, Render
     }
     
     var id                  = UUID()
@@ -120,6 +120,7 @@ final class GraphContext    : VariableContainer
 
     var analyticalNodes     : [GraphNode] = []
     var sdfNodes            : [GraphNode] = []
+    var sdf2DNodes          : [GraphNode] = []
 
     var renderNodes         : [GraphNode] = []
 
@@ -145,13 +146,16 @@ final class GraphContext    : VariableContainer
     var uv                  = float2(0,0)                       // UV coordinate (0..1)
     var viewSize            = float2(0,0)                       // Size of the view
 
+    var adjustedUV          = float2(0,0)                       // The adjusted UV between 0..100 with 0,0 at the upper left corner
+
     var position            = float3(0,0,0)                     // Current object position
-    
+    var position2D          = float2(0,0)                       // Current object position for 2D objects
+
     var camOffset           = float2(0,0)                       // Camera AA uv offset
     var camOrigin           = float3(0,0,-5)                    // Camera Origin, set by camera node
     
     var rayDir              = float3(0,0,0)                     // Ray direction, computed and set by camera node
-        
+
     var analyticalDist      : Float = .greatestFiniteMagnitude
     var analyticalNormal    = float3(0,0,0)                     // Analytical Normal
     var analyticalMaterial  : GraphNode? = nil
@@ -172,8 +176,16 @@ final class GraphContext    : VariableContainer
     var rayDist             : [Float] = []
     var rayIndex            : Int = 0
     
+    // Distance 2D
+    
+    var distance2D          : [Float] = []                      // The distance to a 2D SDF
+    var distance2DIndex     : Int = 0
+    
     override init()
-    {        
+    {
+        distance2D.append(.greatestFiniteMagnitude)
+        distance2D.append(.greatestFiniteMagnitude)
+        
         rayDist.append(.greatestFiniteMagnitude)
         rayDist.append(.greatestFiniteMagnitude)
         
@@ -187,6 +199,7 @@ final class GraphContext    : VariableContainer
     {
         nodes = []
         sdfNodes = []
+        sdf2DNodes = []
         renderNodes = []
         analyticalNodes = []
         materialNodes = []
@@ -278,14 +291,14 @@ final class GraphContext    : VariableContainer
         }
     }
     
-    
     @inlinable public func toggleRayIndex()
     {
-        if rayIndex == 0 {
-            rayIndex = 1
-        } else {
-            rayIndex = 0
-        }
+        rayIndex = rayIndex == 0 ? 1 : 0
+    }
+    
+    @inlinable public func toggleDistance2DIndex()
+    {
+        distance2DIndex = distance2DIndex == 0 ? 1 : 0
     }
     
     /// Adds a variable to the context
@@ -386,6 +399,23 @@ final class GraphContext    : VariableContainer
             node.execute(context: self)
         }
         toggleRayIndex()
+        
+        return .Success
+    }
+    
+    @discardableResult @inlinable public func executeSDF2D() -> GraphNode.Result
+    {
+        distance2D[0] = .greatestFiniteMagnitude
+        distance2D[1] = .greatestFiniteMagnitude
+        hitMaterial[0] = nil
+        hitMaterial[1] = nil
+        distance2DIndex = 0
+        failedAt = []
+        
+        for node in sdf2DNodes {
+            node.execute(context: self)
+        }
+        toggleDistance2DIndex()
         
         return .Success
     }

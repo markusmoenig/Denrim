@@ -60,6 +60,30 @@
 		2B3299532501B5DC007C3386 /* Square.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B3299452501B5DC007C3386 /* Square.json */; };
 		2B3299592501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
 		2B32995A2501B6F3007C3386 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3299582501B6F3007C3386 /* Font.swift */; };
+		2B400EA225AD43AF006493A0 /* BranchNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EA125AD43AF006493A0 /* BranchNodes2D.swift */; };
+		2B400EA325AD43AF006493A0 /* BranchNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EA125AD43AF006493A0 /* BranchNodes2D.swift */; };
+		2B400EA425AD43AF006493A0 /* BranchNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EA125AD43AF006493A0 /* BranchNodes2D.swift */; };
+		2B400EA525AD43AF006493A0 /* BranchNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EA125AD43AF006493A0 /* BranchNodes2D.swift */; };
+		2B400EA625AD43AF006493A0 /* BranchNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EA125AD43AF006493A0 /* BranchNodes2D.swift */; };
+		2B400EA725AD43AF006493A0 /* BranchNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EA125AD43AF006493A0 /* BranchNodes2D.swift */; };
+		2B400EAE25AD445C006493A0 /* BaseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EAD25AD445C006493A0 /* BaseBuilder.swift */; };
+		2B400EAF25AD445C006493A0 /* BaseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EAD25AD445C006493A0 /* BaseBuilder.swift */; };
+		2B400EB025AD445C006493A0 /* BaseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EAD25AD445C006493A0 /* BaseBuilder.swift */; };
+		2B400EB125AD445C006493A0 /* BaseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EAD25AD445C006493A0 /* BaseBuilder.swift */; };
+		2B400EB225AD445C006493A0 /* BaseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EAD25AD445C006493A0 /* BaseBuilder.swift */; };
+		2B400EB325AD445C006493A0 /* BaseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400EAD25AD445C006493A0 /* BaseBuilder.swift */; };
+		2B400ECD25AD5458006493A0 /* SDFNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ECC25AD5458006493A0 /* SDFNodes2D.swift */; };
+		2B400ECE25AD5458006493A0 /* SDFNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ECC25AD5458006493A0 /* SDFNodes2D.swift */; };
+		2B400ECF25AD5458006493A0 /* SDFNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ECC25AD5458006493A0 /* SDFNodes2D.swift */; };
+		2B400ED025AD5458006493A0 /* SDFNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ECC25AD5458006493A0 /* SDFNodes2D.swift */; };
+		2B400ED125AD5458006493A0 /* SDFNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ECC25AD5458006493A0 /* SDFNodes2D.swift */; };
+		2B400ED225AD5458006493A0 /* SDFNodes2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ECC25AD5458006493A0 /* SDFNodes2D.swift */; };
+		2B400ED925AD5913006493A0 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ED825AD5913006493A0 /* Renderer.swift */; };
+		2B400EDA25AD5913006493A0 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ED825AD5913006493A0 /* Renderer.swift */; };
+		2B400EDB25AD5913006493A0 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ED825AD5913006493A0 /* Renderer.swift */; };
+		2B400EDC25AD5913006493A0 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ED825AD5913006493A0 /* Renderer.swift */; };
+		2B400EDD25AD5913006493A0 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ED825AD5913006493A0 /* Renderer.swift */; };
+		2B400EDE25AD5913006493A0 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B400ED825AD5913006493A0 /* Renderer.swift */; };
 		2B40DA5925590ECF001FC5F1 /* DenrimDesktop.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B40DA5725590ECF001FC5F1 /* DenrimDesktop.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2B40DA5F25590EE8001FC5F1 /* MetalStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C89E24FB8C7500E86449 /* MetalStates.swift */; };
 		2B40DA6025590EE8001FC5F1 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01C87C24FB824900E86449 /* Utils.swift */; };
@@ -480,12 +504,12 @@
 		2B71E70F2515B21400F3317D /* Leaves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E70D2515B21400F3317D /* Leaves.swift */; };
 		2B71E7192516F5BA00F3317D /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
 		2B71E71A2516F5BA00F3317D /* Branches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71E7182516F5BA00F3317D /* Branches.swift */; };
-		2B76D7E025AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
-		2B76D7E125AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
-		2B76D7E225AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
-		2B76D7E325AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
-		2B76D7E425AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
-		2B76D7E525AC3A5200AF6FF2 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* Builder.swift */; };
+		2B76D7E025AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* DenrimBuilder.swift */; };
+		2B76D7E125AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* DenrimBuilder.swift */; };
+		2B76D7E225AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* DenrimBuilder.swift */; };
+		2B76D7E325AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* DenrimBuilder.swift */; };
+		2B76D7E425AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* DenrimBuilder.swift */; };
+		2B76D7E525AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D825AC3A5200AF6FF2 /* DenrimBuilder.swift */; };
 		2B76D7E625AC3A5200AF6FF2 /* BranchNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */; };
 		2B76D7E725AC3A5200AF6FF2 /* BranchNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */; };
 		2B76D7E825AC3A5200AF6FF2 /* BranchNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */; };
@@ -613,6 +637,10 @@
 		2B3299442501B5DC007C3386 /* OpenSans.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = OpenSans.tiff; sourceTree = "<group>"; };
 		2B3299452501B5DC007C3386 /* Square.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Square.json; sourceTree = "<group>"; };
 		2B3299582501B6F3007C3386 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		2B400EA125AD43AF006493A0 /* BranchNodes2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BranchNodes2D.swift; sourceTree = "<group>"; };
+		2B400EAD25AD445C006493A0 /* BaseBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseBuilder.swift; sourceTree = "<group>"; };
+		2B400ECC25AD5458006493A0 /* SDFNodes2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDFNodes2D.swift; sourceTree = "<group>"; };
+		2B400ED825AD5913006493A0 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		2B40DA5525590ECF001FC5F1 /* DenrimDesktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DenrimDesktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B40DA5725590ECF001FC5F1 /* DenrimDesktop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DenrimDesktop.h; sourceTree = "<group>"; };
 		2B40DA5825590ECF001FC5F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -690,7 +718,7 @@
 		2B6D0C01250B16C00098F244 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2B71E70D2515B21400F3317D /* Leaves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leaves.swift; sourceTree = "<group>"; };
 		2B71E7182516F5BA00F3317D /* Branches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branches.swift; sourceTree = "<group>"; };
-		2B76D7D825AC3A5200AF6FF2 /* Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
+		2B76D7D825AC3A5200AF6FF2 /* DenrimBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DenrimBuilder.swift; sourceTree = "<group>"; };
 		2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BranchNodes.swift; sourceTree = "<group>"; };
 		2B76D7DA25AC3A5200AF6FF2 /* SDFNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDFNodes.swift; sourceTree = "<group>"; };
 		2B76D7DB25AC3A5200AF6FF2 /* BoolNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoolNodes.swift; sourceTree = "<group>"; };
@@ -1038,13 +1066,17 @@
 			isa = PBXGroup;
 			children = (
 				2B76D81525AC3A8400AF6FF2 /* Tool.swift */,
-				2B76D7D825AC3A5200AF6FF2 /* Builder.swift */,
+				2B400ED825AD5913006493A0 /* Renderer.swift */,
+				2B76D7D825AC3A5200AF6FF2 /* DenrimBuilder.swift */,
+				2B400EAD25AD445C006493A0 /* BaseBuilder.swift */,
 				2B76D7DC25AC3A5200AF6FF2 /* Graph.swift */,
 				2B76D7DD25AC3A5200AF6FF2 /* Nodes.swift */,
 				2B76D7DE25AC3A5200AF6FF2 /* TexNodes.swift */,
 				2B76D7DB25AC3A5200AF6FF2 /* BoolNodes.swift */,
 				2B76D7DA25AC3A5200AF6FF2 /* SDFNodes.swift */,
+				2B400ECC25AD5458006493A0 /* SDFNodes2D.swift */,
 				2B76D7D925AC3A5200AF6FF2 /* BranchNodes.swift */,
+				2B400EA125AD43AF006493A0 /* BranchNodes2D.swift */,
 				2B76D7DF25AC3A5200AF6FF2 /* AnalyticalNodes.swift */,
 			);
 			path = Graph;
@@ -1343,6 +1375,8 @@
 				2B76D80525AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
 				2B76D7ED25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
 				2B71E71A2516F5BA00F3317D /* Branches.swift in Sources */,
+				2B400ECE25AD5458006493A0 /* SDFNodes2D.swift in Sources */,
+				2B400EAF25AD445C006493A0 /* BaseBuilder.swift in Sources */,
 				2B6D0BF3250B08080098F244 /* b2CollideEdge.swift in Sources */,
 				2BE9738A258CAD0700D8019D /* Expression.swift in Sources */,
 				2BFDAF9F254A8A4F0096A0FF /* Parma.swift in Sources */,
@@ -1361,9 +1395,11 @@
 				2B6D0BF9250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */,
 				2B6D0BFB250B08080098F244 /* b2Collision.swift in Sources */,
+				2B400EA325AD43AF006493A0 /* BranchNodes2D.swift in Sources */,
 				2B2882EB2519E69E00D1AB2D /* MapStructures.swift in Sources */,
 				2B6D0BF7250B08080098F244 /* b2CollidePolygon.swift in Sources */,
 				2B6D0BBF250B08080098F244 /* b2PrismaticJoint.swift in Sources */,
+				2B400EDA25AD5913006493A0 /* Renderer.swift in Sources */,
 				2B32995A2501B6F3007C3386 /* Font.swift in Sources */,
 				2B6D0B9F250B08080098F244 /* b2ChainAndPolygonContact.swift in Sources */,
 				2B6D0BA5250B08080098F244 /* b2ContactSolver.swift in Sources */,
@@ -1424,7 +1460,7 @@
 				2B6D0BD3250B08080098F244 /* b2Rope.swift in Sources */,
 				2B01C88524FB824A00E86449 /* MathLibrary.swift in Sources */,
 				2B6D0BB1250B08080098F244 /* b2DistanceJoint.swift in Sources */,
-				2B76D7E125AC3A5200AF6FF2 /* Builder.swift in Sources */,
+				2B76D7E125AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
 				2B6D0BE9250B08080098F244 /* b2PolygonShape.swift in Sources */,
 				2B6D0BF5250B08080098F244 /* b2Distance.swift in Sources */,
 			);
@@ -1440,6 +1476,8 @@
 				2B76D80425AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
 				2B76D7EC25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
 				2B71E7192516F5BA00F3317D /* Branches.swift in Sources */,
+				2B400ECD25AD5458006493A0 /* SDFNodes2D.swift in Sources */,
+				2B400EAE25AD445C006493A0 /* BaseBuilder.swift in Sources */,
 				2B6D0BF2250B08080098F244 /* b2CollideEdge.swift in Sources */,
 				2BE97389258CAD0700D8019D /* Expression.swift in Sources */,
 				2BFDAF9E254A8A4E0096A0FF /* Parma.swift in Sources */,
@@ -1458,9 +1496,11 @@
 				2B6D0BF8250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */,
 				2B6D0BFA250B08080098F244 /* b2Collision.swift in Sources */,
+				2B400EA225AD43AF006493A0 /* BranchNodes2D.swift in Sources */,
 				2B2882EA2519E69E00D1AB2D /* MapStructures.swift in Sources */,
 				2B6D0BF6250B08080098F244 /* b2CollidePolygon.swift in Sources */,
 				2B6D0BBE250B08080098F244 /* b2PrismaticJoint.swift in Sources */,
+				2B400ED925AD5913006493A0 /* Renderer.swift in Sources */,
 				2B3299592501B6F3007C3386 /* Font.swift in Sources */,
 				2B6D0B9E250B08080098F244 /* b2ChainAndPolygonContact.swift in Sources */,
 				2B6D0BA4250B08080098F244 /* b2ContactSolver.swift in Sources */,
@@ -1521,7 +1561,7 @@
 				2B6D0BD2250B08080098F244 /* b2Rope.swift in Sources */,
 				2B01C88624FB824A00E86449 /* MathLibrary.swift in Sources */,
 				2B6D0BB0250B08080098F244 /* b2DistanceJoint.swift in Sources */,
-				2B76D7E025AC3A5200AF6FF2 /* Builder.swift in Sources */,
+				2B76D7E025AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
 				2B6D0BE8250B08080098F244 /* b2PolygonShape.swift in Sources */,
 				2B6D0BF4250B08080098F244 /* b2Distance.swift in Sources */,
 			);
@@ -1576,8 +1616,10 @@
 				2B40DA7D25590EFB001FC5F1 /* b2EdgeAndCircleContact.swift in Sources */,
 				2B40DA8825590F00001FC5F1 /* b2Joint.swift in Sources */,
 				2B40DAAE25590F13001FC5F1 /* b2EdgeShape.swift in Sources */,
+				2B400ED025AD5458006493A0 /* SDFNodes2D.swift in Sources */,
 				2B6193DF25AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B40DA6A25590EE8001FC5F1 /* Behavior.swift in Sources */,
+				2B400EDC25AD5913006493A0 /* Renderer.swift in Sources */,
 				2B40DA7F25590EFB001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */,
 				2B40DA9825590F04001FC5F1 /* b2TimeStep.swift in Sources */,
 				2B40DA6D25590EE8001FC5F1 /* BehaviorBuilder.swift in Sources */,
@@ -1585,8 +1627,10 @@
 				2B40DAB725590F17001FC5F1 /* b2DynamicTree.swift in Sources */,
 				2B40DA8D25590F00001FC5F1 /* b2MouseJoint.swift in Sources */,
 				2B40DA8225590EFB001FC5F1 /* b2ChainAndCircleContact.swift in Sources */,
+				2B400EB125AD445C006493A0 /* BaseBuilder.swift in Sources */,
 				2B40DA9525590F04001FC5F1 /* b2ContactManager.swift in Sources */,
 				2B40DAA025590F0B001FC5F1 /* b2Draw.swift in Sources */,
+				2B400EA525AD43AF006493A0 /* BranchNodes2D.swift in Sources */,
 				2BE97381258CAD0700D8019D /* AtomNodes.swift in Sources */,
 				2B40DA6225590EE8001FC5F1 /* MathLibrary.swift in Sources */,
 				2B40DA8A25590F00001FC5F1 /* b2RevoluteJoint.swift in Sources */,
@@ -1596,7 +1640,7 @@
 				2B40DA9025590F00001FC5F1 /* b2WeldJoint.swift in Sources */,
 				2B40DA8325590EFB001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */,
 				2B40DA8E25590F00001FC5F1 /* b2PulleyJoint.swift in Sources */,
-				2B76D7E325AC3A5200AF6FF2 /* Builder.swift in Sources */,
+				2B76D7E325AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
 				2B40DAA625590F0B001FC5F1 /* b2Wrappers.swift in Sources */,
 				2B40DA7025590EE8001FC5F1 /* Branches.swift in Sources */,
 				2B40DA7125590EE8001FC5F1 /* ShaderCompiler.swift in Sources */,
@@ -1667,8 +1711,10 @@
 				2B40DAE825591016001FC5F1 /* MapStructures.swift in Sources */,
 				2B40DAF625591023001FC5F1 /* b2EdgeAndCircleContact.swift in Sources */,
 				2B40DB112559102E001FC5F1 /* b2TimeStep.swift in Sources */,
+				2B400ED125AD5458006493A0 /* SDFNodes2D.swift in Sources */,
 				2B6193E025AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B40DB3025591040001FC5F1 /* b2Collision.swift in Sources */,
+				2B400EDD25AD5913006493A0 /* Renderer.swift in Sources */,
 				2B40DB262559103C001FC5F1 /* b2CircleShape.swift in Sources */,
 				2B40DB0E2559102E001FC5F1 /* b2WorldCallbacks.swift in Sources */,
 				2B40DB072559102A001FC5F1 /* b2MouseJoint.swift in Sources */,
@@ -1676,8 +1722,10 @@
 				2B40DAEF2559101B001FC5F1 /* Font.swift in Sources */,
 				2B40DAE725591016001FC5F1 /* Behavior.swift in Sources */,
 				2B40DB002559102A001FC5F1 /* b2WeldJoint.swift in Sources */,
+				2B400EB225AD445C006493A0 /* BaseBuilder.swift in Sources */,
 				2B40DB2F25591040001FC5F1 /* b2CollideEdge.swift in Sources */,
 				2B40DAEE2559101B001FC5F1 /* Texture2D.swift in Sources */,
+				2B400EA625AD43AF006493A0 /* BranchNodes2D.swift in Sources */,
 				2BE97382258CAD0700D8019D /* AtomNodes.swift in Sources */,
 				2B40DAE225591016001FC5F1 /* MathLibrary.swift in Sources */,
 				2B40DAF22559101E001FC5F1 /* b2Body.swift in Sources */,
@@ -1687,7 +1735,7 @@
 				2B40DB1B25591036001FC5F1 /* b2Draw.swift in Sources */,
 				2B40DB1F25591036001FC5F1 /* b2Common.swift in Sources */,
 				2B40DAFD25591023001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */,
-				2B76D7E425AC3A5200AF6FF2 /* Builder.swift in Sources */,
+				2B76D7E425AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
 				2B40DADB25591016001FC5F1 /* BehaviorBuilder.swift in Sources */,
 				2B40DAE025591016001FC5F1 /* Map.swift in Sources */,
 				2B40DB0A2559102A001FC5F1 /* b2MotorJoint.swift in Sources */,
@@ -1758,8 +1806,10 @@
 				2B40DB7325591308001FC5F1 /* Classes.swift in Sources */,
 				2B40DB7425591308001FC5F1 /* Texture2D.swift in Sources */,
 				2B40DBB425591325001FC5F1 /* b2EdgeShape.swift in Sources */,
+				2B400ED225AD5458006493A0 /* SDFNodes2D.swift in Sources */,
 				2B6193E125AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				2B40DBA62559131E001FC5F1 /* b2Wrappers.swift in Sources */,
+				2B400EDE25AD5913006493A0 /* Renderer.swift in Sources */,
 				2B40DB6425591303001FC5F1 /* Leaves.swift in Sources */,
 				2B40DBBC2559132A001FC5F1 /* b2CollideCircles.swift in Sources */,
 				2B40DB6325591303001FC5F1 /* File.swift in Sources */,
@@ -1767,8 +1817,10 @@
 				2B40DB9325591314001FC5F1 /* b2PulleyJoint.swift in Sources */,
 				2B40DB8B25591314001FC5F1 /* b2DistanceJoint.swift in Sources */,
 				2B40DBBA2559132A001FC5F1 /* b2DynamicTree.swift in Sources */,
+				2B400EB325AD445C006493A0 /* BaseBuilder.swift in Sources */,
 				2B40DBBD2559132A001FC5F1 /* b2CollideEdge.swift in Sources */,
 				2B40DB7225591308001FC5F1 /* Font.swift in Sources */,
+				2B400EA725AD43AF006493A0 /* BranchNodes2D.swift in Sources */,
 				2BE97383258CAD0700D8019D /* AtomNodes.swift in Sources */,
 				2B40DB7C2559130F001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */,
 				2B40DBA42559131E001FC5F1 /* b2GrowableStack.swift in Sources */,
@@ -1778,7 +1830,7 @@
 				2B40DB822559130F001FC5F1 /* b2PolygonContact.swift in Sources */,
 				2B40DB782559130B001FC5F1 /* b2Body.swift in Sources */,
 				2B40DB9825591319001FC5F1 /* b2World.swift in Sources */,
-				2B76D7E525AC3A5200AF6FF2 /* Builder.swift in Sources */,
+				2B76D7E525AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
 				2B40DB6825591303001FC5F1 /* MapBuilder.swift in Sources */,
 				2B40DB6E25591303001FC5F1 /* Game.swift in Sources */,
 				2B40DB832559130F001FC5F1 /* b2Contact.swift in Sources */,
@@ -1822,6 +1874,7 @@
 				2B5902542592D2EC00FCF16D /* b2Draw.swift in Sources */,
 				2B5902282592D2D900FCF16D /* b2PolygonAndCircleContact.swift in Sources */,
 				2B5902662592D2FA00FCF16D /* b2EdgeShape.swift in Sources */,
+				2B400ECF25AD5458006493A0 /* SDFNodes2D.swift in Sources */,
 				2B5902442592D2E100FCF16D /* b2TimeStep.swift in Sources */,
 				2B59022B2592D2D900FCF16D /* b2Contact.swift in Sources */,
 				2B5901A72592D21500FCF16D /* MetalView.swift in Sources */,
@@ -1830,6 +1883,8 @@
 				2B5901792592D0C900FCF16D /* Shaders.metal in Sources */,
 				2B5901E92592D23C00FCF16D /* Branches.swift in Sources */,
 				2B5901D12592D23000FCF16D /* ShaderCompiler.swift in Sources */,
+				2B400EB025AD445C006493A0 /* BaseBuilder.swift in Sources */,
+				2B400EDB25AD5913006493A0 /* Renderer.swift in Sources */,
 				2B5902702592D2FD00FCF16D /* b2DynamicTree.swift in Sources */,
 				2B59023B2592D2DD00FCF16D /* b2MotorJoint.swift in Sources */,
 				2B5901A12592D21100FCF16D /* MathLibrary.swift in Sources */,
@@ -1867,6 +1922,7 @@
 				2B5902572592D2EC00FCF16D /* b2Timer.swift in Sources */,
 				2B5902272592D2D900FCF16D /* b2EdgeAndCircleContact.swift in Sources */,
 				2B5902012592D24E00FCF16D /* AtomNodes.swift in Sources */,
+				2B400EA425AD43AF006493A0 /* BranchNodes2D.swift in Sources */,
 				2B5902582592D2EC00FCF16D /* b2GrowableStack.swift in Sources */,
 				2B5902322592D2DD00FCF16D /* b2RevoluteJoint.swift in Sources */,
 				2B5902532592D2EC00FCF16D /* b2Math.swift in Sources */,
@@ -1891,7 +1947,7 @@
 				2B59026F2592D2FD00FCF16D /* b2TimeOfImpact.swift in Sources */,
 				2B5901DD2592D23600FCF16D /* Behavior.swift in Sources */,
 				2B5902372592D2DD00FCF16D /* b2GearJoint.swift in Sources */,
-				2B76D7E225AC3A5200AF6FF2 /* Builder.swift in Sources */,
+				2B76D7E225AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

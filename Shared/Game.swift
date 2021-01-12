@@ -91,6 +91,9 @@ public class Game       : ObservableObject
     
     var frameworkId     : String? = nil
 
+    var graphRenderer   : GraphRenderer!
+    var graphBuilder    : DenrimGraphBuilder!
+
     public init(_ frameworkId: String? = nil)
     {        
         self.frameworkId = frameworkId
@@ -108,10 +111,14 @@ public class Game       : ObservableObject
         assetFolder = AssetFolder()
         assetFolder.setup(self)
         
+        graphBuilder = DenrimGraphBuilder(self)
+
         mapBuilder = MapBuilder(self)
         behaviorBuilder = BehaviorBuilder(self)
         shaderCompiler = ShaderCompiler(self)
         
+        graphRenderer = GraphRenderer(self)
+
         #if os(iOS)
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
@@ -467,6 +474,33 @@ public class Game       : ObservableObject
     {
         if state == .Idle {
             clearLocalAudio()
+            if asset.type == .Shape {
+                if asset.graph != nil {
+                    graphRenderer.restart(asset, .Normal, { (texture) in
+                        // Copy the texture
+                        DispatchQueue.main.async {
+                            if let texture = texture {
+                                let texture2D = Texture2D(self, texture: texture)
+                                
+                                self.startDrawing()
+                                var options : [String:Any] = [:]
+                                options["texture"] = texture2D
+                                
+                                let width : Float = texture2D.width// * Float(asset.dataScale)
+                                let height : Float = texture2D.height// * Float(asset.dataScale)
+
+                                options["width"] = width
+                                options["height"] = height
+
+                                self.texture?.clear()
+                                self.texture?.drawTexture(options)
+                                self.stopDrawing()
+                                self.updateOnce()
+                            }
+                        }
+                    })
+                }
+            } else
             if asset.type == .Shader {
                 if let shader = asset.shader {
                     startDrawing()
