@@ -43,13 +43,19 @@ class BaseVariable {
     
     var context     : ExpressionContext? = nil
     var name        : String = ""
-    
+        
     // How many components does this variable have
     var components  : Int = 1
     
     // If this variable is a reference to another variable
     var reference   : BaseVariable? = nil
     var qualifiers  : [Int] = []
+    
+    // The data index of the variable
+    var dataIndex   : Int? = nil
+    
+    // If the variables is chained in an expression (i.e. the temporary output of a function)
+    var chained     = false
     
     init(_ name: String, components: Int = 1)
     {
@@ -64,6 +70,11 @@ class BaseVariable {
     
     /// Return the typeName of the variable as a String, i.e. "Float1"
     func getTypeName() -> String {
+        return "Invalid"
+    }
+    
+    /// Return the SIMD / Metal name of the variable, i.e. float2
+    func getSIMDName() -> String {
         return "Invalid"
     }
     
@@ -236,12 +247,15 @@ class BaseVariable {
     }
 }
 
+// MARK: - Float4
 final class Float4 : BaseVariable
 {
     var x           : Float = 1
     var y           : Float = 1
     var z           : Float = 1
     var w           : Float = 1
+
+    var isColor     = false
 
     init(_ name: String = "", _ x: Float = 1,_ y: Float = 1,_ z: Float = 1,_ w: Float = 1)
     {
@@ -285,6 +299,30 @@ final class Float4 : BaseVariable
     var context3    : ExpressionContext? = nil
     var context4    : ExpressionContext? = nil
 
+    /// From a hex color
+    init(_ hexString: String)
+    {
+        func intFromHexString(hexStr: String) -> UInt64 {
+            var hexInt: UInt64 = 0
+            // Create scanner
+            let scanner: Scanner = Scanner(string: hexStr)
+            // Tell scanner to skip the # character
+            scanner.charactersToBeSkipped = CharacterSet(charactersIn: "#")
+            // Scan hex value
+            scanner.scanHexInt64(&hexInt)
+            return hexInt
+        }
+        
+        let hexint = Int(intFromHexString(hexStr: hexString))
+        x = Float((hexint & 0xff000000) >> 32) / 255.0
+        y = Float((hexint & 0xff0000) >> 16) / 255.0
+        z = Float((hexint & 0xff00) >> 8) / 255.0
+        w = Float((hexint & 0xff) >> 0) / 255.0
+        
+        super.init("", components: 4)
+        isColor = true
+    }
+    
     /// From text
     init(_ name: String = "", container: VariableContainer, parameters: String, error: inout CompileError)
     {
@@ -375,6 +413,10 @@ final class Float4 : BaseVariable
         return "Float4"
     }
     
+    override func getSIMDName() -> String {
+        return "float4"
+    }
+    
     @inlinable override func isConstant() -> Bool {
         if let reference = reference {
             return reference.isConstant()
@@ -392,6 +434,12 @@ final class Float4 : BaseVariable
     @inlinable override func toSIMD4() -> SIMD4<Float>
     {
         return toSIMD()
+    }
+    
+    @inlinable override func toSIMD3() -> SIMD3<Float>
+    {
+        let simd = toSIMD()
+        return float3(simd.x, simd.y, simd.z)
     }
     
     @inlinable func toSIMD() -> SIMD4<Float>
@@ -481,11 +529,14 @@ final class Float4 : BaseVariable
     }
 }
 
+// MARK: - Float3
 final class Float3 : BaseVariable
 {
     var x           : Float = 1
     var y           : Float = 1
     var z           : Float = 1
+    
+    var isColor     = false
 
     init(_ name: String = "", _ x: Float = 1,_ y: Float = 1,_ z: Float = 1)
     {
@@ -524,6 +575,29 @@ final class Float3 : BaseVariable
     var context2    : ExpressionContext? = nil
     var context3    : ExpressionContext? = nil
 
+    /// From a hex color
+    init(_ hexString: String)
+    {
+        func intFromHexString(hexStr: String) -> UInt64 {
+            var hexInt: UInt64 = 0
+            // Create scanner
+            let scanner: Scanner = Scanner(string: hexStr)
+            // Tell scanner to skip the # character
+            scanner.charactersToBeSkipped = CharacterSet(charactersIn: "#")
+            // Scan hex value
+            scanner.scanHexInt64(&hexInt)
+            return hexInt
+        }
+        
+        let hexint = Int(intFromHexString(hexStr: hexString))
+        x = Float((hexint & 0xff0000) >> 16) / 255.0
+        y = Float((hexint & 0xff00) >> 8) / 255.0
+        z = Float((hexint & 0xff) >> 0) / 255.0
+        
+        super.init("", components: 3)
+        isColor = true
+    }
+    
     /// From text
     init(_ name: String = "", container: VariableContainer, parameters: String, error: inout CompileError)
     {
@@ -598,6 +672,10 @@ final class Float3 : BaseVariable
         return "Float3"
     }
     
+    override func getSIMDName() -> String {
+        return "float3"
+    }
+    
     @inlinable override func isConstant() -> Bool {
         if let reference = reference {
             return reference.isConstant()
@@ -609,12 +687,68 @@ final class Float3 : BaseVariable
     }
     
     override func toString() -> String {
-        return "\(String(x)), \((String(y))), \((String(z)))"
+        if name.isEmpty == false {
+            return name
+        } else
+        if isConstant() {
+            return "\(String(format: "%.03g", x)), \(String(format: "%.03g", y)), \(String(format: "%.03g", z))"
+        } else
+        if expressions == 0 {
+            if let context = context {
+                return context.toMetal()
+            }
+        } else
+        if expressions == 3 {
+        
+            var stringX = "0"
+            var stringY = "0"
+            var stringZ = "0"
+            
+            if let c1 = context1 {
+                stringX = c1.toMetal(embedded: true)
+            } else {
+                stringX = String(format: "%.03g", x)
+             }
+            
+            if let c2 = context2 {
+                stringY = c2.toMetal(embedded: true)
+            } else {
+                stringY = String(format: "%.03g", y)
+             }
+            
+            if let c3 = context3 {
+                stringZ = c3.toMetal(embedded: true)
+            } else {
+               stringZ = String(format: "%.03g", z)
+            }
+            
+            return "\(stringX), \(stringY), \(stringZ)"
+        }
+        return ""
+    }
+    
+    func toHexString() -> String {
+        let r:CGFloat = CGFloat(x)
+        let g:CGFloat = CGFloat(y)
+        let b:CGFloat = CGFloat(z)
+        //let a:CGFloat = 1
+        
+        //getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        
+        return NSString(format:"#%06x", rgb) as String
     }
     
     @inlinable override func toSIMD3() -> SIMD3<Float>
     {
         return toSIMD()
+    }
+    
+    @inlinable override func toSIMD4() -> SIMD4<Float>
+    {
+        let v = toSIMD()
+        return float4(v.x, v.y, v.z, 0)
     }
     
     @inlinable func toSIMD() -> SIMD3<Float>
@@ -692,6 +826,7 @@ final class Float3 : BaseVariable
     }
 }
 
+// MARK: - Float2
 final class Float2 : BaseVariable
 {
     var x           : Float = 0
@@ -790,6 +925,10 @@ final class Float2 : BaseVariable
         return "Float2"
     }
     
+    override func getSIMDName() -> String {
+        return "float2"
+    }
+    
     @inlinable override func isConstant() -> Bool {
         if let reference = reference {
             return reference.isConstant()
@@ -801,7 +940,30 @@ final class Float2 : BaseVariable
     }
     
     override func toString() -> String {
-        return "\(String(x)), \((String(y)))"
+        if name.isEmpty == false {
+            var qual = ""
+            if qualifiers.count == 2 {
+                let a = ["x", "y", "z", "w"]
+                qual += "." + a[qualifiers[0]] + a[qualifiers[1]]
+            }
+            return name + qual
+        } else
+        if isConstant() {
+            return "\(String(x)), \((String(y)))"
+        } else {
+            var stringX = "0"
+            var stringY = "0"
+            
+            if let c1 = context1 {
+                stringX = c1.toMetal()
+            }
+            
+            if let c2 = context1 {
+                stringY = c2.toMetal()
+            }
+            
+            return "\(stringX), \(stringY)"
+        }
     }
     
     @inlinable override func toSIMD2() -> SIMD2<Float>
@@ -872,6 +1034,7 @@ final class Float2 : BaseVariable
     }
 }
 
+// MARK: - Float1
 final class Float1 : BaseVariable
 {
     var x           : Float = 0
@@ -936,6 +1099,12 @@ final class Float1 : BaseVariable
         return x
     }
     
+    @inlinable override func toSIMD4() -> SIMD4<Float>
+    {
+        let v = toSIMD()
+        return float4(v, 0, 0, 0)
+    }
+    
     override func getType() -> VariableType {
         return .Float
     }
@@ -944,8 +1113,37 @@ final class Float1 : BaseVariable
         return "Float"
     }
     
+    override func getSIMDName() -> String {
+        return "float"
+    }
+    
     override func toString() -> String {
-        return String(x)//format: "%.03f", x)
+        if name.isEmpty == false {
+            var qual = ""
+            if qualifiers.count == 1 {
+                let a = ["x", "y", "z", "w"]
+                qual += "." + a[qualifiers[0]]
+            }
+            return name + qual
+        } else
+        if isConstant() {
+            return String(x)//format: "%.03f", x)
+        } else {
+            var stringX = "0"
+            
+            if let ref = reference {
+                stringX = ref.name
+                if qualifiers.count == 1 {
+                    let a = ["x", "y", "z", "w"]
+                    stringX += "." + a[qualifiers[0]]
+                }
+            } else
+            if let c = context {
+                stringX = c.toMetal(embedded: true)
+            }
+            
+            return "\(stringX)"
+        }
     }
     
     @inlinable func fromSIMD(_ v: Float)
@@ -967,6 +1165,7 @@ final class Float1 : BaseVariable
     }
 }
 
+// MARK - Int1
 final class Int1 : BaseVariable
 {
     var x           : Int = 0
@@ -1016,8 +1215,16 @@ final class Int1 : BaseVariable
         return x
     }
     
+    override func getType() -> VariableType {
+        return .Int
+    }
+    
     override func getTypeName() -> String {
         return "Int"
+    }
+    
+    override func getSIMDName() -> String {
+        return "float"
     }
     
     override func toString() -> String {
