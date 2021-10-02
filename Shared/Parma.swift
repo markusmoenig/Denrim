@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Parma
+import MarkdownUI
 
 struct HelpItem: Identifiable {
     var id          : String { name }
@@ -140,6 +140,6 @@ struct HelpIndexView: View {
 struct ParmaView: View {
     @Binding var text: String
     var body: some View {
-        Parma(text)
+        Markdown(Document(text))
     }
 }
