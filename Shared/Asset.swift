@@ -260,6 +260,12 @@ class AssetFolder       : Codable
                     game.behaviorBuilder.stopTimer()
                 }
                 current.map = nil
+            } else
+            if current.type == .Shape {
+                if game.graphBuilder.cursorTimer != nil {
+                    game.graphBuilder.stopTimer()
+                }
+                current.graph = nil
             }
         }
 
@@ -506,6 +512,10 @@ class AssetFolder       : Codable
     {
         if asset.type == .Behavior {
             game.behaviorBuilder.compile(asset)
+        } else
+        if asset.type == .Shape {
+            game.graphBuilder.compile(asset)
+            self.game.createPreview(asset)
         } else
         if asset.type == .Map {
             if let path = extractPath(asset) {

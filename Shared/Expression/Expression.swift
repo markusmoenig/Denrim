@@ -39,9 +39,12 @@ class ExpressionNode {
 
     var name                : String = ""
     
+    var argumentsIn         : [ExpressionContext] = []
     var indices             : [Int] = []
-
     var resultType          : ExpressionContext.ResultType = .Constant
+
+    /// The destination index for the result
+    var destIndex : Int! = nil
 
     init(_ name: String)
     {
@@ -54,7 +57,7 @@ class ExpressionNode {
     }
     
     /// A function gets passed the parameter string it has to evaluate itself
-    func setupFunction(_ container: VariableContainer,_ destIndex: Int,_ parameters: String,_ error: inout CompileError) -> BaseVariable?
+    func setupFunction(_ container: VariableContainer,_ parameters: String,_ error: inout CompileError) -> BaseVariable?
     {
         return nil
     }
@@ -63,72 +66,89 @@ class ExpressionNode {
     {
     }
     
-    // Utilities
-    
-    func splitIntoOne(_ functionName : String,_ container: VariableContainer,_ parameters: String,_ error: inout CompileError) -> ExpressionContext?
+    func toMetal(_ context: ExpressionContext) -> String
     {
-        let array = splitParameters(parameters)
-        if array.count == 1 {
-            let arg1Context = ExpressionContext()
-            arg1Context.parse(expression: array[0], container: container, error: &error)
-            
-            if error.error != nil { return nil }
-            
-            return arg1Context
-        } else {
-            error.error = "Wrong number of arguments for \(functionName)"
-        }
-        
-        return nil
+        return ""
     }
     
-    func splitIntoTwo(_ functionName : String,_ container: VariableContainer,_ parameters: String,_ error: inout CompileError) -> (ExpressionContext, ExpressionContext)?
+    /// Get help text
+    func getHelp() -> String
     {
-        let array = splitParameters(parameters)
-        if array.count == 2 {
-            let arg1Context = ExpressionContext()
-            arg1Context.parse(expression: array[0], container: container, error: &error)
-            
-            if error.error != nil { return nil }
-            
-            let arg2Context = ExpressionContext()
-            arg2Context.parse(expression: array[1], container: container, error: &error)
-            
-            if error.error != nil { return nil }
-            
-            return (arg1Context, arg2Context)
-        } else {
-            error.error = "Wrong number of arguments for \(functionName)"
-        }
-        
-        return nil
+        return ""
     }
     
-    func splitIntoThree(_ functionName : String,_ container: VariableContainer,_ parameters: String,_ error: inout CompileError) -> (ExpressionContext, ExpressionContext, ExpressionContext)?
+    /// Get options
+    func getOptions() -> [GraphOption]
     {
+        return []
+    }
+
+    ///
+    func verifyOptions(_ functionName : String,_ container: VariableContainer, _ parameters: String,_ error: inout CompileError) -> Bool
+    {
+        let options = getOptions()
         let array = splitParameters(parameters)
-        if array.count == 3 {
-            let arg1Context = ExpressionContext()
-            arg1Context.parse(expression: array[0], container: container, error: &error)
-            
-            if error.error != nil { return nil }
-            
-            let arg2Context = ExpressionContext()
-            arg2Context.parse(expression: array[1], container: container, error: &error)
-            
-            if error.error != nil { return nil }
-            
-            let arg3Context = ExpressionContext()
-            arg3Context.parse(expression: array[2], container: container, error: &error)
-            
-            if error.error != nil { return nil }
-            
-            return (arg1Context, arg2Context, arg3Context)
-        } else {
-            error.error = "Wrong number of arguments for \(functionName)"
+        
+        var lastType : BaseVariable.VariableType? = nil
+        
+        if options.count != array.count {
+            error.error = "Wrong number of parameters for \(functionName): \(array.count). Should be \(options.count)."
+            return false
+        }
+                
+        for i in 0..<options.count {
+            let context = ExpressionContext()
+            context.parse(expression: array[i], container: container, error: &error)
+            if error.error == nil {
+                
+                if let rc = context.execute() {
+                    
+                    let type = rc.getType()
+                    // Check type
+                    var rightType = false
+                    if type == options[i].variable.getType() {
+                        rightType = true
+                    } else {
+                        for v in options[i].optionals {
+                            if type == v.getType() {
+                                rightType = true
+                                break
+                            }
+                        }
+                    }
+                    
+                    if rightType {
+                        var passesRules = false
+                        if options[i].rules == .SameTypeAsPrevious && type != lastType && lastType != nil {
+                            error.error = "Wrong type \(type) for parameter \(i+1) of \(functionName). Needs to be \(lastType!)."
+                            return false
+                        } else {
+                            passesRules = true
+                        }
+                        
+                        if passesRules {
+                            lastType = type
+                            if context.isConstant() == false {
+                                resultType = .Variable
+                            }
+                            argumentsIn.append(context)
+                        }
+                    } else {
+                        error.error = "Wrong type \(type) for parameter \(i+1) of \(functionName)."
+                        return false
+                    }
+                }
+            } else {
+                return false
+            }
         }
         
-        return nil
+        if argumentsIn.count != options.count {
+            error.error = "Wrong number of parameters for \(functionName): \(argumentsIn.count). Should be \(options.count)."
+            return false
+        }
+        
+        return true
     }
     
     /**
@@ -182,6 +202,7 @@ class ExpressionContext
     
     class ExpressionNodeItem
     {
+        var id           = UUID()
         var name         : String
         var createNode   : () -> ExpressionNode
         
@@ -202,12 +223,20 @@ class ExpressionContext
     
     var functions           : [ExpressionNodeItem] =
     [
+        ExpressionNodeItem("abs", {() -> ExpressionNode in return AbsFuncNode() }),
+        ExpressionNodeItem("sin", {() -> ExpressionNode in return SinFuncNode() }),
+        ExpressionNodeItem("min", {() -> ExpressionNode in return MinFuncNode() }),
+        ExpressionNodeItem("mod", {() -> ExpressionNode in return ModFuncNode() }),
         ExpressionNodeItem("dot", {() -> ExpressionNode in return DotFuncNode() }),
         ExpressionNodeItem("pow", {() -> ExpressionNode in return PowFuncNode() }),
         ExpressionNodeItem("clamp", {() -> ExpressionNode in return ClampFuncNode() }),
+        ExpressionNodeItem("mix", {() -> ExpressionNode in return MixFuncNode() }),
+        ExpressionNodeItem("step", {() -> ExpressionNode in return StepFuncNode() }),
         ExpressionNodeItem("normalize", {() -> ExpressionNode in return NormalizeFuncNode() }),
         ExpressionNodeItem("reflect", {() -> ExpressionNode in return ReflectFuncNode() }),
         ExpressionNodeItem("noise2D", {() -> ExpressionNode in return Noise2DFuncNode() }),
+        
+        ExpressionNodeItem("Float3", {() -> ExpressionNode in return Float3FuncNode() })
      ]
         
     init()
@@ -230,6 +259,8 @@ class ExpressionContext
     var cResult2    : Float2? = nil
     var cResult3    : Float3? = nil
     var cResult4    : Float4? = nil
+    
+    var lastResult  : BaseVariable? = nil
     
     var expression  : String = ""
     
@@ -406,6 +437,7 @@ class ExpressionContext
                 // Test for an atom: *, +, etc
                 if let atomNode = getAtom(element) {
                     currentAtom = atomNode
+                    
                 } else
                 // Test for variable reference
                 if let variableRef = getVariableReference(element, container: container, error: &error) {
@@ -425,8 +457,20 @@ class ExpressionContext
             if token == "<" {
                 let parameters = extractUpToTokenHierarchy([">"], "<")
                 
+                if let variable = BaseVariable.createTypeFromParameters(element, container: container, parameters: parameters, error: &error) {
+                    
+                    if variable.isConstant() == false {
+                        resultType = .Variable
+                    }
+                    
+                    uncomsumed.append(values.count)
+                    values.append(variable)
+                    
+                    testForConsumption()
+                } else
                 if let functionNode = getFunction(element) {
-                    if let result = functionNode.setupFunction(container, values.count, parameters, &error) {
+                    functionNode.destIndex = values.count
+                    if let result = functionNode.setupFunction(container, parameters, &error) {
                     
                         if functionNode.resultType == .Variable {
                             resultType = .Variable
@@ -439,17 +483,6 @@ class ExpressionContext
                         testForConsumption()
                         nodes.append(functionNode)
                     }
-                } else
-                if let variable = BaseVariable.createTypeFromParameters(element, container: container, parameters: parameters, error: &error) {
-                    
-                    if variable.isConstant() == false {
-                        resultType = .Variable
-                    }
-                    
-                    uncomsumed.append(values.count)
-                    values.append(variable)
-                    
-                    testForConsumption()
                 }
             }
             
@@ -460,6 +493,47 @@ class ExpressionContext
             //print(expression, resultType)
             //print(element, offset)
         }
+    }
+    
+    /// Converts the expression to metal code
+    func toMetal(embedded: Bool = false) -> String
+    {
+        var code = ""
+        
+        if nodes.isEmpty == false {
+            for node in nodes {
+                node.execute(self)
+                code += node.toMetal(self)
+                
+                if node.destIndex != nil {
+                    // Function node
+                    values[node.destIndex]?.chained = true
+                } else {
+                    // Atom
+                    
+                    let index = node.indices[1] + 1
+                    if index < values.count {
+                        values[index]?.chained = true
+                    }
+                }
+            }
+        } else {
+            if values.count >= 1 {
+                if let result = values[values.count - 1] {
+                    if result.components > 1 && result.name.isEmpty {
+                        code += "\(result.getSIMDName())(\(result.toString()))"
+                    } else {
+                        code += "\(result.toString())"
+                    }
+                }
+            }
+        }
+        
+        if embedded == false {
+            code += ";\n"
+        }
+        
+        return code
     }
     
     /// Returns a possible result
@@ -476,6 +550,7 @@ class ExpressionContext
                 if resultType == .Constant {
                     cResult = result
                 }
+                lastResult = result
                 return result
             }
         }
@@ -687,7 +762,7 @@ class ExpressionContext
         }
         
         if let variable = container.getVariableValue(variableExpression) {
-            
+                        
             if qualifierExpression == "" {
                 return variable
             } else {
@@ -713,24 +788,28 @@ class ExpressionContext
                 
                 if indices.count == 1 {
                     let ref = Float1()
+                    ref.name = variable.name
                     ref.reference = variable
                     ref.qualifiers = indices
                     return ref
                 } else
                 if indices.count == 2 {
                     let ref = Float2()
+                    ref.name = variable.name
                     ref.reference = variable
                     ref.qualifiers = indices
                     return ref
                 } else
                 if indices.count == 3 {
                     let ref = Float3()
+                    ref.name = variable.name
                     ref.reference = variable
                     ref.qualifiers = indices
                     return ref
                 } else
                 if indices.count == 4 {
                     let ref = Float4()
+                    ref.name = variable.name
                     ref.reference = variable
                     ref.qualifiers = indices
                     return ref
