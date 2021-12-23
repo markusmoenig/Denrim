@@ -91,6 +91,8 @@ public class Game       : ObservableObject
     
     var frameworkId     : String? = nil
 
+    let editorIsMaximized                       = PassthroughSubject<Bool, Never>()
+    
     var graphRenderer   : GraphRenderer!
     var graphBuilder    : DenrimGraphBuilder!
 

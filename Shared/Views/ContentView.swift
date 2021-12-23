@@ -252,40 +252,7 @@ struct RootView: View {
 }
 */
 
-// https://stackoverflow.com/questions/61386877/in-swiftui-is-it-possible-to-use-a-modifier-only-for-a-certain-os-target
-enum OperatingSystem {
-    case macOS
-    case iOS
-    case tvOS
-    case watchOS
-
-    #if os(macOS)
-    static let current = macOS
-    #elseif os(iOS)
-    static let current = iOS
-    #elseif os(tvOS)
-    static let current = tvOS
-    #elseif os(watchOS)
-    static let current = watchOS
-    #else
-    #error("Unsupported platform")
-    #endif
-}
-
-extension View {
-    @ViewBuilder
-    func ifOS<Content: View>(
-        _ operatingSystems: OperatingSystem...,
-        modifier: @escaping (Self) -> Content
-    ) -> some View {
-        if operatingSystems.contains(OperatingSystem.current) {
-            modifier(self)
-        } else {
-            self
-        }
-    }
-}
-
+/*
 struct ListView: View {
     @State var document                 : DenrimDocument
     
@@ -441,12 +408,16 @@ struct ListView: View {
         }
         */
     }
-}
+}*/
 
 struct ContentView: View {
+    
     @Binding var document                   : DenrimDocument
+    
     @StateObject var storeManager           : StoreManager
 
+    @State private var editorIsMaximized    = false
+    
     @State private var showAssetNamePopover : Bool = false
     @State private var assetName: String    = ""
 
@@ -490,7 +461,8 @@ struct ContentView: View {
 
     var body: some View {
         HStack {
-        NavigationView() {
+            NavigationView() {
+            /*
             VStack {
                 HStack(spacing: toolBarSpacing) {
                     Button(action: {
@@ -578,106 +550,68 @@ struct ContentView: View {
                 .padding(.bottom, 2)
                 Divider()
                 ListView(document: document, selection: $selection, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, showDeleteAssetAlert: $showDeleteAssetAlert, isAddingImages: $isAddingImages, imageIndex: $imageIndex )
-            }
+            }*/
+            
+            ProjectView(document: document, updateView: $updateView)
             .frame(minWidth: leftPanelWidth, idealWidth: leftPanelWidth, maxWidth: leftPanelWidth)
-            .layoutPriority(0)
+            //.layoutPriority(0)
+            
             // Asset deletion
-            .alert(isPresented: $showDeleteAssetAlert) {
-                Alert(
-                    title: Text(document.game.assetFolder.current != nil && document.game.assetFolder.current!.type != .Folder ? "Do you want to remove the file '\(document.game.assetFolder.current!.name)' ?" : "Do you want to remove the folder '\(document.game.assetFolder.current!.name)' and all of it's contents ?"),
-                    message: Text("This action cannot be undone!"),
-                    primaryButton: .destructive(Text("Yes"), action: {
-                        if let asset = document.game.assetFolder.current {
-                            document.game.assetFolder.removeAsset(asset, stopTimer: true)
-                            for a in document.game.assetFolder.assets {
-                                if a.type != .Folder {
-                                    document.game.assetFolder.select(a.id)
-                                }
-                            }
-                            self.updateView.toggle()
-                        }
-                    }),
-                    secondaryButton: .cancel(Text("No"), action: {})
-                )
-            }
-            // Edit Asset name
-            .popover(isPresented: self.$showAssetNamePopover,
-                     arrowEdge: .top
-            ) {
-                VStack(alignment: .leading) {
-                    Text("Name:")
-                    TextField("Name", text: $assetName, onEditingChanged: { (changed) in
-                        if let asset = document.game.assetFolder.current {
-                            asset.name = assetName
-                            document.game.assetFolder.sort()
-                            self.updateView.toggle()
-                        }
-                    })
-                    .frame(minWidth: 200)
-                }.padding()
-            }
-            // Import Images
-            .fileImporter(
-                isPresented: $isImportingImages,
-                allowedContentTypes: [.item],
-                allowsMultipleSelection: true
-            ) { result in
-                do {
-                    let selectedFiles = try result.get()
-                    if selectedFiles.count > 0 {
-                        document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
-                        assetName = document.game.assetFolder.current!.name
-                        showAssetNamePopover = true
-                        updateView.toggle()
-                        document.game.contentChanged.send()
-                    }
-                } catch {
-                    // Handle failure.
-                }
-            }
-            GeometryReader { geometry in
                 // New File Browser
                 if self.document.game.assetFolder.isNewProject {
-                    BrowserView(document.game, updateView: $updateView, selection: $selection)
-                        .frame(minWidth: geometry.size.width,
-                               maxWidth: geometry.size.width,
-                               minHeight: geometry.size.height,
-                               maxHeight: geometry.size.height,
-                               alignment: .topLeading)
-                        //.opacity(1)
-                        //.background(Color.clear)
-                } else {
-                    ZStack(alignment: .topTrailing) {
-                        ScrollView {
+                    GeometryReader { geometry in
 
-                            WebView(document.game, deviceColorScheme).tabItem {
-                            }
-                                .frame(height: geometry.size.height)
-                                .tag(1)
-                                .onChange(of: deviceColorScheme) { newValue in
-                                    document.game.scriptEditor?.setTheme(newValue)
-                                }
-                                .opacity(helpIsVisible ? 0 : 1)
-                        }
-                            .zIndex(0)
-                            .frame(maxWidth: .infinity)
-                            .layoutPriority(2)
+                        BrowserView(document.game, updateView: $updateView, selection: $selection)
+                            .frame(minWidth: geometry.size.width,
+                                   maxWidth: geometry.size.width,
+                                   minHeight: geometry.size.height,
+                                   maxHeight: geometry.size.height,
+                                   alignment: .topLeading)
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+
+                    }
+                    //.opacity(1)
+                    //.background(Color.clear)
+                } else {
+                    //ZStack(alignment: .topTrailing) {
+                    VStack {//}(alignment: .center) {
                         
-                            .onReceive(self.document.game.contentChanged) { state in
-                                document.updated.toggle()
-                            }
-                        
+                        //VStack {
                         MetalView(document.game)
-                            .zIndex(2)
-                            .frame(minWidth: 0,
-                                   maxWidth: geometry.size.width / document.game.previewFactor,
-                                   minHeight: 0,
-                                   maxHeight: geometry.size.height / document.game.previewFactor,
-                                   alignment: .topTrailing)
-                            .opacity(helpIsVisible || document.game.assetFolder.isPreviewVisible() == false ? 0 : (document.game.state == .Running ? 1 : document.game.previewOpacity))
-                            .animation(.default)
+                            .frame(maxHeight: editorIsMaximized ? 0 : .infinity)
+                            //.zIndex(2)
+                            //.frame(minWidth: 200,
+                                   //maxWidth: 200,//geometry.size.width / document.game.previewFactor,
+                                   //minHeight: 0,
+                                   //maxHeight: geometry.size.height / document.game.previewFactor
+                                   //)//alignment: .topTrailing)
+                            //.opacity(helpIsVisible || document.game.assetFolder.isPreviewVisible() == false ? 0 : (document.game.state == .Running ? 1 : document.game.previewOpacity))
+                            //.animation(.default)
                             //.allowsHitTesting(document.game.state == .Running)
+                            .opacity(1)
                         
+                            .onReceive(document.game.editorIsMaximized) { value in
+                                editorIsMaximized = value
+                            }
+
+                        EditorView(game: document.game)
+
+                        /*
+                        WebView(document.game, deviceColorScheme)
+                        //.frame(height: geometry.size.height)
+                        .onChange(of: deviceColorScheme) { newValue in
+                            document.game.scriptEditor?.setTheme(newValue)
+                        }*/
+                        //.opacity(helpIsVisible ? 0 : 1)
+                
+                        //.zIndex(0)
+                        //.frame(maxWidth: .infinity)
+                        //.layoutPriority(2)
+                    
+                        .onReceive(self.document.game.contentChanged) { state in
+                            document.updated.toggle()
+                        }
+                        /*
                         Text(tempText)
                             .zIndex(3)
                             .frame( minWidth: 0,
@@ -685,218 +619,45 @@ struct ContentView: View {
                                     minHeight: 0,
                                     maxHeight: geometry.size.height,
                                     alignment: .bottomTrailing)
-                            .opacity(tempText.count == 0 ? 0 : 1)
+                            //.opacity(tempText.count == 0 ? 0 : 1)
                             .onReceive(self.document.game.tempTextChanged) { state in
                                 tempText = self.document.game.tempText
                             }
                         
                         ScrollView {
-                            ParmaView(text: $helpText)
+                            Text(getAttributedString(markdown: helpText))
+
+                            /*
+                            ParmaView(text: $helpText)*/
                                 .frame(minWidth: 0,
                                        maxWidth: .infinity,
                                        minHeight: 0,
                                        maxHeight: .infinity,
                                        alignment: .topLeading)
                                 .padding(4)
-                                .animation(.default)
+                                //.animation(.default)
                                 .onReceive(self.document.game.helpTextChanged) { state in
                                     helpText = self.document.game.helpText
                                 }
                         }
                         .zIndex(4)//helpIsVisible ? 4 : -1)
-                        .opacity(helpIsVisible ? 1 : 0)
-                        .animation(.default)
+                        //.opacity(helpIsVisible ? 1 : 0)
+                        //.animation(.default)
+                        //}
+                         */
                     }
+                    //.layoutPriority(2)
                 }
+            //}
+            //.layoutPriority(2)
+            
             }
-            .layoutPriority(2)
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
-            .toolbar {
-                ToolbarItemGroup(placement: .automatic) {
-                                    
-                    // Game Controls
-                    Button(action: {
-                        if document.game.view == nil { return }
-                        document.game.stop(silent: true)
-                        document.game.start()
-                        helpIsVisible = false
-                        updateView.toggle()
-                    })
-                    {
-                        Label("Run", systemImage: "play.fill")
-                    }
-                    .keyboardShortcut("r")
-                    
-                    Button(action: {
-                        if document.game.view == nil { return }
-                        document.game.stop()
-                        updateView.toggle()
-                    }) {
-                        Label("Stop", systemImage: "stop.fill")
-                    }.keyboardShortcut("t")
-                    .disabled(document.game.state == .Idle)
-                    
-                    Button(action: {
-                        if let scriptEditor = document.game.scriptEditor {
-                            if document.game.showingDebugInfo == false {
-                                scriptEditor.activateDebugSession()
-                            } else {
-                                document.game.showingDebugInfo = false
-                                if let current = document.game.assetFolder.current {
-                                    document.game.assetFolder.select(current.id)
-                                }
-                            }
-                        }
-                    }) {
-                        Label("Bug", systemImage: "ant.fill")
-                    }.keyboardShortcut("b")
-                    
-                    Divider()
-                        .padding(.horizontal, 20)
-                        .opacity(0)
-                    
-                    Menu {
-                        Section(header: Text("Preview")) {
-                            Button("Small", action: {
-                                document.game.previewFactor = 4
-                                updateView.toggle()
-                            })
-                            .keyboardShortcut("1")
-                            Button("Medium", action: {
-                                document.game.previewFactor = 2
-                                updateView.toggle()
-                            })
-                            .keyboardShortcut("2")
-                            Button("Large", action: {
-                                document.game.previewFactor = 1
-                                updateView.toggle()
-                            })
-                            .keyboardShortcut("3")
-                        }
-                        Section(header: Text("Opacity")) {
-                            Button("Opacity Off", action: {
-                                document.game.previewOpacity = 0
-                                updateView.toggle()
-                            })
-                            .keyboardShortcut("4")
-                            Button("Opacity Half", action: {
-                                document.game.previewOpacity = 0.5
-                                updateView.toggle()
-                            })
-                            .keyboardShortcut("5")
-                            Button("Opacity Full", action: {
-                                document.game.previewOpacity = 1.0
-                                updateView.toggle()
-                            })
-                            .keyboardShortcut("6")
-                        }
-                    }
-                    label: {
-                        if let texture = document.game.texture?.texture {
-                            Text("\(texture.width) x \(texture.height)")
-                        }
-                    }
-                    .frame(minWidth: 100)
-                    .onReceive(self.document.game.updateUI) { value in
-                        updateView.toggle()
-                    }
-                    
-                    Divider()
-                        .padding(.horizontal, 20)
-                        .opacity(0)
-
-                    Button(action: {
-                        helpIsVisible.toggle()
-                    }) {
-                        Label("Help", systemImage: "questionmark")
-                    }
-                    .keyboardShortcut("h")
-                    
-                    Menu {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("Small Tip")
-                                    .font(.headline)
-                                Text("Tip of $2 for the author")
-                                    .font(.caption2)
-                            }
-                            Button(action: {
-                                storeManager.purchaseId("com.moenig.Denrim.IAP.Tip2")
-                            }) {
-                                Text("Buy for $2")
-                            }
-                            .foregroundColor(.blue)
-                            Divider()
-                            VStack(alignment: .leading) {
-                                Text("Medium Tip")
-                                    .font(.headline)
-                                Text("Tip of $5 for the author")
-                                    .font(.caption2)
-                            }
-                            Button(action: {
-                                storeManager.purchaseId("com.moenig.Denrim.IAP.Tip5")
-                            }) {
-                                Text("Buy for $5")
-                            }
-                            .foregroundColor(.blue)
-                            Divider()
-                            VStack(alignment: .leading) {
-                                Text("Large Tip")
-                                    .font(.headline)
-                                Text("Tip of $10 for the author")
-                                    .font(.caption2)
-                            }
-                            Button(action: {
-                                storeManager.purchaseId("com.moenig.Denrim.IAP.Tip10")
-                            }) {
-                                Text("Buy for $10")
-                            }
-                            .foregroundColor(.blue)
-                            Divider()
-                            Text("You are awesome! ❤️❤️")
-                        }
-                    }
-                    label: {
-                        Label("Dollar", systemImage: "gift")//dollarsign.circle")
-                    }
-                    
-                    Button(action: { rightSideBarIsVisible.toggle() }, label: {
-                        Image(systemName: "sidebar.right")
-                    })
-                }
-            }
-            .onReceive(self.document.game.gameError) { state in
-                if let asset = self.document.game.assetError.asset {
-                    document.game.assetFolder.select(asset.id)
-                    document.game.scriptEditor?.setError(self.document.game.assetError, scrollToError: true)
-                }
-                self.updateView.toggle()
-            }
-            // Adding Images
-            .fileImporter(
-                isPresented: $isAddingImages,
-                allowedContentTypes: [.item],
-                allowsMultipleSelection: true
-            ) { result in
-                do {
-                    let selectedFiles = try result.get()
-                    if selectedFiles.count > 0 {
-                        document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles, existingAsset: document.game.assetFolder.current)
-
-                        document.game.contentChanged.send()
-                        updateView.toggle()
-                    }
-                } catch {
-                    // Handle failure.
-                }
-            }
-        }
         if rightSideBarIsVisible == true && document.game.assetFolder.isNewProject == false {
             if helpIsVisible == true {
                 HelpIndexView(document.game)
                     .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
                     .layoutPriority(0)
-                    .animation(.easeInOut)
+                    //.animation(.easeInOut)
             } else
             if let asset = document.game.assetFolder.current {
                 ScrollView {
@@ -919,9 +680,10 @@ struct ContentView: View {
                         }
                         .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
                         .layoutPriority(0)
-                        .animation(.easeInOut)
+                        //.animation(.easeInOut)
                     } else {
-                        ParmaView(text: $contextText)
+                        Text(getAttributedString(markdown: contextText))
+                        //ParmaView(text: $contextText)
                             .frame(minWidth: 0,
                                    maxWidth: .infinity,
                                    minHeight: 0,
@@ -935,12 +697,13 @@ struct ContentView: View {
                             .font(.system(size: 12))
                             .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
                             .layoutPriority(0)
-                            .animation(.easeInOut)
+                            //.animation(.easeInOut)
                     }
                 }
-                .animation(.easeInOut)
+                //.animation(.easeInOut)
             }
         }
+        
         }
         // For Mac Screenshots, 1440x900
         //.frame(minWidth: 1440, minHeight: 806)
@@ -974,11 +737,196 @@ struct ContentView: View {
                 }
             }
         })
+            
+        .toolbar {
+            ToolbarItemGroup(placement: .automatic) {
+                                
+                // Game Controls
+                Button(action: {
+                    if document.game.view == nil { return }
+                    document.game.stop(silent: true)
+                    document.game.start()
+                    helpIsVisible = false
+                    updateView.toggle()
+                })
+                {
+                    Label("Run", systemImage: "play.fill")
+                }
+                .keyboardShortcut("r")
+                
+                Button(action: {
+                    if document.game.view == nil { return }
+                    document.game.stop()
+                    updateView.toggle()
+                }) {
+                    Label("Stop", systemImage: "stop.fill")
+                }.keyboardShortcut("t")
+                .disabled(document.game.state == .Idle)
+                
+                Button(action: {
+                    if let scriptEditor = document.game.scriptEditor {
+                        if document.game.showingDebugInfo == false {
+                            scriptEditor.activateDebugSession()
+                        } else {
+                            document.game.showingDebugInfo = false
+                            if let current = document.game.assetFolder.current {
+                                document.game.assetFolder.select(current.id)
+                            }
+                        }
+                    }
+                }) {
+                    Label("Bug", systemImage: "ant.fill")
+                }.keyboardShortcut("b")
+                
+                Divider()
+                    .padding(.horizontal, 20)
+                    .opacity(0)
+                
+                Menu {
+                    Section(header: Text("Preview")) {
+                        Button("Small", action: {
+                            document.game.previewFactor = 4
+                            updateView.toggle()
+                        })
+                        .keyboardShortcut("1")
+                        Button("Medium", action: {
+                            document.game.previewFactor = 2
+                            updateView.toggle()
+                        })
+                        .keyboardShortcut("2")
+                        Button("Large", action: {
+                            document.game.previewFactor = 1
+                            updateView.toggle()
+                        })
+                        .keyboardShortcut("3")
+                    }
+                    Section(header: Text("Opacity")) {
+                        Button("Opacity Off", action: {
+                            document.game.previewOpacity = 0
+                            updateView.toggle()
+                        })
+                        .keyboardShortcut("4")
+                        Button("Opacity Half", action: {
+                            document.game.previewOpacity = 0.5
+                            updateView.toggle()
+                        })
+                        .keyboardShortcut("5")
+                        Button("Opacity Full", action: {
+                            document.game.previewOpacity = 1.0
+                            updateView.toggle()
+                        })
+                        .keyboardShortcut("6")
+                    }
+                }
+                label: {
+                    if let texture = document.game.texture?.texture {
+                        Text("\(texture.width) x \(texture.height)")
+                    }
+                }
+                .frame(minWidth: 100)
+                .onReceive(self.document.game.updateUI) { value in
+                    updateView.toggle()
+                }
+                
+                Divider()
+                    .padding(.horizontal, 20)
+                    .opacity(0)
+
+                Button(action: {
+                    helpIsVisible.toggle()
+                }) {
+                    Label("Help", systemImage: "questionmark")
+                }
+                .keyboardShortcut("h")
+                
+                Menu {
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("Small Tip")
+                                .font(.headline)
+                            Text("Tip of $2 for the author")
+                                .font(.caption2)
+                        }
+                        Button(action: {
+                            storeManager.purchaseId("com.moenig.Denrim.IAP.Tip2")
+                        }) {
+                            Text("Buy for $2")
+                        }
+                        .foregroundColor(.blue)
+                        Divider()
+                        VStack(alignment: .leading) {
+                            Text("Medium Tip")
+                                .font(.headline)
+                            Text("Tip of $5 for the author")
+                                .font(.caption2)
+                        }
+                        Button(action: {
+                            storeManager.purchaseId("com.moenig.Denrim.IAP.Tip5")
+                        }) {
+                            Text("Buy for $5")
+                        }
+                        .foregroundColor(.blue)
+                        Divider()
+                        VStack(alignment: .leading) {
+                            Text("Large Tip")
+                                .font(.headline)
+                            Text("Tip of $10 for the author")
+                                .font(.caption2)
+                        }
+                        Button(action: {
+                            storeManager.purchaseId("com.moenig.Denrim.IAP.Tip10")
+                        }) {
+                            Text("Buy for $10")
+                        }
+                        .foregroundColor(.blue)
+                        Divider()
+                        Text("You are awesome! ❤️❤️")
+                    }
+                }
+                label: {
+                    Label("Dollar", systemImage: "gift")//dollarsign.circle")
+                }
+                
+                Button(action: { rightSideBarIsVisible.toggle() }, label: {
+                    Image(systemName: "sidebar.right")
+                })
+            }
+        }
+        .onReceive(self.document.game.gameError) { state in
+            if let asset = self.document.game.assetError.asset {
+                document.game.assetFolder.select(asset.id)
+                document.game.scriptEditor?.setError(self.document.game.assetError, scrollToError: true)
+            }
+            self.updateView.toggle()
+        }
+        // Adding Images
+        .fileImporter(
+            isPresented: $isAddingImages,
+            allowedContentTypes: [.item],
+            allowsMultipleSelection: true
+        ) { result in
+            do {
+                let selectedFiles = try result.get()
+                if selectedFiles.count > 0 {
+                    document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles, existingAsset: document.game.assetFolder.current)
+
+                    document.game.contentChanged.send()
+                    updateView.toggle()
+                }
+            } catch {
+                // Handle failure.
+            }
+        //}
+        }
+    }
+    
+    /// String to AttributedString
+    func getAttributedString(markdown: String) -> AttributedString {
+        do {
+            return try AttributedString(markdown: markdown, options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace))
+        } catch {
+            return AttributedString()
+        }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView(document: .constant(DenrimDocument()), storeManager: StoreManager())
-    }
-}

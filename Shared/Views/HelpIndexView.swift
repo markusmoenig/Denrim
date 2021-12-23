@@ -1,12 +1,11 @@
 //
-//  Parma.swift
+//  HelpIndexView.swift
 //  Denrim
 //
-//  Created by Markus Moenig on 29/10/20.
+//  Created by Markus Moenig on 23/12/21.
 //
 
 import SwiftUI
-import MarkdownUI
 
 struct HelpItem: Identifiable {
     var id          : String { name }
@@ -134,12 +133,5 @@ struct HelpIndexView: View {
             }*/
         }
         
-    }
-}
-
-struct ParmaView: View {
-    @Binding var text: String
-    var body: some View {
-        Markdown(Document(text))
     }
 }

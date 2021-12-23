@@ -48,7 +48,7 @@ class Texture2D                 : NSObject
     {
         print("release texture")
         if texture != nil {
-            texture!.setPurgeableState(.empty)
+            //texture!.setPurgeableState(.empty)
             texture = nil
         }
     }
@@ -56,7 +56,7 @@ class Texture2D                 : NSObject
     func allocateTexture(width: Int, height: Int)
     {
         if texture != nil {
-            texture!.setPurgeableState(.empty)
+            //texture!.setPurgeableState(.empty)
             texture = nil
         }
             
