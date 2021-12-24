@@ -34,7 +34,7 @@ struct EditorView: View {
                     game.stop(silent: true)
                     game.start()
                     
-                    isRunning = true
+                    //isRunning = true
                     //helpIsVisible = false
                     //updateView.toggle()
                 })
@@ -50,14 +50,14 @@ struct EditorView: View {
                 Button(action: {
                     if game.view == nil { return }
                     game.stop()
-                    isRunning = false
+                    //isRunning = false
                     //updateView.toggle()
                 }) {
                     Image(systemName: "stop.fill")
                         .imageScale(.large)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .disabled(isRunning == false)
+                .disabled(!isRunning)
                 .keyboardShortcut(".")
                 
                 Button(action: {
@@ -100,8 +100,8 @@ struct EditorView: View {
                 game.scriptEditor?.setTheme(newValue)
             }
         
-            .onReceive(game.gameFinished) { _ in
-                isRunning = false
+            .onReceive(game.gameIsRunning) { value in
+                isRunning = value
                 showingDebug = false
             }
         }

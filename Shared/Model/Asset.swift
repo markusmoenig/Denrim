@@ -34,11 +34,13 @@ class AssetFolder       : Codable
             else
             if asset.type == .Behavior { return 1 }
             else
-            if asset.type == .Map { return 2 }
+            if asset.type == .Lua { return 2 }
             else
-            if asset.type == .Shader { return 3 }
+            if asset.type == .Map { return 3 }
             else
-            if asset.type == .Image { return 4 }
+            if asset.type == .Shader { return 4 }
+            else
+            if asset.type == .Image { return 5 }
             else { return 5 }
         }
         
@@ -537,6 +539,9 @@ class AssetFolder       : Codable
         if asset.type == .Behavior {
             game.behaviorBuilder.compile(asset)
         } else
+        if asset.type == .Lua {
+            game.luaBuilder.compile(asset)
+        } else
         if asset.type == .Shape {
             game.graphBuilder.compile(asset)
             self.game.createPreview(asset)
@@ -701,6 +706,9 @@ class Asset         : Codable, Equatable
 
     // If this is a shader
     var shader      : Shader? = nil
+    
+    // If this is a Lua script
+    var vm          : VirtualMachine? = nil
     
     // Compiled Graph for graph assets (Shape / Material)
     var graph       : GraphContext? = nil

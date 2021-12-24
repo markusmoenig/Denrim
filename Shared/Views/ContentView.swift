@@ -552,7 +552,7 @@ struct ContentView: View {
                 ListView(document: document, selection: $selection, updateView: $updateView, showAssetNamePopover: $showAssetNamePopover, assetName: $assetName, showDeleteAssetAlert: $showDeleteAssetAlert, isAddingImages: $isAddingImages, imageIndex: $imageIndex )
             }*/
             
-            ProjectView(document: document, updateView: $updateView)
+            ProjectView(document: document)
             .frame(minWidth: leftPanelWidth, idealWidth: leftPanelWidth, maxWidth: leftPanelWidth)
             //.layoutPriority(0)
             

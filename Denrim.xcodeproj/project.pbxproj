@@ -557,8 +557,8 @@
 		2B76D81925AC3A8400AF6FF2 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D81525AC3A8400AF6FF2 /* Tool.swift */; };
 		2B76D81A25AC3A8400AF6FF2 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D81525AC3A8400AF6FF2 /* Tool.swift */; };
 		2B76D81B25AC3A8400AF6FF2 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76D81525AC3A8400AF6FF2 /* Tool.swift */; };
-		2BE27C992595690100B8AAD8 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE27C982595690100B8AAD8 /* Browser.swift */; };
-		2BE27C9A2595690100B8AAD8 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE27C982595690100B8AAD8 /* Browser.swift */; };
+		2BE27C992595690100B8AAD8 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE27C982595690100B8AAD8 /* BrowserView.swift */; };
+		2BE27C9A2595690100B8AAD8 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE27C982595690100B8AAD8 /* BrowserView.swift */; };
 		2BE9737F258CAD0700D8019D /* AtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* AtomNodes.swift */; };
 		2BE97380258CAD0700D8019D /* AtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* AtomNodes.swift */; };
 		2BE97381258CAD0700D8019D /* AtomNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9737B258CAD0700D8019D /* AtomNodes.swift */; };
@@ -589,6 +589,144 @@
 		DDB4A5C52774073A000037DE /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5C32774073A000037DE /* ProjectView.swift */; };
 		DDB4A5C727746000000037DE /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5C627746000000037DE /* EditorView.swift */; };
 		DDB4A5C827746000000037DE /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5C627746000000037DE /* EditorView.swift */; };
+		DDB4A5D82775B148000037DE /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5CD2775B147000037DE /* Value.swift */; };
+		DDB4A5D92775B148000037DE /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5CD2775B147000037DE /* Value.swift */; };
+		DDB4A5DA2775B148000037DE /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5CD2775B147000037DE /* Value.swift */; };
+		DDB4A5DB2775B148000037DE /* Userdata.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5CE2775B147000037DE /* Userdata.swift */; };
+		DDB4A5DC2775B148000037DE /* Userdata.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5CE2775B147000037DE /* Userdata.swift */; };
+		DDB4A5DD2775B148000037DE /* Userdata.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5CE2775B147000037DE /* Userdata.swift */; };
+		DDB4A5DE2775B148000037DE /* Boolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5CF2775B147000037DE /* Boolean.swift */; };
+		DDB4A5DF2775B148000037DE /* Boolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5CF2775B147000037DE /* Boolean.swift */; };
+		DDB4A5E02775B148000037DE /* Boolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5CF2775B147000037DE /* Boolean.swift */; };
+		DDB4A5E12775B148000037DE /* VirtualMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D02775B147000037DE /* VirtualMachine.swift */; };
+		DDB4A5E22775B148000037DE /* VirtualMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D02775B147000037DE /* VirtualMachine.swift */; };
+		DDB4A5E32775B148000037DE /* VirtualMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D02775B147000037DE /* VirtualMachine.swift */; };
+		DDB4A5E42775B148000037DE /* Nil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D12775B147000037DE /* Nil.swift */; };
+		DDB4A5E52775B148000037DE /* Nil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D12775B147000037DE /* Nil.swift */; };
+		DDB4A5E62775B148000037DE /* Nil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D12775B147000037DE /* Nil.swift */; };
+		DDB4A5E72775B148000037DE /* ExtraTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D22775B147000037DE /* ExtraTypes.swift */; };
+		DDB4A5E82775B148000037DE /* ExtraTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D22775B147000037DE /* ExtraTypes.swift */; };
+		DDB4A5E92775B148000037DE /* ExtraTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D22775B147000037DE /* ExtraTypes.swift */; };
+		DDB4A5EA2775B148000037DE /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D32775B147000037DE /* Table.swift */; };
+		DDB4A5EB2775B148000037DE /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D32775B147000037DE /* Table.swift */; };
+		DDB4A5EC2775B148000037DE /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D32775B147000037DE /* Table.swift */; };
+		DDB4A5ED2775B148000037DE /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D42775B147000037DE /* Number.swift */; };
+		DDB4A5EE2775B148000037DE /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D42775B147000037DE /* Number.swift */; };
+		DDB4A5EF2775B148000037DE /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D42775B147000037DE /* Number.swift */; };
+		DDB4A5F02775B148000037DE /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D52775B148000037DE /* String.swift */; };
+		DDB4A5F12775B148000037DE /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D52775B148000037DE /* String.swift */; };
+		DDB4A5F22775B148000037DE /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D52775B148000037DE /* String.swift */; };
+		DDB4A5F32775B148000037DE /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D62775B148000037DE /* Thread.swift */; };
+		DDB4A5F42775B148000037DE /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D62775B148000037DE /* Thread.swift */; };
+		DDB4A5F52775B148000037DE /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D62775B148000037DE /* Thread.swift */; };
+		DDB4A5F62775B148000037DE /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D72775B148000037DE /* Function.swift */; };
+		DDB4A5F72775B148000037DE /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D72775B148000037DE /* Function.swift */; };
+		DDB4A5F82775B148000037DE /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5D72775B148000037DE /* Function.swift */; };
+		DDB4A63B2775B1F3000037DE /* lcode.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5FF2775B1F0000037DE /* lcode.c */; };
+		DDB4A63C2775B1F3000037DE /* lcode.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5FF2775B1F0000037DE /* lcode.c */; };
+		DDB4A63D2775B1F3000037DE /* lcode.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5FF2775B1F0000037DE /* lcode.c */; };
+		DDB4A63E2775B1F3000037DE /* lvm.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6022775B1F0000037DE /* lvm.c */; };
+		DDB4A63F2775B1F3000037DE /* lvm.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6022775B1F0000037DE /* lvm.c */; };
+		DDB4A6402775B1F3000037DE /* lvm.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6022775B1F0000037DE /* lvm.c */; };
+		DDB4A6412775B1F3000037DE /* LuaSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6032775B1F0000037DE /* LuaSource.m */; };
+		DDB4A6422775B1F3000037DE /* LuaSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6032775B1F0000037DE /* LuaSource.m */; };
+		DDB4A6432775B1F3000037DE /* LuaSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6032775B1F0000037DE /* LuaSource.m */; };
+		DDB4A6442775B1F3000037DE /* lstring.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6042775B1F0000037DE /* lstring.c */; };
+		DDB4A6452775B1F3000037DE /* lstring.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6042775B1F0000037DE /* lstring.c */; };
+		DDB4A6462775B1F3000037DE /* lstring.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6042775B1F0000037DE /* lstring.c */; };
+		DDB4A6472775B1F3000037DE /* lgc.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6052775B1F0000037DE /* lgc.c */; };
+		DDB4A6482775B1F3000037DE /* lgc.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6052775B1F0000037DE /* lgc.c */; };
+		DDB4A6492775B1F3000037DE /* lgc.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6052775B1F0000037DE /* lgc.c */; };
+		DDB4A64A2775B1F3000037DE /* ltm.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6092775B1F0000037DE /* ltm.c */; };
+		DDB4A64B2775B1F3000037DE /* ltm.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6092775B1F0000037DE /* ltm.c */; };
+		DDB4A64C2775B1F3000037DE /* ltm.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6092775B1F0000037DE /* ltm.c */; };
+		DDB4A64D2775B1F3000037DE /* lutf8lib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A60D2775B1F1000037DE /* lutf8lib.c */; };
+		DDB4A64E2775B1F3000037DE /* lutf8lib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A60D2775B1F1000037DE /* lutf8lib.c */; };
+		DDB4A64F2775B1F3000037DE /* lutf8lib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A60D2775B1F1000037DE /* lutf8lib.c */; };
+		DDB4A6502775B1F3000037DE /* lstrlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A60E2775B1F1000037DE /* lstrlib.c */; };
+		DDB4A6512775B1F3000037DE /* lstrlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A60E2775B1F1000037DE /* lstrlib.c */; };
+		DDB4A6522775B1F3000037DE /* lstrlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A60E2775B1F1000037DE /* lstrlib.c */; };
+		DDB4A6532775B1F3000037DE /* lfunc.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6102775B1F1000037DE /* lfunc.c */; };
+		DDB4A6542775B1F3000037DE /* lfunc.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6102775B1F1000037DE /* lfunc.c */; };
+		DDB4A6552775B1F3000037DE /* lfunc.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6102775B1F1000037DE /* lfunc.c */; };
+		DDB4A6562775B1F3000037DE /* loslib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6112775B1F1000037DE /* loslib.c */; };
+		DDB4A6572775B1F3000037DE /* loslib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6112775B1F1000037DE /* loslib.c */; };
+		DDB4A6582775B1F3000037DE /* loslib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6112775B1F1000037DE /* loslib.c */; };
+		DDB4A6592775B1F3000037DE /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6132775B1F1000037DE /* lbaselib.c */; };
+		DDB4A65A2775B1F3000037DE /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6132775B1F1000037DE /* lbaselib.c */; };
+		DDB4A65B2775B1F3000037DE /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6132775B1F1000037DE /* lbaselib.c */; };
+		DDB4A65C2775B1F3000037DE /* lundump.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6152775B1F1000037DE /* lundump.c */; };
+		DDB4A65D2775B1F3000037DE /* lundump.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6152775B1F1000037DE /* lundump.c */; };
+		DDB4A65E2775B1F3000037DE /* lundump.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6152775B1F1000037DE /* lundump.c */; };
+		DDB4A65F2775B1F3000037DE /* llex.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6162775B1F1000037DE /* llex.c */; };
+		DDB4A6602775B1F3000037DE /* llex.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6162775B1F1000037DE /* llex.c */; };
+		DDB4A6612775B1F3000037DE /* llex.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6162775B1F1000037DE /* llex.c */; };
+		DDB4A6622775B1F3000037DE /* ltablib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6172775B1F1000037DE /* ltablib.c */; };
+		DDB4A6632775B1F3000037DE /* ltablib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6172775B1F1000037DE /* ltablib.c */; };
+		DDB4A6642775B1F3000037DE /* ltablib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6172775B1F1000037DE /* ltablib.c */; };
+		DDB4A6652775B1F3000037DE /* ldebug.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6192775B1F1000037DE /* ldebug.c */; };
+		DDB4A6662775B1F3000037DE /* ldebug.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6192775B1F1000037DE /* ldebug.c */; };
+		DDB4A6672775B1F3000037DE /* ldebug.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6192775B1F1000037DE /* ldebug.c */; };
+		DDB4A6682775B1F3000037DE /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A61B2775B1F1000037DE /* lauxlib.c */; };
+		DDB4A6692775B1F3000037DE /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A61B2775B1F1000037DE /* lauxlib.c */; };
+		DDB4A66A2775B1F3000037DE /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A61B2775B1F1000037DE /* lauxlib.c */; };
+		DDB4A66B2775B1F3000037DE /* ldo.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A61E2775B1F2000037DE /* ldo.c */; };
+		DDB4A66C2775B1F3000037DE /* ldo.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A61E2775B1F2000037DE /* ldo.c */; };
+		DDB4A66D2775B1F3000037DE /* ldo.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A61E2775B1F2000037DE /* ldo.c */; };
+		DDB4A66E2775B1F3000037DE /* ldblib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6202775B1F2000037DE /* ldblib.c */; };
+		DDB4A66F2775B1F3000037DE /* ldblib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6202775B1F2000037DE /* ldblib.c */; };
+		DDB4A6702775B1F3000037DE /* ldblib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6202775B1F2000037DE /* ldblib.c */; };
+		DDB4A6712775B1F3000037DE /* lobject.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6212775B1F2000037DE /* lobject.c */; };
+		DDB4A6722775B1F3000037DE /* lobject.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6212775B1F2000037DE /* lobject.c */; };
+		DDB4A6732775B1F3000037DE /* lobject.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6212775B1F2000037DE /* lobject.c */; };
+		DDB4A6742775B1F3000037DE /* lctype.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6242775B1F2000037DE /* lctype.c */; };
+		DDB4A6752775B1F3000037DE /* lctype.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6242775B1F2000037DE /* lctype.c */; };
+		DDB4A6762775B1F3000037DE /* lctype.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6242775B1F2000037DE /* lctype.c */; };
+		DDB4A6772775B1F3000037DE /* lcorolib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6272775B1F2000037DE /* lcorolib.c */; };
+		DDB4A6782775B1F3000037DE /* lcorolib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6272775B1F2000037DE /* lcorolib.c */; };
+		DDB4A6792775B1F3000037DE /* lcorolib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6272775B1F2000037DE /* lcorolib.c */; };
+		DDB4A67A2775B1F3000037DE /* liolib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6282775B1F2000037DE /* liolib.c */; };
+		DDB4A67B2775B1F3000037DE /* liolib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6282775B1F2000037DE /* liolib.c */; };
+		DDB4A67C2775B1F3000037DE /* liolib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6282775B1F2000037DE /* liolib.c */; };
+		DDB4A67D2775B1F3000037DE /* lbitlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6292775B1F2000037DE /* lbitlib.c */; };
+		DDB4A67E2775B1F3000037DE /* lbitlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6292775B1F2000037DE /* lbitlib.c */; };
+		DDB4A67F2775B1F3000037DE /* lbitlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6292775B1F2000037DE /* lbitlib.c */; };
+		DDB4A6802775B1F3000037DE /* lzio.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62A2775B1F2000037DE /* lzio.c */; };
+		DDB4A6812775B1F3000037DE /* lzio.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62A2775B1F2000037DE /* lzio.c */; };
+		DDB4A6822775B1F3000037DE /* lzio.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62A2775B1F2000037DE /* lzio.c */; };
+		DDB4A6832775B1F3000037DE /* lopcodes.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62B2775B1F2000037DE /* lopcodes.c */; };
+		DDB4A6842775B1F3000037DE /* lopcodes.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62B2775B1F2000037DE /* lopcodes.c */; };
+		DDB4A6852775B1F3000037DE /* lopcodes.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62B2775B1F2000037DE /* lopcodes.c */; };
+		DDB4A6862775B1F3000037DE /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62C2775B1F2000037DE /* lapi.c */; };
+		DDB4A6872775B1F3000037DE /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62C2775B1F2000037DE /* lapi.c */; };
+		DDB4A6882775B1F3000037DE /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62C2775B1F2000037DE /* lapi.c */; };
+		DDB4A6892775B1F3000037DE /* lstate.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62F2775B1F3000037DE /* lstate.c */; };
+		DDB4A68A2775B1F3000037DE /* lstate.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62F2775B1F3000037DE /* lstate.c */; };
+		DDB4A68B2775B1F3000037DE /* lstate.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A62F2775B1F3000037DE /* lstate.c */; };
+		DDB4A68C2775B1F3000037DE /* linit.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6312775B1F3000037DE /* linit.c */; };
+		DDB4A68D2775B1F3000037DE /* linit.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6312775B1F3000037DE /* linit.c */; };
+		DDB4A68E2775B1F3000037DE /* linit.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6312775B1F3000037DE /* linit.c */; };
+		DDB4A68F2775B1F3000037DE /* ldump.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6322775B1F3000037DE /* ldump.c */; };
+		DDB4A6902775B1F3000037DE /* ldump.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6322775B1F3000037DE /* ldump.c */; };
+		DDB4A6912775B1F3000037DE /* ldump.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6322775B1F3000037DE /* ldump.c */; };
+		DDB4A6922775B1F3000037DE /* lparser.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6332775B1F3000037DE /* lparser.c */; };
+		DDB4A6932775B1F3000037DE /* lparser.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6332775B1F3000037DE /* lparser.c */; };
+		DDB4A6942775B1F3000037DE /* lparser.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6332775B1F3000037DE /* lparser.c */; };
+		DDB4A6952775B1F3000037DE /* lmathlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6362775B1F3000037DE /* lmathlib.c */; };
+		DDB4A6962775B1F3000037DE /* lmathlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6362775B1F3000037DE /* lmathlib.c */; };
+		DDB4A6972775B1F3000037DE /* lmathlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6362775B1F3000037DE /* lmathlib.c */; };
+		DDB4A6982775B1F3000037DE /* ltable.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6372775B1F3000037DE /* ltable.c */; };
+		DDB4A6992775B1F3000037DE /* ltable.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6372775B1F3000037DE /* ltable.c */; };
+		DDB4A69A2775B1F3000037DE /* ltable.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6372775B1F3000037DE /* ltable.c */; };
+		DDB4A69B2775B1F3000037DE /* loadlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6382775B1F3000037DE /* loadlib.c */; };
+		DDB4A69C2775B1F3000037DE /* loadlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6382775B1F3000037DE /* loadlib.c */; };
+		DDB4A69D2775B1F3000037DE /* loadlib.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6382775B1F3000037DE /* loadlib.c */; };
+		DDB4A69E2775B1F3000037DE /* lmem.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6392775B1F3000037DE /* lmem.c */; };
+		DDB4A69F2775B1F3000037DE /* lmem.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6392775B1F3000037DE /* lmem.c */; };
+		DDB4A6A02775B1F3000037DE /* lmem.c in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6392775B1F3000037DE /* lmem.c */; };
+		DDB4A6A22775B5FF000037DE /* LuaBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */; };
+		DDB4A6A32775B5FF000037DE /* LuaBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */; };
+		DDB4A6A42775B5FF000037DE /* LuaBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -729,7 +867,7 @@
 		2B76D7DE25AC3A5200AF6FF2 /* TexNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TexNodes.swift; sourceTree = "<group>"; };
 		2B76D7DF25AC3A5200AF6FF2 /* AnalyticalNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticalNodes.swift; sourceTree = "<group>"; };
 		2B76D81525AC3A8400AF6FF2 /* Tool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
-		2BE27C982595690100B8AAD8 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
+		2BE27C982595690100B8AAD8 /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
 		2BE9737B258CAD0700D8019D /* AtomNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomNodes.swift; sourceTree = "<group>"; };
 		2BE9737C258CAD0700D8019D /* Variables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Variables.swift; sourceTree = "<group>"; };
 		2BE9737D258CAD0700D8019D /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
@@ -739,6 +877,79 @@
 		DDB4A5C027740499000037DE /* HelpIndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpIndexView.swift; sourceTree = "<group>"; };
 		DDB4A5C32774073A000037DE /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		DDB4A5C627746000000037DE /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		DDB4A5CC2775B127000037DE /* Bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bridge.h; sourceTree = "<group>"; };
+		DDB4A5CD2775B147000037DE /* Value.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Value.swift; sourceTree = "<group>"; };
+		DDB4A5CE2775B147000037DE /* Userdata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Userdata.swift; sourceTree = "<group>"; };
+		DDB4A5CF2775B147000037DE /* Boolean.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Boolean.swift; sourceTree = "<group>"; };
+		DDB4A5D02775B147000037DE /* VirtualMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualMachine.swift; sourceTree = "<group>"; };
+		DDB4A5D12775B147000037DE /* Nil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nil.swift; sourceTree = "<group>"; };
+		DDB4A5D22775B147000037DE /* ExtraTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtraTypes.swift; sourceTree = "<group>"; };
+		DDB4A5D32775B147000037DE /* Table.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
+		DDB4A5D42775B147000037DE /* Number.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
+		DDB4A5D52775B148000037DE /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		DDB4A5D62775B148000037DE /* Thread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
+		DDB4A5D72775B148000037DE /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
+		DDB4A5FF2775B1F0000037DE /* lcode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lcode.c; sourceTree = "<group>"; };
+		DDB4A6002775B1F0000037DE /* lcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lcode.h; sourceTree = "<group>"; };
+		DDB4A6012775B1F0000037DE /* lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lua.h; sourceTree = "<group>"; };
+		DDB4A6022775B1F0000037DE /* lvm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lvm.c; sourceTree = "<group>"; };
+		DDB4A6032775B1F0000037DE /* LuaSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LuaSource.m; sourceTree = "<group>"; };
+		DDB4A6042775B1F0000037DE /* lstring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lstring.c; sourceTree = "<group>"; };
+		DDB4A6052775B1F0000037DE /* lgc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lgc.c; sourceTree = "<group>"; };
+		DDB4A6062775B1F0000037DE /* lundump.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lundump.h; sourceTree = "<group>"; };
+		DDB4A6072775B1F0000037DE /* lgc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lgc.h; sourceTree = "<group>"; };
+		DDB4A6082775B1F0000037DE /* lparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lparser.h; sourceTree = "<group>"; };
+		DDB4A6092775B1F0000037DE /* ltm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ltm.c; sourceTree = "<group>"; };
+		DDB4A60A2775B1F0000037DE /* ltm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ltm.h; sourceTree = "<group>"; };
+		DDB4A60B2775B1F0000037DE /* lopcodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lopcodes.h; sourceTree = "<group>"; };
+		DDB4A60C2775B1F1000037DE /* lmem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lmem.h; sourceTree = "<group>"; };
+		DDB4A60D2775B1F1000037DE /* lutf8lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lutf8lib.c; sourceTree = "<group>"; };
+		DDB4A60E2775B1F1000037DE /* lstrlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lstrlib.c; sourceTree = "<group>"; };
+		DDB4A60F2775B1F1000037DE /* lfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lfunc.h; sourceTree = "<group>"; };
+		DDB4A6102775B1F1000037DE /* lfunc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lfunc.c; sourceTree = "<group>"; };
+		DDB4A6112775B1F1000037DE /* loslib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = loslib.c; sourceTree = "<group>"; };
+		DDB4A6122775B1F1000037DE /* lapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lapi.h; sourceTree = "<group>"; };
+		DDB4A6132775B1F1000037DE /* lbaselib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lbaselib.c; sourceTree = "<group>"; };
+		DDB4A6142775B1F1000037DE /* lualib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lualib.h; sourceTree = "<group>"; };
+		DDB4A6152775B1F1000037DE /* lundump.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lundump.c; sourceTree = "<group>"; };
+		DDB4A6162775B1F1000037DE /* llex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = llex.c; sourceTree = "<group>"; };
+		DDB4A6172775B1F1000037DE /* ltablib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ltablib.c; sourceTree = "<group>"; };
+		DDB4A6182775B1F1000037DE /* lprefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lprefix.h; sourceTree = "<group>"; };
+		DDB4A6192775B1F1000037DE /* ldebug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ldebug.c; sourceTree = "<group>"; };
+		DDB4A61A2775B1F1000037DE /* LuaSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuaSource.h; sourceTree = "<group>"; };
+		DDB4A61B2775B1F1000037DE /* lauxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lauxlib.c; sourceTree = "<group>"; };
+		DDB4A61C2775B1F1000037DE /* ldo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ldo.h; sourceTree = "<group>"; };
+		DDB4A61D2775B1F2000037DE /* lvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lvm.h; sourceTree = "<group>"; };
+		DDB4A61E2775B1F2000037DE /* ldo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ldo.c; sourceTree = "<group>"; };
+		DDB4A61F2775B1F2000037DE /* luaconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = luaconf.h; sourceTree = "<group>"; };
+		DDB4A6202775B1F2000037DE /* ldblib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ldblib.c; sourceTree = "<group>"; };
+		DDB4A6212775B1F2000037DE /* lobject.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lobject.c; sourceTree = "<group>"; };
+		DDB4A6222775B1F2000037DE /* lctype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lctype.h; sourceTree = "<group>"; };
+		DDB4A6232775B1F2000037DE /* llimits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = llimits.h; sourceTree = "<group>"; };
+		DDB4A6242775B1F2000037DE /* lctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lctype.c; sourceTree = "<group>"; };
+		DDB4A6252775B1F2000037DE /* lzio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzio.h; sourceTree = "<group>"; };
+		DDB4A6262775B1F2000037DE /* lauxlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lauxlib.h; sourceTree = "<group>"; };
+		DDB4A6272775B1F2000037DE /* lcorolib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lcorolib.c; sourceTree = "<group>"; };
+		DDB4A6282775B1F2000037DE /* liolib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = liolib.c; sourceTree = "<group>"; };
+		DDB4A6292775B1F2000037DE /* lbitlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lbitlib.c; sourceTree = "<group>"; };
+		DDB4A62A2775B1F2000037DE /* lzio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lzio.c; sourceTree = "<group>"; };
+		DDB4A62B2775B1F2000037DE /* lopcodes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lopcodes.c; sourceTree = "<group>"; };
+		DDB4A62C2775B1F2000037DE /* lapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lapi.c; sourceTree = "<group>"; };
+		DDB4A62D2775B1F2000037DE /* ldebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ldebug.h; sourceTree = "<group>"; };
+		DDB4A62E2775B1F3000037DE /* lstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lstring.h; sourceTree = "<group>"; };
+		DDB4A62F2775B1F3000037DE /* lstate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lstate.c; sourceTree = "<group>"; };
+		DDB4A6302775B1F3000037DE /* lstate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lstate.h; sourceTree = "<group>"; };
+		DDB4A6312775B1F3000037DE /* linit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = linit.c; sourceTree = "<group>"; };
+		DDB4A6322775B1F3000037DE /* ldump.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ldump.c; sourceTree = "<group>"; };
+		DDB4A6332775B1F3000037DE /* lparser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lparser.c; sourceTree = "<group>"; };
+		DDB4A6342775B1F3000037DE /* lobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lobject.h; sourceTree = "<group>"; };
+		DDB4A6352775B1F3000037DE /* llex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = llex.h; sourceTree = "<group>"; };
+		DDB4A6362775B1F3000037DE /* lmathlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lmathlib.c; sourceTree = "<group>"; };
+		DDB4A6372775B1F3000037DE /* ltable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ltable.c; sourceTree = "<group>"; };
+		DDB4A6382775B1F3000037DE /* loadlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = loadlib.c; sourceTree = "<group>"; };
+		DDB4A6392775B1F3000037DE /* lmem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lmem.c; sourceTree = "<group>"; };
+		DDB4A63A2775B1F3000037DE /* ltable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ltable.h; sourceTree = "<group>"; };
+		DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -812,29 +1023,13 @@
 				2B01C85624FB814900E86449 /* DenrimDocument.swift */,
 				DDB4A5C92774668C000037DE /* Model */,
 				DDB4A5BF27740481000037DE /* Views */,
-				2B224D8325A1851D006C5C2F /* StoreManager.swift */,
-				2BE27C982595690100B8AAD8 /* Browser.swift */,
-				2B01C87924FB824900E86449 /* MathLibrary.swift */,
-				2B01C89B24FB844C00E86449 /* MetalView.swift */,
-				2B01C89E24FB8C7500E86449 /* MetalStates.swift */,
-				2B01C87A24FB824900E86449 /* Metal.metal */,
-				2B01C88224FB824A00E86449 /* Metal.h */,
-				2B01C87D24FB824900E86449 /* ScriptEditor.swift */,
-				2B01C87C24FB824900E86449 /* Utils.swift */,
-				2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */,
-				2B6D0B592509EEE80098F244 /* MapPreview.swift */,
-				2B32992324FF21EC007C3386 /* ShaderCompiler.swift */,
-				2B53617D25147B3300E8A20D /* File.swift */,
-				2B53618D2514952800E8A20D /* Behavior.swift */,
-				2B536194251498C400E8A20D /* BehaviorBuilder.swift */,
-				2B71E7182516F5BA00F3317D /* Branches.swift */,
-				2B71E70D2515B21400F3317D /* Leaves.swift */,
-				2BFC028A2505EDA500AB489E /* Map.swift */,
-				2B2882E92519E69E00D1AB2D /* MapStructures.swift */,
+				DDB4A5CB2775B07B000037DE /* Lua */,
+				DDB4A6A52775B64A000037DE /* Map and Behavior */,
+				DDB4A5CA2775B059000037DE /* Metal */,
 				2B76D7D225AC3A0300AF6FF2 /* Graph */,
 				2BE97376258CACDA00D8019D /* Expression */,
 				2B32993F2501B592007C3386 /* Fonts */,
-				2B32991F24FE3CC2007C3386 /* Classes */,
+				2B32991F24FE3CC2007C3386 /* Uitls */,
 				2B6D0B5F250B08080098F244 /* Box2D */,
 				2B01C88124FB824A00E86449 /* Files */,
 				2B5902D12592DFF900FCF16D /* Templates */,
@@ -874,14 +1069,15 @@
 			path = macOS;
 			sourceTree = "<group>";
 		};
-		2B32991F24FE3CC2007C3386 /* Classes */ = {
+		2B32991F24FE3CC2007C3386 /* Uitls */ = {
 			isa = PBXGroup;
 			children = (
+				2B224D8325A1851D006C5C2F /* StoreManager.swift */,
 				2B01C88324FB824A00E86449 /* Classes.swift */,
 				2B01C87B24FB824900E86449 /* Texture2D.swift */,
 				2B3299582501B6F3007C3386 /* Font.swift */,
 			);
-			path = Classes;
+			path = Uitls;
 			sourceTree = "<group>";
 		};
 		2B32993F2501B592007C3386 /* Fonts */ = {
@@ -1101,6 +1297,7 @@
 				DDB4A5C32774073A000037DE /* ProjectView.swift */,
 				DDB4A5C027740499000037DE /* HelpIndexView.swift */,
 				DDB4A5C627746000000037DE /* EditorView.swift */,
+				2BE27C982595690100B8AAD8 /* BrowserView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1112,6 +1309,133 @@
 				2B01C87E24FB824900E86449 /* Game.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		DDB4A5CA2775B059000037DE /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+				2B01C87924FB824900E86449 /* MathLibrary.swift */,
+				2B01C89B24FB844C00E86449 /* MetalView.swift */,
+				2B01C89E24FB8C7500E86449 /* MetalStates.swift */,
+				2B01C87A24FB824900E86449 /* Metal.metal */,
+				2B01C88224FB824A00E86449 /* Metal.h */,
+			);
+			path = Metal;
+			sourceTree = "<group>";
+		};
+		DDB4A5CB2775B07B000037DE /* Lua */ = {
+			isa = PBXGroup;
+			children = (
+				DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */,
+				DDB4A5FE2775B1E1000037DE /* Source */,
+				DDB4A5FD2775B1B5000037DE /* Interface */,
+				DDB4A5CC2775B127000037DE /* Bridge.h */,
+			);
+			path = Lua;
+			sourceTree = "<group>";
+		};
+		DDB4A5FD2775B1B5000037DE /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				DDB4A5CF2775B147000037DE /* Boolean.swift */,
+				DDB4A5D22775B147000037DE /* ExtraTypes.swift */,
+				DDB4A5D72775B148000037DE /* Function.swift */,
+				DDB4A5D12775B147000037DE /* Nil.swift */,
+				DDB4A5D42775B147000037DE /* Number.swift */,
+				DDB4A5D52775B148000037DE /* String.swift */,
+				DDB4A5D32775B147000037DE /* Table.swift */,
+				DDB4A5D62775B148000037DE /* Thread.swift */,
+				DDB4A5CE2775B147000037DE /* Userdata.swift */,
+				DDB4A5CD2775B147000037DE /* Value.swift */,
+				DDB4A5D02775B147000037DE /* VirtualMachine.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		DDB4A5FE2775B1E1000037DE /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				DDB4A62C2775B1F2000037DE /* lapi.c */,
+				DDB4A6122775B1F1000037DE /* lapi.h */,
+				DDB4A61B2775B1F1000037DE /* lauxlib.c */,
+				DDB4A6262775B1F2000037DE /* lauxlib.h */,
+				DDB4A6132775B1F1000037DE /* lbaselib.c */,
+				DDB4A6292775B1F2000037DE /* lbitlib.c */,
+				DDB4A5FF2775B1F0000037DE /* lcode.c */,
+				DDB4A6002775B1F0000037DE /* lcode.h */,
+				DDB4A6272775B1F2000037DE /* lcorolib.c */,
+				DDB4A6242775B1F2000037DE /* lctype.c */,
+				DDB4A6222775B1F2000037DE /* lctype.h */,
+				DDB4A6202775B1F2000037DE /* ldblib.c */,
+				DDB4A6192775B1F1000037DE /* ldebug.c */,
+				DDB4A62D2775B1F2000037DE /* ldebug.h */,
+				DDB4A61E2775B1F2000037DE /* ldo.c */,
+				DDB4A61C2775B1F1000037DE /* ldo.h */,
+				DDB4A6322775B1F3000037DE /* ldump.c */,
+				DDB4A6102775B1F1000037DE /* lfunc.c */,
+				DDB4A60F2775B1F1000037DE /* lfunc.h */,
+				DDB4A6052775B1F0000037DE /* lgc.c */,
+				DDB4A6072775B1F0000037DE /* lgc.h */,
+				DDB4A6312775B1F3000037DE /* linit.c */,
+				DDB4A6282775B1F2000037DE /* liolib.c */,
+				DDB4A6162775B1F1000037DE /* llex.c */,
+				DDB4A6352775B1F3000037DE /* llex.h */,
+				DDB4A6232775B1F2000037DE /* llimits.h */,
+				DDB4A6362775B1F3000037DE /* lmathlib.c */,
+				DDB4A6392775B1F3000037DE /* lmem.c */,
+				DDB4A60C2775B1F1000037DE /* lmem.h */,
+				DDB4A6382775B1F3000037DE /* loadlib.c */,
+				DDB4A6212775B1F2000037DE /* lobject.c */,
+				DDB4A6342775B1F3000037DE /* lobject.h */,
+				DDB4A62B2775B1F2000037DE /* lopcodes.c */,
+				DDB4A60B2775B1F0000037DE /* lopcodes.h */,
+				DDB4A6112775B1F1000037DE /* loslib.c */,
+				DDB4A6332775B1F3000037DE /* lparser.c */,
+				DDB4A6082775B1F0000037DE /* lparser.h */,
+				DDB4A6182775B1F1000037DE /* lprefix.h */,
+				DDB4A62F2775B1F3000037DE /* lstate.c */,
+				DDB4A6302775B1F3000037DE /* lstate.h */,
+				DDB4A6042775B1F0000037DE /* lstring.c */,
+				DDB4A62E2775B1F3000037DE /* lstring.h */,
+				DDB4A60E2775B1F1000037DE /* lstrlib.c */,
+				DDB4A6372775B1F3000037DE /* ltable.c */,
+				DDB4A63A2775B1F3000037DE /* ltable.h */,
+				DDB4A6172775B1F1000037DE /* ltablib.c */,
+				DDB4A6092775B1F0000037DE /* ltm.c */,
+				DDB4A60A2775B1F0000037DE /* ltm.h */,
+				DDB4A6012775B1F0000037DE /* lua.h */,
+				DDB4A61F2775B1F2000037DE /* luaconf.h */,
+				DDB4A6142775B1F1000037DE /* lualib.h */,
+				DDB4A61A2775B1F1000037DE /* LuaSource.h */,
+				DDB4A6032775B1F0000037DE /* LuaSource.m */,
+				DDB4A6152775B1F1000037DE /* lundump.c */,
+				DDB4A6062775B1F0000037DE /* lundump.h */,
+				DDB4A60D2775B1F1000037DE /* lutf8lib.c */,
+				DDB4A6022775B1F0000037DE /* lvm.c */,
+				DDB4A61D2775B1F2000037DE /* lvm.h */,
+				DDB4A62A2775B1F2000037DE /* lzio.c */,
+				DDB4A6252775B1F2000037DE /* lzio.h */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		DDB4A6A52775B64A000037DE /* Map and Behavior */ = {
+			isa = PBXGroup;
+			children = (
+				2B01C87D24FB824900E86449 /* ScriptEditor.swift */,
+				2B01C87C24FB824900E86449 /* Utils.swift */,
+				2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */,
+				2B6D0B592509EEE80098F244 /* MapPreview.swift */,
+				2B32992324FF21EC007C3386 /* ShaderCompiler.swift */,
+				2B53617D25147B3300E8A20D /* File.swift */,
+				2B53618D2514952800E8A20D /* Behavior.swift */,
+				2B536194251498C400E8A20D /* BehaviorBuilder.swift */,
+				2B71E7182516F5BA00F3317D /* Branches.swift */,
+				2B71E70D2515B21400F3317D /* Leaves.swift */,
+				2BFC028A2505EDA500AB489E /* Map.swift */,
+				2B2882E92519E69E00D1AB2D /* MapStructures.swift */,
+			);
+			path = "Map and Behavior";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1389,14 +1713,23 @@
 				2B01C86924FB814C00E86449 /* DenrimApp.swift in Sources */,
 				2B6D0BAF250B08080098F244 /* b2WheelJoint.swift in Sources */,
 				2B6D0BE5250B08080098F244 /* b2BroadPhase.swift in Sources */,
+				DDB4A67B2775B1F3000037DE /* liolib.c in Sources */,
 				2B76D80525AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
 				2B76D7ED25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
+				DDB4A68A2775B1F3000037DE /* lstate.c in Sources */,
 				2B71E71A2516F5BA00F3317D /* Branches.swift in Sources */,
+				DDB4A64B2775B1F3000037DE /* ltm.c in Sources */,
+				DDB4A64E2775B1F3000037DE /* lutf8lib.c in Sources */,
 				2B400ECE25AD5458006493A0 /* SDFNodes2D.swift in Sources */,
 				2B400EAF25AD445C006493A0 /* BaseBuilder.swift in Sources */,
 				2B6D0BF3250B08080098F244 /* b2CollideEdge.swift in Sources */,
+				DDB4A6692775B1F3000037DE /* lauxlib.c in Sources */,
 				2BE9738A258CAD0700D8019D /* Expression.swift in Sources */,
 				2B01C88F24FB824A00E86449 /* Game.swift in Sources */,
+				DDB4A6A32775B5FF000037DE /* LuaBuilder.swift in Sources */,
+				DDB4A66F2775B1F3000037DE /* ldblib.c in Sources */,
+				DDB4A6842775B1F3000037DE /* lopcodes.c in Sources */,
+				DDB4A5E22775B148000037DE /* VirtualMachine.swift in Sources */,
 				2B6D0BA1250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */,
 				2B6D0BEF250B08080098F244 /* b2CircleShape.swift in Sources */,
 				2B76D80B25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
@@ -1406,53 +1739,75 @@
 				2B53617F25147B3300E8A20D /* File.swift in Sources */,
 				2B6D0BBB250B08080098F244 /* b2GearJoint.swift in Sources */,
 				2B6D0BFE250B0AAE0098F244 /* b2Timer.swift in Sources */,
-				2BE27C9A2595690100B8AAD8 /* Browser.swift in Sources */,
+				2BE27C9A2595690100B8AAD8 /* BrowserView.swift in Sources */,
 				2B6D0BCD250B08080098F244 /* b2Island.swift in Sources */,
+				DDB4A67E2775B1F3000037DE /* lbitlib.c in Sources */,
 				2B6D0BF9250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C8A024FB8C7500E86449 /* MetalStates.swift in Sources */,
 				2B6D0BFB250B08080098F244 /* b2Collision.swift in Sources */,
 				2B400EA325AD43AF006493A0 /* BranchNodes2D.swift in Sources */,
 				2B2882EB2519E69E00D1AB2D /* MapStructures.swift in Sources */,
+				DDB4A6662775B1F3000037DE /* ldebug.c in Sources */,
+				DDB4A69C2775B1F3000037DE /* loadlib.c in Sources */,
 				2B6D0BF7250B08080098F244 /* b2CollidePolygon.swift in Sources */,
 				2B6D0BBF250B08080098F244 /* b2PrismaticJoint.swift in Sources */,
 				2B400EDA25AD5913006493A0 /* Renderer.swift in Sources */,
 				2B32995A2501B6F3007C3386 /* Font.swift in Sources */,
+				DDB4A5EE2775B148000037DE /* Number.swift in Sources */,
+				DDB4A66C2775B1F3000037DE /* ldo.c in Sources */,
 				2B6D0B9F250B08080098F244 /* b2ChainAndPolygonContact.swift in Sources */,
 				2B6D0BA5250B08080098F244 /* b2ContactSolver.swift in Sources */,
 				2B6D0BDD250B08080098F244 /* b2Common.swift in Sources */,
 				2B6D0BFD250B08080098F244 /* b2CollideCircles.swift in Sources */,
 				2B6D0BB3250B08080098F244 /* b2RevoluteJoint.swift in Sources */,
 				2B76D81725AC3A8400AF6FF2 /* Tool.swift in Sources */,
+				DDB4A5DF2775B148000037DE /* Boolean.swift in Sources */,
 				2B6D0BCF250B08080098F244 /* b2ContactManager.swift in Sources */,
+				DDB4A63F2775B1F3000037DE /* lvm.c in Sources */,
 				2BE9738F258CAD0700D8019D /* Utilities.swift in Sources */,
 				2B536196251498C400E8A20D /* BehaviorBuilder.swift in Sources */,
 				DDB4A5C227740499000037DE /* HelpIndexView.swift in Sources */,
 				2B01C89724FB824A00E86449 /* Classes.swift in Sources */,
+				DDB4A6752775B1F3000037DE /* lctype.c in Sources */,
 				2B01C89124FB824A00E86449 /* Asset.swift in Sources */,
+				DDB4A6422775B1F3000037DE /* LuaSource.m in Sources */,
 				2B6D0BAD250B08080098F244 /* b2Contact.swift in Sources */,
 				2B6193DD25AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				DDB4A5C827746000000037DE /* EditorView.swift in Sources */,
 				2B6D0BA3250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
+				DDB4A68D2775B1F3000037DE /* linit.c in Sources */,
 				2B224D8525A1851D006C5C2F /* StoreManager.swift in Sources */,
 				2B76D7FF25AC3A5200AF6FF2 /* Nodes.swift in Sources */,
 				2B6D0BDF250B08080098F244 /* b2Wrappers.swift in Sources */,
 				2B6D0BB9250B08080098F244 /* b2FrictionJoint.swift in Sources */,
 				2B01C88D24FB824A00E86449 /* ScriptEditor.swift in Sources */,
+				DDB4A5DC2775B148000037DE /* Userdata.swift in Sources */,
+				DDB4A6602775B1F3000037DE /* llex.c in Sources */,
 				2B6D0BCB250B08080098F244 /* b2TimeStep.swift in Sources */,
 				2B6D0BC7250B08080098F244 /* b2World.swift in Sources */,
 				2BE97380258CAD0700D8019D /* AtomNodes.swift in Sources */,
+				DDB4A6902775B1F3000037DE /* ldump.c in Sources */,
+				DDB4A6872775B1F3000037DE /* lapi.c in Sources */,
+				DDB4A5D92775B148000037DE /* Value.swift in Sources */,
 				2B6D0BC5250B08080098F244 /* b2WeldJoint.swift in Sources */,
 				2B01C88924FB824A00E86449 /* Texture2D.swift in Sources */,
 				2B6D0BC3250B08080098F244 /* b2MouseJoint.swift in Sources */,
+				DDB4A63C2775B1F3000037DE /* lcode.c in Sources */,
 				2B76D7E725AC3A5200AF6FF2 /* BranchNodes.swift in Sources */,
 				2B6D0BC1250B08080098F244 /* b2PulleyJoint.swift in Sources */,
+				DDB4A65D2775B1F3000037DE /* lundump.c in Sources */,
 				2B6D0B9D250B08080098F244 /* b2CircleContact.swift in Sources */,
 				2BFC028C2505EDA500AB489E /* Map.swift in Sources */,
 				2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
+				DDB4A5EB2775B148000037DE /* Table.swift in Sources */,
 				2B01C88724FB824A00E86449 /* Metal.metal in Sources */,
 				2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */,
+				DDB4A6542775B1F3000037DE /* lfunc.c in Sources */,
 				2B6D0BA7250B08080098F244 /* b2EdgeAndCircleContact.swift in Sources */,
 				2B71E70F2515B21400F3317D /* Leaves.swift in Sources */,
+				DDB4A6722775B1F3000037DE /* lobject.c in Sources */,
+				DDB4A6482775B1F3000037DE /* lgc.c in Sources */,
+				DDB4A6992775B1F3000037DE /* ltable.c in Sources */,
 				2B6D0BF1250B08080098F244 /* b2DynamicTree.swift in Sources */,
 				2B6D0BBD250B08080098F244 /* b2RopeJoint.swift in Sources */,
 				2B01C89C24FB844C00E86449 /* MetalView.swift in Sources */,
@@ -1466,20 +1821,35 @@
 				2B6D0B9B250B08080098F244 /* b2Body.swift in Sources */,
 				2B6D0BB7250B08080098F244 /* b2MotorJoint.swift in Sources */,
 				2B76D7F325AC3A5200AF6FF2 /* BoolNodes.swift in Sources */,
+				DDB4A6932775B1F3000037DE /* lparser.c in Sources */,
 				2B6D0BAB250B08080098F244 /* b2PolygonAndCircleContact.swift in Sources */,
+				DDB4A5F72775B148000037DE /* Function.swift in Sources */,
+				DDB4A6812775B1F3000037DE /* lzio.c in Sources */,
+				DDB4A5E52775B148000037DE /* Nil.swift in Sources */,
+				DDB4A69F2775B1F3000037DE /* lmem.c in Sources */,
+				DDB4A6632775B1F3000037DE /* ltablib.c in Sources */,
 				2B6D0BE1250B08080098F244 /* b2Math.swift in Sources */,
 				2B6D0BEB250B08080098F244 /* b2ChainShape.swift in Sources */,
+				DDB4A6512775B1F3000037DE /* lstrlib.c in Sources */,
+				DDB4A6452775B1F3000037DE /* lstring.c in Sources */,
 				DDB4A5C52774073A000037DE /* ProjectView.swift in Sources */,
 				2B01C86B24FB814C00E86449 /* DenrimDocument.swift in Sources */,
+				DDB4A5E82775B148000037DE /* ExtraTypes.swift in Sources */,
 				2B6D0BDB250B08080098F244 /* b2Settings.swift in Sources */,
+				DDB4A6782775B1F3000037DE /* lcorolib.c in Sources */,
 				2B01C86D24FB814C00E86449 /* ContentView.swift in Sources */,
+				DDB4A65A2775B1F3000037DE /* lbaselib.c in Sources */,
+				DDB4A5F42775B148000037DE /* Thread.swift in Sources */,
 				2B53618F2514952800E8A20D /* Behavior.swift in Sources */,
 				2B6D0BD7250B08080098F244 /* b2GrowableStack.swift in Sources */,
+				DDB4A6572775B1F3000037DE /* loslib.c in Sources */,
 				2B6D0B5B2509EEE80098F244 /* MapPreview.swift in Sources */,
 				2B6D0BD3250B08080098F244 /* b2Rope.swift in Sources */,
 				2B01C88524FB824A00E86449 /* MathLibrary.swift in Sources */,
 				2B6D0BB1250B08080098F244 /* b2DistanceJoint.swift in Sources */,
 				2B76D7E125AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
+				DDB4A6962775B1F3000037DE /* lmathlib.c in Sources */,
+				DDB4A5F12775B148000037DE /* String.swift in Sources */,
 				2B6D0BE9250B08080098F244 /* b2PolygonShape.swift in Sources */,
 				2B6D0BF5250B08080098F244 /* b2Distance.swift in Sources */,
 			);
@@ -1492,14 +1862,23 @@
 				2B01C86A24FB814C00E86449 /* DenrimApp.swift in Sources */,
 				2B6D0BAE250B08080098F244 /* b2WheelJoint.swift in Sources */,
 				2B6D0BE4250B08080098F244 /* b2BroadPhase.swift in Sources */,
+				DDB4A67A2775B1F3000037DE /* liolib.c in Sources */,
 				2B76D80425AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
 				2B76D7EC25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
+				DDB4A6892775B1F3000037DE /* lstate.c in Sources */,
 				2B71E7192516F5BA00F3317D /* Branches.swift in Sources */,
+				DDB4A64A2775B1F3000037DE /* ltm.c in Sources */,
+				DDB4A64D2775B1F3000037DE /* lutf8lib.c in Sources */,
 				2B400ECD25AD5458006493A0 /* SDFNodes2D.swift in Sources */,
 				2B400EAE25AD445C006493A0 /* BaseBuilder.swift in Sources */,
 				2B6D0BF2250B08080098F244 /* b2CollideEdge.swift in Sources */,
+				DDB4A6682775B1F3000037DE /* lauxlib.c in Sources */,
 				2BE97389258CAD0700D8019D /* Expression.swift in Sources */,
 				2B01C89024FB824A00E86449 /* Game.swift in Sources */,
+				DDB4A6A22775B5FF000037DE /* LuaBuilder.swift in Sources */,
+				DDB4A66E2775B1F3000037DE /* ldblib.c in Sources */,
+				DDB4A6832775B1F3000037DE /* lopcodes.c in Sources */,
+				DDB4A5E12775B148000037DE /* VirtualMachine.swift in Sources */,
 				2B6D0BA0250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */,
 				2B6D0BEE250B08080098F244 /* b2CircleShape.swift in Sources */,
 				2B76D80A25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
@@ -1509,53 +1888,75 @@
 				2B53617E25147B3300E8A20D /* File.swift in Sources */,
 				2B6D0BBA250B08080098F244 /* b2GearJoint.swift in Sources */,
 				2B6D0BFF250B0B490098F244 /* b2Timer.swift in Sources */,
-				2BE27C992595690100B8AAD8 /* Browser.swift in Sources */,
+				2BE27C992595690100B8AAD8 /* BrowserView.swift in Sources */,
 				2B6D0BCC250B08080098F244 /* b2Island.swift in Sources */,
+				DDB4A67D2775B1F3000037DE /* lbitlib.c in Sources */,
 				2B6D0BF8250B08080098F244 /* b2TimeOfImpact.swift in Sources */,
 				2B01C89F24FB8C7500E86449 /* MetalStates.swift in Sources */,
 				2B6D0BFA250B08080098F244 /* b2Collision.swift in Sources */,
 				2B400EA225AD43AF006493A0 /* BranchNodes2D.swift in Sources */,
 				2B2882EA2519E69E00D1AB2D /* MapStructures.swift in Sources */,
+				DDB4A6652775B1F3000037DE /* ldebug.c in Sources */,
+				DDB4A69B2775B1F3000037DE /* loadlib.c in Sources */,
 				2B6D0BF6250B08080098F244 /* b2CollidePolygon.swift in Sources */,
 				2B6D0BBE250B08080098F244 /* b2PrismaticJoint.swift in Sources */,
 				2B400ED925AD5913006493A0 /* Renderer.swift in Sources */,
 				2B3299592501B6F3007C3386 /* Font.swift in Sources */,
+				DDB4A5ED2775B148000037DE /* Number.swift in Sources */,
+				DDB4A66B2775B1F3000037DE /* ldo.c in Sources */,
 				2B6D0B9E250B08080098F244 /* b2ChainAndPolygonContact.swift in Sources */,
 				2B6D0BA4250B08080098F244 /* b2ContactSolver.swift in Sources */,
 				2B6D0BDC250B08080098F244 /* b2Common.swift in Sources */,
 				2B6D0BFC250B08080098F244 /* b2CollideCircles.swift in Sources */,
 				2B6D0BB2250B08080098F244 /* b2RevoluteJoint.swift in Sources */,
 				2B76D81625AC3A8400AF6FF2 /* Tool.swift in Sources */,
+				DDB4A5DE2775B148000037DE /* Boolean.swift in Sources */,
 				2B6D0BCE250B08080098F244 /* b2ContactManager.swift in Sources */,
+				DDB4A63E2775B1F3000037DE /* lvm.c in Sources */,
 				2BE9738E258CAD0700D8019D /* Utilities.swift in Sources */,
 				2B536195251498C400E8A20D /* BehaviorBuilder.swift in Sources */,
 				DDB4A5C127740499000037DE /* HelpIndexView.swift in Sources */,
 				2B01C89824FB824A00E86449 /* Classes.swift in Sources */,
+				DDB4A6742775B1F3000037DE /* lctype.c in Sources */,
 				2B01C89224FB824A00E86449 /* Asset.swift in Sources */,
+				DDB4A6412775B1F3000037DE /* LuaSource.m in Sources */,
 				2B6D0BAC250B08080098F244 /* b2Contact.swift in Sources */,
 				2B6193DC25AA870B0077F64D /* FunctionNodes.swift in Sources */,
 				DDB4A5C727746000000037DE /* EditorView.swift in Sources */,
 				2B6D0BA2250B08080098F244 /* b2EdgeAndPolygonContact.swift in Sources */,
+				DDB4A68C2775B1F3000037DE /* linit.c in Sources */,
 				2B224D8425A1851D006C5C2F /* StoreManager.swift in Sources */,
 				2B76D7FE25AC3A5200AF6FF2 /* Nodes.swift in Sources */,
 				2B6D0BDE250B08080098F244 /* b2Wrappers.swift in Sources */,
 				2B6D0BB8250B08080098F244 /* b2FrictionJoint.swift in Sources */,
 				2B01C88E24FB824A00E86449 /* ScriptEditor.swift in Sources */,
+				DDB4A5DB2775B148000037DE /* Userdata.swift in Sources */,
+				DDB4A65F2775B1F3000037DE /* llex.c in Sources */,
 				2B6D0BCA250B08080098F244 /* b2TimeStep.swift in Sources */,
 				2B6D0BC6250B08080098F244 /* b2World.swift in Sources */,
 				2BE9737F258CAD0700D8019D /* AtomNodes.swift in Sources */,
+				DDB4A68F2775B1F3000037DE /* ldump.c in Sources */,
+				DDB4A6862775B1F3000037DE /* lapi.c in Sources */,
+				DDB4A5D82775B148000037DE /* Value.swift in Sources */,
 				2B6D0BC4250B08080098F244 /* b2WeldJoint.swift in Sources */,
 				2B01C88A24FB824A00E86449 /* Texture2D.swift in Sources */,
 				2B6D0BC2250B08080098F244 /* b2MouseJoint.swift in Sources */,
+				DDB4A63B2775B1F3000037DE /* lcode.c in Sources */,
 				2B76D7E625AC3A5200AF6FF2 /* BranchNodes.swift in Sources */,
 				2B6D0BC0250B08080098F244 /* b2PulleyJoint.swift in Sources */,
+				DDB4A65C2775B1F3000037DE /* lundump.c in Sources */,
 				2B6D0B9C250B08080098F244 /* b2CircleContact.swift in Sources */,
 				2BFC028B2505EDA500AB489E /* Map.swift in Sources */,
 				2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
+				DDB4A5EA2775B148000037DE /* Table.swift in Sources */,
 				2B01C88824FB824A00E86449 /* Metal.metal in Sources */,
 				2BEFCF8F250473B1003C00B0 /* MapBuilder.swift in Sources */,
+				DDB4A6532775B1F3000037DE /* lfunc.c in Sources */,
 				2B6D0BA6250B08080098F244 /* b2EdgeAndCircleContact.swift in Sources */,
 				2B71E70E2515B21400F3317D /* Leaves.swift in Sources */,
+				DDB4A6712775B1F3000037DE /* lobject.c in Sources */,
+				DDB4A6472775B1F3000037DE /* lgc.c in Sources */,
+				DDB4A6982775B1F3000037DE /* ltable.c in Sources */,
 				2B6D0BF0250B08080098F244 /* b2DynamicTree.swift in Sources */,
 				2B6D0BBC250B08080098F244 /* b2RopeJoint.swift in Sources */,
 				2B01C89D24FB844C00E86449 /* MetalView.swift in Sources */,
@@ -1569,20 +1970,35 @@
 				2B6D0B9A250B08080098F244 /* b2Body.swift in Sources */,
 				2B6D0BB6250B08080098F244 /* b2MotorJoint.swift in Sources */,
 				2B76D7F225AC3A5200AF6FF2 /* BoolNodes.swift in Sources */,
+				DDB4A6922775B1F3000037DE /* lparser.c in Sources */,
 				2B6D0BAA250B08080098F244 /* b2PolygonAndCircleContact.swift in Sources */,
+				DDB4A5F62775B148000037DE /* Function.swift in Sources */,
+				DDB4A6802775B1F3000037DE /* lzio.c in Sources */,
+				DDB4A5E42775B148000037DE /* Nil.swift in Sources */,
+				DDB4A69E2775B1F3000037DE /* lmem.c in Sources */,
+				DDB4A6622775B1F3000037DE /* ltablib.c in Sources */,
 				2B6D0BE0250B08080098F244 /* b2Math.swift in Sources */,
 				2B6D0BEA250B08080098F244 /* b2ChainShape.swift in Sources */,
+				DDB4A6502775B1F3000037DE /* lstrlib.c in Sources */,
+				DDB4A6442775B1F3000037DE /* lstring.c in Sources */,
 				DDB4A5C42774073A000037DE /* ProjectView.swift in Sources */,
 				2B01C86C24FB814C00E86449 /* DenrimDocument.swift in Sources */,
+				DDB4A5E72775B148000037DE /* ExtraTypes.swift in Sources */,
 				2B6D0BDA250B08080098F244 /* b2Settings.swift in Sources */,
+				DDB4A6772775B1F3000037DE /* lcorolib.c in Sources */,
 				2B01C86E24FB814C00E86449 /* ContentView.swift in Sources */,
+				DDB4A6592775B1F3000037DE /* lbaselib.c in Sources */,
+				DDB4A5F32775B148000037DE /* Thread.swift in Sources */,
 				2B53618E2514952800E8A20D /* Behavior.swift in Sources */,
 				2B6D0BD6250B08080098F244 /* b2GrowableStack.swift in Sources */,
+				DDB4A6562775B1F3000037DE /* loslib.c in Sources */,
 				2B6D0B5A2509EEE80098F244 /* MapPreview.swift in Sources */,
 				2B6D0BD2250B08080098F244 /* b2Rope.swift in Sources */,
 				2B01C88624FB824A00E86449 /* MathLibrary.swift in Sources */,
 				2B6D0BB0250B08080098F244 /* b2DistanceJoint.swift in Sources */,
 				2B76D7E025AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
+				DDB4A6952775B1F3000037DE /* lmathlib.c in Sources */,
+				DDB4A5F02775B148000037DE /* String.swift in Sources */,
 				2B6D0BE8250B08080098F244 /* b2PolygonShape.swift in Sources */,
 				2B6D0BF4250B08080098F244 /* b2Distance.swift in Sources */,
 			);
@@ -1879,36 +2295,52 @@
 			files = (
 				2B59023A2592D2DD00FCF16D /* b2PulleyJoint.swift in Sources */,
 				2B5902352592D2DD00FCF16D /* b2Joint.swift in Sources */,
+				DDB4A5DD2775B148000037DE /* Userdata.swift in Sources */,
 				2B59025F2592D2F600FCF16D /* b2BroadPhase.swift in Sources */,
 				2B76D81825AC3A8400AF6FF2 /* Tool.swift in Sources */,
 				2B5902242592D2D900FCF16D /* b2ChainAndCircleContact.swift in Sources */,
 				2B59024D2592D2E600FCF16D /* b2Rope.swift in Sources */,
 				2B5902562592D2EC00FCF16D /* b2Common.swift in Sources */,
+				DDB4A5E02775B148000037DE /* Boolean.swift in Sources */,
 				2B5902262592D2D900FCF16D /* b2ChainAndPolygonContact.swift in Sources */,
 				2B5902452592D2E100FCF16D /* b2WorldCallbacks.swift in Sources */,
 				2B5902312592D2DD00FCF16D /* b2WheelJoint.swift in Sources */,
+				DDB4A66A2775B1F3000037DE /* lauxlib.c in Sources */,
+				DDB4A6402775B1F3000037DE /* lvm.c in Sources */,
+				DDB4A68B2775B1F3000037DE /* lstate.c in Sources */,
+				DDB4A6522775B1F3000037DE /* lstrlib.c in Sources */,
+				DDB4A6972775B1F3000037DE /* lmathlib.c in Sources */,
 				2B5902722592D2FD00FCF16D /* b2CollideEdge.swift in Sources */,
+				DDB4A6762775B1F3000037DE /* lctype.c in Sources */,
 				2B76D80025AC3A5200AF6FF2 /* Nodes.swift in Sources */,
+				DDB4A6552775B1F3000037DE /* lfunc.c in Sources */,
 				2B5902292592D2D900FCF16D /* b2ContactSolver.swift in Sources */,
+				DDB4A63D2775B1F3000037DE /* lcode.c in Sources */,
 				2B5902552592D2EC00FCF16D /* b2Wrappers.swift in Sources */,
+				DDB4A6672775B1F3000037DE /* ldebug.c in Sources */,
+				DDB4A69D2775B1F3000037DE /* loadlib.c in Sources */,
 				2B5902172592D2C300FCF16D /* Texture2D.swift in Sources */,
 				2B5902542592D2EC00FCF16D /* b2Draw.swift in Sources */,
 				2B5902282592D2D900FCF16D /* b2PolygonAndCircleContact.swift in Sources */,
 				2B5902662592D2FA00FCF16D /* b2EdgeShape.swift in Sources */,
 				2B400ECF25AD5458006493A0 /* SDFNodes2D.swift in Sources */,
+				DDB4A5EC2775B148000037DE /* Table.swift in Sources */,
 				2B5902442592D2E100FCF16D /* b2TimeStep.swift in Sources */,
 				2B59022B2592D2D900FCF16D /* b2Contact.swift in Sources */,
 				2B5901A72592D21500FCF16D /* MetalView.swift in Sources */,
 				2B5901B32592D21A00FCF16D /* Metal.metal in Sources */,
 				2B76D80625AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
 				2B5901792592D0C900FCF16D /* Shaders.metal in Sources */,
+				DDB4A6A42775B5FF000037DE /* LuaBuilder.swift in Sources */,
 				2B5901E92592D23C00FCF16D /* Branches.swift in Sources */,
 				2B5901D12592D23000FCF16D /* ShaderCompiler.swift in Sources */,
+				DDB4A6882775B1F3000037DE /* lapi.c in Sources */,
 				2B400EB025AD445C006493A0 /* BaseBuilder.swift in Sources */,
 				2B400EDB25AD5913006493A0 /* Renderer.swift in Sources */,
 				2B5902702592D2FD00FCF16D /* b2DynamicTree.swift in Sources */,
 				2B59023B2592D2DD00FCF16D /* b2MotorJoint.swift in Sources */,
 				2B5901A12592D21100FCF16D /* MathLibrary.swift in Sources */,
+				DDB4A6942775B1F3000037DE /* lparser.c in Sources */,
 				2B5902672592D2FA00FCF16D /* b2ChainShape.swift in Sources */,
 				2B76D7EE25AC3A5200AF6FF2 /* SDFNodes.swift in Sources */,
 				2B59022A2592D2D900FCF16D /* b2PolygonContact.swift in Sources */,
@@ -1918,8 +2350,12 @@
 				2B5902472592D2E100FCF16D /* b2ContactManager.swift in Sources */,
 				2B5902592592D2EC00FCF16D /* b2Settings.swift in Sources */,
 				2B5902152592D2C300FCF16D /* Classes.swift in Sources */,
+				DDB4A5E32775B148000037DE /* VirtualMachine.swift in Sources */,
+				DDB4A6912775B1F3000037DE /* ldump.c in Sources */,
+				DDB4A6702775B1F3000037DE /* ldblib.c in Sources */,
 				2B5902392592D2DD00FCF16D /* b2DistanceJoint.swift in Sources */,
 				2B5901EF2592D24000FCF16D /* Leaves.swift in Sources */,
+				DDB4A64C2775B1F3000037DE /* ltm.c in Sources */,
 				2B5902732592D2FD00FCF16D /* b2Collision.swift in Sources */,
 				2B5902742592D2FD00FCF16D /* b2CollideCircles.swift in Sources */,
 				2B5901D72592D23300FCF16D /* File.swift in Sources */,
@@ -1928,12 +2364,20 @@
 				2B59023C2592D2DD00FCF16D /* b2MouseJoint.swift in Sources */,
 				2B5901F52592D24300FCF16D /* Map.swift in Sources */,
 				2B5901742592D0C900FCF16D /* GameViewController.swift in Sources */,
+				DDB4A6612775B1F3000037DE /* llex.c in Sources */,
+				DDB4A5E62775B148000037DE /* Nil.swift in Sources */,
+				DDB4A6462775B1F3000037DE /* lstring.c in Sources */,
 				2B5902422592D2E100FCF16D /* b2World.swift in Sources */,
+				DDB4A6492775B1F3000037DE /* lgc.c in Sources */,
 				2B5902652592D2FA00FCF16D /* b2Shape.swift in Sources */,
 				2B5902042592D24E00FCF16D /* Expression.swift in Sources */,
+				DDB4A66D2775B1F3000037DE /* ldo.c in Sources */,
 				2B5901952592D20B00FCF16D /* Asset.swift in Sources */,
 				2B76D80C25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
+				DDB4A6432775B1F3000037DE /* LuaSource.m in Sources */,
+				DDB4A6A02775B1F3000037DE /* lmem.c in Sources */,
 				2B6193DE25AA870B0077F64D /* FunctionNodes.swift in Sources */,
+				DDB4A69A2775B1F3000037DE /* ltable.c in Sources */,
 				2B76D7E825AC3A5200AF6FF2 /* BranchNodes.swift in Sources */,
 				2B5902162592D2C300FCF16D /* Font.swift in Sources */,
 				2B5902712592D2FD00FCF16D /* b2Distance.swift in Sources */,
@@ -1943,29 +2387,47 @@
 				2B5902572592D2EC00FCF16D /* b2Timer.swift in Sources */,
 				2B5902272592D2D900FCF16D /* b2EdgeAndCircleContact.swift in Sources */,
 				2B5902012592D24E00FCF16D /* AtomNodes.swift in Sources */,
+				DDB4A6582775B1F3000037DE /* loslib.c in Sources */,
 				2B400EA425AD43AF006493A0 /* BranchNodes2D.swift in Sources */,
 				2B5902582592D2EC00FCF16D /* b2GrowableStack.swift in Sources */,
 				2B5902322592D2DD00FCF16D /* b2RevoluteJoint.swift in Sources */,
+				DDB4A6792775B1F3000037DE /* lcorolib.c in Sources */,
 				2B5902532592D2EC00FCF16D /* b2Math.swift in Sources */,
+				DDB4A5F22775B148000037DE /* String.swift in Sources */,
+				DDB4A6822775B1F3000037DE /* lzio.c in Sources */,
+				DDB4A67F2775B1F3000037DE /* lbitlib.c in Sources */,
 				2B5902462592D2E100FCF16D /* b2Island.swift in Sources */,
+				DDB4A5F82775B148000037DE /* Function.swift in Sources */,
 				2B5902692592D2FA00FCF16D /* b2PolygonShape.swift in Sources */,
 				2B5902752592D2FD00FCF16D /* b2CollidePolygon.swift in Sources */,
+				DDB4A5F52775B148000037DE /* Thread.swift in Sources */,
 				2B5902342592D2DD00FCF16D /* b2RopeJoint.swift in Sources */,
 				2B5902432592D2E100FCF16D /* b2Fixture.swift in Sources */,
+				DDB4A67C2775B1F3000037DE /* liolib.c in Sources */,
+				DDB4A5EF2775B148000037DE /* Number.swift in Sources */,
 				2B59021D2592D2D500FCF16D /* b2Body.swift in Sources */,
 				2B5902332592D2DD00FCF16D /* b2FrictionJoint.swift in Sources */,
 				2B5901CB2592D22E00FCF16D /* MapPreview.swift in Sources */,
 				2B5901AD2592D21700FCF16D /* MetalStates.swift in Sources */,
 				2B5902032592D24E00FCF16D /* Variables.swift in Sources */,
+				DDB4A65E2775B1F3000037DE /* lundump.c in Sources */,
 				2B76D7FA25AC3A5200AF6FF2 /* Graph.swift in Sources */,
 				2B5902252592D2D900FCF16D /* b2EdgeAndPolygonContact.swift in Sources */,
 				2B76D7F425AC3A5200AF6FF2 /* BoolNodes.swift in Sources */,
+				DDB4A65B2775B1F3000037DE /* lbaselib.c in Sources */,
+				DDB4A5DA2775B148000037DE /* Value.swift in Sources */,
 				2B5901762592D0C900FCF16D /* Renderer.swift in Sources */,
 				2B5902382592D2DD00FCF16D /* b2PrismaticJoint.swift in Sources */,
+				DDB4A6852775B1F3000037DE /* lopcodes.c in Sources */,
 				2B5901FB2592D24500FCF16D /* MapStructures.swift in Sources */,
 				2B5901722592D0C900FCF16D /* AppDelegate.swift in Sources */,
+				DDB4A64F2775B1F3000037DE /* lutf8lib.c in Sources */,
+				DDB4A68E2775B1F3000037DE /* linit.c in Sources */,
 				2B5901BF2592D22900FCF16D /* Utils.swift in Sources */,
 				2B59026F2592D2FD00FCF16D /* b2TimeOfImpact.swift in Sources */,
+				DDB4A6642775B1F3000037DE /* ltablib.c in Sources */,
+				DDB4A6732775B1F3000037DE /* lobject.c in Sources */,
+				DDB4A5E92775B148000037DE /* ExtraTypes.swift in Sources */,
 				2B5901DD2592D23600FCF16D /* Behavior.swift in Sources */,
 				2B5902372592D2DD00FCF16D /* b2GearJoint.swift in Sources */,
 				2B76D7E225AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
@@ -2133,7 +2595,7 @@
 				PRODUCT_NAME = Denrim;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Lua/Bridge.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -2163,7 +2625,7 @@
 				PRODUCT_NAME = Denrim;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Lua/Bridge.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
@@ -2194,7 +2656,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Lua/Bridge.h;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -2223,7 +2685,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.moenig.denrim;
 				PRODUCT_NAME = Denrim;
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = Shared/Metal.h;
+				SWIFT_OBJC_BRIDGING_HEADER = Shared/Lua/Bridge.h;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

@@ -41,6 +41,8 @@ public class Game       : ObservableObject
     var mapBuilder      : MapBuilder!
     var behaviorBuilder : BehaviorBuilder!
     var shaderCompiler  : ShaderCompiler!
+    
+    var luaBuilder      : LuaBuilder!
 
     var textureLoader   : MTKTextureLoader!
         
@@ -92,7 +94,7 @@ public class Game       : ObservableObject
     var frameworkId     : String? = nil
 
     let editorIsMaximized                       = PassthroughSubject<Bool, Never>()
-    let gameFinished                            = PassthroughSubject<Void, Never>()
+    let gameIsRunning                           = PassthroughSubject<Bool, Never>()
 
     var graphRenderer   : GraphRenderer!
     var graphBuilder    : DenrimGraphBuilder!
@@ -119,7 +121,9 @@ public class Game       : ObservableObject
         mapBuilder = MapBuilder(self)
         behaviorBuilder = BehaviorBuilder(self)
         shaderCompiler = ShaderCompiler(self)
-        
+
+        luaBuilder = LuaBuilder(self)
+
         graphRenderer = GraphRenderer(self)
 
         #if os(iOS)
@@ -224,6 +228,8 @@ public class Game       : ObservableObject
             _Time.x = 0
             targetFPS = 60
             view.preferredFramesPerSecond = Int(targetFPS)
+            
+            gameIsRunning.send(true)
         } else {
             stop()
         }
@@ -258,7 +264,7 @@ public class Game       : ObservableObject
             }
         }
         
-        gameFinished.send()
+        gameIsRunning.send(false)
     }
     
     @discardableResult func checkTexture() -> Bool

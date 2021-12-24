@@ -10,7 +10,6 @@ import SwiftUI
 struct ProjectView: View {
     
     @State var document                                 : DenrimDocument
-    @Binding var updateView                             : Bool
 
     @State private var selection                        : UUID? = nil
 
@@ -42,6 +41,7 @@ struct ProjectView: View {
         HStack(spacing: toolBarSpacing) {
             Button(action: {
                 document.game.assetFolder.addFolder("New Folder")
+                selection = document.game.assetFolder.current!.id
                 assetName = document.game.assetFolder.current!.name
                 showAssetNamePopover = true
             })
@@ -53,6 +53,7 @@ struct ProjectView: View {
             
             Button(action: {
                 document.game.assetFolder.addBehavior("New Behavior", path: document.game.assetFolder.genDestinationPath())
+                selection = document.game.assetFolder.current!.id
                 assetName = document.game.assetFolder.current!.name
                 showAssetNamePopover = true
             })
@@ -64,6 +65,7 @@ struct ProjectView: View {
             
             Button(action: {
                 document.game.assetFolder.addLua("New Lua Script", path: document.game.assetFolder.genDestinationPath())
+                selection = document.game.assetFolder.current!.id
                 assetName = document.game.assetFolder.current!.name
                 showAssetNamePopover = true
             })
@@ -75,6 +77,7 @@ struct ProjectView: View {
 
             Button(action: {
                 document.game.assetFolder.addMap("New Map", path: document.game.assetFolder.genDestinationPath())
+                selection = document.game.assetFolder.current!.id
                 assetName = document.game.assetFolder.current!.name
                 showAssetNamePopover = true
             })
@@ -86,6 +89,7 @@ struct ProjectView: View {
             
             Button(action: {
                 document.game.assetFolder.addShape("New Shape", path: document.game.assetFolder.genDestinationPath())
+                selection = document.game.assetFolder.current!.id
                 assetName = document.game.assetFolder.current!.name
                 showAssetNamePopover = true
             })
@@ -98,6 +102,7 @@ struct ProjectView: View {
             Button(action: {
                 document.game.assetFolder.addShader("New Shader", path: document.game.assetFolder.genDestinationPath())
                 if let asset = document.game.assetFolder.current {
+                    selection = document.game.assetFolder.current!.id
                     assetName = document.game.assetFolder.current!.name
                     showAssetNamePopover = true
                     document.game.createPreview(asset)
@@ -155,7 +160,6 @@ struct ProjectView: View {
                             document.game.assetFolder.select(asset.id)
                             
                             document.game.assetFolder.moveToFolder(folderName: nil, asset: asset)
-                            updateView.toggle()
                         }) {
                             Text("Root")
                             if document.game.assetFolder.isInsideRoot(asset) {
@@ -170,7 +174,6 @@ struct ProjectView: View {
                                     document.game.assetFolder.select(asset.id)
                                     
                                     document.game.assetFolder.moveToFolder(folderName: folder.name, asset: asset)
-                                    updateView.toggle()
                                 }) {
                                     Text(folder.name)
                                     if asset.path == folder.name {
@@ -230,7 +233,6 @@ struct ProjectView: View {
                             if let asset = document.game.assetFolder.current {
                                 asset.data.remove(at: Int(imageIndex))
                             }
-                            updateView.toggle()
                         })
                         {
                             Label("Remove Image", systemImage: "minus.circle")
@@ -255,7 +257,6 @@ struct ProjectView: View {
                                 document.game.assetFolder.select(a.id)
                             }
                         }
-                        self.updateView.toggle()
                     }
                 }),
                 secondaryButton: .cancel(Text("No"), action: {})
@@ -272,7 +273,6 @@ struct ProjectView: View {
                     if let asset = document.game.assetFolder.current {
                         asset.name = assetName
                         document.game.assetFolder.sort()
-                        self.updateView.toggle()
                     }
                 })
                 .frame(minWidth: 200)
@@ -291,7 +291,6 @@ struct ProjectView: View {
                     document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
                     assetName = document.game.assetFolder.current!.name
                     showAssetNamePopover = true
-                    updateView.toggle()
                     document.game.contentChanged.send()
                 }
             } catch {
