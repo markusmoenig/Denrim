@@ -92,7 +92,8 @@ public class Game       : ObservableObject
     var frameworkId     : String? = nil
 
     let editorIsMaximized                       = PassthroughSubject<Bool, Never>()
-    
+    let gameFinished                            = PassthroughSubject<Void, Never>()
+
     var graphRenderer   : GraphRenderer!
     var graphBuilder    : DenrimGraphBuilder!
 
@@ -256,6 +257,8 @@ public class Game       : ObservableObject
                 assetFolder.select(assetFolder.current!.id)
             }
         }
+        
+        gameFinished.send()
     }
     
     @discardableResult func checkTexture() -> Bool

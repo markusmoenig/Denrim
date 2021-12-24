@@ -1,6 +1,6 @@
 //
 //  Asset.swift
-//  Metal-Z
+//  Denrim
 //
 //  Created by Markus Moenig on 26/8/20.
 //
@@ -136,6 +136,27 @@ class AssetFolder       : Codable
         
         if let behaviorTemplate = try? String(contentsOfFile: resourcePath, encoding: String.Encoding.utf8) {
             let asset = Asset(type: .Behavior, name: name, value: behaviorTemplate)
+            if let path = path {
+                if let folder = getAsset(path, .Folder) {
+                    folder.children?.append(asset)
+                }
+            } else {
+                assets.append(asset)
+            }
+            select(asset.id)
+            game.scriptEditor?.createSession(asset)
+        }
+    }
+    
+    /// Adds a Lua script
+    func addLua(_ name: String, value: String = "", path: String? = nil)
+    {
+        guard let resourcePath = Bundle.main.path(forResource: "NewLua", ofType: "", inDirectory: "Files/default") else {
+            return
+        }
+        
+        if let luaTemplate = try? String(contentsOfFile: resourcePath, encoding: String.Encoding.utf8) {
+            let asset = Asset(type: .Lua, name: name, value: luaTemplate)
             if let path = path {
                 if let folder = getAsset(path, .Folder) {
                     folder.children?.append(asset)
@@ -344,6 +365,9 @@ class AssetFolder       : Codable
             } else
             if asset.type == .Folder {
                 return "folder"
+            } else
+            if asset.type == .Lua {
+                return "paperplane"
             }
         }
         
@@ -646,10 +670,11 @@ class AssetFolder       : Codable
     }
 }
 
+/// The main class for an asset in a game
 class Asset         : Codable, Equatable
 {
     enum AssetType  : Int, Codable {
-        case Behavior, Image, Shader, Map, Audio, Folder, Shape
+        case Behavior, Image, Shader, Map, Audio, Folder, Shape, Lua
     }
     
     var type        : AssetType = .Behavior

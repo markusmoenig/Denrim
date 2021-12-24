@@ -12,7 +12,9 @@ struct EditorView: View {
     @State var game                                     : Game
 
     @State private var isMaximized                      =  false
-    
+    @State private var isRunning                        =  false
+    @State private var showingDebug                     =  false
+
     @Environment(\.colorScheme) var deviceColorScheme   : ColorScheme
 
     var body: some View {
@@ -23,8 +25,16 @@ struct EditorView: View {
                 
                 Button(action: {
                     if game.view == nil { return }
+                    
+                    if isMaximized {
+                        isMaximized.toggle()
+                        game.editorIsMaximized.send(isMaximized)
+                    }
+                    
                     game.stop(silent: true)
                     game.start()
+                    
+                    isRunning = true
                     //helpIsVisible = false
                     //updateView.toggle()
                 })
@@ -40,28 +50,31 @@ struct EditorView: View {
                 Button(action: {
                     if game.view == nil { return }
                     game.stop()
+                    isRunning = false
                     //updateView.toggle()
                 }) {
                     Image(systemName: "stop.fill")
                         .imageScale(.large)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .disabled(game.state == .Idle)
+                .disabled(isRunning == false)
                 .keyboardShortcut(".")
                 
                 Button(action: {
                     if let scriptEditor = game.scriptEditor {
                         if game.showingDebugInfo == false {
                             scriptEditor.activateDebugSession()
+                            showingDebug = true
                         } else {
                             game.showingDebugInfo = false
+                            showingDebug = false
                             if let current = game.assetFolder.current {
                                 game.assetFolder.select(current.id)
                             }
                         }
                     }
                 }) {
-                    Image(systemName: "ant.fill")
+                    Image(systemName: showingDebug ? "ant.fill" : "ant")
                         .imageScale(.large)
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -71,7 +84,6 @@ struct EditorView: View {
                 
                 Button(action: {
                     isMaximized.toggle()
-                    
                     game.editorIsMaximized.send(isMaximized)
                 }) {
                     Image(systemName: isMaximized ? "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right")
@@ -88,6 +100,10 @@ struct EditorView: View {
                 game.scriptEditor?.setTheme(newValue)
             }
         
+            .onReceive(game.gameFinished) { _ in
+                isRunning = false
+                showingDebug = false
+            }
         }
     }
 }

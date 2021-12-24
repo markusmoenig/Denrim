@@ -7,40 +7,6 @@
 
 import SwiftUI
 
-// https://stackoverflow.com/questions/61386877/in-swiftui-is-it-possible-to-use-a-modifier-only-for-a-certain-os-target
-enum OperatingSystem {
-    case macOS
-    case iOS
-    case tvOS
-    case watchOS
-
-    #if os(macOS)
-    static let current = macOS
-    #elseif os(iOS)
-    static let current = iOS
-    #elseif os(tvOS)
-    static let current = tvOS
-    #elseif os(watchOS)
-    static let current = watchOS
-    #else
-    #error("Unsupported platform")
-    #endif
-}
-
-extension View {
-    @ViewBuilder
-    func ifOS<Content: View>(
-        _ operatingSystems: OperatingSystem...,
-        modifier: @escaping (Self) -> Content
-    ) -> some View {
-        if operatingSystems.contains(OperatingSystem.current) {
-            modifier(self)
-        } else {
-            self
-        }
-    }
-}
-
 struct ProjectView: View {
     
     @State var document                                 : DenrimDocument
@@ -58,14 +24,121 @@ struct ProjectView: View {
     @State private var isImportingAudio                 : Bool = false
     
     @State private var imageIndex                       : Double = 0
+    
+    #if os(macOS)
+        let leftPanelWidth                      : CGFloat = 220
+        let toolBarIconSize                     : CGFloat = 13
+        let toolBarTopPadding                   : CGFloat = 0
+        let toolBarSpacing                      : CGFloat = 4
+    #else
+        let leftPanelWidth                      : CGFloat = 270
+        let toolBarIconSize                     : CGFloat = 16
+        let toolBarTopPadding                   : CGFloat = 8
+        let toolBarSpacing                      : CGFloat = 6
+    #endif
 
     var body: some View {
+
+        HStack(spacing: toolBarSpacing) {
+            Button(action: {
+                document.game.assetFolder.addFolder("New Folder")
+                assetName = document.game.assetFolder.current!.name
+                showAssetNamePopover = true
+            })
+            {
+                Label("", systemImage: "folder")
+                    .font(.system(size: toolBarIconSize))
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            Button(action: {
+                document.game.assetFolder.addBehavior("New Behavior", path: document.game.assetFolder.genDestinationPath())
+                assetName = document.game.assetFolder.current!.name
+                showAssetNamePopover = true
+            })
+            {
+                Label("", systemImage: "lightbulb")
+                    .font(.system(size: toolBarIconSize))
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            Button(action: {
+                document.game.assetFolder.addLua("New Lua Script", path: document.game.assetFolder.genDestinationPath())
+                assetName = document.game.assetFolder.current!.name
+                showAssetNamePopover = true
+            })
+            {
+                Label("", systemImage: "paperplane")
+                    .font(.system(size: toolBarIconSize))
+            }
+            .buttonStyle(PlainButtonStyle())
+
+            Button(action: {
+                document.game.assetFolder.addMap("New Map", path: document.game.assetFolder.genDestinationPath())
+                assetName = document.game.assetFolder.current!.name
+                showAssetNamePopover = true
+            })
+            {
+                Label("", systemImage: "list.and.film")
+                    .font(.system(size: toolBarIconSize))
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            Button(action: {
+                document.game.assetFolder.addShape("New Shape", path: document.game.assetFolder.genDestinationPath())
+                assetName = document.game.assetFolder.current!.name
+                showAssetNamePopover = true
+            })
+            {
+                Label("", systemImage: "cube")
+                    .font(.system(size: toolBarIconSize))
+            }
+            .buttonStyle(PlainButtonStyle())
+
+            Button(action: {
+                document.game.assetFolder.addShader("New Shader", path: document.game.assetFolder.genDestinationPath())
+                if let asset = document.game.assetFolder.current {
+                    assetName = document.game.assetFolder.current!.name
+                    showAssetNamePopover = true
+                    document.game.createPreview(asset)
+                }
+            })
+            {
+                Label("", systemImage: "fx")
+                    .font(.system(size: toolBarIconSize))
+            }
+            .buttonStyle(PlainButtonStyle())
+
+            Button(action: {
+                isImportingImages = true
+            })
+            {
+                Label("", systemImage: "photo.on.rectangle")
+                    .font(.system(size: toolBarIconSize))
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            Button(action: {
+                //isImportingAudio = true
+            })
+            {
+                Label("", systemImage: "waveform")
+                    .font(.system(size: toolBarIconSize))
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
+        .padding(.top, toolBarTopPadding)
+        .padding(.bottom, 2)
+        
+        Divider()
+
         List(document.game.assetFolder.assets, id: \.id, children: \.children, selection: $selection) { asset in
             
             Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
-            .ifOS(.iOS) {
-                $0.foregroundColor(asset === document.game.assetFolder.current ? Color.accentColor : Color.white)
-            }
+            #if os(iOS)
+                .foregroundColor(asset === document.game.assetFolder.current ? Color.accentColor : Color.white)
+            #endif
+            
             .onTapGesture {
                 selection = asset.id
                 document.game.assetFolder.select(asset.id)

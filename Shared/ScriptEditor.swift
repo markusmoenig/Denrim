@@ -207,6 +207,18 @@ class ScriptEditor
                         cb()
                     }
              })
+        } else
+        if asset.type == .Lua {
+            webView.evaluateJavaScript(
+                """
+                var \(asset.scriptName) = ace.createEditSession(`\(asset.value)`)
+                editor.setSession(\(asset.scriptName))
+                editor.session.setMode("ace/mode/lua");
+                """, completionHandler: { (value, error ) in
+                    if let cb = cb {
+                        cb()
+                    }
+             })
         }
     }
     

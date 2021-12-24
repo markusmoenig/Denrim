@@ -448,7 +448,7 @@ struct ContentView: View {
     @State private var selection            : UUID? = nil
     
     #if os(macOS)
-    let leftPanelWidth                      : CGFloat = 220
+    let leftPanelWidth                      : CGFloat = 240
     let toolBarIconSize                     : CGFloat = 13
     let toolBarTopPadding                   : CGFloat = 0
     let toolBarSpacing                      : CGFloat = 4
@@ -705,6 +705,8 @@ struct ContentView: View {
         }
         
         }
+        .frame(minWidth: 1280, minHeight: 800)
+        
         // For Mac Screenshots, 1440x900
         //.frame(minWidth: 1440, minHeight: 806)
         //.frame(maxWidth: 1440, maxHeight: 806)
@@ -740,7 +742,8 @@ struct ContentView: View {
             
         .toolbar {
             ToolbarItemGroup(placement: .automatic) {
-                                
+                       
+                /*
                 // Game Controls
                 Button(action: {
                     if document.game.view == nil { return }
@@ -831,7 +834,7 @@ struct ContentView: View {
                 Divider()
                     .padding(.horizontal, 20)
                     .opacity(0)
-
+                 */
                 Button(action: {
                     helpIsVisible.toggle()
                 }) {
