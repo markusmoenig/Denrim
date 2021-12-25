@@ -348,6 +348,10 @@ class MapInstance2D
 
     var pairs           : [(MapShape2D, MapBehavior)] = []
     
+    deinit {
+        pairs = []
+    }
+    
     init(shapeName: String, behaviorName: String, variableName: String)
     {
         self.shapeName = shapeName

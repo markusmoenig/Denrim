@@ -478,6 +478,16 @@ class MapBuilder
                                     position!.y = y
 
                                     instanceAsset.behavior!.execute(name: "init")
+                                    
+                                    /// Create instance lua scripts
+                                    if let behavior = instanceAsset.behavior {
+                                        for p in behavior.variables {
+                                            if let lua = p.value as? Lua1 {
+                                                game.luaBuilder.compileIntoBehavior(context: behavior, variable: lua)
+                                            }
+                                        }
+                                    }
+                                    
                                     grid.addPair(shape: &mapShape2D, behavior: &mapBehavior)
                                 }
                                 

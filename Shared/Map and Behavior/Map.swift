@@ -655,6 +655,14 @@ class Map
                 var mapBehavior = MapBehavior(behaviorAsset: instanceAsset, name: variableName, options: [:])
                 var mapShape2D = shapes2D[variableName]!
                 
+                if let behavior = mapBehavior.behaviorAsset.behavior {
+                    for p in behavior.variables {
+                        if let lua = p.value as? Lua1 {
+                            game.luaBuilder.compileIntoBehavior(context: behavior, variable: lua)
+                        }
+                    }
+                }
+                
                 if let pos = mapBehavior.behaviorAsset.behavior?.getVariableValue("position") as? Float2 {
                     pos.x = position.x
                     pos.y = position.y                    
