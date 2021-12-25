@@ -453,7 +453,7 @@ class AssetFolder       : Codable
         
         if let tuple = resolvePath(path) {
             let name = tuple.0
-            
+                        
             if let folder = tuple.1 {
                 for asset in folder.children! {
                     if asset.type == type && asset.name == name {
@@ -706,9 +706,6 @@ class Asset         : Codable, Equatable
 
     // If this is a shader
     var shader      : Shader? = nil
-    
-    // If this is a Lua script
-    var vm          : VirtualMachine? = nil
     
     // Compiled Graph for graph assets (Shape / Material)
     var graph       : GraphContext? = nil

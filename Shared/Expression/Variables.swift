@@ -32,7 +32,7 @@ class VariableContainer
 class BaseVariable {
     
     enum VariableType {
-        case Invalid, Bool, Text, Int, Float, Float2, Float3, Float4
+        case Invalid, Bool, Text, Int, Float, Float2, Float3, Float4, Lua
     }
     
     enum VariableRole {
@@ -123,6 +123,9 @@ class BaseVariable {
         } else
         if typeName == "Bool" {
             return Bool1(container: container, parameters: parameters, error: &error)
+        } else
+        if typeName == "Lua" {
+            return Lua1("", parameters)
         }
         return nil
     }
@@ -1314,5 +1317,31 @@ final class Text1 : BaseVariable
     
     override func getTypeName() -> String {
         return "Text"
+    }
+}
+
+final class Lua1 : BaseVariable
+{
+    var path            : String = ""
+    
+    var vm              : VirtualMachine? = nil
+    
+    deinit {
+        vm = nil
+    }
+
+    init(_ name: String,_ path: String = "")
+    {
+        super.init(name)
+        self.path = path
+    }
+    
+    @inlinable func toSIMD() -> String
+    {
+        return path
+    }
+    
+    override func getTypeName() -> String {
+        return "Lua"
     }
 }

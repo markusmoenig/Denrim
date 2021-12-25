@@ -42,7 +42,9 @@ final class VariableAssignmentNode : BehaviorNode
                 // New variable
                 
                 context.variables[givenName] = expression.execute()//expression.values.last!
-                context.variables[givenName]!.role = expression.isConstant() ? .User : .System
+                if context.variables[givenName] != nil {
+                    context.variables[givenName]!.role = expression.isConstant() ? .User : .System
+                }
             }
         }
         return .Success
@@ -180,6 +182,146 @@ class SetScene: BehaviorNode
                     }
                 }
             }
+        }
+        
+        context.addFailure(lineNr: lineNr)
+        return .Failure
+    }
+}
+
+// Calls a given lua script
+class LuaNode: BehaviorNode
+{
+    var callContext         : [BehaviorContext] = []
+    var callTree            : BehaviorTree? = nil
+    var treeName            : String? = nil
+    
+    var firstCall           : Bool = true
+    
+    var parameters          : [BaseVariable] = []
+
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Lua"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        if options["script"] as? String == nil {
+            error.error = "Call requires a 'Script' parameter"
+        }
+        
+        if let value = options["variables"] as? String {
+            let array = value.split(separator: ",")
+
+            for v in array {
+                let val = String(v.trimmingCharacters(in: .whitespaces))
+                
+                if let v = context.getVariableValue(val) {
+                    parameters.append(v)
+                } else {
+                    error.error = "Variable '\(val)' not found"
+                }
+            }
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        if firstCall == true {
+            firstCall = false
+            if var treeName = options["tree"] as? String {
+                treeName = treeName.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+                let treeArray = treeName.split(separator: ".")
+                if treeArray.count == 1 {
+                    // No ., tree has to be in the same context
+                    callContext.append(context)
+                    self.treeName = treeName
+                } else
+                if treeArray.count == 2 {
+                    //var asset = game.assetFolder.getAsset(String(treeArray[0]).lowercased(), .Behavior)
+                    if treeArray[0] == "game" {
+                        let asset = game.gameAsset
+                        if let context = asset?.behavior {
+                            callContext.append(context)
+                            self.treeName = String(treeArray[1])
+                        }
+                    } else {
+                        if let map = game.currentMap?.map {
+                            if let behavior = map.behavior[String(treeArray[0])] {
+                                let asset = behavior.behaviorAsset
+                                
+                                self.treeName = String(treeArray[1])
+                                if let context = asset.behavior {
+                                    if let instances = behavior.instances {
+                                        for inst in instances.pairs {
+                                            callContext.append(inst.1.behaviorAsset.behavior!)
+                                        }
+                                    } else {
+                                        callContext.append(context)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+                        
+        if treeName != nil {
+            for context in callContext {
+                if let tree = context.getTree(treeName!) {
+                    // Now replace the values in the tree parameters with the variable values which we pass to the tree
+                    for (index, variable) in parameters.enumerated() {
+                        if index < tree.parameters.count {
+                            let param = tree.parameters[index]
+                            if let dest = param as? Int1 {
+                                if let source = variable as? Int1 {
+                                    dest.x = source.x
+                                }
+                            } else
+                            if let dest = param as? Bool1 {
+                                if let source = variable as? Bool1 {
+                                    dest.x = source.x
+                                }
+                            } else
+                            if let dest = param as? Float1 {
+                                if let source = variable as? Float1 {
+                                    dest.x = source.x
+                                }
+                            } else
+                            if let dest = param as? Float2 {
+                                if let source = variable as? Float2 {
+                                    dest.x = source.x
+                                    dest.y = source.y
+                                }
+                            } else
+                            if let dest = param as? Float3 {
+                                if let source = variable as? Float3 {
+                                    dest.x = source.x
+                                    dest.y = source.y
+                                    dest.z = source.z
+                                }
+                            } else
+                            if let dest = param as? Float4 {
+                                if let source = variable as? Float4 {
+                                    dest.x = source.x
+                                    dest.y = source.y
+                                    dest.z = source.z
+                                    dest.w = source.w
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        if treeName != nil {
+            for context in callContext {
+                context.execute(name: treeName!)
+            }
+            return .Success
         }
         
         context.addFailure(lineNr: lineNr)
@@ -522,7 +664,7 @@ class ApplyTexture2D: BehaviorNode
         if let value = options["id"] as? String {
             id = value.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
         } else {
-            error.error = "SetScene requires a 'Id' parameter"
+            error.error = "ApplyTexture2D requires a 'Id' parameter"
         }
         
         flipX = extractBool1Value(options, container: context, error: &error, name: "flipx", isOptional: true)

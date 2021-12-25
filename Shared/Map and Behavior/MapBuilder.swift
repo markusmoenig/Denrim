@@ -31,7 +31,6 @@ class MapBuilder
         case Scene = "Scene"        // List of layers
         case Physics2D = "Physics2D"// 2D Physics
         case Behavior = "Behavior"  // Behavior Tree
-        case Lua = "Lua"            // Lua Script
 
         case Shape2D = "Shape2D"    // 2D Shape
         case Shader = "Shader"      // Shader
@@ -394,25 +393,11 @@ class MapBuilder
                     let rc = game.behaviorBuilder.compile(asset)
                     if rc.error == nil {
                         asset.behavior!.execute(name: "init")
-                        map.behavior[variable] = MapBehavior(behaviorAsset: asset, name: variable, options: options)
+                        map.behavior[variable] = MapBehavior(behaviorAsset: asset, name: variable, options: options)                        
                         setLine(variable)
                     } else { error.error = "Referenced behavior contains errors" }
                 } else { error.error = "Could not find behavior '\(behavior)'" }
             } else { error.error = "Missing behavior name" }
-        } else
-        if type == .Lua {
-            if let lua = options["name"] as? String {
-                if let asset = game.assetFolder.getAsset(lua, .Lua) {
-                    let rc = game.luaBuilder.compile(asset)
-                    if rc.error == nil {
-                        /*
-                        asset.behavior!.execute(name: "init")
-                        map.behavior[variable] = MapBehavior(behaviorAsset: asset, name: variable, options: options)
-                         */
-                        setLine(variable)
-                    } else { error.error = "Referenced behavior contains errors" }
-                } else { error.error = "Could not find behavior '\(lua)'" }
-            } else { error.error = "Missing lua script name" }
         } else
         if type == .Shape2D {
             createShape2D(map: map, variable: variable, options: options, error: &error)

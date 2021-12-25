@@ -7,6 +7,7 @@
 
 import MetalKit
 import AVFoundation
+import CryptoKit
 
 class Map
 {
@@ -171,6 +172,20 @@ class Map
         game._Aspect.y = aspect.y
         
         currentSampler = game.linearSampler
+        
+        // Setup all Lua scripts referenced in Behavior trees
+        
+        for (_, b) in behavior {
+            let asset = b.behaviorAsset
+            
+            if let behavior = asset.behavior {
+                for p in behavior.variables {
+                    if let lua = p.value as? Lua1 {
+                        game.luaBuilder.compileIntoBehavior(context: behavior, variable: lua)
+                    }
+                }
+            }
+        }
     }
     
     /// Creates physics, textures etc

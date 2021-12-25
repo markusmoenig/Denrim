@@ -69,7 +69,7 @@ class BehaviorContext       : VariableContainer
     var failedAt            : [Int32] = []
     
     var lines               : [Int32:String] = [:]
-        
+            
     let game                : Game
     
     init(_ game: Game)
@@ -119,7 +119,7 @@ class BehaviorContext       : VariableContainer
     }
     
     @discardableResult func execute(name: String) -> BehaviorNode.Result
-    {
+    {        
         failedAt = []
         for tree in trees {
             if tree.name == name {
