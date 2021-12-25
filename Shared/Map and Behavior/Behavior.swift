@@ -29,6 +29,17 @@ class BehaviorNode {
         self.options = options
     }
     
+    /// Strips enclosing quotes and whitespace
+    func prepVariableName(_ variable: String, removeWhitespace: Bool = true) -> String {
+        let v = variable.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+        
+        if removeWhitespace {
+            return v.trimmingCharacters(in: .whitespaces)
+        } else {
+            return v
+        }
+    }
+    
     /// Verify options
     func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
     }
