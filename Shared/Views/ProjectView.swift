@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+#if os(macOS)
+    let leftPanelWidth                      : CGFloat = 220
+    let toolBarIconSize                     : CGFloat = 13
+    let toolBarTopPadding                   : CGFloat = 0
+    let toolBarSpacing                      : CGFloat = 4
+#else
+    let leftPanelWidth                      : CGFloat = 270
+    let toolBarIconSize                     : CGFloat = 16
+    let toolBarTopPadding                   : CGFloat = 8
+    let toolBarSpacing                      : CGFloat = 6
+#endif
+
 struct ProjectView: View {
     
     @State var document                                 : DenrimDocument
@@ -23,18 +35,6 @@ struct ProjectView: View {
     @State private var isImportingAudio                 : Bool = false
     
     @State private var imageIndex                       : Double = 0
-    
-    #if os(macOS)
-        let leftPanelWidth                      : CGFloat = 220
-        let toolBarIconSize                     : CGFloat = 13
-        let toolBarTopPadding                   : CGFloat = 0
-        let toolBarSpacing                      : CGFloat = 4
-    #else
-        let leftPanelWidth                      : CGFloat = 270
-        let toolBarIconSize                     : CGFloat = 16
-        let toolBarTopPadding                   : CGFloat = 8
-        let toolBarSpacing                      : CGFloat = 6
-    #endif
 
     var body: some View {
 
@@ -87,6 +87,7 @@ struct ProjectView: View {
             }
             .buttonStyle(PlainButtonStyle())
             
+            /*
             Button(action: {
                 document.game.assetFolder.addShape("New Shape", path: document.game.assetFolder.genDestinationPath())
                 selection = document.game.assetFolder.current!.id
@@ -98,6 +99,7 @@ struct ProjectView: View {
                     .font(.system(size: toolBarIconSize))
             }
             .buttonStyle(PlainButtonStyle())
+            */
 
             Button(action: {
                 document.game.assetFolder.addShader("New Shader", path: document.game.assetFolder.genDestinationPath())
@@ -124,13 +126,30 @@ struct ProjectView: View {
             .buttonStyle(PlainButtonStyle())
             
             Button(action: {
-                //isImportingAudio = true
+                isImportingAudio = true
             })
             {
                 Label("", systemImage: "waveform")
                     .font(.system(size: toolBarIconSize))
             }
             .buttonStyle(PlainButtonStyle())
+            .fileImporter(
+                isPresented: $isImportingAudio,
+                allowedContentTypes: [.item],
+                allowsMultipleSelection: false
+            ) { result in
+                do {
+                    let selectedFiles = try result.get()
+                    if selectedFiles.count > 0 {
+                        document.game.assetFolder.addAudio(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles)
+                        assetName = document.game.assetFolder.current!.name
+                        showAssetNamePopover = true
+                        document.game.contentChanged.send()
+                    }
+                } catch {
+                    // Handle failure.
+                }
+            }
         }
         .padding(.top, toolBarTopPadding)
         .padding(.bottom, 2)
@@ -148,6 +167,7 @@ struct ProjectView: View {
                 selection = asset.id
                 document.game.assetFolder.select(asset.id)
                 document.game.createPreview(asset)
+                document.game.isShowingImage.send(asset.type == .Image)
             }
             
             .contextMenu {
@@ -189,6 +209,7 @@ struct ProjectView: View {
                 Section(header: Text("Edit")) {
                     
                     Button(action: {
+                        selection = nil
                         selection = asset.id
                         document.game.assetFolder.select(asset.id)
                         
@@ -263,7 +284,7 @@ struct ProjectView: View {
             )
         }
         
-        // Edit Asset name
+        // Rename
         .popover(isPresented: self.$showAssetNamePopover,
                  arrowEdge: .top
         ) {
@@ -271,8 +292,10 @@ struct ProjectView: View {
                 Text("Name:")
                 TextField("Name", text: $assetName, onEditingChanged: { (changed) in
                     if let asset = document.game.assetFolder.current {
+                        selection = nil
                         asset.name = assetName
                         document.game.assetFolder.sort()
+                        selection = asset.id
                     }
                 })
                 .frame(minWidth: 200)

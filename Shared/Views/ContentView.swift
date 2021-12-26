@@ -658,47 +658,25 @@ struct ContentView: View {
                     .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
                     .layoutPriority(0)
                     //.animation(.easeInOut)
-            } else
-            if let asset = document.game.assetFolder.current {
+            } else {
                 ScrollView {
-                    if asset.type == .Image {
-                        VStack {
-                            if document.game.assetFolder.current!.data.count > 1 {
-                                Text("Index \(Int(imageIndex))")
-                                Slider(value: $imageIndex, in: 0...Double(document.game.assetFolder.current!.data.count-1), step: 1) { pressed in
-                                    asset.dataIndex = Int(imageIndex)
-                                    document.game.assetFolder.createPreview()
-                                }
-                                .padding(.horizontal)
-                            }
-                            Text("Scale \(String(format: "%.02f", imageScale))")
-                            Slider(value: $imageScale, in: 0.25...4, step: 0.25) { pressed in
-                                asset.dataScale = imageScale
-                                document.game.assetFolder.createPreview()
-                            }
-                            .padding(.horizontal)
+                    Text(getAttributedString(markdown: contextText))
+                    //ParmaView(text: $contextText)
+                        .frame(minWidth: 0,
+                               maxWidth: .infinity,
+                               minHeight: 0,
+                               maxHeight: .infinity,
+                               alignment: .bottomLeading)
+                        .padding(4)
+                        .onReceive(self.document.game.contextTextChanged) { text in
+                            contextText = text//self.document.game.contextText
                         }
+                        .foregroundColor(Color.gray)
+                        .font(.system(size: 12))
                         .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
                         .layoutPriority(0)
                         //.animation(.easeInOut)
-                    } else {
-                        Text(getAttributedString(markdown: contextText))
-                        //ParmaView(text: $contextText)
-                            .frame(minWidth: 0,
-                                   maxWidth: .infinity,
-                                   minHeight: 0,
-                                   maxHeight: .infinity,
-                                   alignment: .bottomLeading)
-                            .padding(4)
-                            .onReceive(self.document.game.contextTextChanged) { text in
-                                contextText = text//self.document.game.contextText
-                            }
-                            .foregroundColor(Color.gray)
-                            .font(.system(size: 12))
-                            .frame(minWidth: 160, idealWidth: 160, maxWidth: 160)
-                            .layoutPriority(0)
-                            //.animation(.easeInOut)
-                    }
+            
                 }
                 //.animation(.easeInOut)
             }

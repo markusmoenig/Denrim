@@ -727,6 +727,8 @@
 		DDB4A6A22775B5FF000037DE /* LuaBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */; };
 		DDB4A6A32775B5FF000037DE /* LuaBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */; };
 		DDB4A6A42775B5FF000037DE /* LuaBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */; };
+		DDB4A6A727784C2B000037DE /* DataViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A627784C2B000037DE /* DataViews.swift */; };
+		DDB4A6A827784C2B000037DE /* DataViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A627784C2B000037DE /* DataViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -950,6 +952,7 @@
 		DDB4A6392775B1F3000037DE /* lmem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lmem.c; sourceTree = "<group>"; };
 		DDB4A63A2775B1F3000037DE /* ltable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ltable.h; sourceTree = "<group>"; };
 		DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaBuilder.swift; sourceTree = "<group>"; };
+		DDB4A6A627784C2B000037DE /* DataViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1298,6 +1301,7 @@
 				DDB4A5C027740499000037DE /* HelpIndexView.swift */,
 				DDB4A5C627746000000037DE /* EditorView.swift */,
 				2BE27C982595690100B8AAD8 /* BrowserView.swift */,
+				DDB4A6A627784C2B000037DE /* DataViews.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1733,6 +1737,7 @@
 				2B6D0BA1250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */,
 				2B6D0BEF250B08080098F244 /* b2CircleShape.swift in Sources */,
 				2B76D80B25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
+				DDB4A6A827784C2B000037DE /* DataViews.swift in Sources */,
 				2B6D0BB5250B08080098F244 /* b2Joint.swift in Sources */,
 				2B6D0BC9250B08080098F244 /* b2WorldCallbacks.swift in Sources */,
 				2BE97385258CAD0700D8019D /* Variables.swift in Sources */,
@@ -1882,6 +1887,7 @@
 				2B6D0BA0250B08080098F244 /* b2ChainAndCircleContact.swift in Sources */,
 				2B6D0BEE250B08080098F244 /* b2CircleShape.swift in Sources */,
 				2B76D80A25AC3A5200AF6FF2 /* AnalyticalNodes.swift in Sources */,
+				DDB4A6A727784C2B000037DE /* DataViews.swift in Sources */,
 				2B6D0BB4250B08080098F244 /* b2Joint.swift in Sources */,
 				2B6D0BC8250B08080098F244 /* b2WorldCallbacks.swift in Sources */,
 				2BE97384258CAD0700D8019D /* Variables.swift in Sources */,
