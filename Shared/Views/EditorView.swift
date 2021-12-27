@@ -25,6 +25,8 @@ struct EditorView: View {
     @State private var imageIndexText                   : String = "0"
     @State private var imageIndexRange                  = float2(0, 1)
 
+    @State private var tempText                         : String = ""
+
     @Environment(\.colorScheme) var deviceColorScheme   : ColorScheme
 
     var body: some View {
@@ -139,6 +141,11 @@ struct EditorView: View {
                     imageIndexValue = Float(game.assetFolder.current!.dataIndex)
                     imageIndexRange.y = Float(game.assetFolder.current!.data.count) - 1
                 }
+            }
+            
+            .onReceive(game.tempTextChanged) { value in
+                tempText = value
+                print(tempText)
             }
         }
     }

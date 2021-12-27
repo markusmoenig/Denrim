@@ -80,8 +80,7 @@ public class Game       : ObservableObject
     let updateUI        = PassthroughSubject<Void, Never>()
     var didSendupdateUI = false
     
-    var tempText        : String = ""
-    let tempTextChanged = PassthroughSubject<Void, Never>()
+    let tempTextChanged = PassthroughSubject<String, Never>()
 
     var assetError      = CompileError()
     let gameError       = PassthroughSubject<Void, Never>()

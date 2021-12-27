@@ -729,6 +729,9 @@
 		DDB4A6A42775B5FF000037DE /* LuaBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */; };
 		DDB4A6A727784C2B000037DE /* DataViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A627784C2B000037DE /* DataViews.swift */; };
 		DDB4A6A827784C2B000037DE /* DataViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A627784C2B000037DE /* DataViews.swift */; };
+		DDB4A6AA27794C2A000037DE /* SideBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A927794C2A000037DE /* SideBarView.swift */; };
+		DDB4A6AB27794C2A000037DE /* SideBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A927794C2A000037DE /* SideBarView.swift */; };
+		DDB4A6AC27794C2A000037DE /* SideBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A927794C2A000037DE /* SideBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -953,6 +956,7 @@
 		DDB4A63A2775B1F3000037DE /* ltable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ltable.h; sourceTree = "<group>"; };
 		DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaBuilder.swift; sourceTree = "<group>"; };
 		DDB4A6A627784C2B000037DE /* DataViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViews.swift; sourceTree = "<group>"; };
+		DDB4A6A927794C2A000037DE /* SideBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1302,6 +1306,7 @@
 				DDB4A5C627746000000037DE /* EditorView.swift */,
 				2BE27C982595690100B8AAD8 /* BrowserView.swift */,
 				DDB4A6A627784C2B000037DE /* DataViews.swift */,
+				DDB4A6A927794C2A000037DE /* SideBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1843,6 +1848,7 @@
 				2B6D0BDB250B08080098F244 /* b2Settings.swift in Sources */,
 				DDB4A6782775B1F3000037DE /* lcorolib.c in Sources */,
 				2B01C86D24FB814C00E86449 /* ContentView.swift in Sources */,
+				DDB4A6AB27794C2A000037DE /* SideBarView.swift in Sources */,
 				DDB4A65A2775B1F3000037DE /* lbaselib.c in Sources */,
 				DDB4A5F42775B148000037DE /* Thread.swift in Sources */,
 				2B53618F2514952800E8A20D /* Behavior.swift in Sources */,
@@ -1993,6 +1999,7 @@
 				2B6D0BDA250B08080098F244 /* b2Settings.swift in Sources */,
 				DDB4A6772775B1F3000037DE /* lcorolib.c in Sources */,
 				2B01C86E24FB814C00E86449 /* ContentView.swift in Sources */,
+				DDB4A6AA27794C2A000037DE /* SideBarView.swift in Sources */,
 				DDB4A6592775B1F3000037DE /* lbaselib.c in Sources */,
 				DDB4A5F32775B148000037DE /* Thread.swift in Sources */,
 				2B53618E2514952800E8A20D /* Behavior.swift in Sources */,
@@ -2367,6 +2374,7 @@
 				2B5901D72592D23300FCF16D /* File.swift in Sources */,
 				2B5902682592D2FA00FCF16D /* b2CircleShape.swift in Sources */,
 				2B59019B2592D20E00FCF16D /* Game.swift in Sources */,
+				DDB4A6AC27794C2A000037DE /* SideBarView.swift in Sources */,
 				2B59023C2592D2DD00FCF16D /* b2MouseJoint.swift in Sources */,
 				2B5901F52592D24300FCF16D /* Map.swift in Sources */,
 				2B5901742592D0C900FCF16D /* GameViewController.swift in Sources */,

@@ -79,11 +79,9 @@ public class DMTKView       : MTKView
                 if let map = asset.map {
                     setMousePos(event)
                     let coords = map.reverseCoordinates(mousePos.x, mousePos.y)
-                    game.tempText = "\(coords.x) x \(coords.y)"
-                    game.tempTextChanged.send()
+                    game.tempTextChanged.send("\(coords.x) x \(coords.y)")
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                        self.game.tempText = ""
-                        self.game.tempTextChanged.send()
+                        self.game.tempTextChanged.send("")
                     }
                 }
             }

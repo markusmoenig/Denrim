@@ -172,36 +172,35 @@ struct ProjectView: View {
             
             .contextMenu {
                 
-                if document.game.assetFolder.isFolder(asset) == false {
-                    Section(header: Text("Move to Folder")) {
+                Section(header: Text("Move to Folder")) {
+                    
+                    Button(action: {
+                        selection = asset.id
+                        document.game.assetFolder.select(asset.id)
                         
-                        Button(action: {
-                            selection = asset.id
-                            document.game.assetFolder.select(asset.id)
-                            
-                            document.game.assetFolder.moveToFolder(folderName: nil, asset: asset)
-                        }) {
-                            Text("Root")
-                            if document.game.assetFolder.isInsideRoot(asset) {
-                                Image(systemName: "checkmark")
-                            }
+                        document.game.assetFolder.moveToFolder(folderName: nil, asset: asset)
+                    }) {
+                        Text("Root")
+                        if document.game.assetFolder.isInsideRoot(asset) {
+                            Image(systemName: "checkmark")
                         }
-                        
-                        ForEach(document.game.assetFolder.assets, id: \.id) { folder in
-                            if folder.type == .Folder {
-                                Button(action: {
-                                    selection = asset.id
-                                    document.game.assetFolder.select(asset.id)
-                                    
-                                    document.game.assetFolder.moveToFolder(folderName: folder.name, asset: asset)
-                                }) {
-                                    Text(folder.name)
-                                    if asset.path == folder.name {
-                                        Image(systemName: "checkmark")
-                                    }
+                    }
+                    .disabled(document.game.assetFolder.isFolder(asset))
+                    
+                    ForEach(document.game.assetFolder.assets, id: \.id) { folder in
+                        if folder.type == .Folder {
+                            Button(action: {
+                                selection = asset.id
+                                document.game.assetFolder.select(asset.id)
+                                
+                                document.game.assetFolder.moveToFolder(folderName: folder.name, asset: asset)
+                            }) {
+                                Text(folder.name)
+                                if asset.path == folder.name {
+                                    Image(systemName: "checkmark")
                                 }
-                                .disabled(document.game.assetFolder.isFolder(asset))
                             }
+                            .disabled(document.game.assetFolder.isFolder(asset))
                         }
                     }
                 }
@@ -246,6 +245,24 @@ struct ProjectView: View {
                             Label("Add to Image Group", systemImage: "plus")
                         }
                         .disabled(document.game.assetFolder.isImage(asset) == false)
+                        .fileImporter(
+                            isPresented: $isAddingImages,
+                            allowedContentTypes: [.item],
+                            allowsMultipleSelection: true
+                        ) { result in
+                            do {
+                                let selectedFiles = try result.get()
+                                if selectedFiles.count > 0 {
+                                    document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles, existingAsset: document.game.assetFolder.current)
+
+                                    selection = nil
+                                    document.game.contentChanged.send()
+                                    selection = asset.id
+                                }
+                            } catch {
+                                // Handle failure.
+                            }
+                        }
                         
                         Button(action: {
                             selection = asset.id
@@ -263,7 +280,6 @@ struct ProjectView: View {
                     
                 //}
             }
-        
         }
         
         .alert(isPresented: $showDeleteAssetAlert) {
