@@ -124,11 +124,12 @@ struct BrowserView: View {
             Button(action: {
                 load()
                 updateView.toggle()
+                game.projectLoaded.send()
             })
             {
                 Text("  Load Project...  ")
                     .font(.system(size: 24))
-                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray))
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.accentColor))
                     .frame(minWidth: 300)
             }
             .buttonStyle(PlainButtonStyle())

@@ -345,14 +345,23 @@ struct ProjectView: View {
                 if let asset = document.game.assetFolder.getAssetById(id) {
                     document.game.createPreview(asset)
                 }
-                //updateView.toggle()
             }
         }
+        
         .onAppear {
-            if let asset = document.game.assetFolder.getAsset("Game") {
-                document.game.assetFolder.select(asset.id)
-                selection = asset.id
-            }
+            resetSelection()
+        }
+        
+        .onReceive(document.game.projectLoaded) {
+            resetSelection()
+        }
+    }
+    
+    /// Set the default selection
+    func resetSelection() {
+        if let asset = document.game.assetFolder.getAsset("Game") {
+            document.game.assetFolder.select(asset.id)
+            selection = asset.id
         }
     }
 }

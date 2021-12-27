@@ -97,6 +97,9 @@ public class Game       : ObservableObject
 
     let isShowingImage                          = PassthroughSubject<Bool, Never>()
 
+    let projectLoaded                           = PassthroughSubject<Void, Never>()
+
+    
     var graphRenderer   : GraphRenderer!
     var graphBuilder    : DenrimGraphBuilder!
 
@@ -550,7 +553,7 @@ public class Game       : ObservableObject
                         let width : Float = texture2D.width * Float(asset.dataScale)
                         let height : Float = texture2D.height * Float(asset.dataScale)
 
-                        let frameSize = float2(Float(self.view.frame.width), Float(self.view.frame.height))
+                        let frameSize = getFrameSize()
                         
                         let pos = Float2((frameSize.x - width) / 2, (height - frameSize.y) / 2)
                         
@@ -661,5 +664,10 @@ public class Game       : ObservableObject
         ]
         
         return quadVertices
+    }
+    
+    /// Returns the framesize of the current view
+    func getFrameSize() -> float2 {
+        return float2(Float(view.frame.width), Float(view.frame.height))
     }
 }

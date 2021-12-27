@@ -184,6 +184,9 @@ struct MapLayer {
     var options         : MapLayerData2D
 
     var endLine         : Int32 = 0
+    
+    var maxWidth        : Int = 0
+    var maxHeight       : Int = 0
 }
 
 struct MapBehavior {

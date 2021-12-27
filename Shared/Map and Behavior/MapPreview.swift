@@ -107,20 +107,64 @@ class MapPreview
                 helpKey = "Layer"
                 map.startEncoding()
                 
-                var x : Float = 0
-                var y : Float = -layer.options.offset.y * map.aspect.y
-                if let layerLineOffset = layerLineOffset {
-                    if layerLineOffset >= 1 {
-                        if let offset = map.getLayerOffset(game.mapBuilder.scriptColumn, layerLineOffset, layer) {
-                            x -= offset.0
-                            y -= offset.1
-                            
-                            x += game.texture!.width / 2.0
-                            y += game.texture!.height / 2.0
+                var x : Float = -map.viewBorder.x
+                var y : Float = -map.viewBorder.y - layer.options.offset.y * map.aspect.y
+                       
+                var cX : Float? = nil
+                var cY : Float? = nil
+
+                let gridSize = map.getLayerGridSize(layer)
+
+                // Center it
+                if layer.data.count > 1 || (layer.data.count == 1 && layer.data[0].line.count > 1) {
+
+
+                    if let layerLineOffset = layerLineOffset {
+                        if layerLineOffset >= 1 {
+                                                        
+                            cX = Float((game.mapBuilder.scriptColumn - 2) / 2)
+                            cY = Float(layerLineOffset - 1)
+
+                            /*
+                            if let offset = map.getLayerOffset(game.mapBuilder.scriptColumn, layerLineOffset, layer) {
+                                
+                                //adjustedCenter = true
+                                
+                                //print(offset.0, offset.1)
+                                /*
+                                x -= offset.0
+                                y -= offset.1*/
+                            }*/
                         }
                     }
+                
+                    let layerWidth = gridSize.x * Float(layer.maxWidth)
+                    let layerHeight = gridSize.y * Float(layer.maxHeight)
+                    
+                    x -= (layerWidth - game.texture!.width) / 2.0
+                    y -= (layerHeight - game.texture!.height) / 2.0
                 }
+                
                 map.drawLayer(x, y, layer)
+                
+                if var cX = cX, var cY = cY {
+                    
+                    let layerWidth = gridSize.x * Float(layer.maxWidth)
+                    let layerHeight = gridSize.y * Float(layer.maxHeight)
+                    
+                    cX *= gridSize.x
+                    cY *= gridSize.y
+                    
+                    cX -= (layerWidth - game.texture!.width) / 2.0
+                    cY -= (layerHeight - game.texture!.height) / 2.0
+                                        
+                    let options: [String: Any] = ["position": Float2(cX, cY),
+                                                  "size"    : Float2(gridSize.x, gridSize.y),
+                                                  "color"   : Float4(1,1,1,0.5)
+                    ]
+                    let shapeOptions = MapShapeData2D(options)
+                    map.drawDebugBox(shapeOptions)
+                }
                 map.stopEncoding()
             } else
             if let scene = map.scenes[variable] {

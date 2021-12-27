@@ -104,6 +104,24 @@ class MapBuilder
                     lineNumber += 1
                     return
                 } else {
+                    
+                    // Calculate the max layer dimensions
+                    
+                    var maxWidth  : Int = 0
+                    var maxHeight : Int = 0
+
+                    if let data = asset.map!.layers[self.currentLayer!]?.data {
+                        for line in data {
+                            if line.line.count > maxWidth {
+                                maxWidth = line.line.count
+                            }
+                        }
+                        maxHeight = data.count
+                    }
+                                        
+                    asset.map!.layers[self.currentLayer!]?.maxWidth = maxWidth
+                    asset.map!.layers[self.currentLayer!]?.maxHeight = maxHeight
+
                     asset.map!.layers[self.currentLayer!]?.endLine = lineNumber
                     self.currentLayer = nil
                 }

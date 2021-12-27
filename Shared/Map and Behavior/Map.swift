@@ -873,6 +873,13 @@ class Map
         }
     }
     
+    // Get the world grid size
+    func getLayerGridSize(_ layer: MapLayer) -> float2 {
+        let layerWidth = layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0 + layer.options.offset.x * aspect.x
+        let layerHeight = layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0
+        return float2(layerWidth, layerHeight)
+    }
+    
     /// Get the screen coordinate offset into the layer based on the cursor position
     func getLayerOffset(_ cursorXOff: Int32,_ cursorYOff: Int32,_ layer: MapLayer) -> (Float, Float)?
     {
@@ -1134,6 +1141,44 @@ class Map
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBoxExt))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         }
+    }
+    
+    /// Draw a Box
+    func drawDebugBox(_ options: MapShapeData2D)
+    {
+        var position : SIMD2<Float> = float2(options.position.x, options.position.y)
+        let size : SIMD2<Float> = float2(options.size.x, options.size.y)
+        let round : Float = options.round.x * aspect.z
+        let border : Float = options.border.x * aspect.z
+        let onion : Float = options.onion.x * aspect.z
+        let fillColor : SIMD4<Float> = options.color.toSIMD()
+        let borderColor : SIMD4<Float> = options.borderColor.toSIMD()
+        
+        position.x += camera2D.xOffset
+        position.y += camera2D.yOffset
+
+        var data = BoxUniform()
+        data.onion = onion / game.scaleFactor
+        data.size = float2(size.x, size.y)
+        data.round = round / game.scaleFactor
+        data.borderSize = border / game.scaleFactor
+        data.fillColor = fillColor
+        data.borderColor = borderColor
+        
+        data.mirrorX = options.flipX.x == true ? 1 : 0
+
+        renderEncoder.setScissorRect(game.gameScissorRect!)
+
+        data.hasTexture = 0
+
+        let rect = MMRect(position.x, position.y, data.size.x, data.size.y, scale: 1)
+        let vertexData = game.createVertexData(texture: texture, rect: rect)
+        renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+        renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+
+        renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
+        renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBox))
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
     }
     
     /// Draws the given text
