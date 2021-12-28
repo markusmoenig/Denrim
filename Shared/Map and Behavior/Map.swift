@@ -450,7 +450,7 @@ class Map
                      
                         checkPhysicsBlock()
 
-                        yPos += layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0
+                        yPos += layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0
                         xPos = x + layer.options.offset.x * aspect.x
                     }
                     
@@ -609,6 +609,9 @@ class Map
                 
                 return true
             } else
+            if aliases[id] != nil {
+                shapes2D[shapeId]!.aliasId = id
+            } else
             if var sequence = sequences[id] {
                 var index : Int = 0
                 var lastTime : Double = 0
@@ -722,6 +725,9 @@ class Map
                                 
                 if instShape.options.visible.toSIMD() == false { continue }
                 
+                if let aliasId = instShape.aliasId {
+                    drawAlias(instShape.options.position.x, instShape.options.position.y, &aliases[aliasId]!)
+                } else
                 if instShape.shape == .Disk {
                     drawDisk(instShape.options, shape.texture)
                 } else
@@ -735,6 +741,9 @@ class Map
         } else {
             if shape.options.visible.toSIMD() == false { return }
             
+            if let aliasId = shape.aliasId {
+                drawAlias(shape.options.position.x, shape.options.position.y, &aliases[aliasId]!)
+            } else
             if shape.shape == .Disk {
                 drawDisk(shape.options, shape.texture)
             } else
@@ -859,7 +868,7 @@ class Map
                 let advance = drawAlias(xPos, yPos, &a)
                 xPos += advance.0 * layerPreviewZoom
             }
-            yPos += (layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0) * layerPreviewZoom
+            yPos += (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0) * layerPreviewZoom
             xPos = x + layer.options.offset.x * aspect.x
         }
         
@@ -875,8 +884,8 @@ class Map
     
     // Get the world grid size
     func getLayerGridSize(_ layer: MapLayer) -> float2 {
-        let layerWidth = layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0 + layer.options.offset.x * aspect.x
-        let layerHeight = layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0
+        let layerWidth = layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0 + layer.options.offset.x * aspect.x
+        let layerHeight = layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0
         return float2(layerWidth, layerHeight)
     }
     
@@ -908,7 +917,7 @@ class Map
                 }
                 return (xPos, yPos)
             } else {
-                yPos += (layer.options.lineHeight.x / canvasSize.y * aspect.y * 100.0) * layerPreviewZoom
+                yPos += (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0) * layerPreviewZoom
                 xPos = 0
             }
             

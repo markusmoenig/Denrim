@@ -136,7 +136,7 @@ struct MapLayerData2D {
 
     var accumScroll     = Float2(0,0)
     
-    var lineHeight      = Float1(16)
+    var gridSize        = Float1(16)
 
     init(_ options: [String:Any])
     {
@@ -152,8 +152,8 @@ struct MapLayerData2D {
             self.scroll = Float2(0,0)
         }
         
-        if let lineHeight = options["lineheight"] as? Float1 {
-            self.lineHeight = lineHeight
+        if let gridSize = options["gridsize"] as? Float1 {
+            self.gridSize = gridSize
         }
         
         if let cliptocanvas = options["cliptocanvas"] as? Bool1 {
@@ -315,6 +315,8 @@ struct MapShape2D {
     var texture         : Any? = nil
     var physicsCmd      : MapCommand? = nil
     var physicsWorld    : MapPhysics2D? = nil
+    
+    var aliasId         : String? = nil
 }
 
 struct MapPhysics2D {

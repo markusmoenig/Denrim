@@ -535,7 +535,7 @@ class MapBuilder
 
         let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale", "area", "filter"]
         let integerOptions = ["index", "int", "digits", "groupindex", "loops"]
-        let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval", "lineheight"]
+        let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval", "gridsize"]
         let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "grid", "scroll"]
         let float4Options = ["rect", "color", "bordercolor", "float4"]
         let boolOptions = ["repeatx", "repeaty", "visible", "bullet", "global", "cliptocanvas", "fixedrotation"]
@@ -822,7 +822,7 @@ class MapBuilder
     func startTimer(_ asset: Asset)
     {
         DispatchQueue.main.async(execute: {
-            let timer = Timer.scheduledTimer(timeInterval: 0.2,
+            let timer = Timer.scheduledTimer(timeInterval: 1.0,
                                              target: self,
                                              selector: #selector(self.cursorCallback),
                                              userInfo: nil,

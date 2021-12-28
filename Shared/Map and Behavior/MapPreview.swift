@@ -225,7 +225,7 @@ class MapPreview
     func startTimer()
     {
         DispatchQueue.main.async(execute: {
-            let timer = Timer.scheduledTimer(timeInterval: 0.2,
+            let timer = Timer.scheduledTimer(timeInterval: 1.0,
                                              target: self,
                                              selector: #selector(self.animationCallback),
                                              userInfo: nil,
