@@ -127,6 +127,49 @@ class PlayAudioNode: BehaviorNode
     }
 }
 
+// Sets the tick interval for the game
+class TickNode: BehaviorNode
+{
+    var game                : Game? = nil
+    var interval            : Float1? = nil
+
+    
+    override init(_ options: [String:Any] = [:])
+    {
+        super.init(options)
+        name = "Tick"
+    }
+    
+    override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
+        
+        if let value = extractFloat1Value(options, container: context, error: &error, name: "interval") {
+            interval = value
+        }
+    }
+    
+    @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
+    {
+        self.game = game
+        
+        if let timer = game.tickTimer {
+            timer.invalidate()
+            game.tickTimer = nil
+        }
+     
+        game.tickTimer = Timer.scheduledTimer(timeInterval: Double(interval!.x), target: self, selector: #selector(callGameTick), userInfo: nil, repeats: true)
+        
+        return .Success
+    }    
+    
+    @objc func callGameTick() {
+        if let game = game {
+            DispatchQueue.main.async {
+                game.executeGameTree("tick")
+            }
+        }
+    }
+}
+
 // Sets the current scene and initializes it
 class SetScene: BehaviorNode
 {
@@ -202,7 +245,7 @@ class LuaFunctionNode: BehaviorNode
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
         if options["script"] as? String == nil {
-            error.error = "Call requires a 'Script' parameter"
+            error.error = "LuaFunction requires a 'Script' parameter"
         }
         
         if let value = options["parameters"] as? String {
@@ -248,6 +291,7 @@ class Call: BehaviorNode
     var treeName            : String? = nil
     
     var firstCall           : Bool = true
+    var isVariable          : Bool = false
     
     var parameters          : [BaseVariable] = []
 
@@ -258,7 +302,7 @@ class Call: BehaviorNode
     }
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
-        if options["tree"] as? String == nil {
+        if options["tree"] as? String == nil && options["tree"] as? Text1 == nil {
             error.error = "Call requires a 'Tree' parameter"
         }
         
@@ -279,9 +323,27 @@ class Call: BehaviorNode
     
     @discardableResult override func execute(game: Game, context: BehaviorContext, tree: BehaviorTree?) -> Result
     {
-        if firstCall == true {
+        if firstCall || isVariable {
             firstCall = false
-            if var treeName = options["tree"] as? String {
+            
+            if isVariable {
+                treeName = nil
+            }
+            
+            var treeName : String? = nil
+            callContext = []
+                        
+            if var name = options["tree"] as? String {
+                name = prepVariableName(name)
+                if let variable = context.getVariableValue(name) as? Text1 {
+                    treeName = variable.text
+                    isVariable = true
+                } else {
+                    treeName = name
+                }
+            }
+            
+            if var treeName = treeName {
                 treeName = treeName.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
                 let treeArray = treeName.split(separator: ".")
                 if treeArray.count == 1 {
@@ -290,7 +352,7 @@ class Call: BehaviorNode
                     self.treeName = treeName
                 } else
                 if treeArray.count == 2 {
-                    //var asset = game.assetFolder.getAsset(String(treeArray[0]).lowercased(), .Behavior)
+                    
                     if treeArray[0] == "game" {
                         let asset = game.gameAsset
                         if let context = asset?.behavior {
@@ -318,7 +380,7 @@ class Call: BehaviorNode
                 }
             }
         }
-                        
+                                        
         if treeName != nil {
             for context in callContext {
                 if let tree = context.getTree(treeName!) {
@@ -368,9 +430,9 @@ class Call: BehaviorNode
             }
         }
         
-        if treeName != nil {
-            for context in callContext {
-                context.execute(name: treeName!)
+        if let treeName = treeName {
+            for context in callContext {                
+                context.execute(name: treeName)
             }
             return .Success
         }
@@ -1178,8 +1240,8 @@ class DestroyInstance2D: BehaviorNode
 
 class SetNode: BehaviorNode
 {
-    var variable: Any? = nil
-    var value: Any? = nil
+    var variable            : Any? = nil
+    var value               : Any? = nil
 
     override init(_ options: [String:Any] = [:])
     {
@@ -1189,7 +1251,7 @@ class SetNode: BehaviorNode
     
     override func verifyOptions(context: BehaviorContext, tree: BehaviorTree, error: inout CompileError) {
         if let variable = extractVariableValue(options, variableName: "variable", container: context, error: &error) {
-            
+                        
             if variable as? Bool1 != nil {
                 if let value = extractBool1Value(options, container: context, error: &error) {
                     self.variable = variable
@@ -1225,7 +1287,18 @@ class SetNode: BehaviorNode
                     self.variable = variable
                     self.value = value
                 } else { error.error = "Missing 'Float4' parameter" }
+            } else
+            if variable as? Text1 != nil {
+                if let str = options["value"] as? String {
+                    self.variable = variable
+                    self.value = prepVariableName(str)
+                } else
+                if let t1 = options["value"] as? Text1 {
+                    self.variable = variable
+                    self.value = t1
+                } else { error.error = "Invalid 'Text' parameter" }
             }
+            
         } else { error.error = "Missing 'Variable' parameter" }
     }
     
@@ -1272,7 +1345,18 @@ class SetNode: BehaviorNode
                 float4Var.w = float4Value.w
                 return .Success
             }
+        } else
+        if let textVar = variable as? Text1 {
+            if let stringValue = value as? String {
+                textVar.text = stringValue
+                return .Success
+            } else
+            if let textValue = value as? Text1 {
+                textVar.text = textValue.text
+                return .Success
+            }
         }
+        
         context.addFailure(lineNr: lineNr)
         return .Failure
     }

@@ -126,6 +126,9 @@ class BaseVariable {
         } else
         if typeName == "Lua" {
             return Lua1("", parameters)
+        } else
+        if typeName == "Text" {
+            return Text1("", parameters)
         }
         return nil
     }

@@ -13,18 +13,18 @@ import Combine
 
 class ScriptEditor
 {
-    var webView         : WKWebView
-    var game            : Game
-    var sessions        : Int = 0
-    var colorScheme     : ColorScheme
+    var webView             : WKWebView
+    var game                : Game
+    var sessions            : Int = 0
+    var colorScheme         : ColorScheme
     
-    var mapHelpIndex    : [String] = []
-    var mapHelp         : [String:String] = [:]
-    var mapHelpText     : String = "## Available:\n\n"
+    var mapHelpIndex        : [String] = []
+    var mapHelp             : [String:String] = [:]
+    var mapHelpText         : String = "## Available:\n\n"
     
-    var behaviorHelpIndex: [String] = []
-    var behaviorHelp    : [String:String] = [:]
-    var behaviorHelpText: String = "## Available:\n\n"
+    var behaviorHelpIndex   : [String] = []
+    var behaviorHelp        : [String:String] = [:]
+    var behaviorHelpText    : String = "## Available:\n\n"
     
     init(_ view: WKWebView, _ game: Game,_ colorScheme: ColorScheme)
     {

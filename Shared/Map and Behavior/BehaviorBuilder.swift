@@ -34,6 +34,7 @@ class BehaviorBuilder
     
     var leaves          : [BehaviorNodeItem] =
     [
+        BehaviorNodeItem("Tick", { (_ options: [String:Any]) -> BehaviorNode in return TickNode(options) }),
         BehaviorNodeItem("SetScene", { (_ options: [String:Any]) -> BehaviorNode in return SetScene(options) }),
         BehaviorNodeItem("Call", { (_ options: [String:Any]) -> BehaviorNode in return Call(options) }),
         BehaviorNodeItem("LuaFunction", { (_ options: [String:Any]) -> BehaviorNode in return LuaFunctionNode(options) }),

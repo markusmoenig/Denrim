@@ -98,10 +98,11 @@ public class Game       : ObservableObject
     let isShowingImage                          = PassthroughSubject<Bool, Never>()
 
     let projectLoaded                           = PassthroughSubject<Void, Never>()
-
     
-    var graphRenderer   : GraphRenderer!
-    var graphBuilder    : DenrimGraphBuilder!
+    var graphRenderer                           : GraphRenderer!
+    var graphBuilder                            : DenrimGraphBuilder!
+    
+    var tickTimer                               : Timer? = nil
 
     public init(_ frameworkId: String? = nil)
     {        
@@ -261,6 +262,11 @@ public class Game       : ObservableObject
         state = .Idle
         view.isPaused = true
         
+        if let tickTimer = tickTimer {
+            tickTimer.invalidate()
+            self.tickTimer = nil
+        }
+        
         if let scriptEditor = scriptEditor, assetError.error == nil, silent == false {
             scriptEditor.clearAnnotations()
             if assetFolder.current != nil {
@@ -344,25 +350,12 @@ public class Game       : ObservableObject
 
             //texture?.clear()
 
-            if let context = gameAsset?.behavior {
-                context.execute(name: "update")
-            }
+            // Update
+            executeGameTree()
             
+            // Draw
             if let mapAsset = self.currentMap {
                 if let map = mapAsset.map {
-                    for (_, b) in map.behavior {
-                        if let instances = b.instances {
-                            for inst in instances.pairs {
-                                if let context = inst.1.behaviorAsset.behavior {
-                                    context.execute(name: "update")
-                                }
-                            }
-                        } else {
-                            if let context = b.behaviorAsset.behavior {
-                                context.execute(name: "update")
-                            }
-                        }
-                    }
                     if let scene = self.currentScene {
                         map.drawScene(0, 0, scene)
                     }
@@ -426,27 +419,30 @@ public class Game       : ObservableObject
                         debugText += "<None>\n"
                     }
                     
-                    for (_,v) in behavior.variables {
+                    for (name, v) in behavior.variables {
                         if let b1 = v as? Bool1 {
-                            debugText += "\(v.name) <\(b1.toSIMD())>\n"
+                            debugText += "\(name) <\(b1.toSIMD())>\n"
                         } else
                         if let i1 = v as? Int1 {
-                            debugText += "\(v.name) <\(i1.toSIMD())>\n"
+                            debugText += "\(name) <\(i1.toSIMD())>\n"
                         } else
                         if let f1 = v as? Float1 {
-                            debugText += "\(v.name) <\(f1.toSIMD())>\n"
+                            debugText += "\(name) <\(f1.toSIMD())>\n"
                         } else
                         if let f2 = v as? Float2 {
                             let value = f2.toSIMD()
-                            debugText += "\(v.name) <\(value.x), \(value.y)>\n"
+                            debugText += "\(name) <\(value.x), \(value.y)>\n"
                         } else
                         if let f3 = v as? Float3 {
                             let value = f3.toSIMD()
-                            debugText += "\(v.name) <\(value.x), \(value.y), \(value.z)>\n"
+                            debugText += "\(name) <\(value.x), \(value.y), \(value.z)>\n"
                         } else
                         if let f4 = v as? Float4 {
                             let value = f4.toSIMD()
-                            debugText += "\(v.name) <\(value.x), \(value.y), \(value.z), \(value.w)>\n"
+                            debugText += "\(name) <\(value.x), \(value.y), \(value.z), \(value.w)>\n"
+                        } else
+                        if let t1 = v as? Text1 {
+                            debugText += "\(name) <\(t1.text)>\n"
                         }
                     }
                 }
@@ -463,6 +459,32 @@ public class Game       : ObservableObject
             }
             
             scriptEditor!.setDebugText(text: debugText)
+        }
+    }
+    
+    /// Executes the given tree in all currently active behavior modules
+    func executeGameTree(_ treeName: String = "update") {
+        
+        if let context = gameAsset?.behavior {
+            context.execute(name: treeName)
+        }
+        
+        if let mapAsset = self.currentMap {
+            if let map = mapAsset.map {
+                for (_, b) in map.behavior {
+                    if let instances = b.instances {
+                        for inst in instances.pairs {
+                            if let context = inst.1.behaviorAsset.behavior {
+                                context.execute(name: treeName)
+                            }
+                        }
+                    } else {
+                        if let context = b.behaviorAsset.behavior {
+                            context.execute(name: treeName)
+                        }
+                    }
+                }
+            }
         }
     }
     
