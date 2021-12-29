@@ -7,6 +7,14 @@
 <td> <img src="images/screen2.png" alt="Screen 2" style="width: 500px;"/> </td>
 </tr></table>
 
+---
+
+v1.0x is the current version in the AppStore, the main branch is work under development for v2 with many enhancements like Lua script support.
+
+Support via [Discord](https://discord.gg/BNHVE92b).
+
+---
+
 Denrim is a 2D game creator utilizing a unique text based approach for game logic and resources. It is highly optimized for the Metal GPU framework and combines ease-of-use with the highest possible performance.
 
 Denrim utilizes a text based approach to game creation paired with instant previews and visual game state feedback. You do not need to be a developer to create games with Denrim as no scripting languages are used. 
