@@ -22,6 +22,8 @@ typedef struct
     vector_float2   pos;
     vector_float2   size;
     float           globalAlpha;
+    
+    int             mirrorX;
 
 } TextureUniform;
 

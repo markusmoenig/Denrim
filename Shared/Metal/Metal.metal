@@ -261,6 +261,9 @@ fragment float4 m4mTextureDrawable(RasterizerData in [[stage_in]],
     float2 uv = in.textureCoordinate;
     uv.y = 1 - uv.y;
     
+    if (data->mirrorX)
+        uv.x = 1 - uv.x;
+    
     uv.x *= data->size.x;
     uv.y *= data->size.y;
 
@@ -280,6 +283,9 @@ fragment float4 m4mTextureDrawableWhiteAlpha(RasterizerData in [[stage_in]],
 {
     float2 uv = in.textureCoordinate;
     uv.y = 1 - uv.y;
+    
+    if (data->mirrorX)
+        uv.x = 1 - uv.x;
     
     uv.x *= data->size.x;
     uv.y *= data->size.y;

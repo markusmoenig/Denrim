@@ -611,6 +611,9 @@ class Map
             } else
             if aliases[id] != nil {
                 shapes2D[shapeId]!.aliasId = id
+                if let flipX = flipX {
+                    shapes2D[shapeId]!.options.flipX = flipX
+                }
             } else
             if var sequence = sequences[id] {
                 var index : Int = 0
@@ -729,9 +732,9 @@ class Map
                     if let layer = layer, layer.options.gridBased {
                         let posX = instShape.options.position.x * (layer.options.gridSize.x / canvasSize.x * aspect.x * 100.0)
                         let posY = instShape.options.position.y * (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0)
-                        drawAlias(posX, posY, &aliases[aliasId]!)
+                        drawAlias(posX, posY, &aliases[aliasId]!, flipX: instShape.options.flipX.x)
                     } else {
-                        drawAlias(instShape.options.position.x, instShape.options.position.y, &aliases[aliasId]!)
+                        drawAlias(instShape.options.position.x, instShape.options.position.y, &aliases[aliasId]!, flipX: instShape.options.flipX.x)
                     }
                 } else
                 if instShape.shape == .Disk {
@@ -751,9 +754,9 @@ class Map
                 if let layer = layer, layer.options.gridBased {
                     let posX = shape.options.position.x * (layer.options.gridSize.x / canvasSize.x * aspect.x * 100.0)
                     let posY = shape.options.position.y * (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0)
-                    drawAlias(posX, posY, &aliases[aliasId]!)
+                    drawAlias(posX, posY, &aliases[aliasId]!, flipX: shape.options.flipX.x)
                 } else {
-                    drawAlias(shape.options.position.x, shape.options.position.y, &aliases[aliasId]!)
+                    drawAlias(shape.options.position.x, shape.options.position.y, &aliases[aliasId]!, flipX: shape.options.flipX.x)
                 }
             } else
             if shape.shape == .Disk {
@@ -768,7 +771,7 @@ class Map
         }
     }
 
-    @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: inout MapAlias, doDraw: Bool = true) -> (Float, Float)
+    @discardableResult func drawAlias(_ x: Float,_ y: Float,_ alias: inout MapAlias, doDraw: Bool = true, flipX: Bool = false) -> (Float, Float)
     {
         var rc     : (Float, Float) = (0,0)
                 
@@ -809,7 +812,7 @@ class Map
             alias.options.height.x = height + 0.1
             
             if doDraw {
-                drawTexture(alias.options)
+                drawTexture(alias.options, flipX: flipX)
             }
             
             if alias.options.repeatX == true {
@@ -817,7 +820,7 @@ class Map
                 while posX + camera2D.xOffset < game!.texture!.width {
                     alias.options.position.x = posX
                     if doDraw {
-                        drawTexture(alias.options)
+                        drawTexture(alias.options, flipX: flipX)
                     }
                     posX += width
                 }
@@ -902,7 +905,6 @@ class Map
                 return (getLayerGridSize(layer), layer.maxWidth, layer.maxHeight)
             }
         }
-        
         return nil
     }
     
@@ -1404,7 +1406,7 @@ class Map
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
     }
     
-    func drawTexture(_ options: MapAliasData2D)
+    func drawTexture(_ options: MapAliasData2D, flipX: Bool = false)
     {
         if let sourceTexture = options.texture {
             
@@ -1428,6 +1430,7 @@ class Map
             
             var data = TextureUniform()
             data.globalAlpha = alpha
+            data.mirrorX = flipX == true ? 1 : 0
 
             if let subRect = subRect {
                 data.pos.x = subRect.x / sourceTexture.width

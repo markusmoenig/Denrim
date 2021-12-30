@@ -59,7 +59,7 @@ struct MapAliasData2D {
     var isEmpty         : Bool = false
 
     var type            : Int = 0
-
+    
     init(_ position: Float2)
     {
         self.position = position
