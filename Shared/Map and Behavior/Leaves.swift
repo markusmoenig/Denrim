@@ -730,20 +730,39 @@ class SetCamera2D: BehaviorNode
         if let map = game.currentMap?.map {
             if let offset = offset {
 
-                if center == nil || center!.x == false {
-                    map.camera2D.xOffset = offset.x * map.aspect.x
-                    map.camera2D.yOffset = offset.y * map.aspect.y
+                if let gridSize = map.getGridSize() {
+                    if center == nil || center!.x == false {
+                        map.camera2D.xOffset = offset.x * map.aspect.x * gridSize.0.x
+                        map.camera2D.yOffset = offset.y * map.aspect.y * gridSize.0.y
+                    } else {
+                        var off = offset.toSIMD2()
+                        
+                        let minX = 5 * gridSize.0.x
+                        let minY = 5 * gridSize.0.y
+
+                        off.x *= gridSize.0.x
+                        off.y *= gridSize.0.y
+                        
+                        let xOffset = max(minX, off.x)
+                        let yOffset = max(minY, off.y)
+
+                        map.camera2D.xOffset = minX - xOffset
+                        map.camera2D.yOffset = minY - yOffset
+                    }
                 } else {
-                    let xOffset = max(50, offset.x)
-                    let yOffset = max(50, offset.y)
+                    if center == nil || center!.x == false {
+                        map.camera2D.xOffset = offset.x * map.aspect.x
+                        map.camera2D.yOffset = offset.y * map.aspect.y
+                    } else {
+                        let xOffset = max(50, offset.x)
+                        let yOffset = max(50, offset.y)
 
-                    map.camera2D.xOffset = 50.0 - xOffset
-                    map.camera2D.yOffset = 50.0 - yOffset
-                                    
-                    //print(offset.x, offset.y, map.camera2D.xOffset, map.camera2D.yOffset)
-
-                    map.camera2D.xOffset *= map.aspect.x
-                    map.camera2D.yOffset *= map.aspect.y
+                        map.camera2D.xOffset = 50.0 - xOffset
+                        map.camera2D.yOffset = 50.0 - yOffset
+                        
+                        map.camera2D.xOffset *= map.aspect.x
+                        map.camera2D.yOffset *= map.aspect.y
+                    }
                 }
             }
         }

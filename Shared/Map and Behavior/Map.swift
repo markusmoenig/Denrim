@@ -894,6 +894,18 @@ class Map
         }
     }
     
+    /// If this map has a grid based layer return the pixel dimensions and the amount of tiles
+    func getGridSize() -> (float2, Int, Int)? {
+        for (_, layer) in layers {
+            
+            if layer.options.gridCoords == true {
+                return (getLayerGridSize(layer), layer.maxWidth, layer.maxHeight)
+            }
+        }
+        
+        return nil
+    }
+    
     // Get the world grid size
     func getLayerGridSize(_ layer: MapLayer) -> float2 {
         let layerWidth = layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0 + layer.options.offset.x * aspect.x

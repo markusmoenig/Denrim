@@ -146,6 +146,7 @@ struct MapLayerData2D {
     
     var gridBased       = false
     var gridSize        = Float1(16)
+    var gridCoords      = false
 
     init(_ options: [String:Any])
     {
@@ -164,6 +165,10 @@ struct MapLayerData2D {
         if let gridSize = options["gridsize"] as? Float1 {
             self.gridSize = gridSize
             gridBased = true
+        }
+        
+        if let gridCoords = options["gridcoords"] as? Bool1 {
+            self.gridCoords = gridCoords.x
         }
         
         if let cliptocanvas = options["cliptocanvas"] as? Bool1 {
