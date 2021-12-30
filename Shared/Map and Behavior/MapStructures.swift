@@ -58,6 +58,8 @@ struct MapAliasData2D {
     
     var isEmpty         : Bool = false
 
+    var type            : Int = 0
+
     init(_ position: Float2)
     {
         self.position = position
@@ -102,6 +104,12 @@ struct MapAliasData2D {
         if let physicsId = options["physicsid"] as? String {
             self.physicsId = physicsId
         }
+                
+        if let type = options["type"] as? String {
+            if let typeInt = Int(type.replacingOccurrences(of: "\"", with: "")) {
+                self.type = typeInt
+            }
+        }
     }
 }
 
@@ -136,6 +144,7 @@ struct MapLayerData2D {
 
     var accumScroll     = Float2(0,0)
     
+    var gridBased       = false
     var gridSize        = Float1(16)
 
     init(_ options: [String:Any])
@@ -154,6 +163,7 @@ struct MapLayerData2D {
         
         if let gridSize = options["gridsize"] as? Float1 {
             self.gridSize = gridSize
+            gridBased = true
         }
         
         if let cliptocanvas = options["cliptocanvas"] as? Bool1 {

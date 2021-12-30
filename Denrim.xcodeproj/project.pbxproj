@@ -957,6 +957,8 @@
 		DDB4A6A12775B5FF000037DE /* LuaBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaBuilder.swift; sourceTree = "<group>"; };
 		DDB4A6A627784C2B000037DE /* DataViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViews.swift; sourceTree = "<group>"; };
 		DDB4A6A927794C2A000037DE /* SideBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarView.swift; sourceTree = "<group>"; };
+		DDB4A6AD277C50BD000037DE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		DDB4A6AE277C50DF000037DE /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1011,6 +1013,8 @@
 		2B01C84F24FB814900E86449 = {
 			isa = PBXGroup;
 			children = (
+				DDB4A6AD277C50BD000037DE /* README.md */,
+				DDB4A6AE277C50DF000037DE /* images */,
 				2B01C85424FB814900E86449 /* Shared */,
 				2B01C85F24FB814C00E86449 /* iOS */,
 				2B01C86624FB814C00E86449 /* macOS */,

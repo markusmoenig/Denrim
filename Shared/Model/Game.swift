@@ -450,7 +450,7 @@ public class Game       : ObservableObject
             
             // Log
             
-            debugText += "\nLog\n\n" + logText
+            debugText += "\nLog\n\n"
             
             if logText.isEmpty {
                 debugText += "<Empty>\n"

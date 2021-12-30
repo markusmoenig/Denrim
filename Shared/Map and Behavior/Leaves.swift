@@ -163,9 +163,9 @@ class TickNode: BehaviorNode
     
     @objc func callGameTick() {
         if let game = game {
-            DispatchQueue.main.async {
+            //DispatchQueue.main.async {
                 game.executeGameTree("tick")
-            }
+            //}
         }
     }
 }
@@ -269,9 +269,15 @@ class LuaFunctionNode: BehaviorNode
 
             if let variable = context.variables[prepVariableName(scriptName)] as? Lua1 {
                 
-                if let functionName = options["function"] as? String {
+                if var functionName = options["function"] as? String {
 
-                    game.luaBuilder.runLuaFunction(variable, context: context, functionName: prepVariableName(functionName))
+                    functionName = prepVariableName(functionName)
+                    
+                    if let variable = context.getVariableValue(functionName) as? Text1 {
+                        functionName = variable.text
+                    }
+                    
+                    game.luaBuilder.runLuaFunction(variable, context: context, functionName: functionName)
                     
                     return .Success
                 }
@@ -431,7 +437,7 @@ class Call: BehaviorNode
         }
         
         if let treeName = treeName {
-            for context in callContext {                
+            for context in callContext {
                 context.execute(name: treeName)
             }
             return .Success

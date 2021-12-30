@@ -41,7 +41,9 @@ class LuaBuilder {
         //asset.vm = vm
         
         addTypes(vm)
-                
+        addPrint(vm)
+        addSceneClass(vm)
+
         switch vm.eval(asset.value, args: []) {
         case let .values(values):
             //print("success")
@@ -65,6 +67,8 @@ class LuaBuilder {
             variable.vm = vm
             
             addTypes(vm)
+            addPrint(vm)
+            addSceneClass(vm)
             
             injectGlobals(vm, context: context)
                     
@@ -90,6 +94,117 @@ class LuaBuilder {
                 print("\(typeName) failure", e)
             }
         }
+    }
+    
+    /// AddPrint
+    func addPrint(_ vm: VirtualMachine) {
+                
+        vm.globals["_print"] = vm.createFunction([String.arg]) { args in
+            if args.values.isEmpty == false {                                
+                let text = args.string
+                self.game.logText += text + "\n"
+            }
+            return .nothing
+        }
+        
+        _ = vm.eval("""
+        
+        print = function(...)
+            local args = {...}
+            local printResult = ""
+            for i,v in ipairs(args) do
+                if i > 1 then
+                    printResult = printResult .. ", "
+                end
+                printResult = printResult .. tostring(v)
+            end
+            _print(printResult)
+        end
+        
+        """, args: [])
+    }
+    
+    /// Adds the scene class, giving lua scripts access to information about the current scene
+    func addSceneClass(_ vm: VirtualMachine) {
+
+        class LuaDenrimScene : CustomTypeInstance {
+            
+            var name        = ""
+            //var cmd         : SignedCommand? = nil
+            
+            static func luaTypeName() -> String {
+                return "scene"
+            }
+        }
+        
+        let sceneLib:CustomType<LuaDenrimScene> = vm.createCustomType { type in
+        
+        }
+        
+        // Get named float for the cmd
+        sceneLib["getTileSize"] = vm.createFunction([]) { args in
+            /*
+            if args.values.count == 2 {
+                let (paramName) = (args.string)
+                if let cmd = cmd.cmd {
+                    if let v = self.getFloat(name: paramName, groups: cmd.allDataGroups()) {
+                        return .value(Double(v))
+                    }
+                }
+            }*/
+            
+            if let map = self.game.currentMap?.map {
+             
+                if let layer = map.layers["town"] {
+                    
+                    let xOff = layer.options.gridSize.x / map.canvasSize.x * map.aspect.x * 100.0
+                    
+                    return .value(Double(xOff))
+                }
+            }
+            
+            return .value(0)
+        }
+        
+        // Get the type of the given grid position
+        sceneLib["getTileTypeAt"] = vm.createFunction([Number.arg, Number.arg]) { args in
+            
+            var x = 0
+            var y = 0
+                     
+            /*
+            if args.values.count == 1 {
+                let table = args.table
+                let v = self.getFloat2(table)
+                x = Int(v.x)
+                y = Int(v.y)
+            } else {*/
+                
+            if args.values.count == 2 {
+                x = Int(args.number.toInteger())
+                y = Int(args.number.toInteger())
+            }
+            
+            if let map = self.game.currentMap?.map {
+                for (_, layer) in map.layers {
+                    
+                    if layer.options.gridBased == false || layer.maxWidth == 1 {
+                        continue
+                    }
+                    
+                    if y < layer.maxHeight && x < layer.maxWidth {
+                        let line = layer.data[y]
+                        if x < line.line.count {
+                            return .value(line.line[x].options.type)
+                        }
+                    }
+                }
+            }
+            
+            return .value(-1)
+        }
+        
+        vm.globals["scene"] = sceneLib
     }
 
     /// Runs the lua script function given by its name
@@ -163,6 +278,9 @@ class LuaBuilder {
         for k in keys {
             if let name = k as? String {
                 if let t = globals[k] as? Table {
+                    
+                    if name == "scene" { continue }
+                    
                     if let id = t["id"] as? String {
                         
                         // Float2
@@ -237,5 +355,17 @@ class LuaBuilder {
                 }
             }
         }
+    }
+    
+    /// Extracts an float2 value from the given lua table
+    func getFloat2(_ table: Table) -> float2 {
+        var v = float2()
+        if let x = table["x"] as? Number {
+            v.x = x.toFloat()
+        }
+        if let y = table["y"] as? Number {
+            v.y = y.toFloat()
+        }
+        return v
     }
 }

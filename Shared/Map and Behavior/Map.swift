@@ -717,7 +717,7 @@ class Map
         return nil
     }
     
-    func drawShape(_ shape: MapShape2D)
+    func drawShape(_ shape: MapShape2D, layer: MapLayer? = nil)
     {
         if let instances = shape.instances {
             for s in instances.pairs {
@@ -726,7 +726,13 @@ class Map
                 if instShape.options.visible.toSIMD() == false { continue }
                 
                 if let aliasId = instShape.aliasId {
-                    drawAlias(instShape.options.position.x, instShape.options.position.y, &aliases[aliasId]!)
+                    if let layer = layer, layer.options.gridBased {
+                        let posX = instShape.options.position.x * (layer.options.gridSize.x / canvasSize.x * aspect.x * 100.0)
+                        let posY = instShape.options.position.y * (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0)
+                        drawAlias(posX, posY, &aliases[aliasId]!)
+                    } else {
+                        drawAlias(instShape.options.position.x, instShape.options.position.y, &aliases[aliasId]!)
+                    }
                 } else
                 if instShape.shape == .Disk {
                     drawDisk(instShape.options, shape.texture)
@@ -742,7 +748,13 @@ class Map
             if shape.options.visible.toSIMD() == false { return }
             
             if let aliasId = shape.aliasId {
-                drawAlias(shape.options.position.x, shape.options.position.y, &aliases[aliasId]!)
+                if let layer = layer, layer.options.gridBased {
+                    let posX = shape.options.position.x * (layer.options.gridSize.x / canvasSize.x * aspect.x * 100.0)
+                    let posY = shape.options.position.y * (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0)
+                    drawAlias(posX, posY, &aliases[aliasId]!)
+                } else {
+                    drawAlias(shape.options.position.x, shape.options.position.y, &aliases[aliasId]!)
+                }
             } else
             if shape.shape == .Disk {
                 drawDisk(shape.options, shape.texture)
@@ -854,7 +866,7 @@ class Map
         if let shapes = layer.originalOptions["shapes"] as? [String] {
             for shape in shapes {
                 if let sh = shapes2D[shape] {
-                    drawShape(sh)
+                    drawShape(sh, layer: layer)
                 }
             }
         }
