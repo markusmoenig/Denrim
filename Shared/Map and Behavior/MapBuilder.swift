@@ -198,7 +198,13 @@ class MapBuilder
                             
                             // test = Image<Group: "imagegroup"><Index: 0><Rect: 0,0,0,0> # adwddawd
                          
-                            let map = self.parser_processOptions(options, &error)
+                            var map = self.parser_processOptions(options, &error)
+                            
+                            // For Alias create a rect entry if given grid and gridsize
+                            if let grid = map["grid"] as? Float4 {
+                                map["rect"] = Float4(grid.x * grid.z, grid.y * grid.w, grid.z, grid.w)
+                            }
+                            
                             if error.error == nil {
                                 if let leftValue = leftValue {
                                     self.parser_processAssignment(type, variable: leftValue, options: map, error: &error, map: asset.map!, path: path)
@@ -536,8 +542,8 @@ class MapBuilder
         let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale", "area", "filter"]
         let integerOptions = ["index", "int", "digits", "groupindex", "loops"]
         let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval", "gridsize"]
-        let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "grid", "scroll"]
-        let float4Options = ["rect", "color", "bordercolor", "float4"]
+        let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "scroll"]
+        let float4Options = ["rect", "color", "bordercolor", "float4", "grid"]
         let boolOptions = ["repeatx", "repeaty", "visible", "bullet", "global", "cliptocanvas", "fixedrotation"]
         let stringArrayOptions = ["layers", "shapes", "shaders", "collisionids"]
 

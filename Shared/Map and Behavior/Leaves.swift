@@ -729,7 +729,7 @@ class SetCamera2D: BehaviorNode
     {
         if let map = game.currentMap?.map {
             if let offset = offset {
-                
+
                 if center == nil || center!.x == false {
                     map.camera2D.xOffset = offset.x * map.aspect.x
                     map.camera2D.yOffset = offset.y * map.aspect.y

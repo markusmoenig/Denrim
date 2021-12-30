@@ -185,7 +185,7 @@ class LuaBuilder {
                 y = Int(args.number.toInteger())
             }
             
-            if let map = self.game.currentMap?.map {
+            if let map = self.game.currentMap?.map, x >= 0, y >= 0 {
                 for (_, layer) in map.layers {
                     
                     if layer.options.gridBased == false || layer.maxWidth == 1 {
