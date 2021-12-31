@@ -591,6 +591,7 @@ class Map
             if images[id] != nil {
                 
                 shapes2D[shapeId]!.texture = nil
+                shapes2D[shapeId]!.aliasId = nil
 
                 shapes2D[shapeId]!.texture = images[id]
                 if flipX != nil {
@@ -611,6 +612,7 @@ class Map
             } else
             if aliases[id] != nil {
                 shapes2D[shapeId]!.aliasId = id
+                shapes2D[shapeId]!.texture = nil
                 if let flipX = flipX {
                     shapes2D[shapeId]!.options.flipX = flipX
                 }
@@ -722,20 +724,43 @@ class Map
     
     func drawShape(_ shape: MapShape2D, layer: MapLayer? = nil)
     {
+        func drawShapeAlias(_ shape: MapShape2D, aliasId: String) {
+            if let layer = layer, layer.options.gridBased {
+                let posX = shape.options.position.x * (layer.options.gridSize.x / canvasSize.x * aspect.x * 100.0)
+                let posY = shape.options.position.y * (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0)
+                drawAlias(posX, posY, &aliases[aliasId]!, flipX: shape.options.flipX.x)
+            } else {
+                drawAlias(shape.options.position.x, shape.options.position.y, &aliases[aliasId]!, flipX: shape.options.flipX.x)
+            }
+        }
+        
         if let instances = shape.instances {
             for s in instances.pairs {
                 let instShape = s.0
                                 
                 if instShape.options.visible.toSIMD() == false { continue }
                 
-                if let aliasId = instShape.aliasId {
-                    if let layer = layer, layer.options.gridBased {
-                        let posX = instShape.options.position.x * (layer.options.gridSize.x / canvasSize.x * aspect.x * 100.0)
-                        let posY = instShape.options.position.y * (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0)
-                        drawAlias(posX, posY, &aliases[aliasId]!, flipX: instShape.options.flipX.x)
+                if let sequence = instShape.texture as? MapSequence, sequence.aliases.isEmpty == false {
+                    let sequenceData = sequence.data!
+                    let currentTime = NSDate().timeIntervalSince1970
+
+                    if sequenceData.lastTime > 0 {
+                        if currentTime - sequenceData.lastTime > sequence.interval {
+                            sequenceData.animIndex += 1
+                            sequenceData.lastTime = currentTime
+                        }
                     } else {
-                        drawAlias(instShape.options.position.x, instShape.options.position.y, &aliases[aliasId]!, flipX: instShape.options.flipX.x)
+                        sequenceData.lastTime = currentTime
                     }
+                    
+                    if sequenceData.animIndex >= sequence.aliases.count {
+                        sequenceData.animIndex = 0
+                    }
+                    
+                    drawShapeAlias(instShape, aliasId: sequence.aliases[sequenceData.animIndex])
+                }
+                if let aliasId = instShape.aliasId {
+                    drawShapeAlias(instShape, aliasId: aliasId)
                 } else
                 if instShape.shape == .Disk {
                     drawDisk(instShape.options, shape.texture)
@@ -750,14 +775,30 @@ class Map
         } else {
             if shape.options.visible.toSIMD() == false { return }
             
-            if let aliasId = shape.aliasId {
-                if let layer = layer, layer.options.gridBased {
-                    let posX = shape.options.position.x * (layer.options.gridSize.x / canvasSize.x * aspect.x * 100.0)
-                    let posY = shape.options.position.y * (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0)
-                    drawAlias(posX, posY, &aliases[aliasId]!, flipX: shape.options.flipX.x)
+            if let sequence = shape.texture as? MapSequence, sequence.aliases.isEmpty == false {
+                // An alias sequence
+                
+                let sequenceData = sequence.data!
+                let currentTime = NSDate().timeIntervalSince1970
+
+                if sequenceData.lastTime > 0 {
+                    if currentTime - sequenceData.lastTime > sequence.interval {
+                        sequenceData.animIndex += 1
+                        sequenceData.lastTime = currentTime
+                    }
                 } else {
-                    drawAlias(shape.options.position.x, shape.options.position.y, &aliases[aliasId]!, flipX: shape.options.flipX.x)
+                    sequenceData.lastTime = currentTime
                 }
+                
+                if sequenceData.animIndex >= sequence.aliases.count {
+                    sequenceData.animIndex = 0
+                }
+                
+                drawShapeAlias(shape, aliasId: sequence.aliases[sequenceData.animIndex])
+            } else
+            if let aliasId = shape.aliasId {
+                // A single alias
+                drawShapeAlias(shape, aliasId: aliasId)
             } else
             if shape.shape == .Disk {
                 drawDisk(shape.options, shape.texture)
@@ -880,8 +921,40 @@ class Map
         for line in layer.data {
             
             for var a in line.line {
-                let advance = drawAlias(xPos, yPos, &a)
-                xPos += advance.0 * layerPreviewZoom
+                
+                if a.type == .Sequence {
+
+                    /// Resolve the sequence
+                    func processSequence(_ a: inout MapAlias) {
+                        if a.sequence!.data == nil {
+                            a.sequence!.data = MapSequenceData2D()
+                        }
+                        
+                        let currentTime = NSDate().timeIntervalSince1970
+
+                        if a.sequence!.data!.lastTime > 0 {
+                            if currentTime - a.sequence!.data!.lastTime > a.sequence!.interval {
+                                a.sequence!.data!.animIndex += 1
+                                a.sequence!.data!.lastTime = currentTime
+                            }
+                        } else {
+                            a.sequence!.data!.lastTime = currentTime
+                        }
+                        
+                        if a.sequence!.data!.animIndex >= a.sequence!.aliases.count {
+                            a.sequence!.data!.animIndex = 0
+                        }
+                    }
+                    
+                    if a.sequence != nil, a.sequence!.aliases.isEmpty == false {
+                        processSequence(&a)
+                        let advance = drawAlias(xPos, yPos, &aliases[a.sequence!.aliases[a.sequence!.data!.animIndex]]!)
+                        xPos += advance.0 * layerPreviewZoom
+                    }
+                } else {
+                    let advance = drawAlias(xPos, yPos, &a)
+                    xPos += advance.0 * layerPreviewZoom
+                }
             }
             yPos += (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0) * layerPreviewZoom
             xPos = x + layer.options.offset.x * aspect.x
@@ -1057,9 +1130,12 @@ class Map
             if sequenceData.animIndex >= sequence.resourceNames.count {
                 sequenceData.animIndex = 0
             }
-                                            
-            if let texture = getImageResource(sequence.resourceNames[sequenceData.animIndex]) {
-                return texture
+                     
+            if sequence.resourceNames.isEmpty == false && sequenceData.animIndex < sequence.resourceNames.count  {
+                // Image based
+                if let texture = getImageResource(sequence.resourceNames[sequenceData.animIndex]) {
+                    return texture
+                }
             }
         }
         return nil

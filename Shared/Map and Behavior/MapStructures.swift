@@ -28,6 +28,8 @@ class MapSequenceData2D {
 struct MapSequence {
     
     var resourceNames   : [String] = []
+    var aliases         : [String] = []
+    
     var options         : [String:Any]
     
     var data            : MapSequenceData2D? = nil
@@ -116,7 +118,7 @@ struct MapAliasData2D {
 struct MapAlias {
     
     enum AliasType {
-        case Image
+        case Image, Sequence
     }
     
     var type            : AliasType
@@ -124,6 +126,8 @@ struct MapAlias {
     var originalOptions : [String:Any]
 
     var options         : MapAliasData2D
+    
+    var sequence        : MapSequence? = nil
     
     var body            : b2Body? = nil
     var physicsWorld    : MapPhysics2D? = nil
