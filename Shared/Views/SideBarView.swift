@@ -31,10 +31,15 @@ struct SideBarView: View {
                 
                 LazyVGrid(columns: columns, spacing: 0) {
                     if let tiles = game.currentMap?.map?.aliases.keys {
-                        ForEach(tiles.sorted(by: >), id: \.self) { alias in
+                        ForEach(tiles.sorted(by: <), id: \.self) { alias in
                             Button(action: {
-                                aliasSelection = alias
-                                game.mapBuilder.selectedAlias = alias
+                                if aliasSelection == alias {
+                                    aliasSelection = ""
+                                    game.mapBuilder.selectedAlias = ""
+                                } else {
+                                    aliasSelection = alias
+                                    game.mapBuilder.selectedAlias = alias
+                                }
                             }) {
                                 Text(alias)
                                     .foregroundColor(aliasSelection == alias ? .accentColor : .gray)

@@ -156,132 +156,144 @@ struct ProjectView: View {
         
         Divider()
 
-        List(document.game.assetFolder.assets, id: \.id, children: \.children, selection: $selection) { asset in
-            
-            Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
-            #if os(iOS)
-                .foregroundColor(asset === document.game.assetFolder.current ? Color.accentColor : Color.white)
-            #endif
-            
-            .onTapGesture {
-                selection = asset.id
-                document.game.assetFolder.select(asset.id)
-                document.game.createPreview(asset)
+        VStack() {
+            List(document.game.assetFolder.assets, id: \.id, children: \.children, selection: $selection) { asset in
                 
-                document.game.isShowingImage.send(asset.type == .Image)
-            }
-            
-            .contextMenu {
+                Label(asset.name, systemImage: document.game.assetFolder.getSystemName(asset.id))
+
+                #if os(iOS)
+                    .foregroundColor(asset === document.game.assetFolder.current ? Color.accentColor : Color.white)
+                #endif
                 
-                Section(header: Text("Move to Folder")) {
+                .onTapGesture {
+                    selection = asset.id
+                    document.game.assetFolder.select(asset.id)
+                    document.game.createPreview(asset)
                     
-                    Button(action: {
-                        selection = asset.id
-                        document.game.assetFolder.select(asset.id)
+                    document.game.isShowingImage.send(document.game.assetFolder.current?.type == .Image ? true : false)
+                }
+                
+                .contextMenu {
+                    
+                    Section(header: Text("Move to Folder")) {
                         
-                        document.game.assetFolder.moveToFolder(folderName: nil, asset: asset)
-                    }) {
-                        Text("Root")
-                        if document.game.assetFolder.isInsideRoot(asset) {
-                            Image(systemName: "checkmark")
+                        Button(action: {
+                            selection = asset.id
+                            document.game.assetFolder.select(asset.id)
+                            
+                            document.game.assetFolder.moveToFolder(folderName: nil, asset: asset)
+                        }) {
+                            Text("Root")
+                            if document.game.assetFolder.isInsideRoot(asset) {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                        .disabled(document.game.assetFolder.isFolder(asset))
+                        
+                        ForEach(document.game.assetFolder.assets, id: \.id) { folder in
+                            if folder.type == .Folder {
+                                Button(action: {
+                                    selection = asset.id
+                                    document.game.assetFolder.select(asset.id)
+                                    
+                                    document.game.assetFolder.moveToFolder(folderName: folder.name, asset: asset)
+                                }) {
+                                    Text(folder.name)
+                                    if asset.path == folder.name {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                                .disabled(document.game.assetFolder.isFolder(asset))
+                            }
                         }
                     }
-                    .disabled(document.game.assetFolder.isFolder(asset))
                     
-                    ForEach(document.game.assetFolder.assets, id: \.id) { folder in
-                        if folder.type == .Folder {
+                    Section(header: Text("Edit")) {
+                        
+                        Button(action: {
+                            selection = nil
+                            selection = asset.id
+                            document.game.assetFolder.select(asset.id)
+                            
+                            assetName = asset.name
+                            showAssetNamePopover = true
+                        })
+                        {
+                            Label("Rename", systemImage: "pencil")
+                        }
+                        .disabled(document.game.assetFolder.isGameAsset(asset))
+                        
+                        Button(action: {
+                            selection = asset.id
+                            document.game.assetFolder.select(asset.id)
+                            
+                            showDeleteAssetAlert = true
+                        })
+                        {
+                            Label("Remove", systemImage: "minus")
+                        }
+                        .disabled(document.game.assetFolder.isGameAsset(asset))
+                    }
+                    
+                    //if document.game.assetFolder.isImage(asset) == true {
+                        
+                        Section(header: Text("Image Group")) {
                             Button(action: {
                                 selection = asset.id
                                 document.game.assetFolder.select(asset.id)
                                 
-                                document.game.assetFolder.moveToFolder(folderName: folder.name, asset: asset)
-                            }) {
-                                Text(folder.name)
-                                if asset.path == folder.name {
-                                    Image(systemName: "checkmark")
-                                }
+                                isAddingImages = true
+                            })
+                            {
+                                Label("Add to Image Group", systemImage: "plus")
                             }
-                            .disabled(document.game.assetFolder.isFolder(asset))
-                        }
-                    }
-                }
-                
-                Section(header: Text("Edit")) {
-                    
-                    Button(action: {
-                        selection = nil
-                        selection = asset.id
-                        document.game.assetFolder.select(asset.id)
-                        
-                        assetName = asset.name
-                        showAssetNamePopover = true
-                    })
-                    {
-                        Label("Rename", systemImage: "pencil")
-                    }
-                    .disabled(document.game.assetFolder.isGameAsset(asset))
-                    
-                    Button(action: {
-                        selection = asset.id
-                        document.game.assetFolder.select(asset.id)
-                        
-                        showDeleteAssetAlert = true
-                    })
-                    {
-                        Label("Remove", systemImage: "minus")
-                    }
-                    .disabled(document.game.assetFolder.isGameAsset(asset))
-                }
-                
-                //if document.game.assetFolder.isImage(asset) == true {
-                    
-                    Section(header: Text("Image Group")) {
-                        Button(action: {
-                            selection = asset.id
-                            document.game.assetFolder.select(asset.id)
-                            
-                            isAddingImages = true
-                        })
-                        {
-                            Label("Add to Image Group", systemImage: "plus")
-                        }
-                        .disabled(document.game.assetFolder.isImage(asset) == false)
-                        .fileImporter(
-                            isPresented: $isAddingImages,
-                            allowedContentTypes: [.item],
-                            allowsMultipleSelection: true
-                        ) { result in
-                            do {
-                                let selectedFiles = try result.get()
-                                if selectedFiles.count > 0 {
-                                    document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles, existingAsset: document.game.assetFolder.current)
+                            .disabled(document.game.assetFolder.isImage(asset) == false)
+                            .fileImporter(
+                                isPresented: $isAddingImages,
+                                allowedContentTypes: [.item],
+                                allowsMultipleSelection: true
+                            ) { result in
+                                do {
+                                    let selectedFiles = try result.get()
+                                    if selectedFiles.count > 0 {
+                                        document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles, existingAsset: document.game.assetFolder.current)
 
-                                    selection = nil
-                                    document.game.contentChanged.send()
-                                    selection = asset.id
+                                        selection = nil
+                                        document.game.contentChanged.send()
+                                        selection = asset.id
+                                    }
+                                } catch {
+                                    // Handle failure.
                                 }
-                            } catch {
-                                // Handle failure.
                             }
+                            
+                            Button(action: {
+                                selection = asset.id
+                                document.game.assetFolder.select(asset.id)
+                                
+                                if let asset = document.game.assetFolder.current {
+                                    asset.data.remove(at: Int(imageIndex))
+                                }
+                            })
+                            {
+                                Label("Remove Image", systemImage: "minus.circle")
+                            }
+                            .disabled(document.game.assetFolder.isImage(asset) == false || document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
                         }
                         
-                        Button(action: {
-                            selection = asset.id
-                            document.game.assetFolder.select(asset.id)
-                            
-                            if let asset = document.game.assetFolder.current {
-                                asset.data.remove(at: Int(imageIndex))
-                            }
-                        })
-                        {
-                            Label("Remove Image", systemImage: "minus.circle")
-                        }
-                        .disabled(document.game.assetFolder.isImage(asset) == false || document.game.assetFolder.current == nil || document.game.assetFolder.current!.data.count < 2)
-                    }
-                    
-                //}
+                    //}
+                }
             }
         }
+        
+        /*
+        .onReceive(document.game.isShowingImage) { value in
+            if value {
+                isShowingImage = true
+            } else {
+                isShowingImage = false
+            }
+        }*/
         
         .alert(isPresented: $showDeleteAssetAlert) {
             Alert(
@@ -346,6 +358,8 @@ struct ProjectView: View {
                 if let asset = document.game.assetFolder.getAssetById(id) {
                     document.game.createPreview(asset)
                 }
+                
+                document.game.isShowingImage.send(document.game.assetFolder.current?.type == .Image ? true : false)
             }
         }
         

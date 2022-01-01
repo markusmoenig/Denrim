@@ -53,7 +53,7 @@ struct DataFloatSliderView: View {
                     Path(roundedRect: CGRect(origin: .zero, size: size), cornerRadius: 8),
                     with: .color(color))
 
-                context.draw(Text(valueText.wrappedValue), at: CGPoint(x: geom.size.width / 2, y: geom.size.height / 2), anchor: .center)
+                context.draw(Text(valueText.wrappedValue), at: CGPoint(x: geom.size.width / 2, y: 9), anchor: .center)
                 
             }
             .frame(width: geom.size.width, height: 19)
@@ -140,7 +140,7 @@ struct DataIntSliderView: View {
                     Path(roundedRect: CGRect(origin: .zero, size: size), cornerRadius: 8),
                     with: .color(color))
 
-                context.draw(Text(valueText.wrappedValue), at: CGPoint(x: geom.size.width / 2, y: geom.size.height / 2), anchor: .center)
+                context.draw(Text(valueText.wrappedValue), at: CGPoint(x: geom.size.width / 2, y: 9), anchor: .center)
                 
             }
             .frame(width: geom.size.width, height: 19)
