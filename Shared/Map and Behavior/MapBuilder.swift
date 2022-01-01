@@ -112,6 +112,10 @@ class MapBuilder
                         index += 2
                     }
                     
+                    if asset.map!.layers[self.currentLayer!]?.data.isEmpty == true {
+                        asset.map!.layers[self.currentLayer!]?.startLine = lineNumber
+                    }
+                    
                     asset.map!.layers[self.currentLayer!]?.data.append(aliasLine)
                     
                     lineNumber += 1

@@ -202,6 +202,7 @@ struct MapLayer {
     var originalOptions : [String:Any]
     var options         : MapLayerData2D
 
+    var startLine       : Int32 = 0
     var endLine         : Int32 = 0
     
     var maxWidth        : Int = 0

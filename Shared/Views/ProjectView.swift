@@ -167,6 +167,7 @@ struct ProjectView: View {
                 selection = asset.id
                 document.game.assetFolder.select(asset.id)
                 document.game.createPreview(asset)
+                
                 document.game.isShowingImage.send(asset.type == .Image)
             }
             

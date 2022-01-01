@@ -274,6 +274,26 @@ class ScriptEditor
 
     }
     
+    func goto(line: Int32, column: Int32 = 0) {
+        webView.evaluateJavaScript(
+            """
+            editor.getSession().scrollToLine(\(line), true, true, function () {});"
+            editor.getSession().gotoLine(\(line), \(column), true);
+
+            """, completionHandler: { (value, error ) in
+         })
+    }
+    
+    func select(lineS: Int32, columnS: Int32, lineE: Int32, columnE: Int32) {
+        webView.evaluateJavaScript(
+            """
+            
+            editor.getSession().selection.setRange(new ace.Range(\(lineS), \(columnS), \(lineE), \(columnE)), true);
+
+            """, completionHandler: { (value, error ) in
+         })
+    }
+
     func setError(_ error: CompileError, scrollToError: Bool = false)
     {
         webView.evaluateJavaScript(

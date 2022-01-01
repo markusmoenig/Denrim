@@ -135,11 +135,12 @@ struct EditorView: View {
             }
             
             .onReceive(game.isShowingImage) { value in
-                isShowingImage.toggle()
-                isShowingImage = value
                 if value {
+                    isShowingImage = true
                     imageIndexValue = Float(game.assetFolder.current!.dataIndex)
                     imageIndexRange.y = Float(game.assetFolder.current!.data.count) - 1
+                } else {
+                    isShowingImage = false
                 }
             }
             

@@ -32,7 +32,7 @@ struct ContentView: View {
     @State private var selection            : UUID? = nil
     
     #if os(macOS)
-    let leftPanelWidth                      : CGFloat = 240
+    let leftPanelWidth                      : CGFloat = 210
     let toolBarIconSize                     : CGFloat = 13
     let toolBarTopPadding                   : CGFloat = 0
     let toolBarSpacing                      : CGFloat = 4

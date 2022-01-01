@@ -51,7 +51,7 @@ public class Game       : ObservableObject
     var fonts           : [Font] = []
     
     var _Time           = Float1(0)
-    var _Aspect          = Float2(1,1)
+    var _Aspect         = Float2(1,1)
     var targetFPS       : Float = 60
     
     var gameAsset       : Asset? = nil

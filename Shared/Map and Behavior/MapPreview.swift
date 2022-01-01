@@ -11,11 +11,13 @@ class MapPreview
 {
     var animationTimer  : Timer? = nil
 
-    let game            : Game
-    weak var map        : Map?
+    let game                        : Game
+    weak var map                    : Map?
     
-    var currentVariable : String?
-    var animIndex       : Int = 0
+    var layerOffset                 : float2? = nil
+    
+    var currentVariable             : String?
+    var animIndex                   : Int = 0
     
     init(_ game: Game)
     {
@@ -26,6 +28,8 @@ class MapPreview
     {
         self.map = map
         currentVariable = variable
+        
+        layerOffset = nil
         
         game.startDrawing()
         map.texture?.drawChecker()
@@ -157,7 +161,9 @@ class MapPreview
                     
                     cX -= (layerWidth - game.texture!.width) / 2.0
                     cY -= (layerHeight - game.texture!.height) / 2.0
-                                        
+                    
+                    layerOffset = float2(-(layerWidth - game.texture!.width) / 2.0, -(layerHeight - game.texture!.height) / 2.0)
+                    
                     let options: [String: Any] = ["position": Float2(cX, cY),
                                                   "size"    : Float2(gridSize.x, gridSize.y),
                                                   "color"   : Float4(1,1,1,0.5)
@@ -194,6 +200,28 @@ class MapPreview
         
         game.stopDrawing()
         game.updateOnce()
+    }
+    
+    func mouseDown(_ x: Float,_ y: Float) {
+        
+        if let variable = currentVariable {
+            if let map = map {
+                if let layer = map.layers[variable] {
+                    if let layerOffset = layerOffset {
+                        let gridSize = map.getLayerGridSize(layer)
+
+                        let cX : Int32 = Int32((x - layerOffset.x) / gridSize.x)
+                        let cY : Int32 = Int32((y - layerOffset.y) / gridSize.y)
+                                                                        
+                        let line = cY + layer.startLine
+                        let column = 2 + cX * 2
+                        
+                        game.scriptEditor?.goto(line: line)
+                        game.scriptEditor?.select(lineS: line, columnS: column, lineE: line, columnE: column + 2)
+                    }
+                }
+            }
+        }
     }
     
     func drawTexture(_ texture: Texture2D)
