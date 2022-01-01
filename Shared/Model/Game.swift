@@ -15,82 +15,82 @@ public class Game       : ObservableObject
         case Idle, Running, Paused
     }
     
-    var state           : State = .Idle
+    var state                                   : State = .Idle
     
-    var view            : DMTKView!
-    var device          : MTLDevice!
+    var view                                    : DMTKView!
+    var device                                  : MTLDevice!
 
-    var texture         : Texture2D? = nil
-    var metalStates     : MetalStates!
+    var texture                                 : Texture2D? = nil
+    var metalStates                             : MetalStates!
     
-    var viewportSize    : vector_uint2
-    var scaleFactor     : Float
+    var viewportSize                            : vector_uint2
+    var scaleFactor                             : Float
     
-    var assetFolder     : AssetFolder!
+    var assetFolder                             : AssetFolder!
     
-    var screenWidth     : Float = 0
-    var screenHeight    : Float = 0
+    var screenWidth                             : Float = 0
+    var screenHeight                            : Float = 0
 
-    var gameCmdQueue    : MTLCommandQueue? = nil
-    var gameCmdBuffer   : MTLCommandBuffer? = nil
-    var gameScissorRect : MTLScissorRect? = nil
+    var gameCmdQueue                            : MTLCommandQueue? = nil
+    var gameCmdBuffer                           : MTLCommandBuffer? = nil
+    var gameScissorRect                         : MTLScissorRect? = nil
     
-    var scriptEditor    : ScriptEditor? = nil
-    var file            : File? = nil
+    var scriptEditor                            : ScriptEditor? = nil
+    var file                                    : File? = nil
 
-    var mapBuilder      : MapBuilder!
-    var behaviorBuilder : BehaviorBuilder!
-    var shaderCompiler  : ShaderCompiler!
+    var mapBuilder                              : MapBuilder!
+    var behaviorBuilder                         : BehaviorBuilder!
+    var shaderCompiler                          : ShaderCompiler!
     
-    var luaBuilder      : LuaBuilder!
+    var luaBuilder                              : LuaBuilder!
 
-    var textureLoader   : MTKTextureLoader!
+    var textureLoader                           : MTKTextureLoader!
         
-    var resources       : [AnyObject] = []
-    var availableFonts  : [String] = ["OpenSans", "Square", "SourceCodePro"]
-    var fonts           : [Font] = []
+    var resources                               : [AnyObject] = []
+    var availableFonts                          : [String] = ["OpenSans", "Square", "SourceCodePro"]
+    var fonts                                   : [Font] = []
     
-    var _Time           = Float1(0)
-    var _Aspect         = Float2(1,1)
-    var targetFPS       : Float = 60
+    var _Time                                   = Float1(0)
+    var _Aspect                                 = Float2(1,1)
+    var targetFPS                               : Float = 60
     
-    var gameAsset       : Asset? = nil
+    var gameAsset                               : Asset? = nil
     
-    var currentMap      : Asset? = nil
-    var currentScene    : MapScene? = nil
+    var currentMap                              : Asset? = nil
+    var currentScene                            : MapScene? = nil
     
-    var nearestSampler  : MTLSamplerState!
-    var linearSampler   : MTLSamplerState!
+    var nearestSampler                          : MTLSamplerState!
+    var linearSampler                           : MTLSamplerState!
 
     // Preview Size, UI only
-    var previewFactor   : CGFloat = 4
-    var previewOpacity  : Double = 0.5
+    var previewFactor                           : CGFloat = 4
+    var previewOpacity                          : Double = 0.5
     
-    var contextText     : String = ""
-    var contextKey      : String = ""
-    let contextTextChanged = PassthroughSubject<String, Never>()
+    var contextText                             : String = ""
+    var contextKey                              : String = ""
+    let contextTextChanged                      = PassthroughSubject<String, Never>()
     
-    var logText         : String = ""
+    var logText                                 : String = ""
     
-    var helpText        : String = ""
-    let helpTextChanged = PassthroughSubject<Void, Never>()
+    var helpText                                : String = ""
+    let helpTextChanged                         = PassthroughSubject<Void, Never>()
     
-    let contentChanged = PassthroughSubject<Void, Never>()
+    let contentChanged                          = PassthroughSubject<Void, Never>()
 
-    let updateUI        = PassthroughSubject<Void, Never>()
-    var didSendupdateUI = false
+    let updateUI                                = PassthroughSubject<Void, Never>()
+    var didSendupdateUI                         = false
     
-    let tempTextChanged = PassthroughSubject<String, Never>()
+    let tempTextChanged                         = PassthroughSubject<String, Never>()
 
-    var assetError      = CompileError()
-    let gameError       = PassthroughSubject<Void, Never>()
+    var assetError                              = CompileError()
+    let gameError                               = PassthroughSubject<Void, Never>()
     
-    var localAudioPlayers: [String:AVAudioPlayer] = [:]
-    var globalAudioPlayers: [String:AVAudioPlayer] = [:]
+    var localAudioPlayers                       : [String:AVAudioPlayer] = [:]
+    var globalAudioPlayers                      : [String:AVAudioPlayer] = [:]
     
-    var showingDebugInfo: Bool = false
+    var showingDebugInfo                        : Bool = false
     
-    var frameworkId     : String? = nil
+    var frameworkId                             : String? = nil
 
     let editorIsMaximized                       = PassthroughSubject<Bool, Never>()
     let gameIsRunning                           = PassthroughSubject<Bool, Never>()
@@ -98,7 +98,9 @@ public class Game       : ObservableObject
     let isShowingImage                          = PassthroughSubject<Bool, Never>()
 
     let projectLoaded                           = PassthroughSubject<Void, Never>()
-    
+
+    let layerGridIsVisible                      = PassthroughSubject<Bool, Never>()
+
     var graphRenderer                           : GraphRenderer!
     var graphBuilder                            : DenrimGraphBuilder!
     

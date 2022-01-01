@@ -217,7 +217,12 @@ class MapPreview
                         let column = 2 + cX * 2
                         
                         game.scriptEditor?.goto(line: line)
-                        game.scriptEditor?.select(lineS: line, columnS: column, lineE: line, columnE: column + 2)
+                        
+                        if game.mapBuilder.selectedAlias.isEmpty == true {
+                            game.scriptEditor?.select(lineS: line, columnS: column, lineE: line, columnE: column + 2)
+                        } else {
+                            game.scriptEditor?.selectAndReplace(lineS: line, columnS: column, lineE: line, columnE: column + 2, replaceWith: game.mapBuilder.selectedAlias)
+                        }
                     }
                 }
             }

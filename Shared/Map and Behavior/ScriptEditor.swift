@@ -287,10 +287,35 @@ class ScriptEditor
     func select(lineS: Int32, columnS: Int32, lineE: Int32, columnE: Int32) {
         webView.evaluateJavaScript(
             """
-            
+
             editor.getSession().selection.setRange(new ace.Range(\(lineS), \(columnS), \(lineE), \(columnE)), true);
 
             """, completionHandler: { (value, error ) in
+         })
+    }
+    
+    func selectAndReplace(lineS: Int32, columnS: Int32, lineE: Int32, columnE: Int32, replaceWith: String) {
+        webView.evaluateJavaScript(
+            """
+            
+            editor.getSession().replace(new ace.Range(\(lineS), \(columnS), \(lineE), \(columnE)), \"\(replaceWith)\");
+
+            editor.getSession().selection.setRange(new ace.Range(\(lineS), \(columnS), \(lineE), \(columnE)), true);
+
+            """, completionHandler: { (value, error ) in
+         })
+    }
+    
+    func replaceSelection(_ text: String) {
+        
+        print("herere")
+        webView.evaluateJavaScript(
+            """
+            
+            editor.getSession().replace(editor.getRange(), \(text));
+
+            """, completionHandler: { (value, error ) in
+                print("ppp", value, error)
          })
     }
 

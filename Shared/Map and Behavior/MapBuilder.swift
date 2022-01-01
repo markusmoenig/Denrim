@@ -20,6 +20,8 @@ class MapBuilder
     let mapPreview      : MapPreview
     
     var currentLayer    : String? = nil
+    
+    var selectedAlias   : String = ""
 
     enum Types : String, CaseIterable
     {
@@ -835,8 +837,10 @@ class MapBuilder
     
     func createPreview(_ map: Map,_ forcePreview: Bool = false )
     {
-        var name : String? = nil
-        var command : String? = nil
+        var name                : String? = nil
+        var command             : String? = nil
+        var layerGridIsVisible  = false
+        
         if let line = scriptLine {
             if line != previewLine || forcePreview {
                 
@@ -871,12 +875,15 @@ class MapBuilder
                     if map.layers[lastVar] != nil {
                             if line < map.layers[lastVar]!.endLine {
                             name = lastVar
+                            layerGridIsVisible = true
                         }
                     }
                 }
                 
                 map.setup(game: game, forceFixedScale: true)
                 mapPreview.preview(map, name, command, layerLineOffset: layerLineOffset)
+                
+                game.layerGridIsVisible.send(layerGridIsVisible)
             }
         }
     }
