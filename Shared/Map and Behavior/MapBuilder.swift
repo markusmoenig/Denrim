@@ -15,7 +15,9 @@ class MapBuilder
     var cursorTimer     : Timer? = nil
     var scriptLine      : Int32? = nil
     var scriptColumn    : Int32 = 0
+    
     var previewLine     : Int32? = nil
+    var previewVar      : String? = nil
 
     let mapPreview      : MapPreview
     
@@ -104,6 +106,7 @@ class MapBuilder
                             if var firstAlias = asset.map!.aliases[asset.map!.sequences[a]!.aliases[0]] {
                                 
                                 firstAlias.type = .Sequence
+                                firstAlias.id = a
                                 firstAlias.sequence = asset.map!.sequences[a]
                                 firstAlias.sequence?.data = MapSequenceData2D()
 
@@ -419,13 +422,13 @@ class MapBuilder
             if variable.count == 2 {
                 if let id = options["id"] as? String {
                     if map.images[id] != nil  {
-                        map.aliases[variable] = MapAlias(type: .Image, pointsTo: id, originalOptions: options, options: MapAliasData2D(options))
+                        map.aliases[variable] = MapAlias(type: .Image, pointsTo: id, id: variable, originalOptions: options, options: MapAliasData2D(options))
                         setLine(variable)
                     }
                 } else
                 if options["size"] != nil {
                     // Empty
-                    map.aliases[variable] = MapAlias(type: .Image, pointsTo: "", originalOptions: options, options: MapAliasData2D(options))
+                    map.aliases[variable] = MapAlias(type: .Image, pointsTo: "", id: variable, originalOptions: options, options: MapAliasData2D(options))
                     setLine(variable)
                 }
             } else { error.error = "Alias '\(variable)' must contain of two characters" }
@@ -843,11 +846,7 @@ class MapBuilder
         
         if let line = scriptLine {
             if line != previewLine || forcePreview {
-                
-                if line != previewLine {
-                    map.camera2D.clear()
-                }
-                
+                                
                 previewLine = line                
                 game.checkTexture()
                 
@@ -880,6 +879,12 @@ class MapBuilder
                     }
                 }
                 
+                if previewVar != name {
+                    map.camera2D.clear()
+                }
+                    
+                previewVar = name
+                
                 map.setup(game: game, forceFixedScale: true)
                 mapPreview.preview(map, name, command, layerLineOffset: layerLineOffset)
                 
@@ -891,7 +896,7 @@ class MapBuilder
     func startTimer(_ asset: Asset)
     {
         DispatchQueue.main.async(execute: {
-            let timer = Timer.scheduledTimer(timeInterval: 1.0,
+            let timer = Timer.scheduledTimer(timeInterval: 0.5,
                                              target: self,
                                              selector: #selector(self.cursorCallback),
                                              userInfo: nil,

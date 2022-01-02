@@ -129,14 +129,17 @@ class MapPreview
                             cX = Float((game.mapBuilder.scriptColumn - 2) / 2)
                             cY = Float(layerLineOffset - 1)
                             
-                            /*
                             if let cX = cX, let cY = cY {
                                 
-                                let iX = Int32(cX)
-                                let iY = Int32(cY)
+                                let iX = Int(cX)
+                                let iY = Int(cY)
                             
-                                self.game.tempTextChanged.send("P: (\(iX), \(iY))")
-                            }*/
+                                if let alias = layer.getAliasAt(iX, iY) {
+                                    self.game.tempTextChanged.send("(\(iX), \(iY)) : \(alias.id)")
+                                } else {
+                                    self.game.tempTextChanged.send("(\(iX), \(iY))")
+                                }
+                            }
                         }
                     }
                 
@@ -164,7 +167,7 @@ class MapPreview
                     
                     let options: [String: Any] = ["position": Float2(cX, cY),
                                                   "size"    : Float2(gridSize.x, gridSize.y),
-                                                  "color"   : Float4(1,1,1,0.5)
+                                                  "color"   : Float4(1,1,1,0.3)
                     ]
                     let shapeOptions = MapShapeData2D(options)
                     map.drawDebugBox(shapeOptions)
@@ -208,8 +211,8 @@ class MapPreview
                     if let layerOffset = layerOffset {
                         let gridSize = map.getLayerGridSize(layer)
 
-                        let cX : Int32 = Int32((x - layerOffset.x) / gridSize.x)
-                        let cY : Int32 = Int32((y - layerOffset.y) / gridSize.y)
+                        let cX : Int32 = Int32((x - map.camera2D.xOffset - layerOffset.x) / gridSize.x)
+                        let cY : Int32 = Int32((y - map.camera2D.yOffset - layerOffset.y) / gridSize.y)
                                                                         
                         let line = cY + layer.startLine
                         let column = 2 + cX * 2
@@ -218,17 +221,13 @@ class MapPreview
                         
                         if game.mapBuilder.selectedAlias.isEmpty == true {
                             game.scriptEditor?.select(lineS: line, columnS: column, lineE: line, columnE: column + 2)
-                            
-                            game.scriptEditor?.getSelectedText({ text in
-                                self.game.tempTextChanged.send("P: (\(cX), \(cY)), A: \(text)")
-                            })
+                            //game.scriptEditor?.getSelectedText({ text in
+                            //    self.game.tempTextChanged.send("P: (\(cX), \(cY)), A: \(text)")
+                            //})
                         } else {
                             game.scriptEditor?.selectAndReplace(lineS: line, columnS: column, lineE: line, columnE: column + 2, replaceWith: game.mapBuilder.selectedAlias)
-                            self.game.tempTextChanged.send("P: (\(cX), \(cY)), A: \(game.mapBuilder.selectedAlias)")
+                            //self.game.tempTextChanged.send("P: (\(cX), \(cY)), A: \(game.mapBuilder.selectedAlias)")
                         }
-                        
-
-
                         
                         //game.scriptEditor?.getSelectedRange({ sline, scolumn, eline, ecolumn in
                         //})
@@ -267,7 +266,7 @@ class MapPreview
     func startTimer()
     {
         DispatchQueue.main.async(execute: {
-            let timer = Timer.scheduledTimer(timeInterval: 1.0,
+            let timer = Timer.scheduledTimer(timeInterval: 0.5,
                                              target: self,
                                              selector: #selector(self.animationCallback),
                                              userInfo: nil,

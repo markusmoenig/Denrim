@@ -123,12 +123,14 @@ struct MapAlias {
     
     var type            : AliasType
     var pointsTo        : String
+    var id              : String
+
     var originalOptions : [String:Any]
 
     var options         : MapAliasData2D
     
     var sequence        : MapSequence? = nil
-    
+        
     var body            : b2Body? = nil
     var physicsWorld    : MapPhysics2D? = nil
 }
@@ -207,6 +209,18 @@ struct MapLayer {
     
     var maxWidth        : Int = 0
     var maxHeight       : Int = 0
+    
+    // Returns a copy of the tile at the given coordinate
+    func getAliasAt(_ x: Int,_ y: Int) -> MapAlias? {
+        if y < maxHeight && x < maxWidth {
+            let line = data[y]
+            if x < line.line.count {
+                return line.line[x]
+            }
+        }
+        
+        return nil
+    }
 }
 
 struct MapBehavior {

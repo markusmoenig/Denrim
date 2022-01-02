@@ -493,7 +493,7 @@ class BehaviorBuilder
     func startTimer(_ asset: Asset)
     {
         DispatchQueue.main.async(execute: {
-            let timer = Timer.scheduledTimer(timeInterval: 0.2,
+            let timer = Timer.scheduledTimer(timeInterval: 0.5,
                                              target: self,
                                              selector: #selector(self.cursorCallback),
                                              userInfo: nil,

@@ -687,7 +687,7 @@ class Asset         : Codable, Equatable
     
     var children    : [Asset]? = nil
     var path        : String? = nil
-        
+            
     var name        = ""
     var value       = ""
     

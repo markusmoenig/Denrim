@@ -874,6 +874,7 @@ class Map
         return rc
     }
     
+    // Draws all shaders, shapes and aliases of the given layer
     func drawLayer(_ x: Float,_ y: Float,_ layer: MapLayer)
     {
         if layer.options.clipToCanvas && game.state == .Running {
@@ -988,43 +989,7 @@ class Map
         return float2(layerWidth, layerHeight)
     }
     
-    /// Get the screen coordinate offset into the layer based on the cursor position
-    func getLayerOffset(_ cursorXOff: Int32,_ cursorYOff: Int32,_ layer: MapLayer) -> (Float, Float)?
-    {
-        layerPreviewZoom = camera2D.zoom
-
-        var xPos : Float = 0
-        var yPos : Float = 0
-
-        var currentY : Int32 = 1
-        for line in layer.data {
-            
-            if currentY == cursorYOff {
-                var currentX : Int32 = 0
-                let cOff = cursorXOff / 2 - 1
-                
-                for var a in line.line {
-                    
-                    if currentX < cOff {
-                        let advance = drawAlias(xPos, yPos, &a, doDraw: false)
-                        xPos += advance.0 * layerPreviewZoom
-                    } else {
-                        return (xPos, yPos)
-                    }
-                    
-                    currentX += 1
-                }
-                return (xPos, yPos)
-            } else {
-                yPos += (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0) * layerPreviewZoom
-                xPos = 0
-            }
-            
-            currentY += 1
-        }
-        return nil
-    }
-    
+    // Steps the physics world (if any) and draws all shapes and layers of the scene
     func drawScene(_ x: Float,_ y: Float,_ scene: MapScene)
     {
         texture.clear(scene.backColor)
