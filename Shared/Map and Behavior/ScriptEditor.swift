@@ -315,7 +315,6 @@ class ScriptEditor
             editor.getSession().replace(editor.getRange(), \(text));
 
             """, completionHandler: { (value, error ) in
-                print("ppp", value, error)
          })
     }
 
@@ -404,6 +403,50 @@ class ScriptEditor
                     }
 
                     cb(row, column)
+                }
+         })
+    }
+    
+    func getSelectedRange(_ cb: @escaping (Int32, Int32, Int32, Int32)->() )
+    {
+        webView.evaluateJavaScript(
+            """
+            editor.selection.getRange()
+            """, completionHandler: { (value, error ) in
+                if let map = value as? [String:Any] {
+                    var sline       : Int32 = -1
+                    var scolumn     : Int32 = -1
+                    var eline       : Int32 = -1
+                    var ecolumn     : Int32 = -1
+                    if let f = map["start"] as? [String:Any] {
+                        if let ff = f["row"] as? Int32 {
+                            sline = ff
+                        }
+                        if let ff = f["column"] as? Int32 {
+                            scolumn = ff
+                        }
+                    }
+                    if let t = map["end"] as? [String:Any] {
+                        if let ff = t["row"] as? Int32 {
+                            eline = ff
+                        }
+                        if let ff = t["column"] as? Int32 {
+                            ecolumn = ff
+                        }
+                    }
+                    cb(sline, scolumn, eline, ecolumn)
+                }
+         })
+    }
+    
+    func getSelectedText(_ cb: @escaping (String)->() )
+    {
+        webView.evaluateJavaScript(
+            """
+            editor.getSelectedText()
+            """, completionHandler: { (value, error ) in
+                if let text = value as? String {
+                    cb(text)
                 }
          })
     }

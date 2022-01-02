@@ -107,6 +107,12 @@ struct EditorView: View {
                                 game.assetFolder.createPreview()
                             }
                         }
+                } else
+                if tempText.isEmpty == false {
+                    Divider()
+
+                    Text(tempText)
+                    .font(.system(size: 16))
                 }
                 
                 Spacer()
@@ -146,7 +152,12 @@ struct EditorView: View {
             
             .onReceive(game.tempTextChanged) { value in
                 tempText = value
-                print(tempText)
+            }
+            
+            .onReceive(game.layerGridIsVisible) { value in
+                if value == false {
+                    tempText = ""
+                }
             }
         }
     }

@@ -76,17 +76,8 @@ public class DMTKView       : MTKView
         } else
         if game.state == .Idle {
             if let asset = game.assetFolder.current, asset.type == .Map {
-                //if let map = asset.map {
-                    setMousePos(event)
-                    
-                    game.mapBuilder.mapPreview.mouseDown(mousePos.x, mousePos.y)
-                    //let coords = map.reverseCoordinates(mousePos.x, mousePos.y)
-                    /*
-                    game.tempTextChanged.send("\(coords.x) x \(coords.y)")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                        self.game.tempTextChanged.send("")
-                    }*/
-                //}
+                setMousePos(event)                    
+                game.mapBuilder.mapPreview.mouseDown(mousePos.x, mousePos.y)
             }
         }
     }
@@ -94,6 +85,13 @@ public class DMTKView       : MTKView
     override public func mouseDragged(with event: NSEvent) {
         if game.state == .Running && mouseIsDown {
             setMousePos(event)
+        }
+        
+        if game.state == .Idle {
+            if let asset = game.assetFolder.current, asset.type == .Map {
+                setMousePos(event)
+                game.mapBuilder.mapPreview.mouseDown(mousePos.x, mousePos.y)
+            }
         }
     }
     

@@ -128,16 +128,14 @@ class MapPreview
                                                         
                             cX = Float((game.mapBuilder.scriptColumn - 2) / 2)
                             cY = Float(layerLineOffset - 1)
-
+                            
                             /*
-                            if let offset = map.getLayerOffset(game.mapBuilder.scriptColumn, layerLineOffset, layer) {
+                            if let cX = cX, let cY = cY {
                                 
-                                //adjustedCenter = true
-                                
-                                //print(offset.0, offset.1)
-                                /*
-                                x -= offset.0
-                                y -= offset.1*/
+                                let iX = Int32(cX)
+                                let iY = Int32(cY)
+                            
+                                self.game.tempTextChanged.send("P: (\(iX), \(iY))")
                             }*/
                         }
                     }
@@ -220,9 +218,20 @@ class MapPreview
                         
                         if game.mapBuilder.selectedAlias.isEmpty == true {
                             game.scriptEditor?.select(lineS: line, columnS: column, lineE: line, columnE: column + 2)
+                            
+                            game.scriptEditor?.getSelectedText({ text in
+                                self.game.tempTextChanged.send("P: (\(cX), \(cY)), A: \(text)")
+                            })
                         } else {
                             game.scriptEditor?.selectAndReplace(lineS: line, columnS: column, lineE: line, columnE: column + 2, replaceWith: game.mapBuilder.selectedAlias)
+                            self.game.tempTextChanged.send("P: (\(cX), \(cY)), A: \(game.mapBuilder.selectedAlias)")
                         }
+                        
+
+
+                        
+                        //game.scriptEditor?.getSelectedRange({ sline, scolumn, eline, ecolumn in
+                        //})
                     }
                 }
             }
