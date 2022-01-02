@@ -507,7 +507,7 @@ class MapBuilder
             let shapeId = options["shapeid"] as? String
             let behaviorId = options["behaviorid"] as? String
             
-            let instances = options["grid"] as? Float2
+            let instances = options["size"] as? Float2
             let offsets = options["offset"] as? Float2
 
             let gridLayout = Float2(1,1)

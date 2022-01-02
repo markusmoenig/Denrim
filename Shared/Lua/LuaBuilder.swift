@@ -34,14 +34,12 @@ class LuaBuilder {
         var error = CompileError()
         error.asset = asset
         error.column = 0
-        
-        //asset.vm = nil
-        
+                
         let vm = VirtualMachine()
-        //asset.vm = vm
         
         addTypes(vm)
         addPrint(vm)
+        addRequire(vm)
         addSceneClass(vm)
 
         switch vm.eval(asset.value, args: []) {
@@ -68,6 +66,7 @@ class LuaBuilder {
             
             addTypes(vm)
             addPrint(vm)
+            addRequire(vm, relativeTo: asset.path)
             addSceneClass(vm)
             
             injectGlobals(vm, context: context)
@@ -93,6 +92,19 @@ class LuaBuilder {
             case let .error(e):
                 print("\(typeName) failure", e)
             }
+        }
+    }
+    
+    /// AddRequire
+    func addRequire(_ vm: VirtualMachine, relativeTo: String? = nil) {
+        vm.globals["require"] = vm.createFunction([String.arg]) { args in
+            if args.values.isEmpty == false {
+                let name = args.string
+                if let asset = self.game.assetFolder.getAsset(name, .Lua, relativeTo: relativeTo) {
+                    _ = vm.eval(asset.value, args: [])
+                }
+            }
+            return .nothing
         }
     }
     

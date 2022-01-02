@@ -440,10 +440,15 @@ class AssetFolder       : Codable
     }
     
     /// Get an asset based on the path and type
-    func getAsset(_ name: String,_ type: Asset.AssetType = .Behavior) -> Asset?
+    func getAsset(_ name: String,_ type: Asset.AssetType = .Behavior, relativeTo: String? = nil) -> Asset?
     {
         var path = name
         
+        if let relativeTo = relativeTo {
+            if name.starts(with: "/") == false {
+                path = relativeTo + "/" + name
+            }
+        } else
         // Add the current subpath if not an absolute path
         if let current = currentPath {
             if name.starts(with: "/") == false {
