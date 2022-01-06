@@ -673,7 +673,7 @@ class Map
                 
                 if let pos = mapBehavior.behaviorAsset.behavior?.getVariableValue("position") as? Float2 {
                     pos.x = position.x
-                    pos.y = position.y                    
+                    pos.y = position.y
                 }
                 
                 // In case the shape has zero size by default copy the base shape size
@@ -682,6 +682,9 @@ class Map
                 
                 mapShape2D.categoryBits = shapes2D[instancer.shapeName]!.categoryBits
                 
+                mapShape2D.aliasId = shapes2D[instancer.shapeName]!.aliasId
+                mapShape2D.texture = shapes2D[instancer.shapeName]!.texture
+
                 if shapes2D[instancer.shapeName]!.physicsWorld != nil {
                     let maskBits = calculateMaskBits(shapes2D[instancer.shapeName]!.physicsCmd!)
 
@@ -722,9 +725,34 @@ class Map
         return nil
     }
     
+    func sequenceStep(_ sequence: inout MapSequence) -> String? {
+        let sequenceData = sequence.data!
+        let currentTime = NSDate().timeIntervalSince1970
+
+        if sequenceData.lastTime > 0 {
+            if currentTime - sequenceData.lastTime > sequence.interval {
+                sequenceData.animIndex += 1
+                sequenceData.lastTime = currentTime
+            }
+        } else {
+            sequenceData.lastTime = currentTime
+        }
+        
+        if sequenceData.animIndex >= sequence.aliases.count {
+            if sequence.once == false {
+                sequenceData.animIndex = 0
+            } else {
+                sequenceData.animIndex -= 1
+            }
+        }
+        
+        return sequence.aliases[sequenceData.animIndex]
+    }
+    
     func drawShape(_ shape: MapShape2D, layer: MapLayer? = nil)
     {
         func drawShapeAlias(_ shape: MapShape2D, aliasId: String) {
+            if aliases[aliasId] == nil { return }
             if let layer = layer, layer.options.gridBased {
                 let posX = shape.options.position.x * (layer.options.gridSize.x / canvasSize.x * aspect.x * 100.0)
                 let posY = shape.options.position.y * (layer.options.gridSize.x / canvasSize.y * aspect.y * 100.0)
@@ -739,26 +767,12 @@ class Map
                 let instShape = s.0
                                 
                 if instShape.options.visible.toSIMD() == false { continue }
-                
-                if let sequence = instShape.texture as? MapSequence, sequence.aliases.isEmpty == false {
-                    let sequenceData = sequence.data!
-                    let currentTime = NSDate().timeIntervalSince1970
-
-                    if sequenceData.lastTime > 0 {
-                        if currentTime - sequenceData.lastTime > sequence.interval {
-                            sequenceData.animIndex += 1
-                            sequenceData.lastTime = currentTime
-                        }
-                    } else {
-                        sequenceData.lastTime = currentTime
+                                
+                if var sequence = instShape.texture as? MapSequence, sequence.aliases.isEmpty == false {
+                    if let seqAliasId = sequenceStep(&sequence) {
+                        drawShapeAlias(instShape, aliasId: seqAliasId)
                     }
-                    
-                    if sequenceData.animIndex >= sequence.aliases.count {
-                        sequenceData.animIndex = 0
-                    }
-                    
-                    drawShapeAlias(instShape, aliasId: sequence.aliases[sequenceData.animIndex])
-                }
+                } else
                 if let aliasId = instShape.aliasId {
                     drawShapeAlias(instShape, aliasId: aliasId)
                 } else

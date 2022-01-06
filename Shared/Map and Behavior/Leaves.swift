@@ -77,7 +77,12 @@ class LogNode: BehaviorNode
                     } else
                     if let v = value as? Float2 {
                         text += string + " <" + String(v.x) + ", " + String(v.y) + ">"
+                    } else
+                    if let v = value as? Text1 {
+                        text += string + v.name
                     }
+                } else {
+                    text += text + " " + string
                 }
             }
         }

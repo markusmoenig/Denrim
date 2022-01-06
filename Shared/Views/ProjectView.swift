@@ -133,6 +133,7 @@ struct ProjectView: View {
                     .font(.system(size: toolBarIconSize))
             }
             .buttonStyle(PlainButtonStyle())
+            
             .fileImporter(
                 isPresented: $isImportingAudio,
                 allowedContentTypes: [.item],
@@ -151,6 +152,7 @@ struct ProjectView: View {
                 }
             }
         }
+        
         .padding(.top, toolBarTopPadding)
         .padding(.bottom, 2)
         
@@ -173,6 +175,25 @@ struct ProjectView: View {
                     document.game.isShowingImage.send(document.game.assetFolder.current?.type == .Image ? true : false)
                 }
                 
+                .fileImporter(
+                    isPresented: $isAddingImages,
+                    allowedContentTypes: [.item],
+                    allowsMultipleSelection: true
+                ) { result in
+                    do {
+                        let selectedFiles = try result.get()
+                        if selectedFiles.count > 0 {
+                            document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles, existingAsset: document.game.assetFolder.current)
+
+                            selection = nil
+                            document.game.contentChanged.send()
+                            selection = asset.id
+                        }
+                    } catch {
+                        // Handle failure.
+                    }
+                }
+                
                 .contextMenu {
                     
                     Section(header: Text("Move to Folder")) {
@@ -182,6 +203,9 @@ struct ProjectView: View {
                             document.game.assetFolder.select(asset.id)
                             
                             document.game.assetFolder.moveToFolder(folderName: nil, asset: asset)
+                            
+                            selection = nil
+                            selection = asset.id
                         }) {
                             Text("Root")
                             if document.game.assetFolder.isInsideRoot(asset) {
@@ -248,24 +272,6 @@ struct ProjectView: View {
                                 Label("Add to Image Group", systemImage: "plus")
                             }
                             .disabled(document.game.assetFolder.isImage(asset) == false)
-                            .fileImporter(
-                                isPresented: $isAddingImages,
-                                allowedContentTypes: [.item],
-                                allowsMultipleSelection: true
-                            ) { result in
-                                do {
-                                    let selectedFiles = try result.get()
-                                    if selectedFiles.count > 0 {
-                                        document.game.assetFolder.addImages(selectedFiles[0].deletingPathExtension().lastPathComponent, selectedFiles, existingAsset: document.game.assetFolder.current)
-
-                                        selection = nil
-                                        document.game.contentChanged.send()
-                                        selection = asset.id
-                                    }
-                                } catch {
-                                    // Handle failure.
-                                }
-                            }
                             
                             Button(action: {
                                 selection = asset.id
@@ -286,14 +292,6 @@ struct ProjectView: View {
             }
         }
         
-        /*
-        .onReceive(document.game.isShowingImage) { value in
-            if value {
-                isShowingImage = true
-            } else {
-                isShowingImage = false
-            }
-        }*/
         
         .alert(isPresented: $showDeleteAssetAlert) {
             Alert(
@@ -349,7 +347,6 @@ struct ProjectView: View {
                 // Handle failure.
             }
         }
-
         
         // Selection handling
         .onChange(of: selection) { newState in

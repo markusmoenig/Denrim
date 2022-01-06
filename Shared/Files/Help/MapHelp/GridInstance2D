@@ -4,7 +4,7 @@
 
 Syntax:
 
-` gridId = GridInstance2D<ShapeId: ShapeId><BehaviorId: BehaviorId><Grid: 3, 3><Offset: 12, 12>`
+` gridId = GridInstance2D<ShapeId: ShapeId><BehaviorId: BehaviorId><Size: 3, 3><Offset: 12, 12>`
 
 This example would create 9 instances (3x3) of ShapeId with the associated instances of BehaviorId. Each shape would have an offset to each other of 12, 12 (in relative coordinates).
 

@@ -374,6 +374,9 @@ class MapBuilder
                         if let interval = options["interval"] as? Float1 {
                             map.sequences[variable]!.interval = Double(interval.x)
                         }
+                        if let once = options["once"] as? Bool1 {
+                            map.sequences[variable]!.once = Bool(once.x)
+                        }
                         setLine(variable)
                     } else { error.error = "Invalid range!" }
                 } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
@@ -387,35 +390,10 @@ class MapBuilder
                 if let interval = options["interval"] as? Float1 {
                     map.sequences[variable]!.interval = Double(interval.x)
                 }
+                if let once = options["once"] as? Bool1 {
+                    map.sequences[variable]!.once = Bool(once.x)
+                }
                 setLine(variable)
-                
-                /*
-                if let asset = game.assetFolder.getAsset(group, .Image) {
-                    var from : Int = 0
-                    var to : Int = 0
-                    if let vec = options["range"] as? Float2 {
-                        from = Int(vec.x)
-                        to = Int(vec.y)
-                    }
-                    var array : [String] = []
-                    if from < to {
-                        for index in from...to {
-                            if index >= 0 && index < asset.data.count {
-                                let resourceName : String = asset.id.uuidString + ":" + String(index)
-                                array.append(resourceName)
-                            } else { error.error = "Sequence group '\(group)' index '\(index)' for '\(variable)' out of bounds" }
-                        }
-                        if map.sequences[variable] != nil {
-                            map.sequences[variable] = nil
-                        }
-                        map.sequences[variable] = MapSequence(resourceNames: array, options: options)
-                        if let interval = options["interval"] as? Float1 {
-                            map.sequences[variable]!.interval = Double(interval.x)
-                        }
-                        setLine(variable)
-                    } else { error.error = "Invalid range!" }
-                } else { error.error = "Image group '\(group)' for '\(variable)' not found" }
-                 */
             } else { error.error = "Sequence type for '\(variable)' expects a 'Group' or 'Aliases' option" }
         } else
         if type == .Alias {
@@ -605,7 +583,7 @@ class MapBuilder
         let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval", "gridsize"]
         let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "scroll"]
         let float4Options = ["rect", "color", "bordercolor", "float4", "grid"]
-        let boolOptions = ["repeatx", "repeaty", "visible", "bullet", "global", "cliptocanvas", "fixedrotation", "gridcoords"]
+        let boolOptions = ["repeatx", "repeaty", "visible", "bullet", "global", "cliptocanvas", "fixedrotation", "gridcoords", "once"]
         let stringArrayOptions = ["layers", "shapes", "shaders", "collisionids", "aliases"]
 
         var res: [String:Any] = [:]

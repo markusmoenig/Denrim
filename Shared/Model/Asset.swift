@@ -413,11 +413,54 @@ class AssetFolder       : Codable
         return asset.path
     }
     
+    /// Get an asset based on the path and type
+    func getAsset(_ name: String,_ type: Asset.AssetType = .Behavior, relativeTo: String? = nil) -> Asset?
+    {
+        var path = name
+                
+        if let relativeTo = relativeTo {
+            if name.starts(with: "/") == false {
+                path = relativeTo + "/" + name
+            }
+        } else
+        // Add the current subpath if not an absolute path
+        if let current = currentPath {
+            //if name.starts(with: "/") == false {
+            if name.contains("/") == false {
+                path = current + "/" + name
+            }
+        }
+                
+        if let tuple = resolvePath(path) {
+            let name = tuple.0
+        
+            if let folder = tuple.1 {
+                for asset in folder.children! {
+                    if asset.type == type && asset.name == name {
+                        return asset
+                    }
+                }
+            } else {
+                for asset in assets {
+                    if asset.type == type && asset.name == name {
+                        return asset
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
     /// Resolves the given path into the name and the folder asset
     func resolvePath(_ path: String) -> (String, Asset?)?
     {
         var name = ""
         var folder : Asset? = nil
+        
+        if path.starts(with: "/") {
+            let absPath = String(path.dropFirst())
+            return (absPath, nil)
+        }
         
         if path.contains("/") {
             let a = path.split(separator: "/")
@@ -436,43 +479,7 @@ class AssetFolder       : Codable
         } else {
             return (path, nil)
         }
-        return nil
-    }
-    
-    /// Get an asset based on the path and type
-    func getAsset(_ name: String,_ type: Asset.AssetType = .Behavior, relativeTo: String? = nil) -> Asset?
-    {
-        var path = name
-        
-        if let relativeTo = relativeTo {
-            if name.starts(with: "/") == false {
-                path = relativeTo + "/" + name
-            }
-        } else
-        // Add the current subpath if not an absolute path
-        if let current = currentPath {
-            if name.starts(with: "/") == false {
-                path = current + "/" + name
-            }
-        }
-        
-        if let tuple = resolvePath(path) {
-            let name = tuple.0
-                        
-            if let folder = tuple.1 {
-                for asset in folder.children! {
-                    if asset.type == type && asset.name == name {
-                        return asset
-                    }
-                }
-            } else {
-                for asset in assets {
-                    if asset.type == type && asset.name == name {
-                        return asset
-                    }
-                }
-            }
-        }
+                
         return nil
     }
     

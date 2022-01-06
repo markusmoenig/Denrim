@@ -34,6 +34,7 @@ struct MapSequence {
     
     var data            : MapSequenceData2D? = nil
     var interval        : Double = 0.1
+    var once            : Bool = false
 }
 
 struct MapAliasData2D {
@@ -212,9 +213,9 @@ struct MapLayer {
     
     // Returns a copy of the tile at the given coordinate
     func getAliasAt(_ x: Int,_ y: Int) -> MapAlias? {
-        if y < maxHeight && x < maxWidth {
+        if y >= 0 && y < maxHeight && x < maxWidth {
             let line = data[y]
-            if x < line.line.count {
+            if x >= 0 && x < line.line.count {
                 return line.line[x]
             }
         }
