@@ -725,6 +725,7 @@ class Map
         return nil
     }
     
+    /// In a sequnce go one step forward
     func sequenceStep(_ sequence: inout MapSequence) -> String? {
         let sequenceData = sequence.data!
         let currentTime = NSDate().timeIntervalSince1970
@@ -789,26 +790,11 @@ class Map
         } else {
             if shape.options.visible.toSIMD() == false { return }
             
-            if let sequence = shape.texture as? MapSequence, sequence.aliases.isEmpty == false {
+            if var sequence = shape.texture as? MapSequence, sequence.aliases.isEmpty == false {
                 // An alias sequence
-                
-                let sequenceData = sequence.data!
-                let currentTime = NSDate().timeIntervalSince1970
-
-                if sequenceData.lastTime > 0 {
-                    if currentTime - sequenceData.lastTime > sequence.interval {
-                        sequenceData.animIndex += 1
-                        sequenceData.lastTime = currentTime
-                    }
-                } else {
-                    sequenceData.lastTime = currentTime
+                if let seqAliasId = sequenceStep(&sequence) {
+                    drawShapeAlias(shape, aliasId: seqAliasId)
                 }
-                
-                if sequenceData.animIndex >= sequence.aliases.count {
-                    sequenceData.animIndex = 0
-                }
-                
-                drawShapeAlias(shape, aliasId: sequence.aliases[sequenceData.animIndex])
             } else
             if let aliasId = shape.aliasId {
                 // A single alias
@@ -957,7 +943,11 @@ class Map
                         }
                         
                         if a.sequence!.data!.animIndex >= a.sequence!.aliases.count {
-                            a.sequence!.data!.animIndex = 0
+                            if a.sequence!.once == false {
+                                a.sequence!.data!.animIndex = 0
+                            } else {
+                                a.sequence!.data!.animIndex -= 1
+                            }
                         }
                     }
                     
@@ -1107,7 +1097,11 @@ class Map
             }
             
             if sequenceData.animIndex >= sequence.resourceNames.count {
-                sequenceData.animIndex = 0
+                if sequence.once == false {
+                    sequenceData.animIndex = 0
+                } else {
+                    sequenceData.animIndex -= 1
+                }
             }
                      
             if sequence.resourceNames.isEmpty == false && sequenceData.animIndex < sequence.resourceNames.count  {
