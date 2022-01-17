@@ -70,6 +70,13 @@ typedef struct
 
 typedef struct
 {
+    vector_float2   gridSize;
+    vector_float2   screenSize;
+    float           scale;
+} GridUniform;
+
+typedef struct
+{
     //vector_bool       boolData[10];
     int             intData[10];
     float           floatData[10];

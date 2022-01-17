@@ -42,6 +42,8 @@ public class Game       : ObservableObject
     var behaviorBuilder                         : BehaviorBuilder!
     var shaderCompiler                          : ShaderCompiler!
     
+    var mapEditor                               : MapEditor!
+    
     var luaBuilder                              : LuaBuilder!
 
     var textureLoader                           : MTKTextureLoader!
@@ -122,6 +124,8 @@ public class Game       : ObservableObject
         
         assetFolder = AssetFolder()
         assetFolder.setup(self)
+        
+        mapEditor = MapEditor(self)
         
         graphBuilder = DenrimGraphBuilder(self)
 

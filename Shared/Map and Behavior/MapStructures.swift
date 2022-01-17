@@ -154,6 +154,8 @@ struct MapLayerData2D {
     var gridBased       = false
     var gridSize        = Float1(16)
     var gridCoords      = false
+    
+    var tileMap         = ""
 
     init(_ options: [String:Any])
     {
@@ -172,6 +174,10 @@ struct MapLayerData2D {
         if let gridSize = options["gridsize"] as? Float1 {
             self.gridSize = gridSize
             gridBased = true
+        }
+        
+        if let tileMap = options["tilemap"] as? String {
+            self.tileMap = tileMap
         }
         
         if let gridCoords = options["gridcoords"] as? Bool1 {

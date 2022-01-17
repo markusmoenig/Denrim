@@ -72,7 +72,7 @@ float2 m4mRotateCWPivot(float2 pos, float angle, float2 pivot)
     return pivot + (pos-pivot) * float2x2(ca, -sa, sa, ca);
 }
 
-// Disc
+// --- Draw a disc (with an optional texture)
 fragment float4 m4mDiscDrawable(RasterizerData in [[stage_in]],
                                constant DiscUniform *data [[ buffer(0) ]],
                                texture2d<float> inTexture [[ texture(1) ]] )
@@ -109,7 +109,7 @@ fragment float4 m4mDiscDrawable(RasterizerData in [[stage_in]],
     return col;
 }
 
-// Box
+// --- Draw a box (with an optional texture)
 fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
                                constant BoxUniform *data [[ buffer(0) ]],
                                texture2d<float> inTexture [[ texture(1) ]] )
@@ -157,7 +157,7 @@ fragment float4 m4mBoxDrawable(RasterizerData in [[stage_in]],
     return col;
 }
 
-// Rotated Box
+// --- Draw a rotated box
 fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
                                constant BoxUniform *data [[ buffer(0) ]],
                                texture2d<float> inTexture [[ texture(1) ]] )
@@ -207,7 +207,7 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
     return col;
 }
 
-// --- Box Drawable
+// --- Draw a checker pattern
 fragment float4 m4mBoxPatternDrawable(RasterizerData in [[stage_in]],
                                constant BoxUniform *data [[ buffer(0) ]] )
 {
@@ -237,7 +237,7 @@ fragment float4 m4mBoxPatternDrawable(RasterizerData in [[stage_in]],
     return float4( col.xyz, m4mFillMask( dist ) );
 }
 
-// Copy texture
+// --- Copy texture
 fragment float4 m4mCopyTextureDrawable(RasterizerData in [[stage_in]],
                                 constant TextureUniform *data [[ buffer(0) ]],
                                 texture2d<half, access::read> inTexture [[ texture(1) ]])
@@ -253,6 +253,7 @@ fragment float4 m4mCopyTextureDrawable(RasterizerData in [[stage_in]],
     return float4(sample.x / sample.w, sample.y / sample.w, sample.z / sample.w, sample.w);
 }
 
+// --- Draw a textue
 fragment float4 m4mTextureDrawable(RasterizerData in [[stage_in]],
                                 constant TextureUniform *data [[ buffer(0) ]],
                                 texture2d<half> inTexture [[ texture(1) ]],
@@ -276,6 +277,7 @@ fragment float4 m4mTextureDrawable(RasterizerData in [[stage_in]],
     return sample;
 }
 
+// --- Draw a texture with a white alpha
 fragment float4 m4mTextureDrawableWhiteAlpha(RasterizerData in [[stage_in]],
                                 constant TextureUniform *data [[ buffer(0) ]],
                                 texture2d<half> inTexture [[ texture(1) ]],
@@ -305,6 +307,7 @@ float m4mMedian(float r, float g, float b) {
     return max(min(r, g), min(max(r, g), b));
 }
 
+// --- Text
 fragment float4 m4mTextDrawable(RasterizerData in [[stage_in]],
                                 constant TextUniform *data [[ buffer(0) ]],
                                 texture2d<float> inTexture [[ texture(1) ]])
@@ -323,4 +326,20 @@ fragment float4 m4mTextDrawable(RasterizerData in [[stage_in]],
     float d = m4mMedian(sample.r, sample.g, sample.b) - 0.5;
     float w = clamp(d/fwidth(d) + 0.5, 0.0, 1.0);
     return float4( data->color.x, data->color.y, data->color.z, w * data->color.w );
+}
+
+// --- Grid
+fragment float4 m4mGridDrawable(RasterizerData in [[stage_in]],
+                                constant GridUniform *data [[ buffer(0) ]] )
+{
+    float2 uv = in.textureCoordinate * ( data->screenSize );
+    //uv -= float2( data->screenSize / 2.0 );
+    
+    int scale = 30;
+
+    float2 gv = fract(uv / float(scale));
+
+    float4 color = float4(gv.x, gv.y, 0, 1);
+    
+    return color;
 }

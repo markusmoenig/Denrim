@@ -256,7 +256,6 @@ class Texture2D                 : NSObject
             renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
 
             renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
-            print("test", game.metalStates.getState(state: .DrawBox))
             renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawBox))
             renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         } else {

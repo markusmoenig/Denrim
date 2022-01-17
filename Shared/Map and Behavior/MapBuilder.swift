@@ -578,7 +578,7 @@ class MapBuilder
     {
         //print("Processing Options", options)
 
-        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale", "area", "filter"]
+        let stringOptions = ["group", "id", "name", "physics", "mode", "object", "type", "platform", "text", "font", "behaviorid", "shapeid", "physicsid", "body", "scale", "area", "filter", "tilemap"]
         let integerOptions = ["index", "int", "digits", "groupindex", "loops"]
         let floatOptions = ["round", "radius", "onion", "fontsize", "float", "border", "rotation", "friction", "restitution", "density", "delay", "interval", "gridsize"]
         let float2Options = ["range", "gravity", "position", "box", "size", "float2", "offset", "scroll"]

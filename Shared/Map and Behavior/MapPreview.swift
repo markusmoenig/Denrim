@@ -109,6 +109,11 @@ class MapPreview
             } else
             if let layer = map.layers[variable] {
                 helpKey = "Layer"
+                
+                if layer.options.tileMap.isEmpty == false {
+                    game.mapEditor.draw(map, layer: layer)
+                }
+                /*
                 map.startEncoding()
                 
                 var x : Float = -map.viewBorder.x
@@ -173,6 +178,7 @@ class MapPreview
                     map.drawDebugBox(shapeOptions)
                 }
                 map.stopEncoding()
+                */
             } else
             if let scene = map.scenes[variable] {
                 helpKey = "Scene"

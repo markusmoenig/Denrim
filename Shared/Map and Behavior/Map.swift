@@ -1511,6 +1511,45 @@ class Map
         }
     }
     
+    func drawGrid()
+    {
+        //var x : Float = 0
+        //var y : Float = 0
+ 
+        //x /= game.scaleFactor
+        //y /= game.scaleFactor
+
+        var data = GridUniform()
+        
+        //data.onion = onion / game.scaleFactor
+        //data.screenSize = float2(width / game.scaleFactor, height / game.scaleFactor)
+        //data.round = round / game.scaleFactor
+        //data.borderSize = border / game.scaleFactor
+        //data.fillColor = fillColor
+        //data.borderColor = borderColor
+        
+        //let renderPassDescriptor = MTLRenderPassDescriptor()
+        //renderPassDescriptor.colorAttachments[0].texture = texture
+        //renderPassDescriptor.colorAttachments[0].loadAction = .load
+        
+        //let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+
+        //data.pos.x = x
+        //data.pos.y = y
+        //data.rotation = rotation.degreesToRadians
+        data.screenSize = float2(texture.width / game.scaleFactor, texture.height / game.scaleFactor)
+
+        let rect = MMRect(0, 0, texture.width / game.scaleFactor, texture.height / game.scaleFactor, scale: game.scaleFactor)
+        let vertexData = game.createVertexData(texture: texture, rect: rect)
+                                
+        renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+        renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+
+        renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
+        renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawGrid))
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+    }
+    
     func reverseCoordinates(_ x: Float,_ y: Float) -> SIMD2<Int>
     {
         var rc = float2(x,y)

@@ -583,6 +583,12 @@
 		2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */; };
 		2BFC028B2505EDA500AB489E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
 		2BFC028C2505EDA500AB489E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC028A2505EDA500AB489E /* Map.swift */; };
+		DD70E2F427954CD600E6BFDC /* MapEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2F327954CD600E6BFDC /* MapEditor.swift */; };
+		DD70E2F527954CD600E6BFDC /* MapEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2F327954CD600E6BFDC /* MapEditor.swift */; };
+		DD70E2F627954CD600E6BFDC /* MapEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2F327954CD600E6BFDC /* MapEditor.swift */; };
+		DD70E2F727954CD600E6BFDC /* MapEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2F327954CD600E6BFDC /* MapEditor.swift */; };
+		DD70E2F827954CD600E6BFDC /* MapEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2F327954CD600E6BFDC /* MapEditor.swift */; };
+		DD70E2F927954CD600E6BFDC /* MapEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2F327954CD600E6BFDC /* MapEditor.swift */; };
 		DDB4A5C127740499000037DE /* HelpIndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5C027740499000037DE /* HelpIndexView.swift */; };
 		DDB4A5C227740499000037DE /* HelpIndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5C027740499000037DE /* HelpIndexView.swift */; };
 		DDB4A5C42774073A000037DE /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5C32774073A000037DE /* ProjectView.swift */; };
@@ -879,6 +885,7 @@
 		2BE9737E258CAD0700D8019D /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBuilder.swift; sourceTree = "<group>"; };
 		2BFC028A2505EDA500AB489E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
+		DD70E2F327954CD600E6BFDC /* MapEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapEditor.swift; sourceTree = "<group>"; };
 		DDB4A5C027740499000037DE /* HelpIndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpIndexView.swift; sourceTree = "<group>"; };
 		DDB4A5C32774073A000037DE /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		DDB4A5C627746000000037DE /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
@@ -1439,6 +1446,7 @@
 				2B01C87C24FB824900E86449 /* Utils.swift */,
 				2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */,
 				2B6D0B592509EEE80098F244 /* MapPreview.swift */,
+				DD70E2F327954CD600E6BFDC /* MapEditor.swift */,
 				2B32992324FF21EC007C3386 /* ShaderCompiler.swift */,
 				2B53617D25147B3300E8A20D /* File.swift */,
 				2B53618D2514952800E8A20D /* Behavior.swift */,
@@ -1813,6 +1821,7 @@
 				2B6D0B9D250B08080098F244 /* b2CircleContact.swift in Sources */,
 				2BFC028C2505EDA500AB489E /* Map.swift in Sources */,
 				2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
+				DD70E2F527954CD600E6BFDC /* MapEditor.swift in Sources */,
 				DDB4A5EB2775B148000037DE /* Table.swift in Sources */,
 				2B01C88724FB824A00E86449 /* Metal.metal in Sources */,
 				2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */,
@@ -1964,6 +1973,7 @@
 				2B6D0B9C250B08080098F244 /* b2CircleContact.swift in Sources */,
 				2BFC028B2505EDA500AB489E /* Map.swift in Sources */,
 				2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
+				DD70E2F427954CD600E6BFDC /* MapEditor.swift in Sources */,
 				DDB4A5EA2775B148000037DE /* Table.swift in Sources */,
 				2B01C88824FB824A00E86449 /* Metal.metal in Sources */,
 				2BEFCF8F250473B1003C00B0 /* MapBuilder.swift in Sources */,
@@ -2050,6 +2060,7 @@
 				2B40DA7E25590EFB001FC5F1 /* b2PolygonContact.swift in Sources */,
 				2B40DAA425590F0B001FC5F1 /* b2Common.swift in Sources */,
 				2B40DAB825590F17001FC5F1 /* b2CollideEdge.swift in Sources */,
+				DD70E2F727954CD600E6BFDC /* MapEditor.swift in Sources */,
 				2B40DA9A25590F04001FC5F1 /* b2Island.swift in Sources */,
 				2B76D7FB25AC3A5200AF6FF2 /* Graph.swift in Sources */,
 				2B40DAB925590F17001FC5F1 /* b2CollideCircles.swift in Sources */,
@@ -2145,6 +2156,7 @@
 				2B40DAF725591023001FC5F1 /* b2CircleContact.swift in Sources */,
 				2B40DAE525591016001FC5F1 /* Utils.swift in Sources */,
 				2B40DAE425591016001FC5F1 /* ShaderCompiler.swift in Sources */,
+				DD70E2F827954CD600E6BFDC /* MapEditor.swift in Sources */,
 				2B40DB2D25591040001FC5F1 /* b2CollidePolygon.swift in Sources */,
 				2B76D7FC25AC3A5200AF6FF2 /* Graph.swift in Sources */,
 				2B40DB022559102A001FC5F1 /* b2RevoluteJoint.swift in Sources */,
@@ -2240,6 +2252,7 @@
 				2B40DB802559130F001FC5F1 /* b2CircleContact.swift in Sources */,
 				2B40DB9B25591319001FC5F1 /* b2WorldCallbacks.swift in Sources */,
 				2B40DB6025591303001FC5F1 /* Map.swift in Sources */,
+				DD70E2F927954CD600E6BFDC /* MapEditor.swift in Sources */,
 				2B40DBA92559131E001FC5F1 /* b2Draw.swift in Sources */,
 				2B76D7FD25AC3A5200AF6FF2 /* Graph.swift in Sources */,
 				2B40DB9725591319001FC5F1 /* b2Island.swift in Sources */,
@@ -2345,6 +2358,7 @@
 				2B5902442592D2E100FCF16D /* b2TimeStep.swift in Sources */,
 				2B59022B2592D2D900FCF16D /* b2Contact.swift in Sources */,
 				2B5901A72592D21500FCF16D /* MetalView.swift in Sources */,
+				DD70E2F627954CD600E6BFDC /* MapEditor.swift in Sources */,
 				2B5901B32592D21A00FCF16D /* Metal.metal in Sources */,
 				2B76D80625AC3A5200AF6FF2 /* TexNodes.swift in Sources */,
 				2B5901792592D0C900FCF16D /* Shaders.metal in Sources */,

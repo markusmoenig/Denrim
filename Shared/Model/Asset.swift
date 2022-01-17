@@ -11,7 +11,10 @@ class AssetFolder       : Codable
 {
     var assets          : [Asset] = []
     var game            : Game!
+    
     var current         : Asset? = nil
+    
+    var tileMaps        : [String: [SIMD2<Int>: String]] = [:]
         
     var currentPath     : String? = nil
     
@@ -19,6 +22,7 @@ class AssetFolder       : Codable
     
     private enum CodingKeys: String, CodingKey {
         case assets
+        case tileMaps
     }
     
     init()
@@ -94,6 +98,10 @@ class AssetFolder       : Codable
         let container = try decoder.container(keyedBy: CodingKeys.self)
         assets = try container.decode([Asset].self, forKey: .assets)
         
+        if let tileMaps = try container.decodeIfPresent([String: [SIMD2<Int>: String]].self, forKey: .tileMaps) {
+            self.tileMaps = tileMaps
+        }
+        
         if assets.count == 1 && assets[0].value == "" {
             isNewProject = true
         } else {
@@ -116,6 +124,7 @@ class AssetFolder       : Codable
     {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(assets, forKey: .assets)
+        try container.encode(tileMaps, forKey: .tileMaps)
     }
     
     /// Adds a folder
