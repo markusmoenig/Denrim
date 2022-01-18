@@ -134,7 +134,7 @@ class Texture2D                 : NSObject
         renderEncoder.endEncoding()
     }
     
-    func drawChecker()
+    func drawChecker(size: Float2 = Float2(12, 12))
     {
         var x : Float = 0
         var y : Float = 0
@@ -157,6 +157,7 @@ class Texture2D                 : NSObject
         data.borderSize = border / game.scaleFactor
         data.fillColor = fillColor
         data.borderColor = borderColor
+        data.checkerSize = size.toSIMD2()
         
         let renderPassDescriptor = MTLRenderPassDescriptor()
         renderPassDescriptor.colorAttachments[0].texture = texture
@@ -432,5 +433,55 @@ class Texture2D                 : NSObject
                 }
             }
         }
+    }
+    
+    func drawGrid(size: Float, scale: Float)
+    {
+        //var x : Float = 0
+        //var y : Float = 0
+ 
+        //x /= game.scaleFactor
+        //y /= game.scaleFactor
+
+        var data = GridUniform()
+        
+        //data.onion = onion / game.scaleFactor
+        //data.screenSize = float2(width / game.scaleFactor, height / game.scaleFactor)
+        //data.round = round / game.scaleFactor
+        //data.borderSize = border / game.scaleFactor
+        //data.fillColor = fillColor
+        //data.borderColor = borderColor
+        
+        //let renderPassDescriptor = MTLRenderPassDescriptor()
+        //renderPassDescriptor.colorAttachments[0].texture = texture
+        //renderPassDescriptor.colorAttachments[0].loadAction = .load
+        
+        //let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+
+        //data.pos.x = x
+        //data.pos.y = y
+        //data.rotation = rotation.degreesToRadians
+        
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = texture
+        renderPassDescriptor.colorAttachments[0].loadAction = .load
+        
+        let renderEncoder = game.gameCmdBuffer!.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+        
+        data.screenSize = float2(width / game.scaleFactor, height / game.scaleFactor)
+        data.gridSize = size
+        data.scale = scale
+
+        let rect = MMRect(0, 0, width / game.scaleFactor, height / game.scaleFactor, scale: game.scaleFactor)
+        let vertexData = game.createVertexData(texture: self, rect: rect)
+                                
+        renderEncoder.setVertexBytes(vertexData, length: vertexData.count * MemoryLayout<Float>.stride, index: 0)
+        renderEncoder.setVertexBytes(&game.viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 1)
+
+        renderEncoder.setFragmentBytes(&data, length: MemoryLayout<BoxUniform>.stride, index: 0)
+        renderEncoder.setRenderPipelineState(game.metalStates.getState(state: .DrawGrid))
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+        
+        renderEncoder.endEncoding()
     }
 }

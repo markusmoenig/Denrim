@@ -211,22 +211,16 @@ fragment float4 m4mBoxDrawableExt(RasterizerData in [[stage_in]],
 fragment float4 m4mBoxPatternDrawable(RasterizerData in [[stage_in]],
                                constant BoxUniform *data [[ buffer(0) ]] )
 {
-    float2 uv = in.textureCoordinate * ( data->screenSize );
-    uv -= float2( data->screenSize / 2.0 );
-    
-    float2 d = abs( uv ) - data->size / 2.0;
-    float dist = length(max(d,float2(0))) + min(max(d.x,d.y),0.0);
+    float2 uv = in.textureCoordinate * data->screenSize;
+    uv.y = data->screenSize.y - uv.y;
     
     float4 checkerColor1 = data->fillColor;
     float4 checkerColor2 = data->borderColor;
     
-    //uv = fragCoord;
-    //uv -= float2( data->size / 2 );
-    
     float4 col = checkerColor1;
     
-    float cWidth = 6.0;
-    float cHeight = 6.0;
+    float cWidth = data->checkerSize.x / 2;
+    float cHeight = data->checkerSize.y / 2;
     
     if ( fmod( floor( uv.x / cWidth ), 2.0 ) == 0.0 ) {
         if ( fmod( floor( uv.y / cHeight ), 2.0 ) != 0.0 ) col=checkerColor2;
@@ -234,7 +228,7 @@ fragment float4 m4mBoxPatternDrawable(RasterizerData in [[stage_in]],
         if ( fmod( floor( uv.y / cHeight ), 2.0 ) == 0.0 ) col=checkerColor2;
     }
     
-    return float4( col.xyz, m4mFillMask( dist ) );
+    return float4( col.xyz, 1);
 }
 
 // --- Copy texture
@@ -332,14 +326,26 @@ fragment float4 m4mTextDrawable(RasterizerData in [[stage_in]],
 fragment float4 m4mGridDrawable(RasterizerData in [[stage_in]],
                                 constant GridUniform *data [[ buffer(0) ]] )
 {
-    float2 uv = in.textureCoordinate * ( data->screenSize );
-    //uv -= float2( data->screenSize / 2.0 );
+    float2 uv = in.textureCoordinate * data->screenSize;
+    uv.y = data->screenSize.y - uv.y;
     
-    int scale = 30;
+    float size = data->gridSize / 2;
+    float scale = data->scale;
+    float onion = 0.0001;
 
-    float2 gv = fract(uv / float(scale));
+    float2 gv = fract(uv / (size * scale));
+    
+    float2 d = abs( gv ) - 0.95;// + onion;
+    float dist = length(max(d,float2(0))) + min(max(d.x,d.y),0.0);
 
-    float4 color = float4(gv.x, gv.y, 0, 1);
+    //float2 d = abs( uv ) - data->size / 2 + data->onion + data->round;
+    //float dist = length(max(d,float2(0))) + min(max(d.x,d.y),0.0) - data->round;
+    
+    //if (data->onion > 0.0)
+    //dist = abs(dist) - onion;
+    //float dd = m4mBorderMask(dist, 0.01);
+    
+    float4 color = mix(float4(0), float(1), smoothstep(-0.05, 0.05, dist));
     
     return color;
 }

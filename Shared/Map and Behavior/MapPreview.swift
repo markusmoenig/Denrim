@@ -41,6 +41,8 @@ class MapPreview
             helpKey = command
         }
         
+        var tileMapEditorIsVisible = false
+        
         if let variable = variable {
             if let image = map.images[variable] {
                 stopTimer()
@@ -110,6 +112,8 @@ class MapPreview
             if let layer = map.layers[variable] {
                 helpKey = "Layer"
                 
+                tileMapEditorIsVisible = true
+
                 if layer.options.tileMap.isEmpty == false {
                     game.mapEditor.draw(map, layer: layer)
                 }
@@ -192,6 +196,8 @@ class MapPreview
             }
         }
         
+        game.isShowingTileMap.send(tileMapEditorIsVisible)
+        
         if helpKey != game.contextKey {
             if helpKey != "MapHelp" {
                 if let helpText = game.scriptEditor!.getMapHelpForKey(helpKey) {
@@ -214,6 +220,12 @@ class MapPreview
         if let variable = currentVariable {
             if let map = map {
                 if let layer = map.layers[variable] {
+                    
+                    if layer.options.tileMap.isEmpty == false {
+                        game.mapEditor.mouseDown(x, y)
+                    }
+                    
+                    /*
                     if let layerOffset = layerOffset {
                         let gridSize = map.getLayerGridSize(layer)
 
@@ -237,7 +249,7 @@ class MapPreview
                         
                         //game.scriptEditor?.getSelectedRange({ sline, scolumn, eline, ecolumn in
                         //})
-                    }
+                    }*/
                 }
             }
         }

@@ -98,6 +98,7 @@ public class Game       : ObservableObject
     let gameIsRunning                           = PassthroughSubject<Bool, Never>()
 
     let isShowingImage                          = PassthroughSubject<Bool, Never>()
+    let isShowingTileMap                        = PassthroughSubject<Bool, Never>()
 
     let projectLoaded                           = PassthroughSubject<Void, Never>()
 

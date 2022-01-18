@@ -242,6 +242,8 @@ class MapBuilder
             lineNumber += 1
         }
         
+        game.currentMap = asset
+        
         if game.state == .Idle {
             if error.error != nil {
                 error.line = error.line! + 1

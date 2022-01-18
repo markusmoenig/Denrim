@@ -57,6 +57,7 @@ typedef struct
 
     int             hasTexture;
     vector_float2   textureSize;
+    vector_float2   checkerSize;
 
 } BoxUniform;
 
@@ -70,8 +71,9 @@ typedef struct
 
 typedef struct
 {
-    vector_float2   gridSize;
     vector_float2   screenSize;
+    vector_float2   offset;
+    float           gridSize;
     float           scale;
 } GridUniform;
 

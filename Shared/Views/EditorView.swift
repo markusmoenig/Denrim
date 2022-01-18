@@ -16,6 +16,7 @@ struct EditorView: View {
     @State private var showingDebug                     = false
     
     @State private var isShowingImage                   = false
+    @State private var isShowingTileMap                 = false
 
     @State private var imageScaleValue                  : Float = 1
     @State private var imageScaleText                   : String = "1"
@@ -108,6 +109,19 @@ struct EditorView: View {
                             }
                         }
                 } else
+                if isShowingTileMap {
+                    Divider()
+                    
+                    Text("Scale")
+                    DataFloatSliderView("Scale", $imageScaleValue, $imageScaleText, $imageScaleRange)
+                        .frame(width: 120)
+                        .onChange(of: imageScaleValue) { newState in
+                            if let asset = game.assetFolder.current {
+                                asset.dataScale = Double(newState)
+                                game.assetFolder.createPreview()
+                            }
+                        }
+                } else
                 if tempText.isEmpty == false {
                     Divider()
 
@@ -147,6 +161,14 @@ struct EditorView: View {
                     imageIndexRange.y = Float(game.assetFolder.current!.data.count) - 1
                 } else {
                     isShowingImage = false
+                }
+            }
+            
+            .onReceive(game.isShowingTileMap) { value in
+                if value {
+                    isShowingTileMap = true
+                } else {
+                    isShowingTileMap = false
                 }
             }
             
