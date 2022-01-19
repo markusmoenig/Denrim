@@ -13,6 +13,8 @@ class TileMap2D     : Codable
     var tiles               : [SIMD2<Int>: String] = [:]
     var cursor              : SIMD2<Int> = SIMD2<Int>(0, 0)
 
+    var offset              : SIMD2<Float> = SIMD2<Float>(0, 0)
+
     var scale               : Float = 1
 
     private enum CodingKeys: String, CodingKey {

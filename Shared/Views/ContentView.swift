@@ -31,6 +31,8 @@ struct ContentView: View {
             
     @State private var selection            : UUID? = nil
     
+    @State private var isShowingTileMap     = false
+    
     #if os(macOS)
     let leftPanelWidth                      : CGFloat = 210
     let toolBarIconSize                     : CGFloat = 13
@@ -65,13 +67,18 @@ struct ContentView: View {
                 } else {
                     VStack {
                         
-                        //VStack {
-                        MetalView(document.game)
-                            .frame(maxHeight: editorIsMaximized ? 0 : .infinity)
-                            .opacity(1)
-                            .onReceive(document.game.editorIsMaximized) { value in
-                                editorIsMaximized = value
+                        ZStack(alignment: .topLeading) {
+                            MetalView(document.game)
+                                .frame(maxHeight: editorIsMaximized ? 0 : .infinity)
+                                .opacity(1)
+                                .onReceive(document.game.editorIsMaximized) { value in
+                                    editorIsMaximized = value
+                                }
+                            
+                            if isShowingTileMap {
+                                ToolsView(game: document.game)
                             }
+                        }
 
                         EditorView(game: document.game)
                     
@@ -102,6 +109,11 @@ struct ContentView: View {
                 }
             }
         })
+        
+        .onReceive(document.game.isShowingTileMap) { value in
+            isShowingTileMap = value
+            print("ooo", value)
+        }
             
         .toolbar {
             ToolbarItemGroup(placement: .automatic) {

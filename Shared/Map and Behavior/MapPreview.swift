@@ -256,6 +256,18 @@ class MapPreview
     }
     
     func scrollWheel(with event: NSEvent) {
+        if let variable = currentVariable {
+            if let map = map {
+                if let layer = map.layers[variable] {
+                    
+                    if layer.options.tileMap.isEmpty == false {
+                        game.mapEditor.scrollWheel(with: event)
+                    }
+                    
+                    return
+                }
+            }
+        }
         if let asset = game.assetFolder.current, asset.type == .Map {
             if let map = asset.map {
                 if game.view.commandIsDown {

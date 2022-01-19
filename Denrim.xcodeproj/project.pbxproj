@@ -744,6 +744,8 @@
 		DDB4A6AA27794C2A000037DE /* SideBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A927794C2A000037DE /* SideBarView.swift */; };
 		DDB4A6AB27794C2A000037DE /* SideBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A927794C2A000037DE /* SideBarView.swift */; };
 		DDB4A6AC27794C2A000037DE /* SideBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A6A927794C2A000037DE /* SideBarView.swift */; };
+		DDFD03262797E19A005DB18E /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFD03252797E19A005DB18E /* ToolsView.swift */; };
+		DDFD03272797E19A005DB18E /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFD03252797E19A005DB18E /* ToolsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -973,6 +975,7 @@
 		DDB4A6A927794C2A000037DE /* SideBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarView.swift; sourceTree = "<group>"; };
 		DDB4A6AD277C50BD000037DE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DDB4A6AE277C50DF000037DE /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		DDFD03252797E19A005DB18E /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1325,6 +1328,7 @@
 				2BE27C982595690100B8AAD8 /* BrowserView.swift */,
 				DDB4A6A627784C2B000037DE /* DataViews.swift */,
 				DDB4A6A927794C2A000037DE /* SideBarView.swift */,
+				DDFD03252797E19A005DB18E /* ToolsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1832,6 +1836,7 @@
 				2B32992524FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
 				DD70E2F527954CD600E6BFDC /* MapEditor.swift in Sources */,
 				DDB4A5EB2775B148000037DE /* Table.swift in Sources */,
+				DDFD03272797E19A005DB18E /* ToolsView.swift in Sources */,
 				2B01C88724FB824A00E86449 /* Metal.metal in Sources */,
 				2BEFCF90250473B1003C00B0 /* MapBuilder.swift in Sources */,
 				DDB4A6542775B1F3000037DE /* lfunc.c in Sources */,
@@ -1985,6 +1990,7 @@
 				2B32992424FF21EC007C3386 /* ShaderCompiler.swift in Sources */,
 				DD70E2F427954CD600E6BFDC /* MapEditor.swift in Sources */,
 				DDB4A5EA2775B148000037DE /* Table.swift in Sources */,
+				DDFD03262797E19A005DB18E /* ToolsView.swift in Sources */,
 				2B01C88824FB824A00E86449 /* Metal.metal in Sources */,
 				2BEFCF8F250473B1003C00B0 /* MapBuilder.swift in Sources */,
 				DDB4A6532775B1F3000037DE /* lfunc.c in Sources */,
