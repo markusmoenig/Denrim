@@ -235,7 +235,7 @@ class Texture2D                 : NSObject
         position.y = -position.y;
         position.x /= game.scaleFactor
         position.y /= game.scaleFactor
-
+        
         var data = BoxUniform()
         data.onion = onion / game.scaleFactor
         data.size = float2(size.x / game.scaleFactor, size.y / game.scaleFactor)

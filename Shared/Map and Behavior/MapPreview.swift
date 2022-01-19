@@ -255,6 +255,21 @@ class MapPreview
         }
     }
     
+    func scrollWheel(with event: NSEvent) {
+        if let asset = game.assetFolder.current, asset.type == .Map {
+            if let map = asset.map {
+                if game.view.commandIsDown {
+                    map.camera2D.zoom += Float(event.deltaY) * 0.1
+                    map.camera2D.zoom = max(map.camera2D.zoom, 0.01)
+                } else {
+                    map.camera2D.xOffset += Float(event.deltaX)
+                    map.camera2D.yOffset += Float(event.deltaY)
+                }
+                game.mapBuilder.createPreview(map, true)
+            }
+        }
+    }
+    
     func drawTexture(_ texture: Texture2D)
     {
         if let map = map {

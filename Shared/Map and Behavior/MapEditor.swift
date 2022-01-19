@@ -26,18 +26,16 @@ class MapEditor
         
         if let asset = game.assetFolder.current {
             //game.texture?.clear()//Float4(0.5, 0.5, 0.5, 1))
-            
-            let scale = Float(asset.dataScale)
 
-            //game.texture?.drawGrid(size: layer.options.gridSize.x, scale: scale)//Float(asset.dataScale))
-            
-            let gridSize = layer.options.gridSize.x * scale
+            if let tileMap = game.assetFolder.tileMaps[layer.options.tileMap] {
 
-            game.texture?.drawChecker(size: Float2(gridSize, gridSize))
+                let scale = tileMap.scale
+                let gridSize = layer.options.gridSize.x * scale
 
-            if game.assetFolder.tileMaps[layer.options.tileMap] != nil {
-
-                for (pos, a) in game.assetFolder.tileMaps[layer.options.tileMap]! {
+                game.texture?.drawChecker(size: Float2(gridSize, gridSize))
+                
+                // Draw Tiles
+                for (pos, a) in tileMap.tiles {
                                      
                     if map.aliases[a] != nil {
                         var options : [String:Any] = [:]
@@ -74,26 +72,45 @@ class MapEditor
                         game.texture?.drawTexture(options)
                     }
                 }
+                
+                // Draw Cursor
+                
+                var options : [String:Any] = [:]
+
+                options["position"] = Float2(Float(tileMap.cursor.x) * gridSize, Float(-tileMap.cursor.y) * gridSize)
+
+                options["border"] = Float(1.5)
+                options["color"] = Float4(0,0,0,0)
+                options["bordercolor"] = Float4(1,1,1,1)
+
+                options["size"] = Float2(layer.options.gridSize.x * scale, layer.options.gridSize.x * scale)
+                
+                game.texture?.drawBox(options)
             }
         }
     }
     
     func mouseDown(_ x: Float,_ y: Float) {
 
-        let scale = Float(2)
-        
-        let cX = Int(x / (layer.options.gridSize.x * scale))
-        let cY = Int(y / (layer.options.gridSize.x * scale))
-        
         if game.assetFolder.tileMaps[layer.options.tileMap] == nil {
-            game.assetFolder.tileMaps[layer.options.tileMap] = [:]
+            game.assetFolder.tileMaps[layer.options.tileMap] = TileMap2D()
         }
         
-        if game.assetFolder.tileMaps[layer.options.tileMap] != nil {
+        if let tileMap = game.assetFolder.tileMaps[layer.options.tileMap] {
 
-            game.assetFolder.tileMaps[layer.options.tileMap]![SIMD2<Int>(cX, cY)] = game.mapBuilder.selectedAlias
+            let cX = Int(x / (layer.options.gridSize.x * tileMap.scale))
+            let cY = Int(y / (layer.options.gridSize.x * tileMap.scale))
+            
+            tileMap.tiles[SIMD2<Int>(cX, cY)] = game.mapBuilder.selectedAlias
+            tileMap.cursor = SIMD2<Int>(cX, cY)
 
             print("ttt set", cX, cY, "to", game.mapBuilder.selectedAlias)
+        }
+    }
+    
+    func setScale(_ scale: Float) {
+        if let tileMap = game.assetFolder.tileMaps[layer.options.tileMap] {
+            tileMap.scale = scale
         }
     }
 }

@@ -14,7 +14,7 @@ class AssetFolder       : Codable
     
     var current         : Asset? = nil
     
-    var tileMaps        : [String: [SIMD2<Int>: String]] = [:]
+    var tileMaps        : [String: TileMap2D] = [:]
         
     var currentPath     : String? = nil
     
@@ -98,7 +98,7 @@ class AssetFolder       : Codable
         let container = try decoder.container(keyedBy: CodingKeys.self)
         assets = try container.decode([Asset].self, forKey: .assets)
         
-        if let tileMaps = try container.decodeIfPresent([String: [SIMD2<Int>: String]].self, forKey: .tileMaps) {
+        if let tileMaps = try container.decodeIfPresent([String: TileMap2D].self, forKey: .tileMaps) {
             self.tileMaps = tileMaps
         }
         

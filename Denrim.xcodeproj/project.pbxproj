@@ -589,6 +589,12 @@
 		DD70E2F727954CD600E6BFDC /* MapEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2F327954CD600E6BFDC /* MapEditor.swift */; };
 		DD70E2F827954CD600E6BFDC /* MapEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2F327954CD600E6BFDC /* MapEditor.swift */; };
 		DD70E2F927954CD600E6BFDC /* MapEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2F327954CD600E6BFDC /* MapEditor.swift */; };
+		DD70E2FB2797A98B00E6BFDC /* TileMap2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2FA2797A98B00E6BFDC /* TileMap2D.swift */; };
+		DD70E2FC2797A98B00E6BFDC /* TileMap2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2FA2797A98B00E6BFDC /* TileMap2D.swift */; };
+		DD70E2FD2797A98B00E6BFDC /* TileMap2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2FA2797A98B00E6BFDC /* TileMap2D.swift */; };
+		DD70E2FE2797A98B00E6BFDC /* TileMap2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2FA2797A98B00E6BFDC /* TileMap2D.swift */; };
+		DD70E2FF2797A98B00E6BFDC /* TileMap2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2FA2797A98B00E6BFDC /* TileMap2D.swift */; };
+		DD70E3002797A98B00E6BFDC /* TileMap2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70E2FA2797A98B00E6BFDC /* TileMap2D.swift */; };
 		DDB4A5C127740499000037DE /* HelpIndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5C027740499000037DE /* HelpIndexView.swift */; };
 		DDB4A5C227740499000037DE /* HelpIndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5C027740499000037DE /* HelpIndexView.swift */; };
 		DDB4A5C42774073A000037DE /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4A5C32774073A000037DE /* ProjectView.swift */; };
@@ -886,6 +892,7 @@
 		2BEFCF8E250473B1003C00B0 /* MapBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBuilder.swift; sourceTree = "<group>"; };
 		2BFC028A2505EDA500AB489E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		DD70E2F327954CD600E6BFDC /* MapEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapEditor.swift; sourceTree = "<group>"; };
+		DD70E2FA2797A98B00E6BFDC /* TileMap2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileMap2D.swift; sourceTree = "<group>"; };
 		DDB4A5C027740499000037DE /* HelpIndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpIndexView.swift; sourceTree = "<group>"; };
 		DDB4A5C32774073A000037DE /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		DDB4A5C627746000000037DE /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
@@ -1326,6 +1333,7 @@
 			isa = PBXGroup;
 			children = (
 				2B01C87F24FB824900E86449 /* Asset.swift */,
+				DD70E2FA2797A98B00E6BFDC /* TileMap2D.swift */,
 				2B01C87E24FB824900E86449 /* Game.swift */,
 			);
 			path = Model;
@@ -1781,6 +1789,7 @@
 				2B6D0BA5250B08080098F244 /* b2ContactSolver.swift in Sources */,
 				2B6D0BDD250B08080098F244 /* b2Common.swift in Sources */,
 				2B6D0BFD250B08080098F244 /* b2CollideCircles.swift in Sources */,
+				DD70E2FC2797A98B00E6BFDC /* TileMap2D.swift in Sources */,
 				2B6D0BB3250B08080098F244 /* b2RevoluteJoint.swift in Sources */,
 				2B76D81725AC3A8400AF6FF2 /* Tool.swift in Sources */,
 				DDB4A5DF2775B148000037DE /* Boolean.swift in Sources */,
@@ -1933,6 +1942,7 @@
 				2B6D0BA4250B08080098F244 /* b2ContactSolver.swift in Sources */,
 				2B6D0BDC250B08080098F244 /* b2Common.swift in Sources */,
 				2B6D0BFC250B08080098F244 /* b2CollideCircles.swift in Sources */,
+				DD70E2FB2797A98B00E6BFDC /* TileMap2D.swift in Sources */,
 				2B6D0BB2250B08080098F244 /* b2RevoluteJoint.swift in Sources */,
 				2B76D81625AC3A8400AF6FF2 /* Tool.swift in Sources */,
 				DDB4A5DE2775B148000037DE /* Boolean.swift in Sources */,
@@ -2105,6 +2115,7 @@
 				2B40DA9025590F00001FC5F1 /* b2WeldJoint.swift in Sources */,
 				2B40DA8325590EFB001FC5F1 /* b2PolygonAndCircleContact.swift in Sources */,
 				2B40DA8E25590F00001FC5F1 /* b2PulleyJoint.swift in Sources */,
+				DD70E2FE2797A98B00E6BFDC /* TileMap2D.swift in Sources */,
 				2B76D7E325AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
 				2B40DAA625590F0B001FC5F1 /* b2Wrappers.swift in Sources */,
 				2B40DA7025590EE8001FC5F1 /* Branches.swift in Sources */,
@@ -2201,6 +2212,7 @@
 				2B40DB1B25591036001FC5F1 /* b2Draw.swift in Sources */,
 				2B40DB1F25591036001FC5F1 /* b2Common.swift in Sources */,
 				2B40DAFD25591023001FC5F1 /* b2ChainAndPolygonContact.swift in Sources */,
+				DD70E2FF2797A98B00E6BFDC /* TileMap2D.swift in Sources */,
 				2B76D7E425AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
 				2B40DADB25591016001FC5F1 /* BehaviorBuilder.swift in Sources */,
 				2B40DAE025591016001FC5F1 /* Map.swift in Sources */,
@@ -2297,6 +2309,7 @@
 				2B40DB822559130F001FC5F1 /* b2PolygonContact.swift in Sources */,
 				2B40DB782559130B001FC5F1 /* b2Body.swift in Sources */,
 				2B40DB9825591319001FC5F1 /* b2World.swift in Sources */,
+				DD70E3002797A98B00E6BFDC /* TileMap2D.swift in Sources */,
 				2B76D7E525AC3A5200AF6FF2 /* DenrimBuilder.swift in Sources */,
 				2B40DB6825591303001FC5F1 /* MapBuilder.swift in Sources */,
 				2B40DB6E25591303001FC5F1 /* Game.swift in Sources */,
@@ -2390,6 +2403,7 @@
 				2B5902732592D2FD00FCF16D /* b2Collision.swift in Sources */,
 				2B5902742592D2FD00FCF16D /* b2CollideCircles.swift in Sources */,
 				2B5901D72592D23300FCF16D /* File.swift in Sources */,
+				DD70E2FD2797A98B00E6BFDC /* TileMap2D.swift in Sources */,
 				2B5902682592D2FA00FCF16D /* b2CircleShape.swift in Sources */,
 				2B59019B2592D20E00FCF16D /* Game.swift in Sources */,
 				DDB4A6AC27794C2A000037DE /* SideBarView.swift in Sources */,

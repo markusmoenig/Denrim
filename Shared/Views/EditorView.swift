@@ -116,10 +116,7 @@ struct EditorView: View {
                     DataFloatSliderView("Scale", $imageScaleValue, $imageScaleText, $imageScaleRange)
                         .frame(width: 120)
                         .onChange(of: imageScaleValue) { newState in
-                            if let asset = game.assetFolder.current {
-                                asset.dataScale = Double(newState)
-                                game.assetFolder.createPreview()
-                            }
+                            game.mapEditor.setScale(Float(newState))
                         }
                 } else
                 if tempText.isEmpty == false {

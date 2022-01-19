@@ -122,18 +122,7 @@ public class DMTKView       : MTKView
     
     override public func scrollWheel(with event: NSEvent) {
         if game.state == .Idle {
-            if let asset = game.assetFolder.current, asset.type == .Map {
-                if let map = asset.map {
-                    if commandIsDown {
-                        map.camera2D.zoom += Float(event.deltaY) * 0.1
-                        map.camera2D.zoom = max(map.camera2D.zoom, 0.01)
-                    } else {
-                        map.camera2D.xOffset += Float(event.deltaX)
-                        map.camera2D.yOffset += Float(event.deltaY)
-                    }
-                    game.mapBuilder.createPreview(map, true)
-                }
-            }
+            game.mapBuilder.mapPreview.scrollWheel(with: event)
         }
     }
     #elseif os(iOS)
