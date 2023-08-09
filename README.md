@@ -11,13 +11,11 @@
 
 v1.0x is the current version in the AppStore, the main branch is work under development for v2 with many enhancements like Lua script support.
 
-Support via [Discord](https://discord.gg/BNHVE92b).
-
 ---
 
 Denrim is a 2D game creator utilizing a unique text based approach for game logic and resources. It is highly optimized for the Metal GPU framework and combines ease-of-use with the highest possible performance.
 
-Denrim utilizes a text based approach to game creation paired with instant previews and visual game state feedback. You do not need to be a developer to create games with Denrim as no scripting languages are used. 
+Denrim utilizes a text based approach to game creation paired with instant previews and visual game state feedback. You do not need to be a developer to create games with Denrim as no scripting languages are used.
 
 Text based behavior trees are easy-to-use yet powerful tools to create game logic and AI. They are easier to use and  understand than scripting languages but are natively compiled into Swift and therefore offer the maximum in native performance. During game execution visual feedback of the state of the nodes are provided for easy debugging.
 
